@@ -4,7 +4,7 @@
 
 **Project**: Systems Ontology — Lean 4 Formalization
 **Scope**: Bunge, *Treatise on Basic Philosophy* Vol. 4, Ch. 1 (Definitions 1.1–1.19, Postulates 1.1–1.8, Theorems 1.1–1.3, Corollaries 1.1–1.2)
-**Codebase**: 7 Lean modules, 845 lines, 74 declarations, zero `sorry`s
+**Codebase**: 9 Lean files (7 core modules + 2 root imports), 864 lines, 74 declarations, zero `sorry`s
 **Date**: 2026-02-17
 
 ---
@@ -322,7 +322,7 @@ Nothing connects them. You can construct an `Assembly` without a corresponding `
 
 ## 4. Where Prose Turned Out Under-Specified
 
-These are cases where the formalization attempt revealed that Bunge's definitions lack content, depend on unstated assumptions, or require infrastructure he never provides.
+These are cases where the formalization attempt revealed that Bunge's definitions depend on assumptions external to the current chapter, require infrastructure he defers to later volumes, or lack the content they appear to have when read in isolation.
 
 ### 4a. Ancestry Irreflexivity Gap
 
@@ -357,9 +357,11 @@ Nothing prevents an instance where `immediateAncestor x x` holds. Bunge's Def 1.
 
 **What this reveals**: Strict ordering of ancestry is not a consequence of the definitions — it depends on an external constraint (things cannot be their own precursors) that Bunge assumes tacitly. The formalization makes this assumption explicit by its absence.
 
-### 4b. Corollary 1.1 Is Vacuously True
+### 4b. Corollary 1.1 Reveals Cross-Volume Dependency
 
 **Bunge's claim**: "The universe is the only closed system."
+
+Bunge is explicit about the premise: "Since every thing but the universe interacts with some other things, we infer..." The required axiom is Postulate 5.10 from Volume 3 (*every concrete thing interacts with some other thing*), and related postulates appear in Volume 4, Chapter 6 (Postulates 6.1, 6.2).
 
 **What we proved**:
 
@@ -376,9 +378,11 @@ This is `Iff.rfl` — reflexivity of bi-implication. The proof is *literally the
 1. The universe has empty environment (which is the definition of "closed").
 2. The universe is the *only* thing with empty environment.
 
-Claim (2) is the substantive one. It depends on Bunge's Postulate 5.10 (from Volume 3, not Volume 4): *every concrete thing interacts with some other thing*. Without this axiom, there is no reason any system *must* have a non-empty environment.
+Claim (1) is definitional. Claim (2) is substantive — it requires the universal interaction postulate from Volume 3. Without that axiom imported into the Lean environment, there is no reason any system *must* have a non-empty environment, and the compiler cannot conjure it.
 
-**What this reveals**: The "corollary" has zero deductive content within Chapter 1 alone. It smuggles in an external axiom (universal interaction) and disguises it as a consequence of the definition. The Lean proof — `Iff.rfl` — makes this immediately visible.
+**What this reveals**: Bunge numbers this "Corollary 1.1" as if it belongs to Chapter 1's deductive sequence, but Chapter 1 alone cannot produce it. The substantive content requires importing commitments from a different volume. A reader working through Chapter 1 in isolation would encounter a "corollary" that appears to follow from the preceding definitions when it actually depends on external axioms — axioms that Bunge *does* cite in his prose, but that are invisible in the numbering scheme.
+
+This pairs instructively with §3a. In 3a, formalization caught a genuine textual error (Bunge wrote "asymmetric" but meant "antisymmetric" — the compiler forced the correct reading). Here in 4b, there is no error — Bunge correctly cites his premise. What the formalization makes explicit is *dependency architecture*: the `Iff.rfl` proof is the compiler's way of saying "I can only use what I've been given, and what I've been given is a tautology." The substantive claim lives elsewhere in Bunge's system, and the compiler makes that structural dependency undeniable.
 
 ### 4c. Level Membership Criterion Silently Dropped
 
@@ -569,9 +573,12 @@ Definitions 1.10 and 1.11 (input and output) define how matter, energy, and info
 | Assembly.lean | 134 | 5 | 2 | 4 |
 | Selection.lean | 128 | 3 | 4 | 1 |
 | State.lean | 141 | 7 | 2 | 2 |
-| **Total** | **845** | **34** | **19** | **10** |
+| Core.lean | 13 | 0 | 0 | 0 |
+| Systems.lean | 6 | 0 | 0 | 0 |
+| **Total** | **864** | **34** | **19** | **10** |
 
 Additional: 11 classes/inductives, bringing total declarations to 74.
+Note: Core.lean and Systems.lean are root import files (no declarations).
 
 **Lean toolchain**: v4.28.0 (Mathlib-pinned)
 **Dependencies**: Mathlib (Order.Defs.PartialOrder, Data.Set.Basic)
