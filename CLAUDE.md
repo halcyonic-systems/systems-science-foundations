@@ -30,7 +30,7 @@ lake build          # Must pass with zero errors
 
 - Every Lean definition includes a docstring citing the Bunge definition number
 - `autoImplicit = false` — all universes and variables must be explicit
-- Same Lean toolchain as BRA: v4.28.0-rc1
+- Lean toolchain: v4.28.0 (pinned by Mathlib)
 - Zero `sorry`s in committed code
 - Mathlib instances preferred over hand-rolled proofs (e.g., `Preorder`, `PartialOrder`)
 
