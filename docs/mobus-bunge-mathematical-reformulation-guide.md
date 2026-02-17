@@ -1,9 +1,11 @@
-# Mobus-Bunge Mathematical Reformulation Guide
-*Strategic framework for reformulating Mobus's 7-tuple in Bunge's mathematical style*
+# Klir-Bunge-Mobus Mathematical Reformulation Guide
+*Strategic framework for the commuting triangle of systems ontology*
 
-**Created**: 2025-08-07  
-**Purpose**: Guide future mathematical exposition work for systems science integration  
-**Target Audience**: Mathematician (Cliff Joslyn)  
+**Created**: 2025-08-07 | **Updated**: 2026-02-17 (Klir genealogy discovered)
+**Purpose**: Guide mathematical exposition for systems science integration
+**Target Audience**: Mathematician (Cliff Joslyn)
+
+**Key discovery (2026-02-17)**: Bunge and Mobus both descend from Klir's `S = (T, R)`. Neither references the other. The formalization proves a commuting triangle: Mobus → Bunge → Klir = Mobus → Klir (by `rfl`). See `Systems/Klir/KlirSystem.lean`.  
 
 ---
 
@@ -50,18 +52,24 @@ Every system has a finite decomposition into atomic components.
 
 ## RECOMMENDED APPROACH: HYBRID STRATEGY
 
-### Phase 1: Foundation (Bunge-style)
+### Phase 0: Common Root (Klir)
+```
+S = (T, R) where T is a set of things, R is a relation on T
+```
+Klir (1969/2001) — the simplest formal system definition. Both Bunge and Mobus inherit T as Set α and R as Set (α × α) from this root.
+
+### Phase 1: Bunge's Elaboration (adds Environment)
 ```
 Let U be a universe of entities.
 A system σ over U is an ordered triple ⟨C, E, S⟩ where:
-- C ⊆ U (composition - system components)
-- E ⊆ U (environment - external entities)  
+- C ⊆ U (composition - system components — Klir's T)
+- E ⊆ U (environment - external entities — Bunge's addition)
 - C ∩ E = ∅ (components and environment are disjoint)
-- S ⊆ (C ∪ E) × (C ∪ E) (structure - relations between entities)
+- S ⊆ (C ∪ E) × (C ∪ E) (structure — Klir's R, extended to C ∪ E)
 ```
 
-### Phase 2: Mobus's Independent Framework
-Formalize the independently developed 8-tuple, capturing:
+### Phase 2: Mobus's Independent Elaboration (adds typed flows, boundary, milieu, ...)
+Independently developed from Klir (Ch. 4, p. 14: "inspired originally by Klir (2001)"), capturing:
 - **Hierarchical structure** (systems as components)
 - **Flow networks** (typed relations for matter/energy/information)  
 - **Temporal dynamics** (time-indexed definitions)
@@ -72,10 +80,10 @@ Formalize the independently developed 8-tuple, capturing:
 ## CONCRETE STARTING FRAMEWORK
 
 ### Opening Strategy
-1. **Quote Bunge** (establish mathematical credibility)
-2. **State goal**: "We formalize two independently developed systems ontologies and discover their structural compatibility through a verified bridge theorem"
+1. **Start with Klir's `S = (T, R)`** — the common root both traditions share
+2. **State goal**: "We formalize a commuting triangle of systems ontology: Klir → Bunge and Klir → Mobus, developed independently, converge when projected back to (T, R)"
 3. **Define universe** clearly upfront
-4. **Build incrementally** - each step should feel "obvious" to a mathematician
+4. **Build incrementally** — Klir → Bunge (add environment) → Mobus (add flows, boundary, milieu)
 
 ### Proposed Definition Structure
 
@@ -89,8 +97,8 @@ A system σ over Ω is an ordered triple ⟨C, E, S⟩ where:
 - C ∩ E = ∅ (disjointness)
 - S ⊆ (C ∪ E) × (C ∪ E) (structure)
 
-**Definition 3 (Mobus System — Independent Formulation):**
-A Mobus system σ̃ over Ω is an 8-tuple ⟨C, N, E, G, B, T, H, Δt⟩ where the Bunge triple ⟨C, E, S⟩ can be recovered via projection as...
+**Definition 3 (Mobus System — Independent from Klir):**
+A Mobus system σ̃ over Ω is an 8-tuple ⟨C, N, E, G, B, T, H, Δt⟩ where the Bunge triple ⟨C, E, S⟩ can be recovered via projection, and the Klir pair (T, R) via further projection, as...
 
 [Continue building each component systematically]
 
@@ -114,8 +122,8 @@ A Mobus system σ̃ over Ω is an 8-tuple ⟨C, N, E, G, B, T, H, Δt⟩ where t
 
 ## KEY INSIGHTS FOR EXPOSITION
 
-### Structural Correspondences (Discovered, Not Claimed)
-1. **Bunge's ⟨C, E, S⟩ ↔ Mobus's hierarchical levels**
+### Structural Correspondences (Commuting Triangle)
+1. **Klir's (T, R) → Bunge's ⟨C, E, S⟩ → Mobus's hierarchical levels**
    - Environment E maps to Level -1
    - System C maps to Level 0  
    - Components map to Level +1
@@ -161,9 +169,11 @@ A Mobus system σ̃ over Ω is an 8-tuple ⟨C, N, E, G, B, T, H, Δt⟩ where t
 
 ## REFERENCES & SOURCE MATERIAL
 
+- **Klir**: *Facets of Systems Science* (2001), Eq. 1.1 — common root
+- **Bunge**: *Treatise on Basic Philosophy* Vol. 4, Chapter 1 (1979) — cites Klir & Valach 1967, Klir & Rogers 1977
+- **Mobus**: *Understanding Systems* Ch. 4 (2022) — cites Klir 2001 (p. 14: "inspired originally by Klir")
+- **Lean formalization**: `Systems/Klir/KlirSystem.lean` (commuting triangle), `Systems/Mobus/Bridge.lean` (Mobus → Bunge projection)
 - **Primary Reference**: `/research/foundations/mathematics/mobus-bunge-system-definitions-reference.md`
-- **Mobus Core Texts**: System Ontology (3.4, 3.5), Model of System (4.3), Principles (2.3)
-- **Bunge**: Treatise on Basic Philosophy Chapter 1
 - **Target**: Clean mathematical exposition for mathematician audience
 
 ---

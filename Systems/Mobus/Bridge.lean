@@ -15,11 +15,15 @@
   scale Δt, and capacity labels κ on flow edges.
 
   Bunge (1979, philosophical ontology) and Mobus (2022, systems science)
-  developed their frameworks independently — neither references the other.
-  The bridge is therefore not verification of a claimed relationship but
-  *discovery* of a structural compatibility between two traditions. The
-  projection points (where information is lost) mark the precise locations
-  where these independent intellectual traditions diverge.
+  both descend from Klir's S = (T, R) (1969/2001) but developed their
+  elaborations independently — neither references the other. The bridge
+  is one edge of a commuting triangle (see Systems/Klir/KlirSystem.lean):
+  Mobus → Bunge → Klir = Mobus → Klir, proved by `rfl`. The `rfl` fields
+  (composition/components and structure/totalRelation) trace to both
+  authors inheriting T = Set α and R = Set (α × α) from Klir without
+  changing the mathematical type. The six information loss categories
+  mark where Mobus elaborated Klir's framework in directions Bunge's
+  philosophical aims did not require.
 
   SHOWCASE THEOREM #6: The bridge preserves subsystem ordering. If
   sys₁ is a Mobus subsystem of sys₂, then toBunge sys₁ is a Bunge
