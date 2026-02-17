@@ -3,7 +3,7 @@
 *How the existing `RecursiveComponent` in Level.lean (Mobus Eq. 4.3) connects to the planned `MobusSystem` structure, including the atomic work process taxonomy and the mutual recursion design challenge.*
 
 **Project**: Systems Ontology — Lean 4 Formalization
-**Scope**: Bridge from Phase 1 (Bunge core) to Phase 2 (Mobus extensions)
+**Scope**: Bridge from Phase 1 (Bunge core) to Phase 2 (Mobus 8-tuple)
 **Date**: 2026-02-17
 
 ---

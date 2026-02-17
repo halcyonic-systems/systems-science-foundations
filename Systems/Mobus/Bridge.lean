@@ -12,10 +12,14 @@
 
   Six fields of the 8-tuple have no Bunge counterpart and are projected
   away: milieu M, boundary properties π, transforms T, history H, time
-  scale Δt, and capacity labels κ on flow edges. This is not a deficiency —
-  it is the formal content of the claim that Mobus *refines* Bunge. Every
-  Mobus system induces a Bunge system; Bunge's framework is the quotient
-  that forgets the quantitative and dynamic detail Mobus adds.
+  scale Δt, and capacity labels κ on flow edges.
+
+  Bunge (1979, philosophical ontology) and Mobus (2022, systems science)
+  developed their frameworks independently — neither references the other.
+  The bridge is therefore not verification of a claimed relationship but
+  *discovery* of a structural compatibility between two traditions. The
+  projection points (where information is lost) mark the precise locations
+  where these independent intellectual traditions diverge.
 
   SHOWCASE THEOREM #6: The bridge preserves subsystem ordering. If
   sys₁ is a Mobus subsystem of sys₂, then toBunge sys₁ is a Bunge
@@ -157,12 +161,21 @@ have no Bunge counterpart and are discarded:
    are time-indexed but the time structure itself is not formalized
    (see retrospective §2a).
 
-These losses are not deficiencies. They constitute the formal content
-of the claim that **Mobus refines Bunge**: every Mobus system projects
-to a Bunge system, but the projection is not injective — multiple Mobus
-systems (differing in milieu, capacity, transforms, etc.) can project
-to the same Bunge CES triple. The refinement adds quantitative and
-dynamic detail that Bunge's purely structural framework omits.
+These losses are not deficiencies — they are the formal content of the
+divergence between two independently developed frameworks. Bunge
+(philosophical ontology, 1979) and Mobus (systems science, 2022) arrived
+at compatible structures from different traditions without mutual
+reference. The projection is not injective: multiple Mobus systems
+(differing in milieu, capacity, transforms, etc.) map to the same Bunge
+CES triple. The six loss categories mark the precise points where Mobus's
+engineering orientation led to distinctions that Bunge's philosophical
+orientation did not require.
+
+This is **independent convergence with formally characterized divergence**.
+The `rfl` proofs on the three preserved fields (composition, environment
+objects, total relation) are not trivially expected — they are empirical
+findings that two researchers using different notation, terminology, and
+motivating examples happened to decompose a system in the same way.
 -/
 
 /-- Two Mobus systems that agree on components, environment objects,

@@ -558,7 +558,7 @@ The following definitions, postulates, theorems, and corollaries from Bunge Chap
 
 ### Key Insight: Input/Output Definitions Are Phase 2 Priorities
 
-Definitions 1.10 and 1.11 (input and output) define how matter, energy, and information cross a system's boundary. These are exactly the concepts that Mobus's flow networks (the N and G components of the 8-tuple) formalize computationally. Any Phase 2 `MobusSystem` that includes flow networks will need these definitions as a bridge from Bunge's general framework to Mobus's concrete one.
+Definitions 1.10 and 1.11 (input and output) define how matter, energy, and information cross a system's boundary. These are the concepts that Mobus's flow networks (the N and G components of the 8-tuple) address from an independent engineering perspective. Any Phase 2 `MobusSystem` that includes flow networks will need these definitions to establish the formal bridge between the two independently developed frameworks.
 
 ---
 
