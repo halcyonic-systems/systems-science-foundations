@@ -1,57 +1,91 @@
-# Systems Ontology — Lean 4 Formalization
+# Systems Ontology --- Lean 4 Formalization
 
-Formalizes Bunge's systems ontology (Treatise on Basic Philosophy Vol. 4, Ch. 1) and Mobus's computational extensions (Understanding Systems Ch. 4, plus book-revisions 8-tuple) in Lean 4.
+Machine-verified commuting triangle of systems ontology: Klir's `S = (T, R)` (1969/2001) -> Bunge's CES triple (1979) -> Mobus's 8-tuple (2022). Three independently developed frameworks, one verified diagram. 1,896 lines, zero `sorry`s.
+
+**Key insight**: Bunge and Mobus both descend from Klir but never reference each other. The compatibility was *discovered* through formalization, not claimed by any author. The `rfl` proofs trace to both inheriting T = `Set α` and R = `Set (α × α)` from Klir without changing the mathematical type.
 
 ## Project Structure
 
 ```
 Systems/
-  Core/
-    Thing.lean      — Things, parthood, composition (Bunge §1.1-1.2)
-    Bond.lean       — Action, bonding, bondage (Bunge §1.2, §2.2)
-    System.lean     — ConcreteSystem ⟨C,E,S⟩, subsystem order (Bunge Def 1.1-1.7)
-    Level.lean      — Level precedence, recursive decomposition (Bunge Def 1.8, Mobus Eq 4.3)
-    Assembly.lean   — Assembly, emergence (Bunge Def 1.12-1.14, Post 1.4-1.5)
-    Selection.lean  — Selective action, composition theorem (Bunge Def 1.15, Thm 1.2)
-    State.lean      — State function, event space, history (Bunge §2.2)
-  Core.lean         — Imports all Core modules
-  Instance/         — Phase 2: BRA instantiation
-Systems.lean        — Root import
-docs/               — Source material extracts
+  Core/                  Phase 1: Bunge (864 lines)
+    Thing.lean           Things, parthood, composition (§1.1-1.2)
+    Bond.lean            ActsOn, bonding, bondage (§1.2, §2.2)
+    System.lean          ConcreteSystem ⟨C,E,S⟩, subsystem order (Def 1.1-1.7)
+    Level.lean           Level precedence, recursive decomposition (Def 1.8, Eq 4.3)
+    Assembly.lean        Assembly, emergence as set operations (Def 1.12-1.14)
+    Selection.lean       Selective action, composition theorem (Def 1.15, Thm 1.2)
+    State.lean           State function, event space, history (§2.2)
+  Core.lean              Imports all Core modules
+  Mobus/                 Phase 2: Mobus 8-tuple (886 lines)
+    FlowNetwork.lean     Directed graphs with parametric capacity κ (Eq. 4.4)
+    Environment.lean     E = ⟨O, M⟩ with parametric milieu (book-revisions)
+    Boundary.lean        B = ⟨P, I⟩, boundary completeness (Eq. 4.6)
+    Interface.lean       Bipartite flow predicate, source/sink classification
+    Tuple.lean           Full 8-tuple, 5 coherence constraints (Eq. 1)
+    Bridge.lean          toBunge projection, subsystem preservation, info loss
+  Klir/                  Phase 3: Klir common root (146 lines)
+    KlirSystem.lean      S = (T, R), projection maps, commuting triangle (rfl)
+Systems.lean             Root import
+docs/                    Retrospective, architecture notes, abstract drafts
 ```
 
 ## Build & Verify
 
 ```bash
-lake build          # Must pass with zero errors
+lake build          # Must pass with zero errors, zero sorrys
 ```
 
 ## Conventions
 
-- Every Lean definition includes a docstring citing the Bunge definition number
-- `autoImplicit = false` — all universes and variables must be explicit
+- Every definition includes a docstring citing the source (Bunge Def #, Mobus Eq #, or Klir Eq #)
+- `autoImplicit = false` --- all universes and variables explicit
 - Lean toolchain: v4.28.0 (pinned by Mathlib)
 - Zero `sorry`s in committed code
-- Mathlib instances preferred over hand-rolled proofs (e.g., `Preorder`, `PartialOrder`)
+- Mathlib instances preferred over hand-rolled proofs
+- Docstrings use "independent convergence" framing, never "Mobus extends/refines Bunge"
 
 ## Dependency Graph
 
 ```
-Thing.lean ──→ Bond.lean ──→ System.lean ──→ Level.lean
-                                  │
-                                  ├──→ Assembly.lean
-                                  ├──→ Selection.lean
-                                  └──→ State.lean
+Phase 1 (Bunge):
+  Thing ──→ Bond ──→ System ──→ Level, Assembly, Selection, State
+
+Phase 2 (Mobus):
+  FlowNetwork ──→ Boundary, Environment, Interface ──→ Tuple ──→ Bridge
+  Bridge also imports System (Phase 1)
+
+Phase 3 (Klir):
+  KlirSystem imports Bridge (Phase 2) — connects all three frameworks
 ```
+
+## Headline Results
+
+1. **Commuting triangle** (KlirSystem.lean) --- Mobus → Bunge → Klir = Mobus → Klir by `rfl`
+2. **Bridge theorem** (Bridge.lean) --- every 8-tuple projects to a valid CES triple
+3. **Boundary completeness** (Tuple.lean) --- derived from bipartite constraint, not axiomatized
+4. **Subsystem preservation** (Bridge.lean) --- partial order transfers through projection
+5. **Information loss** (Bridge.lean) --- 6 formally characterized categories of divergence
+6. **Error detection** (System.lean) --- Bunge's "asymmetric" corrected to antisymmetric
 
 ## Venue Milestones
 
-- **May 2026 (AITP + ISSS)**: Thing, Bond, System, Selection — zero sorrys
-- **July 2026 (JOWO)**: All 7 files compile, Assembly + State showcase theorems
-- **Late 2026 (Journal)**: Phase 2 BRA instance
+- **AITP 2026** (May): Extended abstract on LLM-assisted formalization + commuting triangle
+- **ISSS 2026** (July): Presentation --- "What happens when you type-check Bunge"
+- **JOWO/FOIS 2026**: Formal ontology workshop paper
+- **Journal** (late 2026): Full paper with BRA companion
+
+Abstract drafts: `docs/aitp-2026-abstract.md`, `docs/isss-2026-abstract.md`
 
 ## Key Source References
 
-- Bunge Ch. 1 definitions: lines 309-950 of vault Bunge file
-- Mobus Ch. 4 recursive component: Eq. 4.3
-- Book-revisions 8-tuple: `S = ⟨C,N,E,G,B,T,H,Δt⟩`
+- Klir, *Facets of Systems Science* (2001), Eq. 1.1 --- common root
+- Bunge, *Treatise on Basic Philosophy* Vol. 4, Ch. 1 (1979) --- CES triple
+- Mobus, *Understanding Systems* Ch. 4 (2022) + book-revisions (2024) --- 8-tuple
+- Phase 1 retrospective: `docs/phase1-retrospective.md`
+- Architecture decisions: `docs/recursive-component-architecture.md`
+
+## Related Projects
+
+- [bitcoin-bra](../bitcoin-bra/) --- BRA formalization (864 lines, Lean 4, targeting CPP 2027)
+- [BERT](https://github.com/halcyonic-systems/bert) --- systems analysis tool implementing Mobus's framework
