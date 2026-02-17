@@ -60,8 +60,8 @@ A system σ over U is an ordered triple ⟨C, E, S⟩ where:
 - S ⊆ (C ∪ E) × (C ∪ E) (structure - relations between entities)
 ```
 
-### Phase 2: Enrichment (Mobus-inspired)
-Extend systematically to capture:
+### Phase 2: Mobus's Independent Framework
+Formalize the independently developed 8-tuple, capturing:
 - **Hierarchical structure** (systems as components)
 - **Flow networks** (typed relations for matter/energy/information)  
 - **Temporal dynamics** (time-indexed definitions)
@@ -73,7 +73,7 @@ Extend systematically to capture:
 
 ### Opening Strategy
 1. **Quote Bunge** (establish mathematical credibility)
-2. **State goal**: "We extend Bunge's framework to capture the hierarchical, process-oriented insights of Mobus"
+2. **State goal**: "We formalize two independently developed systems ontologies and discover their structural compatibility through a verified bridge theorem"
 3. **Define universe** clearly upfront
 4. **Build incrementally** - each step should feel "obvious" to a mathematician
 
@@ -89,8 +89,8 @@ A system σ over Ω is an ordered triple ⟨C, E, S⟩ where:
 - C ∩ E = ∅ (disjointness)
 - S ⊆ (C ∪ E) × (C ∪ E) (structure)
 
-**Definition 3 (Enriched System - Mobus Extension):**
-An enriched system σ̃ over Ω is a 7-tuple ⟨C, I, Δ, N, G, B, T⟩ where the Bunge triple ⟨C, E, S⟩ is recovered as...
+**Definition 3 (Mobus System — Independent Formulation):**
+A Mobus system σ̃ over Ω is an 8-tuple ⟨C, N, E, G, B, T, H, Δt⟩ where the Bunge triple ⟨C, E, S⟩ can be recovered via projection as...
 
 [Continue building each component systematically]
 
@@ -114,8 +114,8 @@ An enriched system σ̃ over Ω is a 7-tuple ⟨C, I, Δ, N, G, B, T⟩ where th
 
 ## KEY INSIGHTS FOR EXPOSITION
 
-### Critical Bridge Points
-1. **Bunge's ⟨C, E, S⟩ → Mobus's hierarchical levels**
+### Structural Correspondences (Discovered, Not Claimed)
+1. **Bunge's ⟨C, E, S⟩ ↔ Mobus's hierarchical levels**
    - Environment E maps to Level -1
    - System C maps to Level 0  
    - Components map to Level +1
@@ -130,8 +130,8 @@ An enriched system σ̃ over Ω is a 7-tuple ⟨C, I, Δ, N, G, B, T⟩ where th
    - Adds explicit interaction protocols
 
 ### Mathematical Elegance Opportunities
-- Show 7-tuple as **natural extension** of Bunge triple
-- Demonstrate **equivalence** under certain conditions
+- Show the **structural compatibility** between Bunge triple and Mobus 8-tuple via projection
+- Demonstrate **equivalence** under certain conditions (information loss characterization)
 - Prove **finite decomposition** theorem for hierarchies
 - Establish **compositionality** properties
 
@@ -141,7 +141,7 @@ An enriched system σ̃ over Ω is a 7-tuple ⟨C, I, Δ, N, G, B, T⟩ where th
 
 ### Immediate (For Cliff Call)
 1. Present clean Bunge-style opening definitions
-2. Sketch extension pathway to 7-tuple
+2. Sketch the bridge from Bunge triple to Mobus 8-tuple via projection
 3. Address recursion termination explicitly
 4. Show practical examples
 
