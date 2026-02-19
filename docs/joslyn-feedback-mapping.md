@@ -19,6 +19,12 @@ These are questions where the Lean codebase provides a precise, machine-checked 
 
 **File**: System.lean:40, 44–45
 
+**StructureFamily Resolution (2026-02-17):**
+- Status: **RESOLVED** — `flatten_internal_commutes` proves flat encoding is faithful quotient
+- Bonus Finding 6: Mobus's N/G constitutes the natural 2-element structure family (`MobusSystem.toRichBunge`, `toRichBunge_flatten_eq`)
+- Bonus Finding 8: Three distinct subsystem orderings (`RichSubsystem_flat`, `RichSubsystem_family`, `RichSubsystem_refinement`) with strict hierarchy proved by `family_implies_refinement` → `refinement_implies_flat` → `flat_subsystem_preserved`
+- Cross-ref: `docs/for-cliff-structure-of-S.md`, `docs/structure-family-context.md`
+
 ### A2. "Systematic extension" claim (p. 7) — **must be corrected**
 
 > "While Mobus never explicitly cites Bunge, his 7-tuple can easily be viewed as a systematic extension of Bunge's formalization"
@@ -171,7 +177,7 @@ Missing or improperly formatted references.
 
 ## Key Takeaways
 
-1. **Comment A1 is the strongest vindication.** Cliff asked exactly the question the type-checker forces: "is it S_i ⊆ C × E, or S_i ⊆ (C ∪ E) × (C ∪ E)?" The Lean code answers: `Set (α × α)` on `C ∪ E` with an explicit constraint. The compiler demanded the precision Cliff was requesting.
+1. **Comment A1 is the strongest vindication — now fully resolved.** Cliff asked exactly the question the type-checker forces: "is it S_i ⊆ C × E, or S_i ⊆ (C ∪ E) × (C ∪ E)?" The Lean code answers: `Set (α × α)` on `C ∪ E` with an explicit constraint. The StructureFamily exploration (2026-02-17) proved the flat encoding is a faithful quotient: `flatten_internal_commutes` shows both readings are equivalent for the proved theorems. The investigation also revealed that Mobus's N/G is the natural structure family (Finding 6) and that three distinct subsystem orderings arise from the family representation (Finding 8).
 
 2. **Comment A2 must be corrected in the paper.** "his 7-tuple can easily be viewed as a systematic extension of Bunge's formalization" is formally wrong. The commuting triangle proves they are independent elaborations of Klir's common root.
 

@@ -1,0 +1,43 @@
+digraph CategorificationMap {
+    rankdir=TB;
+    fontname="Helvetica";
+    node [fontname="Helvetica", shape=box, style="rounded,filled"];
+    edge [fontname="Helvetica", fontsize=10];
+
+    subgraph cluster_phase1 {
+        label="Systems Ontology — Phase 1\n~2,930 lines, 20 modules, 0 sorry";
+        style=filled; fillcolor="#f5f5f5"; color="#1565c0";
+        fontsize=12; fontcolor="#1565c0";
+
+        MobusSys [label="MobusSys\n⟨C,N,E,G,B,T,H,Δt⟩", fillcolor="#fce4ec"];
+        RichSys [label="RichSys\n{N.toRelation, G.toRelation}", fillcolor="#e8f5e9"];
+        BungeSys [label="BungeSys\n⟨C, E, ⋃₀{N,G}⟩", fillcolor="#e3f2fd"];
+        KlirSys [label="KlirSys\n(T, R)", fillcolor="#fff3e0"];
+
+        MobusSys -> RichSys [label="toRichBunge"];
+        RichSys -> BungeSys [label="flattenFunctor"];
+        BungeSys -> KlirSys [label="toKlir"];
+        MobusSys -> BungeSys [label="toBunge = ⋙", style=dashed, color="#888"];
+
+        FamilyOrd [label="FamilyOrd", fillcolor="#e3f2fd"];
+        RefinementOrd [label="RefinementOrd", fillcolor="#e8f5e9"];
+        FlatOrd [label="FlatOrd", fillcolor="#fff3e0"];
+
+        FamilyOrd -> RefinementOrd [label="forgetFamily\nFaithful, ¬Full"];
+        RefinementOrd -> FlatOrd [label="forgetRefinement\nFaithful, ¬Full"];
+    }
+
+    subgraph cluster_phase2 {
+        label="BRA / Crypto — Phase 2\n1,080 lines, 11 files, 0 sorry";
+        style=filled; fillcolor="#f5f5f5"; color="#c62828";
+        fontsize=12; fontcolor="#c62828";
+
+        BtcState [label="BtcState\n(non-thin, List Transaction)", fillcolor="#fff3e0"];
+        EthState [label="EthState\n(thin, totalValue ordering)", fillcolor="#e3f2fd"];
+        NatVal [label="ℕ\ntotalValue", fillcolor="#f3e5f5"];
+
+        BtcState -> EthState [label="collapseFunctor\nEssSurj, ¬Faithful"];
+        BtcState -> NatVal [label="totalValue", style=dashed];
+        EthState -> NatVal [label="totalValue", style=dashed];
+    }
+}

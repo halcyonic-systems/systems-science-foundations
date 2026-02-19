@@ -38,7 +38,7 @@ Given that the environment object now contains the set *O* as a unified set of e
 
 The object, *oi*, is one of the point source or sink entities in the system environment, as noted above. The object, *cj*, is an element of the set of components in *C* that are identified as interfaces (with the environment) or the components that transport flows across the boundary. Such components are identified in the set *I* in the boundary object as in the original structure in (Mobus, 2022).
 
-![][image1]
+*(Figure 1: diagram showing E (environment) element implementation in S (SOI), with high power source object as both source and sink)*
 
 **Fig. 1\.** Showing the implementation of the E (environment) element in S (SOI). Note that the high power source object shows a typical case where the object is both a source (for power and messages) and a sink (for messages).
 
@@ -74,26 +74,32 @@ As with the component set, we could also define deletions. Modification of an ed
 ∆G=〈Gonew,ci〉
 
 
-In other words, a change in *S* can involve changes in any of the component elements. Note that changes in *C* automatically imply changes in *N*, though not reciprocal. Changes in *C* include additions of new elements in *C*, i.e., new *cij*, deletion of some *cij*, or modifications of a *cij*  \= *Sij such as a material change in the transformation function, T.*
+In other words, a change in *S* can involve changes in any of the component elements. Note that changes in *C* automatically imply changes in *N*, though not reciprocal. Changes in *C* include additions of new elements in *C*, i.e., new *cij*, deletion of some *cij*, or modifications of a *cij* = *Sij such as a material change in the transformation function, T.*
 
 This represents a modification of the boundary object where an existing interface is removed and replaced with a new one. Such changes might occur when a system evolves its interaction points with the environment, such as when an organization replaces one type of customer interface with another.
 
-∆B \= ⟨B \\ {bk}, B ∪ {bnew}⟩
+∆B = ⟨B \\ {bk}, B ∪ {bnew}⟩
 
 This represents the addition of a new transformation function to the system while preserving existing functions. This models how systems acquire new capabilities while maintaining their current functionality, as when an organization adds a new process or a software system implements a new feature."
 
-∆T \= ⟨T ∪ {tnew}⟩
+∆T = ⟨T ∪ {tnew}⟩
 
 ### Stages of a Life Cycle
 
-#### *Origination* 
+#### *Origination*
+[Content pending from Mobus]
 
 #### *Development*
+[Content pending from Mobus]
 
 #### *Maturation and Stable Operation*
+[Content pending from Mobus]
 
 #### *Decline*
+[Content pending from Mobus]
 
 #### *Dissolution*
+[Content pending from Mobus]
 
 ## Discussion
+[Content pending from Mobus]

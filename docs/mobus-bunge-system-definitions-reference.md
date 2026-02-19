@@ -122,7 +122,7 @@
 
 ---
 
-## 5. MOBUS 7-TUPLE DEFINITION (4.3)
+## 6. MOBUS 7-TUPLE DEFINITION (4.3)
 
 ### Core Mathematical Definition
 
@@ -178,7 +178,7 @@
 
 ---
 
-## 5. BUNGE SYSTEM DEFINITION (Chapter 1)
+## 7. BUNGE SYSTEM DEFINITION (Chapter 1)
 
 ### Mathematical System Definition
 
@@ -211,7 +211,7 @@
 
 ---
 
-## 6. KEY DEFINITIONAL CONTRASTS
+## 8. KEY DEFINITIONAL CONTRASTS
 
 ### Mobus Approach:
 - 7-tuple with hierarchical indexing (i, l)

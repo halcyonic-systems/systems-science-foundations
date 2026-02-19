@@ -29,9 +29,9 @@ This was not claimed by any of the three authors. It was *discovered* through fo
 
 ## Status
 
-**1,896 lines | 16 modules | 120 declarations | zero `sorry`s**
+**~2,930 lines | 20 modules | zero `sorry`s**
 
-All three phases complete. Full `lake build` passes.
+All three phases complete plus categorification layer. Full `lake build` passes.
 
 ## What Formalization Revealed
 
@@ -64,7 +64,7 @@ Formalizes *Treatise on Basic Philosophy* Vol. 4, Ch. 1 (1979).
 
 ### Phase 2: Mobus's Engineering Methodology (886 lines)
 
-Formalizes *Understanding Systems* Ch. 4 (2022), plus 2024 book-revisions.
+Formalizes *Systems Science: Theory, Analysis, Modeling, and Design* Ch. 4 (2022), plus 2024 book-revisions.
 
 | Module | Lines | Source | Key Content |
 |--------|-------|--------|-------------|
@@ -83,6 +83,17 @@ Formalizes *Facets of Systems Science* (2001), Eq. 1.1.
 |--------|-------|--------|-------------|
 | KlirSystem.lean | 146 | Eq. 1.1 | `S = (T, R)`, projection maps, commuting triangle (`rfl`) |
 
+### Categorification: Phase 1 (~563 lines)
+
+Packages existing results as categories and functors using Mathlib's `CategoryTheory`.
+
+| Module | Lines | Key Content |
+|--------|-------|-------------|
+| SubsystemCategory.lean | 84 | Preorder instances → thin categories for Bunge and Mobus subsystem orderings |
+| FlattenFunctor.lean | 105 | `toConcreteSystem` as functor, Finding 3 as functor property |
+| OrderingTriangle.lean | 263 | Three orderings as functor triangle, faithful but NOT full (counterexamples on Fin 2) |
+| BridgeFunctor.lean | 111 | Bridge factorization: `toBunge = toRichBunge ⋙ flatten` (Finding 6) |
+
 ## Showcase Theorems
 
 1. **Commuting triangle** --- Mobus → Bunge → Klir = Mobus → Klir, proof: `rfl` (KlirSystem.lean)
@@ -93,6 +104,8 @@ Formalizes *Facets of Systems Science* (2001), Eq. 1.1.
 6. **Selection composition** --- composed adapted = second selection's adapted, proof: `rfl` (Selection.lean)
 7. **Emergence = set operations** --- qualitative novelty as symmetric difference, proof: `simp` (Assembly.lean)
 8. **Information loss characterization** --- two Mobus systems agreeing on (C, E.objects, totalRelation) project to identical CES triples (Bridge.lean)
+9. **Bridge factorization** --- `toBunge = toRichBunge ⋙ flatten`: the Mobus→Bunge passage factors through the structure family (BridgeFunctor.lean)
+10. **Ordering triangle** --- family ⟹ refinement ⟹ flat (strict in both cases), with Fin 2 counterexamples proving non-fullness (OrderingTriangle.lean)
 
 ## Building
 
@@ -100,7 +113,7 @@ Requires Lean 4 (v4.28.0) and Mathlib:
 
 ```bash
 lake update   # fetch Mathlib (first time only)
-lake build    # compile all 16 modules — must pass with zero errors
+lake build    # compile all 20 modules — must pass with zero errors
 ```
 
 ## Dependency Graph
@@ -129,6 +142,16 @@ FlowNetwork.lean ──→ Environment.lean
 
                     Phase 3: Klir
        KlirSystem.lean ◄── Bridge.lean (Phase 2)
+
+              Categorification (Phase 1)
+SubsystemCategory.lean ◄── System.lean + Bridge.lean
+       │
+       ├──→ FlattenFunctor.lean ◄── StructureFamily.lean
+       │         │
+       │         ▼
+       │    BridgeFunctor.lean ◄── Bridge.lean + StructureFamily.lean
+       │
+       └──→ OrderingTriangle.lean ◄── StructureFamily.lean
 ```
 
 ## Methodology
@@ -174,14 +197,27 @@ The formalized ontology is not purely theoretical. Mobus's framework is implemen
 
 ## Related
 
-- [bitcoin-bra](../bitcoin-bra/) --- Bounded Resource Automata formalization (864 lines, Lean 4, targeting CPP 2027)
+- [bitcoin-bra](../bitcoin-bra/) --- Bounded Resource Automata formalization (~1080 lines, 11 files, Lean 4, targeting CPP 2027). Shares categorification roadmap (`categorification-roadmap.md`) — Phase 2 adds categorical functor infrastructure to bitcoin-bra.
+- [Building Story](docs/building-story.md) --- The full narrative of how both projects were built in 48 hours ([HTML version](docs/building-story.html))
 - [BERT](https://github.com/halcyonic-systems/bert) --- Systems analysis tool implementing Mobus's framework
 
 ## Documentation
 
-- `docs/phase1-retrospective.md` --- structured analysis of where Lean forced choices on Bunge's text
-- `docs/recursive-component-architecture.md` --- Phase 2 design decisions and mutual recursion problem
+**Abstracts & Presentations:**
 - `docs/aitp-2026-abstract.md` --- AITP extended abstract draft
 - `docs/isss-2026-abstract.md` --- ISSS presentation abstract draft
+- `docs/isss-presentation-notes.md` --- ISSS presentation planning notes
+
+**StructureFamily Findings:**
+- `docs/structure-family-context.md` --- StructureFamily integration context and verified theorem table
+- `docs/for-cliff-structure-of-S.md` --- structure of S analysis for Cliff Joslyn
+- `docs/joslyn-feedback-mapping.md` --- mapping of Joslyn's feedback to formalization decisions
+
+**Reference Material:**
 - `docs/mobus-bunge-mathematical-reformulation-guide.md` --- exposition strategy for mathematician audience
+- `docs/mobus-bunge-system-definitions-reference.md` --- exact quotes from Mobus and Bunge for reformulation
 - `docs/book-revisions.md` --- Mobus's revised 8-tuple definition
+
+**Retrospectives & Architecture:**
+- `docs/phase1-retrospective.md` --- structured analysis of where Lean forced choices on Bunge's text
+- `docs/recursive-component-architecture.md` --- Phase 2 design decisions and mutual recursion problem

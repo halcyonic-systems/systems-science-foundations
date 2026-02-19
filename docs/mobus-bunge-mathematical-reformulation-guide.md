@@ -100,7 +100,7 @@ A system σ over Ω is an ordered triple ⟨C, E, S⟩ where:
 **Definition 3 (Mobus System — Independent from Klir):**
 A Mobus system σ̃ over Ω is an 8-tuple ⟨C, N, E, G, B, T, H, Δt⟩ where the Bunge triple ⟨C, E, S⟩ can be recovered via projection, and the Klir pair (T, R) via further projection, as...
 
-[Continue building each component systematically]
+Full component definitions are developed in the companion reference: `docs/mobus-bunge-system-definitions-reference.md`
 
 ---
 
@@ -171,9 +171,9 @@ A Mobus system σ̃ over Ω is an 8-tuple ⟨C, N, E, G, B, T, H, Δt⟩ where t
 
 - **Klir**: *Facets of Systems Science* (2001), Eq. 1.1 — common root
 - **Bunge**: *Treatise on Basic Philosophy* Vol. 4, Chapter 1 (1979) — cites Klir & Valach 1967, Klir & Rogers 1977
-- **Mobus**: *Understanding Systems* Ch. 4 (2022) — cites Klir 2001 (p. 14: "inspired originally by Klir")
+- **Mobus**: *Systems Science* Ch. 4 (2022) — cites Klir 2001 (p. 14: "inspired originally by Klir")
 - **Lean formalization**: `Systems/Klir/KlirSystem.lean` (commuting triangle), `Systems/Mobus/Bridge.lean` (Mobus → Bunge projection)
-- **Primary Reference**: `/research/foundations/mathematics/mobus-bunge-system-definitions-reference.md`
+- **Primary Reference**: `docs/mobus-bunge-system-definitions-reference.md`
 - **Target**: Clean mathematical exposition for mathematician audience
 
 ---

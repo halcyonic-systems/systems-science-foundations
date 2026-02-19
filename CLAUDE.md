@@ -1,6 +1,6 @@
 # Systems Ontology --- Lean 4 Formalization
 
-Machine-verified commuting triangle of systems ontology: Klir's `S = (T, R)` (1969/2001) -> Bunge's CES triple (1979) -> Mobus's 8-tuple (2022). Three independently developed frameworks, one verified diagram. 1,896 lines, zero `sorry`s.
+Machine-verified commuting triangle of systems ontology: Klir's `S = (T, R)` (1969/2001) -> Bunge's CES triple (1979) -> Mobus's 8-tuple (2022). Three independently developed frameworks, one verified diagram. ~2,930 lines, zero `sorry`s.
 
 **Key insight**: Bunge and Mobus both descend from Klir but never reference each other. The compatibility was *discovered* through formalization, not claimed by any author. The `rfl` proofs trace to both inheriting T = `Set α` and R = `Set (α × α)` from Klir without changing the mathematical type.
 
@@ -26,8 +26,13 @@ Systems/
     Bridge.lean          toBunge projection, subsystem preservation, info loss
   Klir/                  Phase 3: Klir common root (146 lines)
     KlirSystem.lean      S = (T, R), projection maps, commuting triangle (rfl)
+  Category/              Categorification Phase 1 (~563 lines)
+    SubsystemCategory.lean  Subsystem orderings as thin categories (Preorder instances)
+    FlattenFunctor.lean     Flatten as functor, Finding 3 as naturality
+    OrderingTriangle.lean   Three orderings as functor triangle, non-fullness witnesses
+    BridgeFunctor.lean      Mobus→Bunge bridge factorization through structure family
 Systems.lean             Root import
-docs/                    Retrospective, architecture notes, abstract drafts
+docs/                    11 docs: abstracts, StructureFamily findings, reference material, retrospectives
 ```
 
 ## Build & Verify
@@ -57,6 +62,11 @@ Phase 2 (Mobus):
 
 Phase 3 (Klir):
   KlirSystem imports Bridge (Phase 2) — connects all three frameworks
+
+Categorification (Phase 1):
+  SubsystemCategory ──→ FlattenFunctor ──→ BridgeFunctor
+  SubsystemCategory ──→ OrderingTriangle
+  All import StructureFamily (Bunge) + Bridge (Mobus)
 ```
 
 ## Headline Results
@@ -67,6 +77,8 @@ Phase 3 (Klir):
 4. **Subsystem preservation** (Bridge.lean) --- partial order transfers through projection
 5. **Information loss** (Bridge.lean) --- 6 formally characterized categories of divergence
 6. **Error detection** (System.lean) --- Bunge's "asymmetric" corrected to antisymmetric
+7. **Bridge factorization** (BridgeFunctor.lean) --- toBunge = toRichBunge ⋙ flatten (Finding 6)
+8. **Ordering triangle** (OrderingTriangle.lean) --- family ⟹ refinement ⟹ flat, strict (Finding 8)
 
 ## Venue Milestones
 
@@ -81,11 +93,11 @@ Abstract drafts: `docs/aitp-2026-abstract.md`, `docs/isss-2026-abstract.md`
 
 - Klir, *Facets of Systems Science* (2001), Eq. 1.1 --- common root
 - Bunge, *Treatise on Basic Philosophy* Vol. 4, Ch. 1 (1979) --- CES triple
-- Mobus, *Understanding Systems* Ch. 4 (2022) + book-revisions (2024) --- 8-tuple
+- Mobus, *Systems Science* Ch. 4 (2022) + book-revisions (2024) --- 8-tuple
 - Phase 1 retrospective: `docs/phase1-retrospective.md`
 - Architecture decisions: `docs/recursive-component-architecture.md`
 
 ## Related Projects
 
-- [bitcoin-bra](../bitcoin-bra/) --- BRA formalization (864 lines, Lean 4, targeting CPP 2027)
+- [bitcoin-bra](../bitcoin-bra/) --- BRA formalization (~1080 lines, 11 files, Lean 4, targeting CPP 2027). Shares `categorification-roadmap.md` — Phase 2 adds categorical functor infrastructure to bitcoin-bra.
 - [BERT](https://github.com/halcyonic-systems/bert) --- systems analysis tool implementing Mobus's framework
