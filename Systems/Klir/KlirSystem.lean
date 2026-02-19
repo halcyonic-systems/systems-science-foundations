@@ -120,7 +120,7 @@ theorem toKlir_eq_of_composition_structure_eq {α : Type*} [ActsOn α]
     (hc : s₁.composition = s₂.composition)
     (hs : s₁.structure' = s₂.structure') :
     s₁.toKlir = s₂.toKlir := by
-  ext <;> assumption
+  exact KlirSystem.ext hc hs
 
 /-- What Mobus adds beyond Bunge: milieu, capacity, boundary
     properties, transforms, history, and time scale. Two Mobus
@@ -141,6 +141,6 @@ theorem toBunge_eq_iff_toKlir_eq {α κ μ π τ η δ : Type*} [ActsOn α]
     (he : s₁.environment.objects = s₂.environment.objects)
     (hs : s₁.totalRelation = s₂.totalRelation) :
     s₁.toKlir = s₂.toKlir := by
-  ext <;> assumption
+  exact KlirSystem.ext hc hs
 
 end Systems

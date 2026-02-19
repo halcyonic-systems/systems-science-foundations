@@ -4,7 +4,7 @@
 
   Formalizes:
   - Bunge, Treatise Vol. 4, Def 1.8: Level precedence and level structure
-  - Mobus, Understanding Systems, Eq. 4.3: Recursive component (complex/atomic)
+  - Mobus, Systems Science, Eq. 4.3: Recursive component (complex/atomic)
 
   SHOWCASE THEOREM #5: Ancestry is a strict partial order.
   SHOWCASE THEOREM #6: Recursive decomposition terminates (from inductive type).
