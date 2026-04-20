@@ -1,0 +1,5 @@
+id,entity_id,entity_name,entity_type,entity_desc
+0,fire-ems,Fire and EMS,department,Emergency services
+1,planning-commission,Planning Commission,board_commission,Land use and zoning
+2,board-of-supervisors,Board of Supervisors,elected,Chief governing body
+3,botetourt-county,Botetourt County,jurisdiction,County government Fincastle VA

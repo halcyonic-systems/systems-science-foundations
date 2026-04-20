@@ -102,9 +102,9 @@ def MobusSystem.toKlir {α κ μ π τ η δ : Type*}
     without changing the mathematical type. -/
 theorem triangle_commutes {α κ μ π τ η δ : Type*} [ActsOn α]
     (sys : MobusSystem α κ μ π τ η δ)
-    (hf : FlowInducesAction sys.internalNetwork)
-    (hg : sys.internalNetwork.edges.Nonempty) :
-    (sys.toBunge hf hg).toKlir = sys.toKlir := rfl
+    (hflow : FlowInducesAction sys.internalNetwork)
+    (hedge : sys.internalNetwork.edges.Nonempty) :
+    (sys.toBunge hflow hedge).toKlir = sys.toKlir := rfl
 
 /-! ## What Each Framework Adds to Klir -/
 
@@ -133,10 +133,10 @@ theorem toKlir_eq_of_composition_structure_eq {α : Type*} [ActsOn α]
     Mobus →[lose 6 categories]→ Bunge →[lose environment]→ Klir -/
 theorem toBunge_eq_iff_toKlir_eq {α κ μ π τ η δ : Type*} [ActsOn α]
     (s₁ s₂ : MobusSystem α κ μ π τ η δ)
-    (hf₁ : FlowInducesAction s₁.internalNetwork)
-    (hg₁ : s₁.internalNetwork.edges.Nonempty)
-    (hf₂ : FlowInducesAction s₂.internalNetwork)
-    (hg₂ : s₂.internalNetwork.edges.Nonempty)
+    (_hflow₁ : FlowInducesAction s₁.internalNetwork)
+    (_hedge₁ : s₁.internalNetwork.edges.Nonempty)
+    (_hflow₂ : FlowInducesAction s₂.internalNetwork)
+    (_hedge₂ : s₂.internalNetwork.edges.Nonempty)
     (hc : s₁.components = s₂.components)
     (he : s₁.environment.objects = s₂.environment.objects)
     (hs : s₁.totalRelation = s₂.totalRelation) :

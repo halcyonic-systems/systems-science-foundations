@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grounding Systems Science in Lean 4</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #FAFAF7;
+      color: #1C1917;
+      line-height: 1.7;
+      padding: 3.5rem 1.5rem 5rem;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    header {
+      margin-bottom: 0;
+      padding-bottom: 1.75rem;
+      border-bottom: 1px solid #DDD8CE;
+    }
+
+    h1 {
+      font-size: 1.45rem;
+      font-weight: normal;
+      letter-spacing: 0.01em;
+      color: #1C1917;
+      margin-bottom: 0.35rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #6B6457;
+      font-style: italic;
+      margin-bottom: 0.8rem;
+    }
+
+    .meta {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.72rem;
+      color: #AAA09A;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Tab Bar ── */
+    .tab-bar {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid #DDD8CE;
+      margin-bottom: 2.25rem;
+      padding-top: 1rem;
+    }
+
+    .tab-bar button {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: #AAA09A;
+      padding: 0.6rem 1.25rem;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .tab-bar button:hover {
+      color: #6B6457;
+    }
+
+    .tab-bar button[aria-selected="true"] {
+      color: #8B6914;
+      border-bottom-color: #8B6914;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* ── Sections ── */
+    section {
+      margin-bottom: 2.75rem;
+    }
+
+    h2 {
+      font-size: 0.78rem;
+      font-weight: normal;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #8B6914;
+      margin-bottom: 1rem;
+      margin-top: 2.25rem;
+    }
+
+    h2:first-child {
+      margin-top: 0;
+    }
+
+    h3 {
+      font-size: 0.88rem;
+      font-weight: normal;
+      color: #3D3530;
+      margin-bottom: 0.75rem;
+      margin-top: 1.75rem;
+    }
+
+    p {
+      margin-bottom: 1.1rem;
+      color: #2A2420;
+    }
+
+    em { font-style: italic; }
+
+    blockquote {
+      border-left: 2px solid #DDD8CE;
+      padding-left: 1.25rem;
+      margin: 1rem 0 1.25rem;
+      color: #3D3530;
+      font-style: italic;
+    }
+
+    blockquote cite {
+      display: block;
+      font-style: normal;
+      font-size: 0.85rem;
+      color: #6B6457;
+      margin-top: 0.4rem;
+    }
+
+    /* inline code */
+    code {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.865em;
+      background: #EDEBE5;
+      color: #3D2B00;
+      padding: 0.12em 0.4em;
+      border-radius: 3px;
+    }
+
+    /* ── Definition list (8-tuple) ── */
+    dl.tuple-defs {
+      margin: 1.25rem 0 1.5rem;
+    }
+
+    dl.tuple-defs dt {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.88rem;
+      color: #8B6914;
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    dl.tuple-defs dt:first-child {
+      margin-top: 0;
+    }
+
+    dl.tuple-defs dd {
+      margin-left: 0;
+      padding-left: 1.5rem;
+      color: #2A2420;
+      margin-bottom: 0.25rem;
+    }
+
+    /* ── Formal labels ── */
+    .formal-label {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: #8B6914;
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+
+    .proof-block {
+      background: #F5F3EE;
+      border-left: 2px solid #DDD8CE;
+      padding: 0.85rem 1.25rem;
+      margin: 1rem 0 1.25rem;
+      font-size: 0.92rem;
+      line-height: 1.8;
+    }
+
+    .proof-block .qed {
+      float: right;
+      color: #8B6914;
+      font-weight: 500;
+    }
+
+    .proof-block p {
+      margin: 0.4rem 0;
+    }
+
+    .proof-block ol {
+      margin: 0.35rem 0 0.6rem;
+      padding-left: 1.5rem;
+    }
+
+    .proof-block li {
+      margin-bottom: 0.15rem;
+      line-height: 1.7;
+    }
+
+    /* ── Structured lists (mathematical statements) ── */
+    section ol, section ul {
+      margin: 0.75rem 0 1rem;
+      padding-left: 1.75rem;
+      line-height: 1.7;
+    }
+
+    section li {
+      margin-bottom: 0.35rem;
+      color: #2A2420;
+    }
+
+    section li code {
+      font-size: 0.85em;
+    }
+
+    /* ── Code blocks ── */
+    .code-wrap {
+      margin: 1.25rem 0;
+    }
+
+    pre {
+      background: #1E1E1E;
+      border-left: 3px solid #8B6914;
+      border-radius: 0 5px 5px 0;
+      padding: 1.25rem 1.5rem;
+      margin: 0;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 13.5px;
+      line-height: 1.7;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: 1em;
+      color: #D4D0C8;
+      border-radius: 0;
+    }
+
+    /* Lean syntax highlighting */
+    .kw { color: #C9A73A; }
+    .tp { color: #5DBB8A; }
+    .pt { color: #E06C5A; font-weight: 500; }
+    .cm { color: #6E7A8A; font-style: italic; }
+
+    /* ── "Try it in Lean" link ── */
+    .try-lean {
+      display: block;
+      text-align: right;
+      margin-top: 0.3rem;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 11px;
+      color: #8B6914;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      opacity: 0.65;
+      transition: opacity 0.15s;
+    }
+
+    .try-lean:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    /* ── SVG diagram ── */
+    .diagram {
+      display: flex;
+      justify-content: center;
+      margin: 1.75rem 0 1.25rem;
+    }
+
+    /* ── Closing note ── */
+    .closing {
+      border-top: 1px solid #DDD8CE;
+      margin-top: 2.5rem;
+      padding-top: 1.75rem;
+    }
+
+    .closing p {
+      color: #3D3530;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 520px) {
+      .tab-bar {
+        flex-wrap: wrap;
+      }
+
+      .tab-bar button {
+        flex: 1 1 auto;
+        text-align: center;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.65rem;
+      }
+    }
+
+    /* ── Print ── */
+    @media print {
+      body {
+        background: white;
+        color: black;
+        padding: 1.5rem;
+        font-size: 11pt;
+      }
+
+      .tab-bar { display: none; }
+      .tab-panel { display: block !important; }
+      .tab-panel + .tab-panel { page-break-before: always; }
+
+      pre {
+        background: #F6F4F0;
+        border-left: 2px solid #8B6914;
+        color: black;
+        break-inside: avoid;
+        font-size: 9.5pt;
+      }
+
+      pre code { color: #111; }
+      .kw { color: #6B4C00; }
+      .tp { color: #1A5C3A; }
+      .pt { color: #990000; }
+      .cm { color: #555; }
+
+      h2 { color: #8B6914; }
+      header, .closing { border-color: #CCC; }
+      h1, h2, section { page-break-after: avoid; }
+      .diagram svg { max-width: 300px; }
+      .try-lean { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Grounding Systems Science in Lean 4</h1>
+    <p class="subtitle">Klir, Bunge, and Mobus — a preliminary formalization</p>
+    <p class="meta">February 2026 &nbsp;·&nbsp; work in progress &nbsp;·&nbsp; ~2,930 lines · 0 sorrys &nbsp;·&nbsp; code blocks link to Lean playground</p>
+  </header>
+
+  <!-- ── Tab Navigation ── -->
+  <nav class="tab-bar" role="tablist" aria-label="Framework sections">
+    <button role="tab" aria-selected="true" aria-controls="panel-klir" id="tab-klir">Klir</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-bunge" id="tab-bunge">Bunge</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-mobus" id="tab-mobus">Mobus</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-synthesis" id="tab-synthesis">Synthesis</button>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       TAB 1 — KLIR
+       ══════════════════════════════════════════════════════════════════════ -->
+  <div class="tab-panel active" id="panel-klir" role="tabpanel" aria-labelledby="tab-klir">
+    <section>
+      <h2>Starting with Klir</h2>
+      <p>The simplest rigorous definition of a system is Klir's (2001, Eq. 1.1): a pair
+      <em>S = (T, R)</em> — a set of things and a relation among them. No more, no less.
+      Systems science has elaborated this kernel for 50+ years. The question this
+      formalization poses: <em>which elaborations are mathematically sound, and how
+      do they relate?</em></p>
+
+      <span class="formal-label">Definition (Klir System).</span>
+      <div class="code-wrap">
+        <pre data-playground="0"><code class="lean">-- Klir (2001), Eq. 1.1 — the common-sense definition
+structure KlirSystem (α : Type*) where
+  things   : Set α          -- T: the set of things (thinghood)
+  relation : Set (α × α)   -- R: the relation on things (systemhood)</code></pre>
+      </div>
+
+      <p>Every formal systems theory in the Klir tradition is an elaboration of this pair.</p>
+
+      <h3>What the pair contains</h3>
+      <p>The definition looks trivially simple, but Klir (Ch. 2) emphasizes that
+      T and R are "extremely rich in content":</p>
+
+      <ol>
+        <li>T can be a single set <em>A</em>, or a family of distinct sets
+        {<em>A</em><sub>1</sub>, <em>A</em><sub>2</sub>, …, <em>A<sub>n</sub></em>}.</li>
+        <li>When T is a family, R ⊆ <em>A</em><sub>1</sub> × <em>A</em><sub>2</sub> × … × <em>A<sub>n</sub></em> —
+        yielding binary (R ⊆ A²), ternary (R ⊆ A³), or mixed (R ⊆ (A × A) × A) relations.</li>
+        <li>An object is a system if and only if it can be described in a form
+        conforming to Eq. 1.1 (Klir, p. 5).</li>
+      </ol>
+
+      <p>The formalization commits to a specific reading:</p>
+      <ul>
+        <li>T is a single set (<code>Set α</code>).</li>
+        <li>R is a binary relation (<code>Set (α × α)</code>).</li>
+      </ul>
+      <p>This is the natural base case — it captures the structure common to all
+      three frameworks. Richer relational forms (ternary, mixed) would require
+      dependent types or indexed relation families. The current choice keeps the
+      types simple enough that projection maps compose by <code>rfl</code>.</p>
+    </section>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       TAB 2 — BUNGE
+       ══════════════════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="panel-bunge" role="tabpanel" aria-labelledby="tab-bunge">
+    <section>
+      <h2>Bunge's Rigorous Elaboration</h2>
+      <p>Bunge's (1979) insight: Klir's T should be split. Some things are
+      <em>components</em>; others are <em>environment</em> — they interact with
+      components but are outside the system. Separating them is not optional;
+      it's what "system" means. But before Bunge can split T, he needs a
+      primitive that Klir left implicit: what does "interact" mean?</p>
+
+      <h3>The acts-on primitive</h3>
+      <p>Bunge's foundation is causal:</p>
+      <ul>
+        <li><em>a ▷ b</em> (a acts on b): <em>a</em> modifies <em>b</em>'s trajectory or behavior.</li>
+        <li><em>Bonded(a, b)</em>: at least one acts on the other — i.e., <em>a ▷ b ∨ b ▷ a</em>.</li>
+        <li>Bonding is symmetric; action is not (agent/patient asymmetry).</li>
+      </ul>
+
+      <span class="formal-label">Definition (Action and Bonding).</span>
+      <div class="code-wrap">
+        <pre data-playground="6"><code class="lean">-- Bunge §1.2: a ▷ b means a modifies b's trajectory
+class ActsOn (α : Type*) where
+  actsOn : α → α → Prop
+
+-- Two things are bonded if at least one acts on the other
+def Bonded {α : Type*} [ActsOn α] (a b : α) : Prop :=
+  a ▷ b ∨ b ▷ a</code></pre>
+      </div>
+
+      <p>With <code>ActsOn</code> in hand, Bunge defines:</p>
+      <ol>
+        <li><strong>Environment</strong> of σ: every thing not in its composition
+        that is bonded with some component —
+        <em>ℰ<sub>A</sub>(x) = {y ∈ Θ | y ∉ 𝒞<sub>A</sub>(x) ∧
+        ∃z(z ⊏ x ∧ (y ▷ z ∨ z ▷ y))}</em>.</li>
+        <li><strong>Minimal model</strong> of σ at time <em>t</em>: the triple
+        <em>s<sub>A</sub>(σ, t) = ⟨𝒞<sub>A</sub>, ℰ<sub>A</sub>, 𝒮<sub>A</sub>⟩</em>
+        — composition, environment, structure (Bunge §1.2).</li>
+      </ol>
+
+      <span class="formal-label">Definition (Concrete System).</span>
+      <div class="code-wrap">
+        <pre data-playground="1"><code class="lean">-- Bunge (1979) Def 1.1–1.2: the CES triple ⟨C, E, S⟩
+structure ConcreteSystem (α : Type*) [ActsOn α] where
+  composition : Set α          -- C: the components
+  environment : Set α          -- E: external things bonded with C
+  structure'  : Set (α × α)   -- S: the relations
+  disjoint    : composition ∩ environment = ∅
+  structure_on : ∀ p ∈ structure', p.1 ∈ composition ∪ environment ∧
+                   p.2 ∈ composition ∪ environment
+  bondage_nonempty : ∃ a ∈ composition, ∃ b ∈ composition, a ≠ b ∧ Bonded a b</code></pre>
+      </div>
+
+      <p>Bunge states this across several pages. The formalization compresses
+      it to three data fields and three constraints:</p>
+      <ul>
+        <li><code>disjoint</code>: C ∩ E = ∅ — components and environment share nothing.</li>
+        <li><code>structure_on</code>: every pair in S involves elements of C ∪ E.</li>
+        <li><code>bondage_nonempty</code>: at least two distinct components are bonded.</li>
+      </ul>
+
+      <h3>How Bunge extends Klir</h3>
+      <p>The relationship is precise:</p>
+      <ol>
+        <li>Klir's undifferentiated T splits into two disjoint subsets:
+        <em>C</em> (composition) and <em>E</em> (environment), with <em>C ∩ E = ∅</em>.</li>
+        <li>Klir's R becomes <em>S</em>, constrained to pairs on <em>C ∪ E</em>.</li>
+        <li>A third constraint is added: at least two distinct components must be bonded
+        (<code>bondage_nonempty</code>).</li>
+        <li>The projection back to Klir forgets <em>E</em> and recovers exactly (T, R):</li>
+      </ol>
+
+      <span class="formal-label">Proposition (Bunge → Klir projection).</span>
+      <div class="code-wrap">
+        <pre><code class="lean">-- Bunge → Klir: forget environment, recover (T, R)
+def ConcreteSystem.toKlir {α : Type*} [ActsOn α]
+    (s : ConcreteSystem α) : KlirSystem α where
+  things   := s.composition   -- T = C (not C ∪ E)
+  relation := s.structure'    -- R = S</code></pre>
+      </div>
+
+      <p>The map discards <em>E</em> and recovers Klir's pair:</p>
+      <ul>
+        <li>T = C (composition becomes things).</li>
+        <li>R = S (structure becomes relation).</li>
+      </ul>
+      <p>Two CES triples with the same composition and structure but different
+      environments project to the same Klir system. Environment is exactly what
+      Bunge contributes beyond Klir.</p>
+    </section>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       TAB 3 — MOBUS
+       ══════════════════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="panel-mobus" role="tabpanel" aria-labelledby="tab-mobus">
+
+    <!-- §3a — The System Language -->
+    <section>
+      <h2>The System Language</h2>
+      <p>Mobus's contribution is not just another tuple — it is a <em>language</em>.
+      In Chapter 4, he proposes that the language of systems should possess</p>
+
+      <blockquote>
+        "both the characteristics of a natural language for expressing systems and
+        the characteristics of a formal language (both mathematics and computation)
+        making it useful in constructing computer models for simulation."
+        <cite>— Mobus (2022), Ch. 4</cite>
+      </blockquote>
+
+      <p>The system language should be</p>
+
+      <blockquote>
+        "speakable" as well as "viewable" as well as "computable." People should
+        be able to talk to each other without over-abstraction causing the loss of
+        details and meanings that support real understanding.
+        <cite>— Mobus (2022), p. 70</cite>
+      </blockquote>
+
+      <p>Thornton (2025) names the persistent gap from the other direction: we need
+      "a hybrid between algorithmic computation and natural language so that
+      systemness can move freely between simulations and human understanding."
+      What Thornton describes is precisely Mobus's system language — a language
+      that is speakable, viewable, and computable. Lean 4 is not that language.
+      It is the verification layer beneath it: it does not replace the system
+      language but validates that its mathematical commitments are sound.</p>
+    </section>
+
+    <!-- §3b — The 8-Tuple -->
+    <section>
+      <h2>The 8-Tuple</h2>
+      <p>The original framework (Mobus 2022) used a 7-tuple. In the book revision
+      (Mobus 2025), the environment <em>E</em> is elevated from a hidden element
+      inside <em>G</em> to a first-class member, giving the revised 8-tuple:</p>
+
+      <p><em>S<sub>i,l</sub> = ⟨C, N, E, G, B, T, H, Δt⟩<sub>i,l</sub></em></p>
+
+      <dl class="tuple-defs">
+        <dt>C — Components</dt>
+        <dd>The set of components at this system level, with optional fuzzy
+        membership. Each component is itself a system at a lower level of
+        organization. Mobus §4.3.</dd>
+
+        <dt>N — Internal Network</dt>
+        <dd>Flow network among components: a directed graph where real substances
+        (matter, energy, messages) move with causal influence.
+        Mobus Eq. 4.4: <em>N = ⟨C, L⟩</em>.</dd>
+
+        <dt>E — Environment ⟨O, M⟩</dt>
+        <dd>Unified environment object. <em>O</em> = the set of discrete
+        environmental source/sink objects. <em>M</em> = milieu variables —
+        ambient conditions that influence the system without discrete flow
+        (e.g., temperature, humidity, salinity, pH, pressure). Elevated from
+        hidden-in-<em>G</em> to first-class in the book revision
+        (Mobus 2025).</dd>
+
+        <dt>G — External Flows</dt>
+        <dd>Graph connecting environmental objects <em>O</em> to interface
+        components in <em>C</em>. Simplified from bipartite in the book
+        revision; flow arrows determine source/sink directionality.
+        <em>G = ⟨o<sub>i</sub> ∈ O, c<sub>j</sub> ∈ C⟩</em>.</dd>
+
+        <dt>B — Boundary ⟨P, I⟩</dt>
+        <dd><em>P</em> = boundary properties, <em>I</em> = interface
+        components that transport flows across the boundary.
+        Mobus Eq. 4.6.</dd>
+
+        <dt>T — Transformations</dt>
+        <dd>Domain-specific transformation functions: how the system processes
+        inputs into outputs. Parametric in the formalization — the exact form
+        depends on what the system does.</dd>
+
+        <dt>H — History / Memory</dt>
+        <dd>Accumulated structural knowledge; captures the trajectory of system
+        states over time. Mobus: "knowledge of itself." Parametric in the
+        formalization.</dd>
+
+        <dt>Δt — Time Scale</dt>
+        <dd>Temporal resolution relevant to this level of organization. Taken
+        as the eighth element; lifecycle dynamics (ΔS) operate at this
+        resolution.</dd>
+      </dl>
+
+      <span class="formal-label">Definition (Mobus System).</span>
+      <div class="code-wrap">
+        <pre data-playground="2"><code class="lean">-- Mobus (2022/2025), revised Eq. 4.1: the 8-tuple S = ⟨C, N, E, G, B, T, H, Δt⟩
+structure MobusSystem (α : Type*) (κ : Type*) (μ : Type*)
+    (π : Type*) (τ : Type*) (η : Type*) (δ : Type*) where
+
+  -- C: the set of components at this level
+  components : Set α
+
+  -- N: internal flow network among components
+  internalNetwork : FlowNetwork α κ
+
+  -- E: environment ⟨O, M⟩ (objects + milieu)
+  environment : MobusEnvironment α μ
+
+  -- G: external flows connecting O to interface components
+  externalFlows : FlowNetwork α κ
+
+  -- B: boundary ⟨P, I⟩ (properties + interfaces)
+  boundary : MobusBoundary α π
+
+  -- T: transformation functions (domain-specific, parametric)
+  transforms : τ
+
+  -- H: history / stored knowledge (domain-specific, parametric)
+  history : η
+
+  -- Δt: time scale / temporal resolution (domain-specific, parametric)
+  timeScale : δ</code></pre>
+      </div>
+
+      <p>The seven type parameters split into two groups:</p>
+      <ul>
+        <li><strong>Structurally active</strong> (α, κ, μ, π): participate in coherence
+        constraints that the compiler enforces.</li>
+        <li><strong>Carried data</strong> (τ, η, δ): no structural role in the ontology —
+        domain-specific payload.</li>
+      </ul>
+      <p>The five coherence constraints are:</p>
+
+      <dl class="tuple-defs">
+        <dt>network_components</dt>
+        <dd>The vertex set of the internal network N is exactly C. This is
+        the formal content of Mobus Eq. 4.4: N = ⟨C, L⟩.</dd>
+
+        <dt>disjoint</dt>
+        <dd>C ∩ E.objects = ∅. Components and environment objects share no
+        elements — mirroring Bunge Def 1.2.</dd>
+
+        <dt>interfaces_sub</dt>
+        <dd>The boundary's interface components I ⊆ C. Interfaces are
+        components, not external objects.</dd>
+
+        <dt>bipartite</dt>
+        <dd>Every external flow edge crosses between E.objects and I. This is
+        the constraint from which boundary completeness <em>derives</em> —
+        it is not axiomatized but proved as a theorem
+        (<code>MobusSystem.boundaryComplete</code>).</dd>
+
+        <dt>externalFlows_nodes</dt>
+        <dd>All external flow endpoints lie in E.objects ∪ I.</dd>
+      </dl>
+
+      <p>The derived boundary completeness is notable: Mobus states that the
+      boundary mediates all system-environment interaction. In the formalization,
+      this is not assumed — it follows from the bipartite structure of G.
+      The compiler proves it as a consequence, not a postulate.</p>
+    </section>
+
+    <!-- §3c — Three Layers -->
+    <section>
+      <h2>Three Layers</h2>
+      <p>Three distinct layers, each serving a different function:</p>
+      <ol>
+        <li><strong>System language</strong> (Mobus) — the speakable and viewable layer.
+        How practitioners reason about, communicate, and diagram systems.</li>
+        <li><strong>BERT</strong> (Bounded Entity Reasoning Toolkit) — the computational
+        implementation. Renders the 8-tuple as interactive models that can be
+        built, explored, and simulated.</li>
+        <li><strong>Lean 4</strong> — the formal verification layer. Proves that the
+        mathematical foundations beneath both are sound.</li>
+      </ol>
+      <p>None replaces the others.</p>
+    </section>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       TAB 4 — SYNTHESIS
+       ══════════════════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="panel-synthesis" role="tabpanel" aria-labelledby="tab-synthesis">
+
+    <!-- The Main Question -->
+    <section>
+      <h2>The Main Question</h2>
+      <p>Given these three frameworks:</p>
+      <ol>
+        <li>Klir's pair <em>S = (T, R)</em> — thinghood and systemhood.</li>
+        <li>Bunge's triple <em>⟨C, E, S⟩</em> — composition, environment, structure.</li>
+        <li>Mobus's 8-tuple <em>⟨C, N, E, G, B, T, H, Δt⟩</em> — components through time scale.</li>
+      </ol>
+      <p>Is there a principled map connecting them? Mobus's engineering
+      elaboration is rich and computationally useful, but (as critics note) the
+      mathematical descriptions lack the precision of Bunge and Klir. The
+      question: is there a principled map from Mobus back to the Klir–Bunge
+      foundation? If yes, Lean can prove it.</p>
+    </section>
+
+    <!-- The Projections -->
+    <section>
+      <h2>The Projections</h2>
+      <p>Before the triangle can commute, we need three projection maps.
+      Each discards structure that the target framework doesn't have vocabulary
+      for:</p>
+      <ol>
+        <li><strong>Mobus → Bunge</strong>: discard 6 categories of engineering detail.</li>
+        <li><strong>Bunge → Klir</strong>: discard environment.</li>
+        <li><strong>Mobus → Klir</strong>: discard everything at once.</li>
+      </ol>
+      <p>The information loss at each step is formally characterized in the
+      Lean codebase.</p>
+
+      <h3>Mobus → Bunge: discard engineering detail</h3>
+      <p>The 8-tuple maps to the CES triple by keeping three fields and
+      discarding six:</p>
+      <ul>
+        <li><strong>Kept</strong>: C → composition (exact), E.objects → environment (milieu <em>M</em> lost),
+        totalRelation → structure (capacity <em>κ</em> lost).</li>
+        <li><strong>Discarded</strong>: milieu <em>M</em>, boundary properties <em>π</em>,
+        transforms <em>τ</em>, history <em>η</em>, time scale <em>δ</em>, capacity <em>κ</em>.</li>
+      </ul>
+      <p>The key operation is <code>totalRelation</code>: it unions the internal
+      and external flow networks, then drops capacity labels via
+      <code>FlowNetwork.toRelation</code>.</p>
+
+      <span class="formal-label">Definition (Bridge map).</span>
+      <div class="code-wrap">
+        <pre data-playground="7"><code class="lean">-- The total relation: internal + external, capacities discarded
+def MobusSystem.totalRelation (sys : MobusSystem α κ μ π τ η δ) : Set (α × α) :=
+  sys.internalNetwork.toRelation ∪ sys.externalFlows.toRelation
+
+-- Mobus → Bunge projection (Bridge.lean)
+def MobusSystem.toBunge (sys : MobusSystem α κ μ π τ η δ) : ConcreteSystem α where
+  composition := sys.components            -- C: exact
+  environment := sys.environment.objects   -- E: milieu M lost
+  structure'  := sys.totalRelation         -- S: capacity κ lost</code></pre>
+      </div>
+
+      <p>The field assignment is not the whole story. The definition must also
+      <em>prove</em> that Bunge's three constraints hold for the Mobus data:</p>
+      <ol>
+        <li><code>disjoint</code>: follows from Mobus's own <code>disjoint</code> axiom.</li>
+        <li><code>structure_on</code>: follows from <code>totalRelation_on</code>.</li>
+        <li><code>bondage_nonempty</code>: the substantive step — it extracts an
+        edge from the internal network, uses <code>network_components</code> to
+        place both endpoints in composition, <code>no_self_loops</code> for
+        distinctness, and <code>FlowInducesAction</code> to establish the bond.</li>
+      </ol>
+      <p>The bridge is well-defined because Mobus's coherence constraints
+      <em>imply</em> Bunge's. The six projected-away categories are not deficiencies —
+      they mark precisely where Mobus's engineering orientation led to distinctions
+      that Bunge's philosophical orientation did not require.</p>
+
+      <h3>Bunge → Klir: discard environment</h3>
+      <div class="code-wrap">
+        <pre><code class="lean">-- Bunge → Klir: forget environment
+def ConcreteSystem.toKlir (s : ConcreteSystem α) : KlirSystem α where
+  things   := s.composition   -- T = C
+  relation := s.structure'    -- R = S</code></pre>
+      </div>
+
+      <h3>Mobus → Klir: discard everything at once</h3>
+      <div class="code-wrap">
+        <pre><code class="lean">-- Mobus → Klir: directly to (T, R)
+def MobusSystem.toKlir (sys : MobusSystem α κ μ π τ η δ) : KlirSystem α where
+  things   := sys.components       -- T = C
+  relation := sys.totalRelation    -- R = N.toRelation ∪ G.toRelation</code></pre>
+      </div>
+
+      <p>The question is now concrete: do these three maps compose correctly?
+      Does going Mobus → Bunge → Klir produce the same (T, R) as going
+      Mobus → Klir directly?</p>
+    </section>
+
+    <!-- Crown Jewel -->
+    <section>
+      <h2>The Crown Jewel: Triangle Commutes</h2>
+
+      <div class="diagram">
+        <svg width="350" height="215" viewBox="0 0 350 215"
+             xmlns="http://www.w3.org/2000/svg"
+             aria-label="Commuting triangle: Mobus to Bunge to Klir equals Mobus to Klir directly, proved by rfl">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="7"
+                    refX="7" refY="3.5" orient="auto">
+              <path d="M0,0 L0,7 L8,3.5 z" fill="#8B6914"/>
+            </marker>
+          </defs>
+
+          <!-- Node labels -->
+          <text x="72"  y="52" font-family="Georgia, serif" font-size="15"
+                fill="#1C1917" text-anchor="middle">Mobus</text>
+          <text x="278" y="52" font-family="Georgia, serif" font-size="15"
+                fill="#1C1917" text-anchor="middle">Bunge</text>
+          <text x="175" y="205" font-family="Georgia, serif" font-size="15"
+                fill="#1C1917" text-anchor="middle">Klir</text>
+
+          <!-- Arrow: Mobus → Bunge (horizontal, solid) -->
+          <line x1="112" y1="46" x2="242" y2="46"
+                stroke="#8B6914" stroke-width="1.6" marker-end="url(#arr)"/>
+          <text x="177" y="36" font-family="'JetBrains Mono', monospace" font-size="11"
+                fill="#8B6914" text-anchor="middle">toBunge</text>
+
+          <!-- Arrow: Bunge → Klir (right diagonal, solid) -->
+          <line x1="270" y1="63" x2="196" y2="185"
+                stroke="#8B6914" stroke-width="1.6" marker-end="url(#arr)"/>
+          <text x="254" y="131" font-family="'JetBrains Mono', monospace" font-size="11"
+                fill="#8B6914" text-anchor="start">toKlir</text>
+
+          <!-- Arrow: Mobus → Klir (left diagonal, dashed — direct path) -->
+          <line x1="88"  y1="63" x2="158" y2="185"
+                stroke="#8B6914" stroke-width="1.6" stroke-dasharray="5,3"
+                marker-end="url(#arr)"/>
+          <text x="97"  y="131" font-family="'JetBrains Mono', monospace" font-size="11"
+                fill="#8B6914" text-anchor="end">toKlir</text>
+
+          <!-- rfl — proof that both paths are definitionally equal -->
+          <text x="177" y="128" font-family="'JetBrains Mono', monospace" font-size="13"
+                fill="#E06C5A" text-anchor="middle" font-weight="500">rfl</text>
+        </svg>
+      </div>
+
+      <span class="formal-label">Theorem (Triangle Commutes).</span>
+      <div class="code-wrap">
+        <pre data-playground="3"><code class="lean">-- Mobus (2022) cites Klir (2001) as inspiration (Ch. 4, p. 14).
+-- Bunge (1979) cites Klir and Valach (1967). Neither cites the other.
+-- This theorem proves both paths — Mobus→Bunge→Klir and Mobus→Klir directly —
+-- produce definitionally identical results.
+
+theorem triangle_commutes {α κ μ π τ η δ : Type*} [ActsOn α]
+    (sys : MobusSystem α κ μ π τ η δ)
+    (hf : FlowInducesAction sys.internalNetwork)
+    (hg : sys.internalNetwork.edges.Nonempty) :
+    (sys.toBunge hf hg).toKlir = sys.toKlir := rfl</code></pre>
+      </div>
+
+      <span class="formal-label">Proof.</span>
+      <div class="proof-block">
+        <p>We must show <code>(sys.toBunge hf hg).toKlir = sys.toKlir</code>.</p>
+        <p><strong>Left-hand side:</strong></p>
+        <ol>
+          <li><code>(sys.toBunge hf hg).toKlir</code></li>
+          <li>= <code>{ things := (sys.toBunge ..).composition,
+            relation := (sys.toBunge ..).structure' }</code>
+            &emsp;<em>(expand toKlir)</em></li>
+          <li>= <code>{ things := sys.components,
+            relation := sys.totalRelation }</code>
+            &emsp;<em>(expand toBunge)</em></li>
+        </ol>
+        <p><strong>Right-hand side:</strong></p>
+        <ol>
+          <li><code>sys.toKlir</code></li>
+          <li>= <code>{ things := sys.components,
+            relation := sys.totalRelation }</code>
+            &emsp;<em>(expand toKlir)</em></li>
+        </ol>
+        <p>The two sides are identical terms. Lean's kernel confirms this by
+        <code>rfl</code> — no proof search, no lemma invocation. The
+        definitional equality traces to both Bunge and Mobus inheriting
+        T = <code>Set α</code> and R = <code>Set (α × α)</code> from Klir
+        without changing the mathematical type.
+        <span class="qed">∎</span></p>
+      </div>
+
+      <p>This is what formal grounding looks like: two researchers who never
+      cited each other, working from the same Klir root, arrived at structures
+      that compose cleanly. The compatibility was <em>discovered</em> through
+      formalization, not claimed by any author.</p>
+    </section>
+
+    <!-- Convergence and Choice -->
+    <section>
+      <h2>Convergence and Choice</h2>
+      <p>The <code>rfl</code> is clean — perhaps too clean. It depends on a
+      formalization choice. Consider two readings of Bunge's "structure":</p>
+      <ol>
+        <li><strong>Flat reading</strong>: structure is <code>Set (α × α)</code>
+        — a single relation. This is what <code>ConcreteSystem</code> uses.</li>
+        <li><strong>Family reading</strong>: structure is <code>Set (Set (α × α))</code>
+        — a "set of relations" (Bunge's plural). This is what
+        <code>RichConcreteSystem</code> implements.</li>
+      </ol>
+
+      <p>Under the family reading:</p>
+      <ul>
+        <li>The Mobus → Rich Bunge projection creates a 2-element structure family:
+        <code>{N.toRelation, G.toRelation}</code> — preserving the internal/external distinction.</li>
+        <li>The Rich → Klir projection must <em>flatten</em> this family via
+        <code>⋃₀</code> (set union) to produce a single relation R.</li>
+        <li>The triangle still commutes, but the proof is no longer <code>rfl</code>:</li>
+      </ul>
+
+      <span class="formal-label">Theorem (Rich Triangle Flatten).</span>
+      <div class="code-wrap">
+        <pre><code class="lean">-- With structure as a family, flatten is an explicit step
+-- ⋃₀ {A, B} = A ∪ B requires simp, not rfl
+theorem toRichBunge_flatten_eq (sys : MobusSystem α κ μ π τ η δ) :
+    (sys.toRichBunge hf hg).flatten = sys.totalRelation := by
+  simp [RichConcreteSystem.flatten, MobusSystem.toRichBunge,
+    MobusSystem.totalRelation, Set.sUnion_pair]</code></pre>
+      </div>
+
+      <p>The gap between <code>rfl</code> and <code>simp</code>:</p>
+      <ul>
+        <li><code>rfl</code> — <em>syntactic identity</em>. The two expressions are
+        the same computation; the type-checker confirms without reasoning.</li>
+        <li><code>simp</code> — <em>semantic equality</em>. The expressions compute
+        to equal values, but the checker needs a lemma
+        (<code>Set.sUnion_pair</code>: ⋃₀ {A, B} = A ∪ B) to see it.</li>
+      </ul>
+      <p>Both are true. But <code>rfl</code> works only because the flat
+      representation hides an information-loss step that the family version makes
+      explicit: to reach Klir's (T, R), you must forget not just environment
+      but the <em>organization</em> of relations — which bonds are internal and
+      which cross the boundary.</p>
+
+      <p>What matters is that <em>both</em> versions produce valid proofs:</p>
+      <ol>
+        <li>The compatibility does not depend on a particular reading of Bunge.</li>
+        <li>It holds under the simple reading (<code>rfl</code>) and the more
+        faithful reading (<code>simp</code>).</li>
+        <li>When three independent researchers arrive at structures that compose
+        cleanly under multiple formalizations, that is evidence the decomposition
+        reflects something real about systemhood, not about formalization choices.</li>
+      </ol>
+
+      <p>The analogy in mathematics: when the same structure appears independently
+      in different branches — groups in algebra, symmetries in geometry,
+      automorphisms in topology — that is evidence the structure is
+      <em>natural</em>, existing independently of any one context. The commuting
+      triangle, robust under different readings of its vertices, suggests that
+      Klir's (T, R) kernel is similarly natural in systems science: the minimal
+      structure that any coherent account of systemhood must contain.</p>
+    </section>
+
+    <!-- Published Error -->
+    <section>
+      <h2>What the Compiler Also Found</h2>
+      <p>While formalizing Bunge Def 1.6, Lean rejected the definition as stated.
+      Bunge writes the subsystem relation is:</p>
+      <ul>
+        <li>Reflexive — requires <em>a R a</em> for all <em>a</em>.</li>
+        <li>Asymmetric — requires that if <em>a R b</em> then <em>¬(b R a)</em>.</li>
+        <li>Transitive.</li>
+      </ul>
+      <p>Reflexivity and asymmetry are contradictory: reflexivity demands
+      <em>a R a</em>; asymmetry forbids it. The correct property is
+      <em>antisymmetry</em> (if <em>a R b</em> and <em>b R a</em> then
+      <em>a = b</em>). The compiler caught what 47 years of reading did not.</p>
+
+      <span class="formal-label">Theorem (Subsystem Antisymmetry).</span>
+      <div class="code-wrap">
+        <pre data-playground="4"><code class="lean">-- Correcting Bunge Def 1.6: "asymmetric" should read "antisymmetric"
+theorem subsystem_antisymm_components {α : Type*} [ActsOn α]
+    {σ₁ σ₂ : ConcreteSystem α}
+    (h₁₂ : Subsystem σ₁ σ₂) (h₂₁ : Subsystem σ₂ σ₁) :
+    σ₁.composition = σ₂.composition ∧
+    σ₁.environment = σ₂.environment ∧
+    σ₁.structure' = σ₂.structure' :=
+  ⟨Set.Subset.antisymm h₁₂.1 h₂₁.1,
+   Set.Subset.antisymm h₂₁.2.1 h₁₂.2.1,
+   Set.Subset.antisymm h₁₂.2.2 h₂₁.2.2⟩</code></pre>
+      </div>
+
+      <p>Even rigorous authors make errors that survive publication. Proof assistants
+      are for exactly this.</p>
+    </section>
+
+    <!-- Emergence -->
+    <section>
+      <h2>Emergence, Briefly</h2>
+
+      <span class="formal-label">Theorem (Emergence Decomposition).</span>
+      <div class="code-wrap">
+        <pre data-playground="5"><code class="lean">-- Bunge Def 1.13(i): emergence as symmetric difference of property sets
+-- (snapshot formalization; temporal refinement ongoing)
+theorem novelty_eq_emergent_union_lost {P : Type*}
+    (before after : PropertySnapshot P) :
+    qualitativeNovelty before after =
+      lostProperties before after ∪ emergentProperties before after := by
+  simp [qualitativeNovelty, emergentProperties, lostProperties]</code></pre>
+      </div>
+
+      <p>Philosophical debates about emergence can span hundreds of pages.
+      The formal definition reduces to set operations:</p>
+      <ul>
+        <li><em>emergentProperties</em> = after ∖ before (properties that appear).</li>
+        <li><em>lostProperties</em> = before ∖ after (properties that disappear).</li>
+        <li><em>qualitativeNovelty</em> = lost ∪ emergent = symmetric difference.</li>
+      </ul>
+      <p><code>simp</code> closes it.</p>
+    </section>
+  </div>
+
+  <!-- ══ Closing ══ -->
+  <div class="closing">
+    <p>What this points toward: a machine-checkable grammar beneath the system
+    language. Three layers, each serving a distinct function:</p>
+    <ol>
+      <li><strong>Lean 4</strong> validates the mathematical foundations.</li>
+      <li><strong>Onto-viz</strong> tracks how well implementations cover the
+      reference frameworks — which concepts are present, partial, or missing.</li>
+      <li><strong>BERT</strong> renders the 8-tuple as interactive models that
+      practitioners can build and explore.</li>
+    </ol>
+    <p>Mobus's vision — a language that is speakable, viewable, and computable —
+    now has formal verification, coverage tracking, and computational implementation.
+    The more immediate value is the compiler's discipline: it forces precision on
+    concepts that have been written loosely for decades.</p>
+
+    <p>But the deeper finding is structural. Three frameworks — developed across
+    different decades, disciplines, and continents, with no mutual citation
+    between Bunge and Mobus — decompose systemhood in compatible ways. The
+    commuting triangle holds under both a simple and a faithful reading of the
+    source material. This is not an artifact of clever formalization; it is
+    evidence that the decomposition into things, relations, and environment is a
+    natural structure of systems science itself — one that any coherent account
+    of systemhood converges toward.</p>
+
+    <p>The standard view of proof assistants: you know what to prove, and the
+    tool checks your proof. That is not what happened here. The <code>rfl</code>
+    was <em>discovered</em>, not anticipated. The published error was
+    <em>found</em>, not sought. The proof assistant was not a verification tool
+    but an instrument of inquiry — it forced precision that revealed structure
+    nobody had seen, including the original authors. Lean did not create
+    this convergence. It made it visible.</p>
+  </div>
+
+</div>
+
+<script>
+  // ── Tab switching + hash routing ──────────────────────────────────────────
+  const tabs = document.querySelectorAll('.tab-bar button[role="tab"]');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  function activateTab(id) {
+    tabs.forEach(t => t.setAttribute('aria-selected', t.id === 'tab-' + id));
+    panels.forEach(p => p.classList.toggle('active', p.id === 'panel-' + id));
+  }
+
+  tabs.forEach(btn => btn.addEventListener('click', () => {
+    const id = btn.id.replace('tab-', '');
+    activateTab(id);
+    history.replaceState(null, '', '#' + id);
+  }));
+
+  // Restore tab from URL hash on load
+  const hash = location.hash.replace('#', '');
+  if (['klir', 'bunge', 'mobus', 'synthesis'].includes(hash)) activateTab(hash);
+
+  // ── Lean 4 syntax highlighter ──────────────────────────────────────────────
+  const KEYWORDS = new Set([
+    'structure', 'theorem', 'def', 'where', 'by', 'class', 'instance',
+    'namespace', 'end', 'import', 'open', 'let', 'fun', 'have', 'show',
+    'intro', 'constructor', 'induction', 'cases', 'match', 'with',
+    'if', 'then', 'else', 'extends', 'noncomputable', 'deriving'
+  ]);
+  const TYPES = new Set([
+    'Set', 'Type', 'Prop', 'Nonempty', 'Disjoint', 'List', 'Bool',
+    'Nat', 'True', 'False', 'Or', 'And', 'Iff', 'Eq', 'Finset'
+  ]);
+  const PROOFS = new Set(['rfl', 'simp', 'omega', 'trivial', 'refl', 'exact']);
+
+  function tokenizeLine(line) {
+    const ci = line.indexOf('--');
+    const code = ci === -1 ? line : line.slice(0, ci);
+    const comm = ci === -1 ? '' : line.slice(ci);
+    const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const hi = esc(code).replace(/\b([a-zA-Z_][a-zA-Z0-9_']*)\b/g, tok => {
+      if (PROOFS.has(tok))   return `<span class="pt">${tok}</span>`;
+      if (KEYWORDS.has(tok)) return `<span class="kw">${tok}</span>`;
+      if (TYPES.has(tok))    return `<span class="tp">${tok}</span>`;
+      return tok;
+    });
+    return comm ? hi + `<span class="cm">${esc(comm)}</span>` : hi;
+  }
+
+  // ── Playground snippets (self-contained, compile with Mathlib) ─────────────
+  // The full project uses the complete 8-tuple; these demos isolate the key idea.
+  const PLAYGROUND = [
+
+    // Tab 1 — KlirSystem
+    `import Mathlib.Data.Set.Basic
+
+-- Klir (2001), Eq. 1.1 — the common-sense definition
+structure KlirSystem (α : Type*) where
+  things   : Set α          -- T: the set of things (thinghood)
+  relation : Set (α × α)   -- R: the relation on things (systemhood)
+
+-- Every formal systems theory in the Klir tradition
+-- is an elaboration of this pair.
+
+#check @KlirSystem
+#check @KlirSystem.things
+#check @KlirSystem.relation`,
+
+    // Tab 2 — ConcreteSystem
+    `import Mathlib.Data.Set.Basic
+
+-- Minimal class setup for this demonstration
+class ActsOn (α : Type*) where
+  actsOn : α → α → Prop
+
+def Bonded {α : Type*} [ActsOn α] (a b : α) : Prop :=
+  ActsOn.actsOn a b ∨ ActsOn.actsOn b a
+
+-- Bunge (1979) Def 1.1–1.2: the CES triple ⟨C, E, S⟩
+structure ConcreteSystem (α : Type*) [ActsOn α] where
+  composition : Set α          -- C: the components
+  environment : Set α          -- E: external things bonded with C
+  structure'  : Set (α × α)   -- S: the relations
+  disjoint    : composition ∩ environment = ∅
+  structure_on : ∀ p ∈ structure', p.1 ∈ composition ∪ environment ∧
+                   p.2 ∈ composition ∪ environment
+  bondage_nonempty : ∃ a ∈ composition, ∃ b ∈ composition, a ≠ b ∧ Bonded a b
+
+#check @ConcreteSystem`,
+
+    // Tab 3 — MobusSystem (self-contained 8-tuple)
+    `import Mathlib.Data.Set.Basic
+
+-- Minimal supporting structures for the 8-tuple demonstration
+structure FlowNetwork (α : Type*) (κ : Type*) where
+  nodes : Set α
+  edges : Set (α × α × κ)
+
+structure MobusEnvironment (α : Type*) (μ : Type*) where
+  objects : Set α
+  milieu  : μ
+
+structure MobusBoundary (α : Type*) (π : Type*) where
+  properties : π
+  interfaces : Set α
+
+-- Mobus (2022/2025), revised Eq. 4.1: the 8-tuple S = ⟨C, N, E, G, B, T, H, Δt⟩
+structure MobusSystem (α : Type*) (κ : Type*) (μ : Type*)
+    (π : Type*) (τ : Type*) (η : Type*) (δ : Type*) where
+  components      : Set α                -- C
+  internalNetwork : FlowNetwork α κ      -- N
+  environment     : MobusEnvironment α μ -- E = ⟨O, M⟩
+  externalFlows   : FlowNetwork α κ      -- G
+  boundary        : MobusBoundary α π    -- B = ⟨P, I⟩
+  transforms      : τ                    -- T
+  history         : η                    -- H
+  timeScale       : δ                    -- Δt
+
+#check @MobusSystem`,
+
+    // Tab 4a — triangle_commutes (simplified — full proof uses the complete 8-tuple)
+    `import Mathlib.Data.Set.Basic
+
+-- Simplified demonstration of the commuting triangle via rfl.
+-- The production proof uses the full Mobus 8-tuple; this isolates the pattern.
+
+structure KlirSystem (α : Type*) where
+  things   : Set α
+  relation : Set (α × α)
+
+class ActsOn (α : Type*) where
+  actsOn : α → α → Prop
+
+-- Bunge CES triple (data fields only for this demo)
+structure ConcreteSystem (α : Type*) [ActsOn α] where
+  composition : Set α
+  environment : Set α
+  structure'  : Set (α × α)
+
+-- Projection: Bunge → Klir (forget environment)
+def ConcreteSystem.toKlir {α : Type*} [ActsOn α]
+    (s : ConcreteSystem α) : KlirSystem α where
+  things   := s.composition
+  relation := s.structure'
+
+-- Simplified Mobus (production version has 8 typed fields)
+structure SimpleMobus (α : Type*) [ActsOn α] where
+  components : Set α
+  edges      : Set (α × α)
+
+-- Projection: Mobus → Bunge (forget Mobus-specific fields)
+def SimpleMobus.toBunge {α : Type*} [ActsOn α]
+    (m : SimpleMobus α) : ConcreteSystem α where
+  composition := m.components
+  environment := ∅
+  structure'  := m.edges
+
+-- Projection: Mobus → Klir (direct)
+def SimpleMobus.toKlir {α : Type*} [ActsOn α]
+    (m : SimpleMobus α) : KlirSystem α where
+  things   := m.components
+  relation := m.edges
+
+-- The triangle commutes: rfl certifies definitional equality
+theorem triangle_commutes {α : Type*} [ActsOn α] (m : SimpleMobus α) :
+    m.toBunge.toKlir = m.toKlir := rfl`,
+
+    // Tab 4b — subsystem_antisymm_components
+    `import Mathlib.Data.Set.Basic
+
+class ActsOn (α : Type*) where
+  actsOn : α → α → Prop
+
+-- Bunge CES triple (data fields only for this demo)
+structure ConcreteSystem (α : Type*) [ActsOn α] where
+  composition : Set α
+  environment : Set α
+  structure'  : Set (α × α)
+
+-- Bunge Def 1.6: subsystem relation
+def Subsystem {α : Type*} [ActsOn α]
+    (σ₁ σ₂ : ConcreteSystem α) : Prop :=
+  σ₁.composition ⊆ σ₂.composition ∧
+  σ₂.environment ⊆ σ₁.environment ∧
+  σ₁.structure' ⊆ σ₂.structure'
+
+-- Correcting Bunge Def 1.6: "asymmetric" should read "antisymmetric"
+theorem subsystem_antisymm_components {α : Type*} [ActsOn α]
+    {σ₁ σ₂ : ConcreteSystem α}
+    (h₁₂ : Subsystem σ₁ σ₂) (h₂₁ : Subsystem σ₂ σ₁) :
+    σ₁.composition = σ₂.composition ∧
+    σ₁.environment = σ₂.environment ∧
+    σ₁.structure' = σ₂.structure' :=
+  ⟨Set.Subset.antisymm h₁₂.1 h₂₁.1,
+   Set.Subset.antisymm h₂₁.2.1 h₁₂.2.1,
+   Set.Subset.antisymm h₁₂.2.2 h₂₁.2.2⟩`,
+
+    // Tab 4c — novelty_eq_emergent_union_lost
+    `import Mathlib.Data.Set.Basic
+
+-- Bunge Def 1.13: emergence as set operations
+structure PropertySnapshot (P : Type*) where
+  properties : Set P
+
+def qualitativeNovelty {P : Type*}
+    (before after : PropertySnapshot P) : Set P :=
+  (before.properties \\ after.properties) ∪ (after.properties \\ before.properties)
+
+def emergentProperties {P : Type*}
+    (before after : PropertySnapshot P) : Set P :=
+  after.properties \\ before.properties
+
+def lostProperties {P : Type*}
+    (before after : PropertySnapshot P) : Set P :=
+  before.properties \\ after.properties
+
+-- Emergence is precisely characterized by set operations
+theorem novelty_eq_emergent_union_lost {P : Type*}
+    (before after : PropertySnapshot P) :
+    qualitativeNovelty before after =
+      lostProperties before after ∪ emergentProperties before after := by
+  simp [qualitativeNovelty, emergentProperties, lostProperties]`,
+
+    // Bunge foundations — ActsOn, Bonded, bonded_comm
+    `import Mathlib.Data.Set.Basic
+
+-- Bunge §1.2: a ▷ b means a modifies b's trajectory/behavior.
+-- This is the foundational causal primitive for all of systems ontology.
+class ActsOn (α : Type*) where
+  actsOn : α → α → Prop
+
+export ActsOn (actsOn)
+scoped infixl:50 " ▷ " => actsOn
+
+-- Two things are bonded if at least one acts on the other.
+-- Bonding is symmetric; ActsOn is not (agent vs. patient).
+def Bonded {α : Type*} [ActsOn α] (a b : α) : Prop :=
+  a ▷ b ∨ b ▷ a
+
+-- Bonded is symmetric by definition
+theorem bonded_comm {α : Type*} [ActsOn α] (a b : α) :
+    Bonded a b ↔ Bonded b a := by
+  simp [Bonded, or_comm]
+
+-- The bondage of a set: all bonded pairs within it
+def Bondage {α : Type*} [ActsOn α] (X : Set α) : Set (α × α) :=
+  {p | p.1 ∈ X ∧ p.2 ∈ X ∧ Bonded p.1 p.2}
+
+#check @ActsOn
+#check @Bonded
+#check @bonded_comm
+#check @Bondage`,
+
+    // Full projection chain — all three frameworks + all three maps + rfl
+    `import Mathlib.Data.Set.Basic
+
+-- ══ Klir: S = (T, R) ══
+structure KlirSystem (α : Type*) where
+  things   : Set α           -- T: thinghood
+  relation : Set (α × α)    -- R: systemhood
+
+-- ══ Bunge: ⟨C, E, S⟩ ══
+class ActsOn (α : Type*) where
+  actsOn : α → α → Prop
+
+def Bonded {α : Type*} [ActsOn α] (a b : α) : Prop :=
+  ActsOn.actsOn a b ∨ ActsOn.actsOn b a
+
+structure ConcreteSystem (α : Type*) [ActsOn α] where
+  composition : Set α         -- C
+  environment : Set α         -- E
+  structure'  : Set (α × α)  -- S
+
+-- ══ Simplified Mobus ══
+-- (Production version has typed FlowNetworks; this isolates the pattern)
+structure SimpleMobus (α : Type*) [ActsOn α] where
+  components    : Set α        -- C
+  internalEdges : Set (α × α) -- N (capacity discarded)
+  externalEdges : Set (α × α) -- G (capacity discarded)
+
+def SimpleMobus.totalRelation {α : Type*} [ActsOn α]
+    (m : SimpleMobus α) : Set (α × α) :=
+  m.internalEdges ∪ m.externalEdges
+
+-- ══ The three projection maps ══
+
+-- Bunge → Klir: forget environment
+def ConcreteSystem.toKlir {α : Type*} [ActsOn α]
+    (s : ConcreteSystem α) : KlirSystem α where
+  things   := s.composition
+  relation := s.structure'
+
+-- Mobus → Bunge: forget engineering detail
+def SimpleMobus.toBunge {α : Type*} [ActsOn α]
+    (m : SimpleMobus α) : ConcreteSystem α where
+  composition := m.components
+  environment := ∅
+  structure'  := m.totalRelation
+
+-- Mobus → Klir: forget everything
+def SimpleMobus.toKlir {α : Type*} [ActsOn α]
+    (m : SimpleMobus α) : KlirSystem α where
+  things   := m.components
+  relation := m.totalRelation
+
+-- ══ The triangle commutes ══
+-- Both paths produce the SAME (T, R). rfl = definitionally identical.
+theorem triangle_commutes {α : Type*} [ActsOn α] (m : SimpleMobus α) :
+    m.toBunge.toKlir = m.toKlir := rfl`
+  ];
+
+  const PLAYGROUND_BASE = 'https://live.lean-lang.org/#code=';
+
+  // ── Attach highlighting + playground links ─────────────────────────────────
+  document.querySelectorAll('pre code.lean').forEach(el => {
+    // Highlight
+    el.innerHTML = el.textContent.split('\n').map(tokenizeLine).join('\n');
+
+    // Inject "Try it in Lean ↗" link only for blocks with data-playground
+    const pre = el.closest('pre');
+    const idx = pre.dataset.playground;
+    if (idx == null) return;
+
+    const snippet = PLAYGROUND[parseInt(idx)];
+    if (!snippet) return;
+
+    const link = document.createElement('a');
+    link.className = 'try-lean';
+    link.href = PLAYGROUND_BASE + encodeURIComponent(snippet);
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = 'Try it in Lean ↗';
+
+    pre.insertAdjacentElement('afterend', link);
+  });
+</script>
+</body>
+</html>

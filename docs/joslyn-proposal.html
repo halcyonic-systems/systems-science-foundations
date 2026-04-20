@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Formal Systems Ontology and Its Open Frontier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #FAFAF7;
+      color: #1C1917;
+      line-height: 1.7;
+      padding: 3.5rem 1.5rem 5rem;
+    }
+
+    .container { max-width: 720px; margin: 0 auto; }
+
+    /* ── Header ── */
+    header {
+      margin-bottom: 0;
+      padding-bottom: 1.75rem;
+      border-bottom: 1px solid #DDD8CE;
+    }
+
+    h1 {
+      font-size: 1.45rem;
+      font-weight: normal;
+      letter-spacing: 0.01em;
+      color: #1C1917;
+      margin-bottom: 0.35rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #6B6457;
+      font-style: italic;
+      margin-bottom: 0.8rem;
+    }
+
+    .meta {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.72rem;
+      color: #AAA09A;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Section headers ── */
+    h2 {
+      font-size: 0.78rem;
+      font-weight: normal;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #8B6914;
+      margin-bottom: 1rem;
+      margin-top: 3rem;
+    }
+
+    h3 {
+      font-size: 0.88rem;
+      font-weight: normal;
+      color: #3D3530;
+      margin-bottom: 0.75rem;
+      margin-top: 1.75rem;
+    }
+
+    p { margin-bottom: 1.1rem; color: #2A2420; }
+    em { font-style: italic; }
+    strong { font-weight: 600; }
+
+    /* ── Blockquotes ── */
+    blockquote {
+      border-left: 2px solid #DDD8CE;
+      padding-left: 1.25rem;
+      margin: 1rem 0 1.25rem;
+      color: #3D3530;
+      font-style: italic;
+    }
+
+    blockquote cite {
+      display: block;
+      font-style: normal;
+      font-size: 0.85rem;
+      color: #6B6457;
+      margin-top: 0.4rem;
+    }
+
+    /* ── Inline code ── */
+    code {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.865em;
+      background: #EDEBE5;
+      color: #3D2B00;
+      padding: 0.12em 0.4em;
+      border-radius: 3px;
+    }
+
+    /* ── Code blocks ── */
+    pre {
+      background: #1E1E1E;
+      border-left: 3px solid #8B6914;
+      border-radius: 0 5px 5px 0;
+      padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: 1em;
+      color: #D4D0C8;
+      border-radius: 0;
+    }
+
+    /* Lean syntax */
+    .kw { color: #C9A73A; }
+    .tp { color: #5DBB8A; }
+    .pt { color: #E06C5A; font-weight: 500; }
+    .cm { color: #6E7A8A; font-style: italic; }
+    .st { color: #CE9178; }
+
+    /* ── Formal labels ── */
+    .formal-label {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: #8B6914;
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+
+    /* ── Proof / rfl blocks ── */
+    .proof-block {
+      background: #F5F3EE;
+      border-left: 2px solid #8B6914;
+      padding: 0.85rem 1.25rem;
+      margin: 1rem 0 1.25rem;
+      font-size: 0.92rem;
+      line-height: 1.8;
+    }
+
+    .proof-block .qed {
+      float: right;
+      color: #8B6914;
+      font-weight: 500;
+    }
+
+    /* ── Lists ── */
+    section ol, section ul {
+      margin: 0.75rem 0 1rem;
+      padding-left: 1.75rem;
+      line-height: 1.7;
+    }
+
+    section li { margin-bottom: 0.35rem; color: #2A2420; }
+    section li code { font-size: 0.85em; }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0;
+      font-size: 0.88rem;
+    }
+
+    th {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8B6914;
+      text-align: left;
+      padding: 0.6rem 0.75rem;
+      border-bottom: 2px solid #DDD8CE;
+    }
+
+    td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid #EDEBE5;
+      vertical-align: top;
+      color: #2A2420;
+    }
+
+    tr:last-child td { border-bottom: 2px solid #DDD8CE; }
+
+    /* ── Thermostat tabs ── */
+    .tab-bar {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid #DDD8CE;
+      margin-bottom: 1.5rem;
+      padding-top: 0.5rem;
+    }
+
+    .tab-bar button {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: #AAA09A;
+      padding: 0.6rem 1.25rem;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .tab-bar button:hover { color: #6B6457; }
+
+    .tab-bar button[aria-selected="true"] {
+      color: #8B6914;
+      border-bottom-color: #8B6914;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── SVG diagram ── */
+    .diagram {
+      display: flex;
+      justify-content: center;
+      margin: 1.75rem 0 1.25rem;
+    }
+
+    /* ── Dividers ── */
+    .divider {
+      border: none;
+      border-top: 1px solid #DDD8CE;
+      margin: 2.5rem 0;
+    }
+
+    /* ── Frontier section accent ── */
+    .frontier {
+      background: #F5F3EE;
+      border: 1px solid #DDD8CE;
+      border-radius: 6px;
+      padding: 1.5rem 1.75rem;
+      margin: 1.5rem 0;
+    }
+
+    .frontier h3 { color: #8B6914; margin-top: 0; }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #8B6914;
+      display: block;
+    }
+
+    .stat-label {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #AAA09A;
+    }
+
+    /* ── Closing ── */
+    .closing {
+      border-top: 1px solid #DDD8CE;
+      margin-top: 2.5rem;
+      padding-top: 1.75rem;
+    }
+
+    .closing p { color: #3D3530; }
+
+    /* ── Print ── */
+    @media print {
+      body { background: white; color: black; padding: 1.5rem; font-size: 11pt; }
+      .tab-bar { display: none; }
+      .tab-panel { display: block !important; }
+      pre { background: #F6F4F0; border-left: 2px solid #8B6914; color: black; break-inside: avoid; font-size: 9.5pt; }
+      pre code { color: #111; }
+      .kw { color: #6B4C00; } .tp { color: #1A5C3A; } .pt { color: #990000; } .cm { color: #555; }
+      h2 { color: #8B6914; }
+      header, .closing { border-color: #CCC; }
+      .diagram svg { max-width: 300px; }
+      .frontier { background: #F6F4F0; }
+    }
+
+    @media (max-width: 520px) {
+      .tab-bar { flex-wrap: wrap; }
+      .tab-bar button { flex: 1 1 auto; text-align: center; padding: 0.5rem 0.75rem; font-size: 0.65rem; }
+      .stats-bar { gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>A Formal Systems Ontology and Its Open Frontier</h1>
+    <p class="subtitle">Klir, Bunge, Mobus — and the layer that needs your framework</p>
+    <p class="meta">Shingai Thornton &nbsp;·&nbsp; Halcyonic Systems &nbsp;·&nbsp; April 2026 &nbsp;·&nbsp; Technical proposal for Cliff Joslyn</p>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════
+       STATS BAR
+       ═══════════════════════════════════════════════ -->
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">~3,120</span><span class="stat-label">Lines of Lean 4</span></div>
+    <div class="stat"><span class="stat-num">109</span><span class="stat-label">Theorems</span></div>
+    <div class="stat"><span class="stat-num">0</span><span class="stat-label">Sorrys</span></div>
+    <div class="stat"><span class="stat-num">21</span><span class="stat-label">Modules</span></div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════════════
+       §0 — PREFATORY NOTE
+       ═══════════════════════════════════════════════ -->
+  <section>
+    <p>I noticed something in the summer 2025 paper that I couldn't let go of: Mobus's 8-tuple and Bunge's CES triple are eerily similar&nbsp;&mdash;&nbsp;same decomposition into components, environment, and structure&nbsp;&mdash;&nbsp;yet Mobus never cites Bunge. I wrote it up as a "systematic extension." Then you asked the right question: <em>does Mobus actually cite Bunge?</em> I checked. He doesn't. Neither references the other.</p>
+
+    <p>That killed the "extension" framing and opened the real question: <em>how are two independently developed frameworks this compatible?</em> The answer turned out to be Klir. Both cite him. Both inherit T&nbsp;=&nbsp;<code>Set&nbsp;&alpha;</code> and R&nbsp;=&nbsp;<code>Set&nbsp;(&alpha;&nbsp;&times;&nbsp;&alpha;)</code> from his (T,&nbsp;R) definition without changing the mathematical type. The formalization proves this&nbsp;&mdash;&nbsp;the commuting triangle is <code>rfl</code>.</p>
+
+    <p>You gave me thirty red-text comments on that paper. Thirteen mapped directly to machine-checked code. Your question about the type of S&nbsp;&mdash;&nbsp;<em>"S is a set of sets of tuples, right?"</em>&nbsp;&mdash;&nbsp;forced a design decision the Lean compiler settled in 146 lines and two theorems.</p>
+
+    <p>This document presents what that process produced, and where it reaches its limits&nbsp;&mdash;&nbsp;limits that your variety-theoretic and semiotic framework is precisely designed to resolve.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════════════
+       §1 — THREE DEFINITIONS
+       ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>Three Definitions, One Tradition</h2>
+
+    <h3>Klir: S = (T, R)</h3>
+    <p>The simplest rigorous definition. A set of things and a relation among them (Klir, <em>Facets of Systems Science</em>, 2001, Eq. 1.1).</p>
+
+    <pre><code class="lean"><span class="kw">structure</span> <span class="tp">KlirSystem</span> (α : <span class="tp">Type*</span>) <span class="kw">where</span>
+  things   : <span class="tp">Set</span> α          <span class="cm">-- T: thinghood</span>
+  relation : <span class="tp">Set</span> (α × α)   <span class="cm">-- R: systemhood</span></code></pre>
+
+    <h3>Bunge: ⟨C, E, S⟩</h3>
+    <p>Bunge adds environment as a first-class component. A system exists <em>within</em> something (Bunge, <em>Treatise on Basic Philosophy</em> Vol. 4, 1979, Def. 1.1&ndash;1.2).</p>
+
+    <pre><code class="lean"><span class="kw">structure</span> <span class="tp">ConcreteSystem</span> (α : <span class="tp">Type*</span>) [<span class="tp">ActsOn</span> α] <span class="kw">where</span>
+  composition : <span class="tp">Set</span> α          <span class="cm">-- C: components</span>
+  environment : <span class="tp">Set</span> α          <span class="cm">-- E: external things</span>
+  structure'  : <span class="tp">Set</span> (α × α)   <span class="cm">-- S: relations on C ∪ E</span>
+  disjoint    : composition ∩ environment = ∅
+  structure_on : ∀ p ∈ structure', p.1 ∈ composition ∪ environment ∧
+                   p.2 ∈ composition ∪ environment
+  bondage_nonempty : ∃ a ∈ composition, ∃ b ∈ composition, a ≠ b ∧ <span class="tp">Bonded</span> a b</code></pre>
+
+    <h3>Mobus: The 8-Tuple</h3>
+    <p>Mobus elaborates Klir toward engineering methodology: typed flows, boundaries, interfaces (Mobus, <em>Systems Science</em>, 2022, Ch. 4). He cites Klir (2001) explicitly as inspiration.</p>
+
+    <pre><code class="lean"><span class="kw">structure</span> <span class="tp">MobusSystem</span> (α κ μ π τ η δ : <span class="tp">Type*</span>) <span class="kw">where</span>
+  components      : <span class="tp">Set</span> α                    <span class="cm">-- C</span>
+  internalNetwork : <span class="tp">FlowNetwork</span> α κ           <span class="cm">-- N = ⟨C, L⟩</span>
+  environment     : <span class="tp">MobusEnvironment</span> α μ      <span class="cm">-- E = ⟨O, M⟩</span>
+  externalFlows   : <span class="tp">FlowNetwork</span> α κ           <span class="cm">-- G</span>
+  boundary        : <span class="tp">MobusBoundary</span> α π         <span class="cm">-- B = ⟨P, I⟩</span>
+  transforms      : τ                         <span class="cm">-- T</span>
+  history         : η                         <span class="cm">-- H</span>
+  timeScale       : δ                         <span class="cm">-- Δt</span>
+  <span class="cm">-- + 5 coherence constraints enforced at the type level</span></code></pre>
+
+    <p>Neither Bunge nor Mobus references the other. They developed independently from a shared Klir root, 43 years apart.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════════════
+       §2 — THE COMMUTING TRIANGLE
+       ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>The Commuting Triangle</h2>
+
+    <p>Both paths from Mobus's 8-tuple back to Klir's (T, R) &mdash; via Bunge or directly &mdash; produce the same result. Not merely equal. <em>Definitionally identical.</em></p>
+
+    <div class="diagram">
+      <svg width="280" height="180" viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Nodes -->
+        <text x="20" y="30" font-family="Georgia, serif" font-size="15" fill="#1C1917">Mobus</text>
+        <text x="210" y="30" font-family="Georgia, serif" font-size="15" fill="#1C1917">Bunge</text>
+        <text x="120" y="170" font-family="Georgia, serif" font-size="15" fill="#1C1917">Klir</text>
+        <!-- Arrows -->
+        <line x1="65" y1="25" x2="205" y2="25" stroke="#8B6914" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="240" y1="40" x2="155" y2="155" stroke="#8B6914" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="35" y1="40" x2="120" y2="155" stroke="#6B6457" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arrow-dim)"/>
+        <!-- Labels -->
+        <text x="115" y="17" font-family="'JetBrains Mono', monospace" font-size="9" fill="#8B6914" text-anchor="middle">toBunge</text>
+        <text x="210" y="105" font-family="'JetBrains Mono', monospace" font-size="9" fill="#8B6914" text-anchor="middle">toKlir</text>
+        <text x="55" y="105" font-family="'JetBrains Mono', monospace" font-size="9" fill="#6B6457" text-anchor="middle">toKlir</text>
+        <!-- rfl annotation -->
+        <text x="140" y="90" font-family="'JetBrains Mono', monospace" font-size="11" fill="#8B6914" font-weight="500" text-anchor="middle">= rfl</text>
+        <!-- Arrow markers -->
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#8B6914"/>
+          </marker>
+          <marker id="arrow-dim" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#6B6457"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <span class="formal-label">Theorem (Commuting Triangle).</span>
+    <pre><code class="lean"><span class="kw">theorem</span> triangle_commutes
+    (sys : <span class="tp">MobusSystem</span> α κ μ π τ η δ)
+    (hflow : <span class="tp">FlowInducesAction</span> sys.internalNetwork)
+    (hedge : sys.internalNetwork.edges.Nonempty) :
+    (sys.toBunge hflow hedge).toKlir = sys.toKlir := <span class="pt">rfl</span></code></pre>
+
+    <div class="proof-block">
+      <span class="qed">rfl</span>
+      <p>The proof is <code>rfl</code>&nbsp;&mdash;&nbsp;reflexivity. The type-checker confirms the two paths produce not just equal but <em>definitionally identical</em> values. This traces to both Bunge and Mobus inheriting T&nbsp;=&nbsp;<code>Set&nbsp;α</code> and R&nbsp;=&nbsp;<code>Set&nbsp;(α&nbsp;×&nbsp;α)</code> from Klir without changing the mathematical type. This was not claimed by any author. It was <em>discovered</em> through formalization.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════════════
+       §3 — WHAT THE COMPILER FOUND
+       ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>What the Compiler Found</h2>
+
+    <h3>A 47-year-old error in Bunge</h3>
+    <p>Bunge's Definition 1.6 states the subsystem relation is <em>"reflexive, asymmetric, and transitive."</em> No relation can be both reflexive and asymmetric. The compiler rejected it. The correct property is <strong>antisymmetry</strong>&nbsp;&mdash;&nbsp;making subsystem a partial order, not a strict order. The error has persisted through every edition.</p>
+
+    <h3>Your question about S &mdash; answered</h3>
+    <p>You asked: <em>"S is a set of sets of tuples, right?"</em> Yes. But the formalization proves it doesn't matter for the theorems:</p>
+
+    <pre><code class="lean"><span class="kw">theorem</span> flatten_internal_commutes
+    (r : <span class="tp">RichConcreteSystem</span> α) :
+    ⋃₀ r.internalFamily = internalProjection r.composition r.flatten</code></pre>
+
+    <p>Take the family of relations {R<sub>i</sub>}, extract the internal part of each, then union&nbsp;&mdash;&nbsp;same result as first flattening everything, then extracting internals. The flat encoding is a faithful quotient. <strong>The compiler certifies this.</strong></p>
+
+    <h3>Boundary completeness &mdash; derived, not axiomatized</h3>
+    <p>The systems-theoretic property that "all interaction is mediated by the boundary" is not assumed. It <em>follows structurally</em> from the bipartite constraint on external flows.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════════════
+       §4 — THE THERMOSTAT
+       ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>The Thermostat &mdash; Your Example, Three Frameworks</h2>
+
+    <p>You used the thermostat in the 1995 paper to derive the internal-state requirement (Proposition 29) and the semantic-relation argument. Here it is formalized under all three frameworks. 160 lines of Lean, zero <code>sorry</code>s.</p>
+
+    <pre><code class="lean"><span class="kw">inductive</span> <span class="tp">Entity</span> <span class="kw">where</span>
+  | thermometer | controller | furnace | room | outsideAir
+  <span class="kw">deriving</span> <span class="tp">DecidableEq</span>
+
+<span class="kw">instance</span> : <span class="tp">ActsOn</span> <span class="tp">Entity</span> <span class="kw">where</span>
+  actsOn
+    | room, thermometer => <span class="tp">True</span>       <span class="cm">-- room temp modifies thermometer state</span>
+    | thermometer, controller => <span class="tp">True</span>  <span class="cm">-- measurement signal</span>
+    | controller, furnace => <span class="tp">True</span>      <span class="cm">-- on/off command</span>
+    | furnace, room => <span class="tp">True</span>            <span class="cm">-- heat delivery</span>
+    | _, _ => <span class="tp">False</span></code></pre>
+
+    <p>A modeling decision: <strong>outsideAir does not act on anything discretely.</strong> Its thermal effect enters through the milieu M, not a point-source flow. The system does not model the outsideAir&nbsp;&rarr;&nbsp;room heat-transfer pathway. This is the systemic stance in action.</p>
+
+    <nav class="tab-bar" role="tablist" aria-label="Thermostat frameworks">
+      <button role="tab" aria-selected="true" aria-controls="t-mobus" id="tt-mobus">Mobus 8-Tuple</button>
+      <button role="tab" aria-selected="false" aria-controls="t-bunge" id="tt-bunge">Bunge CES</button>
+      <button role="tab" aria-selected="false" aria-controls="t-klir" id="tt-klir">Klir (T, R)</button>
+      <button role="tab" aria-selected="false" aria-controls="t-triangle" id="tt-triangle">Triangle</button>
+    </nav>
+
+    <!-- MOBUS TAB -->
+    <div class="tab-panel active" id="t-mobus" role="tabpanel" aria-labelledby="tt-mobus">
+      <p>The full 8-tuple with five coherence constraints proved:</p>
+
+      <pre><code class="lean"><span class="kw">def</span> thermostatMobus : <span class="tp">MobusSystem</span> <span class="tp">Entity</span> <span class="tp">Unit</span> <span class="tp">Unit</span> <span class="tp">Unit</span> <span class="tp">Unit</span> <span class="tp">Unit</span> <span class="tp">Unit</span> <span class="kw">where</span>
+  components      := {thermometer, controller, furnace}
+  internalNetwork := intNet    <span class="cm">-- therm→ctrl, ctrl→furnace</span>
+  environment     := ⟨envObjs, ()⟩  <span class="cm">-- ⟨{room, outsideAir}, M⟩</span>
+  externalFlows   := extNet    <span class="cm">-- room→therm, furnace→room</span>
+  boundary        := ⟨(), intfs⟩    <span class="cm">-- ⟨P, {therm, furnace}⟩</span>
+  transforms      := ()        <span class="cm">-- the control rule (parametric)</span>
+  history         := ()        <span class="cm">-- recent readings (parametric)</span>
+  timeScale       := ()        <span class="cm">-- polling interval (parametric)</span>
+  network_components := <span class="pt">rfl</span>    <span class="cm">-- N.nodes = C by definition</span>
+  disjoint := ...              <span class="cm">-- C ∩ O = ∅</span>
+  interfaces_sub := ...        <span class="cm">-- I ⊆ C</span>
+  bipartite := ...             <span class="cm">-- G crosses between O and I</span>
+  externalFlows_nodes := ...   <span class="cm">-- G.nodes ⊆ O ∪ I</span></code></pre>
+
+      <p>Parametric fields use <code>Unit</code>&nbsp;&mdash;&nbsp;they carry no structural content here. In a richer model: <strong>τ</strong>&nbsp;=&nbsp;the if/then control rule, <strong>η</strong>&nbsp;=&nbsp;recent temperature readings, <strong>δ</strong>&nbsp;=&nbsp;30-second polling interval. These are exactly the six information categories that the Mobus&rarr;Bunge projection discards.</p>
+    </div>
+
+    <!-- BUNGE TAB -->
+    <div class="tab-panel" id="t-bunge" role="tabpanel" aria-labelledby="tt-bunge">
+      <p>Extracted from the Mobus 8-tuple by projection&nbsp;&mdash;&nbsp;not defined independently:</p>
+
+      <pre><code class="lean"><span class="kw">def</span> thermostatBunge : <span class="tp">ConcreteSystem</span> <span class="tp">Entity</span> :=
+  thermostatMobus.toBunge
+    thermostat_flow_induces_action
+    thermostat_internal_nonempty</code></pre>
+
+      <p>After projection:</p>
+      <ul>
+        <li><strong>composition</strong> = {thermometer, controller, furnace}&nbsp;&mdash;&nbsp;exact from Mobus</li>
+        <li><strong>environment</strong> = {room, outsideAir}&nbsp;&mdash;&nbsp;milieu M discarded</li>
+        <li><strong>structure</strong> = all 4 causal pairs&nbsp;&mdash;&nbsp;capacity labels discarded</li>
+      </ul>
+      <p>Two Mobus thermostats differing only in transforms (bang-bang vs. PID) project to the <em>same</em> Bunge CES triple. They differ only in what the controller <em>does</em>.</p>
+    </div>
+
+    <!-- KLIR TAB -->
+    <div class="tab-panel" id="t-klir" role="tabpanel" aria-labelledby="tt-klir">
+      <p>One more projection step strips the environment:</p>
+
+      <pre><code class="lean"><span class="kw">def</span> thermostatKlir : <span class="tp">KlirSystem</span> <span class="tp">Entity</span> :=
+  thermostatMobus.toKlir</code></pre>
+
+      <ul>
+        <li><strong>things</strong> = {thermometer, controller, furnace}&nbsp;&mdash;&nbsp;components only</li>
+        <li><strong>relation</strong> = all 4 causal pairs&nbsp;&mdash;&nbsp;including cross-boundary</li>
+      </ul>
+
+      <p>A structural observation: <strong>room appears in the relation but not in the thing-set.</strong> The pairs (room,&nbsp;thermometer) and (furnace,&nbsp;room) are in R, but room&nbsp;&notin;&nbsp;T. The Klir projection drops the environmental distinction&nbsp;&mdash;&nbsp;room becomes a "phantom" entity, present in the relational structure but not counted among the system's things.</p>
+    </div>
+
+    <!-- TRIANGLE TAB -->
+    <div class="tab-panel" id="t-triangle" role="tabpanel" aria-labelledby="tt-triangle">
+      <span class="formal-label">Theorem (Thermostat Triangle).</span>
+      <pre><code class="lean"><span class="kw">theorem</span> thermostat_triangle_commutes :
+    thermostatBunge.toKlir = thermostatKlir := <span class="pt">rfl</span></code></pre>
+
+      <div class="proof-block">
+        <span class="qed">rfl</span>
+        <p>Both paths from the Mobus thermostat to Klir produce definitionally identical systems. The generic theorem, instantiated on a concrete system.</p>
+      </div>
+
+      <p><strong>But all three descriptions miss the same thing.</strong> The controller's logic&nbsp;&mdash;&nbsp;<em>if temperature &lt; setpoint then turn on furnace</em>&nbsp;&mdash;&nbsp;is a <strong>rule</strong>, not a law. It was selected from a variety of possible control functions. The <em>meaning</em> of "too hot"&nbsp;&rarr;&nbsp;"turn off furnace" is not captured by any structural description.</p>
+
+      <p>This is precisely your point from the 1995 paper: the feedback function f&nbsp;:&nbsp;O<sub>i</sub>&nbsp;&rarr;&nbsp;O<sub>e</sub> <em>must be a rule (contingent entailment), not a natural law</em>. The formalization reaches its limit here.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════════════
+       §5 — INFORMATION LOSS
+       ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>Information Loss &mdash; Precisely</h2>
+
+    <table>
+      <thead>
+        <tr><th>Lost</th><th>Thermostat Content</th><th>Why It Matters</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Milieu M</strong></td><td>Ambient temperature, humidity</td><td>The disturbance source control<sub>2</sub> requires</td></tr>
+        <tr><td><strong>Capacity κ</strong></td><td>BTUs, millivolts, on/off</td><td>Magnitude of flows&nbsp;&mdash;&nbsp;invisible to Bunge</td></tr>
+        <tr><td><strong>Boundary π</strong></td><td>Thermal insulation R-value</td><td>How much disturbance penetrates</td></tr>
+        <tr><td><strong>Transforms τ</strong></td><td>The if/then control rule</td><td>The semantic relation, the rule, the sign</td></tr>
+        <tr><td><strong>History η</strong></td><td>Recent temperature readings</td><td>Memory&nbsp;&mdash;&nbsp;PID needs integral term</td></tr>
+        <tr><td><strong>Time scale δ</strong></td><td>30-second polling interval</td><td>Can the system track fast disturbances?</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════════════
+       §6 — THE OPEN FRONTIER
+       ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>The Open Frontier</h2>
+
+    <div class="frontier">
+      <h3>What the formalization cannot yet express</h3>
+      <ul>
+        <li><strong>Variety</strong>&nbsp;&mdash;&nbsp;no concept of |X|, |S|, or C&nbsp;=&nbsp;X&nbsp;&minus;&nbsp;S as a measure of constraint. Your Definitions 13, 17, 18 provide this.</li>
+        <li><strong>Rule vs. law</strong>&nbsp;&mdash;&nbsp;<code>ActsOn</code> is opaque. It does not distinguish natural law (the ball rolls downhill) from rule (the controller turns on the furnace). Your distinction (1995, &sect;4.2) is precisely what it collapses.</li>
+        <li><strong>Control<sub>2</sub></strong>&nbsp;&mdash;&nbsp;active maintenance of equilibrium against disturbance requires temporal reasoning and second-order constraint the snapshot model does not support.</li>
+        <li><strong>Metasystem transition</strong>&nbsp;&mdash;&nbsp;emergence of a new control level requires your hierarchical variety theory to even state formally.</li>
+      </ul>
+    </div>
+
+    <h3>What your framework provides</h3>
+
+    <p><strong>Variety gives the 8-tuple a measure.</strong> Mobus's component set C has dimensional variety n&nbsp;=&nbsp;|C|. His capacity κ is a cardinal variety measure on edges. Your two-axis framework provides the quantitative layer his structural definition needs.</p>
+
+    <p><strong>The semantic layer gives transforms internal structure.</strong> The transforms τ are the natural home for your contingent entailments&nbsp;&mdash;&nbsp;but τ is currently parametric, carrying no internal theory. Your framework distinguishes τ as law, τ as rule, and τ as code.</p>
+
+    <p><strong>The hypergraph connection.</strong> Your 2018 work&nbsp;&mdash;&nbsp;<em>Seeking a Categorical Systems Theory via the Category of Hypergraphs</em>&nbsp;&mdash;&nbsp;connects to a formalization finding: Mobus's two-network decomposition (N, G) is a natural two-element structure family. We proved three distinct subsystem orderings exist on structure families, with forgetful functors that are faithful but not full.</p>
+
+    <h3>The proposal</h3>
+
+    <div class="frontier">
+      <p><strong>What I bring:</strong> A working formalization (~3,120 lines, zero incomplete proofs), the LLM-assisted proving methodology, and deep familiarity with Bunge and Mobus from PhD work under Mobus.</p>
+      <p><strong>What you bring:</strong> The variety-theoretic framework, the rule/law distinction and the semantic-relation argument, the Mesarovic connection, and the hypergraph intuition.</p>
+    </div>
+
+    <p>Phases 1&ndash;3 of the formalization took ~48 hours of LLM-assisted proving. The proposed next phases:</p>
+
+    <table>
+      <thead><tr><th>Phase</th><th>Content</th></tr></thead>
+      <tbody>
+        <tr><td><strong>4</strong></td><td>Formalize variety-theoretic definitions (Defs 13, 17, 18). Define <code>DimensionalVariety</code>, <code>CardinalVariety</code>, <code>Constraint</code> on <code>KlirSystem</code> or a new <code>MesarovicSystem</code>.</td></tr>
+        <tr><td><strong>5</strong></td><td>Formalize control<sub>1</sub>&nbsp;/&nbsp;control<sub>2</sub>. Prove Proposition 29 (control<sub>2</sub> &rArr; O is itself a control<sub>1</sub> system) in Lean.</td></tr>
+        <tr><td><strong>6</strong></td><td>Connect semantic relations to transforms. Define <code>SemanticRelation</code> as contingent entailment; prove control<sub>2</sub> &rArr; semantic relations &rArr; signs.</td></tr>
+      </tbody>
+    </table>
+
+    <p>The formal ontology is not the endpoint&nbsp;&mdash;&nbsp;it is the foundation for <strong>System Language (SL)</strong>, a formally specified, computationally executable language for systems science, implemented in BERT. SL already has 40 typed primitives, 8 composition rules (4 Lean-verified), and working models of four blockchain architectures decomposed into the same 4-subsystem cybernetic structure. Your variety-theoretic and semiotic framework would give SL something no systems language has ever had: a formal account of <em>what kind of functional relation</em> inhabits a system&nbsp;&mdash;&nbsp;rule or law&nbsp;&mdash;&nbsp;and what that distinction implies about meaning, control, and autonomy.</p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       CLOSING
+       ═══════════════════════════════════════════════ -->
+  <div class="closing">
+    <p class="meta">Formalization: systems-ontology (Lean 4 + Mathlib) &nbsp;·&nbsp; 21 modules &nbsp;·&nbsp; ~3,120 lines &nbsp;·&nbsp; 109 theorems &nbsp;·&nbsp; 0 sorrys<br>
+    Full companion document: joslyn-collaboration-artifact.md &nbsp;·&nbsp; References &amp; bibliography therein</p>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB SCRIPT
+     ═══════════════════════════════════════════════ -->
+<script>
+document.querySelectorAll('.tab-bar').forEach(bar => {
+  const buttons = bar.querySelectorAll('[role="tab"]');
+  const panels = bar.parentElement.querySelectorAll('[role="tabpanel"]');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.setAttribute('aria-selected', 'false'));
+      panels.forEach(p => p.classList.remove('active'));
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(btn.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>

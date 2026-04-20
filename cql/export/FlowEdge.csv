@@ -1,0 +1,7 @@
+id,edge_component,edge_source,edge_sys,edge_target,edge_capacity,edge_type,edge_label,edge_loc,edge_desc
+42,40,1,28,0,18500000,expenditure,FY2025,,Public Schools Transfer
+43,38,3,29,2,5200000,expenditure,FY2025,,Fire and EMS Operations
+44,40,13,30,12,,regular,2025-02-11,Fincastle Courthouse,
+45,40,15,31,14,,regular,2025-01-14,Fincastle Courthouse,
+46,40,17,32,16,,Supervisor,Steve Nicely,Amsterdam,
+47,40,19,33,18,,Board Chair,D Mac Scothorn,Fincastle,

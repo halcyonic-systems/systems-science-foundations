@@ -29,7 +29,7 @@ These are questions where the Lean codebase provides a precise, machine-checked 
 
 > "While Mobus never explicitly cites Bunge, his 7-tuple can easily be viewed as a systematic extension of Bunge's formalization"
 
-**This sentence is now formally wrong.** Mobus cites Klir (2001), not Bunge. Bunge cites Klir & Valach (1967). They developed independently from a shared Klir root. The bridge theorem *discovers* compatibility via projection; it does not verify extension. The commuting triangle is the precise correction: Mobus → Bunge → Klir = Mobus → Klir by `rfl`.
+**This sentence is now formally wrong.** Joslyn asked whether Mobus actually cites Bunge — I checked, and the answer is no. Mobus cites Klir (2001), not Bunge. Bunge cites Klir & Valach (1967). They developed independently from a shared Klir root. The bridge theorem *discovers* compatibility via projection; it does not verify extension. The commuting triangle is the precise correction: Mobus → Bunge → Klir = Mobus → Klir by `rfl`. Joslyn's question was the catalyst for this reframing.
 
 **File**: KlirSystem.lean:triangle_commutes, Bridge.lean header
 

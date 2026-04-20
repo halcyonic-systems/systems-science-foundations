@@ -1,0 +1,81 @@
+/* Halcyonic Systems — Verso Theme Override */
+
+:root {
+  --halcyonic-cream: #FAFAF7;
+  --halcyonic-gold: #8B6914;
+  --halcyonic-dark: #1C1917;
+  --halcyonic-code-bg: #1E1E1E;
+  --halcyonic-quote-bg: #F5F0E8;
+}
+
+body {
+  font-family: Georgia, 'Times New Roman', serif !important;
+  background: var(--halcyonic-cream) !important;
+  color: var(--halcyonic-dark) !important;
+  line-height: 1.7;
+}
+
+h1, h2, h3, h4 {
+  color: var(--halcyonic-gold) !important;
+  font-family: Georgia, 'Times New Roman', serif !important;
+}
+
+/* Lean code blocks */
+pre, code {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace !important;
+}
+
+.hl.lean {
+  background: var(--halcyonic-code-bg) !important;
+  border-left: 3px solid var(--halcyonic-gold) !important;
+  border-radius: 0 5px 5px 0;
+  padding: 1.25rem 1.5rem !important;
+}
+
+/* Blockquotes — exact source citations */
+blockquote {
+  background: var(--halcyonic-quote-bg) !important;
+  border-left: 3px solid var(--halcyonic-gold) !important;
+  padding: 1rem 1.25rem !important;
+  margin: 1.25rem 0 !important;
+  font-style: italic;
+}
+
+/* Math display blocks */
+.math.display {
+  margin: 1.5rem 0 !important;
+}
+
+/* Navigation and sidebar */
+nav a, .toc a {
+  color: var(--halcyonic-dark) !important;
+}
+
+nav a:hover, .toc a:hover {
+  color: var(--halcyonic-gold) !important;
+}
+
+/* Active nav highlight */
+.current > a {
+  color: var(--halcyonic-gold) !important;
+  font-weight: bold;
+}
+
+/* Links */
+a {
+  color: var(--halcyonic-gold);
+}
+
+a:hover {
+  color: #6B5010;
+}
+
+/* Verso-specific overrides */
+.page {
+  background: var(--halcyonic-cream) !important;
+}
+
+header, .local-nav {
+  background: var(--halcyonic-cream) !important;
+  border-color: #E8E0D0 !important;
+}

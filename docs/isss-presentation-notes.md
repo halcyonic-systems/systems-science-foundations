@@ -88,9 +88,15 @@ theorem flatten_internal_commutes {α : Type*} [ActsOn α]
 
 7. **Methodology** — LLM-assisted formalization: human steers, AI writes Lean, compiler verifies. Low marginal cost makes formal verification accessible to domain experts.
 
-8. **BERT grounding** — The formalized ontology isn't purely theoretical. Mobus's framework runs in BERT. Lean proofs provide machine-checked foundations for operational software.
+8. **Operational pipeline** — Three layers, each serving a distinct function:
+   - Lean 4 validates the mathematical foundations (are the frameworks compatible?).
+   - Onto-viz tracks implementation coverage (which Mobus concepts has BERT implemented?).
+   - BERT renders the 8-tuple as interactive models practitioners can build and explore.
+   - The formalized ontology isn't purely theoretical — it grounds working software.
 
-9. **Close** — The intellectual lineage: Klir → Joslyn → the author, who built BERT on Mobus and formalized Bunge. The commuting triangle is the formal structure of this tradition made visible.
+9. **Philosophical punchline** — The standard view: you know what to prove, and the tool checks it. That's not what happened. The `rfl` was *discovered*, not anticipated. The error was *found*, not sought. The proof assistant was not a verification tool but an *instrument of inquiry*. It forced precision that revealed structure nobody had seen, including the original authors.
+
+10. **Close** — The intellectual lineage: Klir → Joslyn → the author, who built BERT on Mobus and formalized Bunge. The commuting triangle is the formal structure of this tradition made visible.
 
 ---
 

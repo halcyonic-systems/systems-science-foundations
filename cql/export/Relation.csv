@@ -1,0 +1,5 @@
+id,rel_edge,rel_source,rel_target,rel_label,rel_mover,rel_seconder,rel_outcome,rel_yes,rel_no
+24,44,5,4,Approve FY2025 budget amendment,Nicely,Scothorn,passed,4,1
+25,45,7,6,Approve minutes of December 17 2024,Scothorn,Nicely,passed,5,0
+26,45,9,8,minutes,BOS Minutes January 14 2025,,,,
+27,45,11,10,agenda,BOS Agenda January 14 2025,,,,

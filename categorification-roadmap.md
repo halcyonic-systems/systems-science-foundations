@@ -343,6 +343,201 @@ The BRA sits between: it characterizes computational power under conservation. T
 
 ---
 
+## Phase 4: Joslyn's Semantic Control Systems — The Fourth Vertex
+
+**Timeline:** Post-thesis (2026 H2+)
+**Effort:** ~2 weeks analysis + ~3 weeks formalization
+**Publishable as:** Section in ISSS/AITP paper, or standalone note on the extended diagram
+**Risk:** Medium — the Joslyn→Klir projection is clean; the Joslyn→Bunge mapping has a genuine ontological disagreement about environment-as-primitive vs. environment-as-derived
+
+### Context
+
+Cliff Joslyn (1995) "Semantic Control Systems" builds a theory of control from first principles, synthesizing Mesarovic's structuralist view with Ashby/Spencer-Brown constructivism. Joslyn was Klir's protégé; Mobus cites Klir but not Joslyn. This creates a fourth vertex in the ontological diagram with a distinct relationship pattern.
+
+**Source:** `docs/refs/joslyn-1995-semantic-control-systems.md` (full text) and `.pdf`
+
+### 4.1 JoslynSystem Definition
+
+Joslyn's System₁ (Def 5) is Mesarovic's relational system:
+
+```
+S ⊆ X₁ × X₂ × ... × Xₙ, S ≠ ∅
+```
+
+With:
+- **Dimensional variety** (n): number of distinct parts/dimensions
+- **Cardinal variety** (|S|): constrained states within the product space
+- **Constraint** C = X - S: what the system excludes
+- **Synthetic definition** (Def 21): "A system is a cardinal distinction on a variety of dimensional distinctions"
+
+**Lean formalization target:**
+
+```lean
+structure JoslynSystem (ι : Type*) (X : ι → Type*) where
+  states : Set (∀ i, X i)       -- S ⊆ ∏ Xᵢ
+  nonempty : states.Nonempty     -- S ≠ ∅
+```
+
+Or the simpler binary version matching the paper's examples:
+
+```lean
+structure JoslynSystem₂ (α β : Type*) where
+  states : Set (α × β)
+  nonempty : states.Nonempty
+```
+
+### 4.2 Control₁ and Control₂ Hierarchy
+
+Joslyn's core contribution — two levels of control:
+
+- **Control₁**: Passive constraint. C acts on O, constraining O's state space. Stability, equilibrium. The ball rolls to the valley floor.
+- **Control₂**: Active constraint maintenance. The constraint on O is maintained *invariant despite environmental variation*. Requires internal states, feedback, semantic relations.
+
+Control₂ decomposition: `CS = ⟨C, O = ⟨O_E, O_I⟩⟩`
+- O_I: controlled variables (perception, internal state)
+- O_E: effector/regulator (action, output)
+- C: global environment (source of disturbances)
+- f: O_I → O_E (the semantic coding — a *rule*, not a *law*)
+
+**Lean formalization target:**
+
+```lean
+structure Control₁ (α : Type*) where
+  controller : Set α    -- C
+  controlled : Set α    -- O
+  constraint : controller → controlled → Prop
+
+structure Control₂ (α : Type*) extends Control₁ α where
+  internal : Set α      -- O_I (controlled variables)
+  effector : Set α      -- O_E (regulator)
+  feedback : internal → effector  -- f: the semantic coding
+  -- Key property: constraint on O_I invariant under C variation
+```
+
+### 4.3 Projection to Klir (Clean)
+
+The Joslyn→Klir projection is straightforward — Joslyn explicitly builds on Mesarovic/Klir:
+
+```
+toKlir : JoslynSystem → KlirSystem
+  things := ⋃ᵢ Xᵢ          -- flatten dimensional distinctions to T
+  relation := {(a,b) | ⟨...,a,...,b,...⟩ ∈ S}  -- project constraint to R
+```
+
+**Information loss (characterized):**
+1. Control₁/Control₂ distinction (constraint as passive vs. actively maintained)
+2. Semantic relations (rule-following, meaning, codes)
+3. Hierarchical decomposition CS = ⟨C, ⟨O_E, O_I⟩⟩
+4. Dimensional structure (which Xᵢ each element belongs to)
+5. Metasystem construction (environment as derived, not primitive)
+
+**Expected proof difficulty:** Low — the Klir core is a simple projection. Should be ~50-80 lines.
+
+### 4.4 Partial Mapping to Bunge (Non-Functorial)
+
+The Joslyn→Bunge mapping is *not* a functor in the categorical sense, due to an ontological disagreement:
+
+| Concept | Joslyn | Bunge |
+|---|---|---|
+| Environment | **Derived**: C = X - S (constraint = what the system excludes) | **Primitive**: E is given alongside C and S in the CES triple |
+| Status | Emergent from the act of drawing a cardinal distinction | Independent field, constrained only by C ∩ E = ∅ |
+
+In Joslyn, the environment is *determined* by S and X. In Bunge, E is independent of C and S. This is a genuine ontological disagreement, not notational.
+
+**Lean formalization target:** A partial map with explicit documentation of where it fails to be functorial:
+
+```lean
+-- This is NOT a functor — it's a structure-preserving map
+-- that requires choosing an environment
+noncomputable def toBunge [ActsOn α]
+    (sys : JoslynSystem₂ α α)
+    (env : Set α)  -- must be supplied externally!
+    (h : ...) : ConcreteSystem α := ...
+```
+
+**The key theorem to prove:** The Joslyn→Bunge map *would* be a functor if Bunge's environment were derived (C = X - S). Document this as a conditional result.
+
+### 4.5 Structural Isomorphism with Mobus HCGS
+
+Joslyn's Control₂ decomposition CS = ⟨C, ⟨O_E, O_I⟩⟩ is structurally isomorphic to Mobus's HCGS hierarchy:
+
+| Joslyn | Mobus HCGS |
+|---|---|
+| O_I (controlled variables) | Operational level |
+| O_E (effector/regulator) | Coordination level |
+| C (environment) | Strategic context |
+| f: O_I → O_E (semantic coding) | T (transforms) — but Joslyn adds *meaning* |
+
+**The key divergence:** Joslyn adds *semantics* as a requirement for Control₂. The feedback function f is a *rule* (contingent, selected, meaningful), not a *law* (necessary, discovered). Mobus's T is purely functional.
+
+**Lean formalization target:** Prove the structural isomorphism, then characterize the semantic gap as a property that Joslyn has and Mobus doesn't:
+
+```lean
+-- The structural isomorphism
+def control₂_to_hcgs : Control₂ α → HCGSDecomposition α := ...
+
+-- The semantic gap: Joslyn's f is a rule (contingent), not a law (necessary)
+-- This is a property, not a structural difference — cannot be captured in types alone
+-- Document as a docstring theorem
+```
+
+### 4.6 The Extended Diagram
+
+The commuting triangle becomes:
+
+```
+        toBunge
+Mobus -------→ Bunge
+  \              |  ↑
+   \ toKlir     | toKlir    Joslyn (partial, non-functorial — env disagreement)
+    \            |  |
+     ↘           ↓  |
+       Klir ←---- Joslyn (clean projection, forgets semantics)
+```
+
+**Key results to prove:**
+1. `joslyn_triangle_commutes`: Joslyn→Bunge→Klir = Joslyn→Klir (conditional on env choice)
+2. `joslyn_toKlir_factors`: Joslyn→Klir factors through Mobus→Klir when control structure is present
+3. Non-functoriality witness: exhibit a morphism that Joslyn→Bunge does not preserve due to environment-as-derived vs. environment-as-primitive
+
+### 4.7 The Independent Convergence Narrative
+
+This is the publishing angle. Three facts:
+1. Joslyn (Klir's protégé) and Mobus (cites Klir, not Joslyn) independently develop hierarchical control decomposition with environment-as-constraint
+2. They agree on the structural decomposition (CS = ⟨C, ⟨O_E, O_I⟩⟩ ≅ HCGS)
+3. They disagree on whether the constraint is semantic (Joslyn) or purely structural (Mobus)
+
+This is *exactly* the kind of "independent convergence with characterized divergence" that the Mobus-Bunge commuting triangle already demonstrates. Joslyn makes the triangle a square, and the non-functorial edge (Joslyn→Bunge re: environment) is where the interesting mathematics lives.
+
+**Relevance to thesis advisor:** Formalizing Joslyn's 1995 paper in Lean — connecting it to the ontology his student is already building — creates a direct bridge between Joslyn's theoretical contribution and the modern formalization program. The commuting diagram *discovers* the precise relationship between his work and Mobus/Bunge, just as it did for Mobus and Bunge.
+
+### Phase 4 Deliverables
+
+| Deliverable | Venue | Content |
+|---|---|---|
+| JoslynSystem + Control₁/Control₂ in Lean | Systems-ontology repo | §4.1, §4.2 |
+| Joslyn→Klir clean projection | Repo + paper section | §4.3 |
+| Joslyn→Bunge partial map with non-functoriality witness | Paper section | §4.4 |
+| Control₂ ≅ HCGS structural isomorphism | Paper section | §4.5 |
+| Extended 4-vertex diagram | ISSS/journal figure | §4.6 |
+| Independent convergence narrative | Paper discussion section | §4.7 |
+
+### Phase 4 Dependencies
+
+```
+Phase 4.1 (JoslynSystem)        ── no dependencies, start here
+Phase 4.2 (Control₁/Control₂)   ── depends on 4.1
+Phase 4.3 (Joslyn→Klir)         ── depends on 4.1 + Phase 3 KlirSystem.lean
+Phase 4.4 (Joslyn→Bunge)        ── depends on 4.1 + Phase 1 System.lean
+Phase 4.5 (Control₂ ≅ HCGS)     ── depends on 4.2 + Mobus Tuple.lean
+Phase 4.6 (Extended diagram)     ── depends on 4.3 + 4.4 + 4.5
+Phase 4.7 (Narrative)            ── depends on all above
+```
+
+Phase 4 can begin independently of Phases 1-3 at step 4.1, but the diagram (4.6) requires Phase 1's bridge theorem and Phase 3's Klir triangle.
+
+---
+
 ## Tool Strategy
 
 ### CatLab.jl (Exploration Layer)
@@ -410,9 +605,15 @@ Phase 2.4 (monoidal Btc)       ── depends on 2.1, CatLab.jl exploration help
 Phase 3.1 (polynomial)         ── depends on 1.4 (Mobus categorical structure)
 Phase 3.2 (operads)            ── depends on 1.1 (subsystem category exists)
 Phase 3.3 (Nester-Lambert)     ── depends on 2.2 + 2.4 (collapse + monoidal)
+
+Phase 4.1 (JoslynSystem)       ── no dependencies, can start immediately
+Phase 4.3 (Joslyn→Klir)        ── depends on 4.1 + KlirSystem.lean
+Phase 4.4 (Joslyn→Bunge)       ── depends on 4.1 + System.lean
+Phase 4.5 (Control₂ ≅ HCGS)    ── depends on 4.2 + Tuple.lean
+Phase 4.6 (extended diagram)   ── depends on 4.3 + 4.4 + 1.4 (bridge functor)
 ```
 
-Phase 1 and Phase 2 can proceed in parallel. Phase 3 requires both.
+Phase 1 and Phase 2 can proceed in parallel. Phase 3 requires both. Phase 4 can begin independently at 4.1-4.2, but the full diagram (4.6) requires Phase 1's bridge results.
 
 ---
 

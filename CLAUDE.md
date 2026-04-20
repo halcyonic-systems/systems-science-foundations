@@ -33,7 +33,36 @@ Systems/
     BridgeFunctor.lean      Mobus→Bunge bridge factorization through structure family
 Systems.lean             Root import
 docs/                    11 docs: abstracts, StructureFamily findings, reference material, retrospectives
+cql/                     CQL categorical database schemas
+  cql.jar                CQL IDE (Jan 2026 release)
+  test_instance.cql      All-in-one: CESM schema + GovGraph schema + functor + test data + sigma
+  cesm_ontology.cql      Standalone CESM schema (reference, not runnable alone)
+  gov_graph.cql          Standalone GovGraph schema (reference, not runnable alone)
+  civic_to_cesm.cql      Standalone mapping (reference, not runnable alone)
+  export/                CSV exports from CESMData instance
 ```
+
+## CQL (Categorical Database Layer)
+
+Schemas as small categories, instances as functors C → Set, migrations as Sigma/Delta/Pi. CQL bridges the Lean proof layer (properties hold for all instances) to real-world data (properties verified for specific instances).
+
+```bash
+cql                                    # launch IDE (alias in ~/.zshrc)
+cql -i cql/test_instance.cql          # launch with file preloaded
+```
+
+**Key design constraint**: CQL's Knuth-Bendix completion requires acyclic FK graphs. Self-referential FKs (A→A) and bidirectional FKs (A→B + B→A) cause infinite path enumeration. Hierarchical relationships (entity parent, budget-meeting links) must be modeled as attributes (strings), not FKs.
+
+**Current mapping** (functor F : GovGraph → CESM):
+
+| Civic concept | CESM entity | Semantic interpretation |
+|---|---|---|
+| Entity | Component | Government bodies are system components |
+| Person | FlowEdge | People are flows (role occupancy) connecting to components |
+| Meeting | FlowEdge | Meetings are information/decision flows |
+| Document | Relation | Documents are relational artifacts connecting flows |
+| Motion | Relation | Motions are acts-on: mover acts on system state |
+| BudgetItem | FlowEdge | Budget allocations are resource flows with capacity |
 
 ## Build & Verify
 
@@ -49,6 +78,23 @@ lake build          # Must pass with zero errors, zero sorrys
 - Zero `sorry`s in committed code
 - Mathlib instances preferred over hand-rolled proofs
 - Docstrings use "independent convergence" framing, never "Mobus extends/refines Bunge"
+
+## Composability Discipline (Anti-Drive-By-Proving)
+
+Formal artifacts must explain, not just verify. Correct is not composable.
+
+**Lean proofs:**
+- Never accept a tactic proof you cannot narrate in one English sentence. If `omega` or `decide` closes a goal and you cannot say *why* it is true, refactor into named lemmas with docstrings.
+- Proof structure must mirror mathematical argument structure. The lemma hierarchy is for humans; the tactics are for the compiler.
+- No AI-generated proof blocks without human-readable companion explanation at the same granularity.
+
+**CQL schemas** (`cql/`):
+- Every entity mapping in a functor must have a semantic interpretation comment: *why* this civic concept maps to this systems concept.
+- Schema changes require updating the companion mapping table (in the session file or README), not just recompiling.
+
+**General rule:**
+- Proof → docstring. Schema → semantic interpretation. Functor → narrative. The formal artifact verifies; the companion explains. Neither is sufficient alone.
+- If the compiler accepts it but you cannot explain it to a collaborator, it is not done.
 
 ## Dependency Graph
 
