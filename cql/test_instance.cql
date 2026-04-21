@@ -240,5 +240,5 @@ instance GovData = literal : GovGraph {
 instance CESMData = sigma CivicToCESM GovData
 
 # Export commands — run individually from the IDE
-command exportCsv = export_csv_instance CESMData "/Users/home/Desktop/halcyonic-projects/active/systems-ontology/cql/export"
-command exportGovCsv = export_csv_instance GovData "/Users/home/Desktop/halcyonic-projects/active/systems-ontology/cql/export_gov"
+command exportCsv = export_csv_instance CESMData "./export"
+command exportGovCsv = export_csv_instance GovData "./export_gov"
