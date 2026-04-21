@@ -29,9 +29,9 @@ This was not claimed by any of the three authors. It was *discovered* through fo
 
 ## Status
 
-**~2,930 lines | 20 modules | zero `sorry`s**
+**~4,700 lines | 34 files | zero `sorry`s | 7 traditions | 12 headline results**
 
-All three phases complete plus categorification layer. Full `lake build` passes.
+Phases 1-3 complete. Categorification Phases 1-2 complete (shape categories for all 7 traditions, common core theorem K ≅ **2**). Full `lake build` passes.
 
 ## What Formalization Revealed
 
@@ -83,7 +83,7 @@ Formalizes *Facets of Systems Science* (2001), Eq. 1.1.
 |--------|-------|--------|-------------|
 | KlirSystem.lean | 146 | Eq. 1.1 | `S = (T, R)`, projection maps, commuting triangle (`rfl`) |
 
-### Categorification: Phase 1 (~563 lines)
+### Categorification Phase 1: Thin Categories (~563 lines)
 
 Packages existing results as categories and functors using Mathlib's `CategoryTheory`.
 
@@ -93,6 +93,25 @@ Packages existing results as categories and functors using Mathlib's `CategoryTh
 | FlattenFunctor.lean | 105 | `toConcreteSystem` as functor, Finding 3 as functor property |
 | OrderingTriangle.lean | 263 | Three orderings as functor triangle, faithful but NOT full (counterexamples on Fin 2) |
 | BridgeFunctor.lean | 111 | Bridge factorization: `toBunge = toRichBunge ⋙ flatten` (Finding 6) |
+
+### Categorification Phase 2: Shape Categories (~1,400 lines)
+
+Seven traditions encoded as free categories on dependency quivers. Common core theorem.
+
+| Module | Lines | Key Content |
+|--------|-------|-------------|
+| ShapeKlir.lean | 58 | I_Klir: walking arrow **2** (things → relations) |
+| ShapeBunge.lean | 62 | I_Bunge: 3 obj, 3 arrows (CES dependency quiver) |
+| ShapeMobus.lean | 80 | I_Mobus: 8 obj, 5 arrows + 3 isolated |
+| ShapeMyers.lean | 81 | I_Myers: lens/deterministic system pattern |
+| ShapeWymore.lean | 98 | I_Wymore: FSD quintuple with time |
+| ShapeMesarovic.lean | 142 | I_Mesarovic: I/O base + global state extension |
+| ShapeJoslyn.lean | 87 | I_Joslyn: cyclic feedback loop |
+| ShapeComparison.lean | 184 | I_Mobus → I_Bunge: faithful, not full, divergence catalogue |
+| ShapeComparison_Myers.lean | 146 | I_Mobus → I_Myers: expose only, update unreachable |
+| ShapeComparison_Wymore.lean | 112 | I_Wymore → I_Mobus: object-injective, time mediated |
+| Diagram.lean | 85 | BungeDiagram: system-as-functor I_Bunge → Type |
+| CommonCore.lean | 210 | K ≅ **2**: Klir embeds faithfully into all 7 shapes |
 
 ## Showcase Theorems
 
@@ -106,6 +125,8 @@ Packages existing results as categories and functors using Mathlib's `CategoryTh
 8. **Information loss characterization** --- two Mobus systems agreeing on (C, E.objects, totalRelation) project to identical CES triples (Bridge.lean)
 9. **Bridge factorization** --- `toBunge = toRichBunge ⋙ flatten`: the Mobus→Bunge passage factors through the structure family (BridgeFunctor.lean)
 10. **Ordering triangle** --- family ⟹ refinement ⟹ flat (strict in both cases), with Fin 2 counterexamples proving non-fullness (OrderingTriangle.lean)
+11. **Common core theorem** --- K ≅ **2**: Klir's walking arrow embeds faithfully into all 7 shape categories. The irreducible categorical content of "system" across 60 years is a single morphism: relations depend on things. (CommonCore.lean)
+12. **Shape category landscape** --- 7 traditions encoded as free categories on dependency quivers; structural/operational/cybernetic divide diagnosed by arrow direction (Shape*.lean)
 
 ## Building
 
@@ -113,7 +134,7 @@ Requires Lean 4 (v4.28.0) and Mathlib:
 
 ```bash
 lake update   # fetch Mathlib (first time only)
-lake build    # compile all 20 modules — must pass with zero errors
+lake build    # compile all 34 modules — must pass with zero errors
 ```
 
 ## Dependency Graph
@@ -198,26 +219,26 @@ The formalized ontology is not purely theoretical. Mobus's framework is implemen
 ## Related
 
 - [bitcoin-bra](../bitcoin-bra/) --- Bounded Resource Automata formalization (~1080 lines, 11 files, Lean 4, targeting CPP 2027). Shares categorification roadmap (`categorification-roadmap.md`) — Phase 2 adds categorical functor infrastructure to bitcoin-bra.
-- [Building Story](docs/building-story.md) --- The full narrative of how both projects were built in 48 hours ([HTML version](docs/building-story.html))
 - [BERT](https://github.com/halcyonic-systems/bert) --- Systems analysis tool implementing Mobus's framework
 
 ## Documentation
 
-**Abstracts & Presentations:**
-- `docs/aitp-2026-abstract.md` --- AITP extended abstract draft
-- `docs/isss-2026-abstract.md` --- ISSS presentation abstract draft
-- `docs/isss-presentation-notes.md` --- ISSS presentation planning notes
-
-**StructureFamily Findings:**
-- `docs/structure-family-context.md` --- StructureFamily integration context and verified theorem table
-- `docs/for-cliff-structure-of-S.md` --- structure of S analysis for Cliff Joslyn
-- `docs/joslyn-feedback-mapping.md` --- mapping of Joslyn's feedback to formalization decisions
-
-**Reference Material:**
-- `docs/mobus-bunge-mathematical-reformulation-guide.md` --- exposition strategy for mathematician audience
-- `docs/mobus-bunge-system-definitions-reference.md` --- exact quotes from Mobus and Bunge for reformulation
-- `docs/book-revisions.md` --- Mobus's revised 8-tuple definition
-
-**Retrospectives & Architecture:**
-- `docs/phase1-retrospective.md` --- structured analysis of where Lean forced choices on Bunge's text
-- `docs/recursive-component-architecture.md` --- Phase 2 design decisions and mutual recursion problem
+```
+docs/
+├── verso/                        Verso interactive documents (Lean + HTML)
+│   ├── SystemsProposal.lean      Flagship: 6-chapter formal ontology
+│   ├── SystemsProposal/          Chapter modules
+│   ├── BuildingStory.lean        Companion: development narrative
+│   └── build.sh                  Build both with Halcyonic theme
+├── publications/                 Conference submissions
+│   ├── aitp-2026-abstract.md
+│   ├── isss-2026-abstract.md
+│   └── isss-presentation-notes.md
+├── reference/                    Active technical docs
+│   ├── joslyn-collaboration-artifact.md
+│   ├── joslyn-feedback-mapping.md
+│   ├── mobus-bunge-system-definitions-reference.md
+│   ├── categorification-roadmap.md
+│   └── ...
+└── archive/                      Historical process docs + original HTMLs
+```

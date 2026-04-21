@@ -44,7 +44,11 @@ Systems/
     Diagram.lean            BungeDiagram: system-as-functor I_Bunge → Type
     CommonCore.lean         K ≅ 𝟐: Klir embeds into all 7 shapes (common core theorem)
 Systems.lean             Root import
-docs/                    11 docs: abstracts, StructureFamily findings, reference material, retrospectives
+docs/
+  verso/                 Verso interactive documents (6-chapter flagship + Building Story)
+  publications/          Conference abstracts (AITP, ISSS)
+  reference/             Active technical docs, categorification roadmap
+  archive/               Historical process docs + original HTML artifacts
 cql/                     CQL categorical database schemas
   cql.jar                CQL IDE (Jan 2026 release)
   test_instance.cql      All-in-one: CESM schema + GovGraph schema + functor + test data + sigma
@@ -158,15 +162,15 @@ Categorification Phase 2 (shape categories — free categories on quivers):
 - **JOWO/FOIS 2026**: Formal ontology workshop paper
 - **Journal** (late 2026): Full paper with BRA companion
 
-Abstract drafts: `docs/aitp-2026-abstract.md`, `docs/isss-2026-abstract.md`
+Abstract drafts: `docs/publications/aitp-2026-abstract.md`, `docs/publications/isss-2026-abstract.md`
 
 ## Key Source References
 
 - Klir, *Facets of Systems Science* (2001), Eq. 1.1 --- common root
 - Bunge, *Treatise on Basic Philosophy* Vol. 4, Ch. 1 (1979) --- CES triple
 - Mobus, *Systems Science* Ch. 4 (2022) + book-revisions (2024) --- 8-tuple
-- Phase 1 retrospective: `docs/phase1-retrospective.md`
-- Architecture decisions: `docs/recursive-component-architecture.md`
+- Phase 1 retrospective: `docs/archive/phase1-retrospective.md`
+- Architecture decisions: `docs/reference/recursive-component-architecture.md`
 
 ## Related Projects
 
