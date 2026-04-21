@@ -2,9 +2,11 @@ import VersoManual
 import Systems.Examples.Thermostat
 import Systems.Klir.KlirSystem
 
+import SystemsProposal.Introduction
 import SystemsProposal.Definitions
 import SystemsProposal.Triangle
 import SystemsProposal.Thermostat
+import SystemsProposal.Categorification
 import SystemsProposal.Frontier
 
 open Verso.Genre Manual
@@ -33,10 +35,14 @@ Now that the thesis is defended, this is the work I want to focus on. This docum
 
 Every definition below is rendered three ways: typeset mathematics, English prose, and live Lean code. Hover over any Lean expression to see its type. The compiler has checked all of it.
 
+{include 1 SystemsProposal.Introduction}
+
 {include 1 SystemsProposal.Definitions}
 
 {include 1 SystemsProposal.Triangle}
 
 {include 1 SystemsProposal.Thermostat}
+
+{include 1 SystemsProposal.Categorification}
 
 {include 1 SystemsProposal.Frontier}

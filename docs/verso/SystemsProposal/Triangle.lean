@@ -63,3 +63,39 @@ The bridge is a projection: many Mobus 8-tuples map to the same Bunge triple. Si
 - **Time scale** $`\delta` — Temporal resolution. Time-indexed but unformalized in Bunge.
 
 Two Mobus systems differing only in these six categories project to the **same** Bunge CES triple. This is *independent convergence with formally characterized divergence*.
+
+# What the Compiler Found
+
+Beyond the commuting triangle itself, the formalization process corrected and extended the source texts.
+
+**Your question about S — answered.** You asked: *"S is a set of sets of tuples, right?"* Yes. But the formalization proves it doesn't matter for the theorems. Take the family of relations, extract the internal part of each, then union — same result as first flattening everything, then extracting internals. The flat encoding is a faithful quotient.
+
+**Boundary completeness — derived, not axiomatized.** The systems-theoretic property that "all interaction is mediated by the boundary" is not assumed. It *follows structurally* from the bipartite constraint on external flows.
+
+# Convergence and Choice
+
+The `rfl` is clean — perhaps too clean. It depends on a formalization choice. Consider two readings of Bunge's "structure":
+
+1. *Flat reading*: structure is `Set (α × α)` — a single relation. This is what `ConcreteSystem` uses.
+2. *Family reading*: structure is `Set (Set (α × α))` — a "set of relations" (Bunge's plural). This is what `RichConcreteSystem` implements.
+
+Under the family reading, the Mobus → Rich Bunge projection creates a 2-element structure family: \{N.toRelation, G.toRelation\} — preserving the internal/external distinction. The Rich → Klir projection must flatten this family via set union to produce a single relation R. The triangle still commutes, but the proof is no longer `rfl` — it requires `simp` with the lemma `Set.sUnion_pair`.
+
+The gap between `rfl` and `simp`:
+
+- `rfl` — *syntactic identity*. The two expressions are the same computation; the type-checker confirms without reasoning.
+- `simp` — *semantic equality*. The expressions compute to equal values, but the checker needs a lemma to see it.
+
+Both are true. But `rfl` works only because the flat representation hides an information-loss step that the family version makes explicit: to reach Klir's (T, R), you must forget not just environment but the *organization* of relations — which bonds are internal and which cross the boundary.
+
+What matters is that *both* versions produce valid proofs. The compatibility does not depend on a particular reading of Bunge. When three independent researchers arrive at structures that compose cleanly under multiple formalizations, that is evidence the decomposition reflects something real about systemhood, not about formalization choices.
+
+# Emergence, Briefly
+
+Philosophical debates about emergence can span hundreds of pages. The formal definition reduces to set operations:
+
+- *emergentProperties* = after ∖ before (properties that appear)
+- *lostProperties* = before ∖ after (properties that disappear)
+- *qualitativeNovelty* = lost ∪ emergent = symmetric difference
+
+`simp` closes it. Bunge's Definition 1.13 on emergence, once formalized, is a one-liner.

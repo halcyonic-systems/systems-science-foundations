@@ -39,9 +39,23 @@ Two complementary approaches to categorical systems theory exist:
 
 The combinatorial side asks "what is the right category for my objects?" The foundational side asks "what must objects be for composition to work?" Neither is complete without the other.
 
+# The Proposal
+
+**What I bring:** A working formalization (~4,700 lines, zero incomplete proofs), the LLM-assisted proving methodology, and deep familiarity with Bunge and Mobus from PhD work under Mobus.
+
+**What you bring:** The variety-theoretic framework, the rule/law distinction and the semantic-relation argument, the Mesarovic connection, and the hypergraph intuition.
+
+The proposed next phases:
+
+| Phase | Content |
+|---|---|
+| 4 | Formalize variety-theoretic definitions (Defs 13, 17, 18). Define `DimensionalVariety`, `CardinalVariety`, `Constraint` on `KlirSystem` or a new `MesarovicSystem`. |
+| 5 | Formalize control₁ / control₂. Prove Proposition 29 (control₂ ⇒ O is itself a control₁ system) in Lean. |
+| 6 | Connect semantic relations to transforms. Define `SemanticRelation` as contingent entailment; prove control₂ ⇒ semantic relations ⇒ signs. |
+
 # Where the Tree Grows
 
-The formal ontology is not the endpoint — it is the foundation for *System Language (SL)*, a formally specified, computationally executable language for systems science, implemented in BERT. The coherence constraints Lean enforces — disjointness, bipartiteness, boundary completeness — are exactly the grammar rules SL compiles from. The tree is the formal specification.
+The formal ontology is not the endpoint — it is the foundation for *System Language (SL)*, a formally specified, computationally executable language for systems science, implemented in BERT. SL already has 40 typed primitives, 8 composition rules (4 Lean-verified), and working models of four blockchain architectures decomposed into the same 4-subsystem cybernetic structure. The coherence constraints Lean enforces — disjointness, bipartiteness, boundary completeness — are exactly the grammar rules SL compiles from. The tree is the formal specification.
 
 Your variety-theoretic and semiotic framework would give SL something no systems language has ever had: a formal account of *what kind of functional relation* inhabits a system — rule or law — and what that distinction implies about meaning, control, and autonomy.
 

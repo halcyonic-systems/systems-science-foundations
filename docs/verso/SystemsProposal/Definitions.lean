@@ -36,6 +36,8 @@ example : KlirSystem Nat := ⟨{1, 2, 3}, {(1, 2), (2, 3)}⟩
 
 Three natural numbers, two ordered pairs. That is a system in Klir's sense. Everything else the systems tradition adds — environment, flows, boundaries, transforms — is elaboration on this seed.
 
+The definition looks trivially simple, but Klir (Ch. 2) emphasizes that T and R are "extremely rich in content." T can be a single set or a family of distinct sets; when T is a family, R becomes a relation on their product. The formalization commits to a specific reading: T is a single set (`Set α`), R is a binary relation (`Set (α × α)`). This is the natural base case — it captures the structure common to all three frameworks. Richer relational forms would require dependent types. The current choice keeps the types simple enough that projection maps compose by `rfl`.
+
 **The thermostat as a Klir system.** Three things (thermometer, controller, furnace) and four ordered pairs (room acts on thermometer, thermometer acts on controller, controller acts on furnace, furnace acts on room). The relation captures *that* things interact, not *how* or *what kind*.
 
 # Bunge: ⟨C, E, S⟩

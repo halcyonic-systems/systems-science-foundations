@@ -13,6 +13,13 @@ path = "../.."
 [[lean_lib]]
 name = "SystemsProposal"
 
+[[lean_lib]]
+name = "BuildingStory"
+
 [[lean_exe]]
 name = "proposal"
 root = "SystemsProposalMain"
+
+[[lean_exe]]
+name = "building-story"
+root = "BuildingStoryMain"

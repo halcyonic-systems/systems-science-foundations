@@ -58,6 +58,15 @@ A structural observation: **room appears in the relation but not in the thing-se
 
 **What was lost at each step:**
 
+| Lost | Thermostat Content | Why It Matters |
+|---|---|---|
+| Milieu $`M` | Ambient temperature, humidity | The disturbance source control₂ requires |
+| Capacity $`\kappa` | BTUs, millivolts, on/off | Magnitude of flows — invisible to Bunge |
+| Boundary $`\pi` | Thermal insulation R-value | How much disturbance penetrates |
+| Transforms $`\tau` | The if/then control rule | The semantic relation, the rule, the sign |
+| History $`\eta` | Recent temperature readings | Memory — PID needs integral term |
+| Time scale $`\delta` | 30-second polling interval | Can the system track fast disturbances? |
+
 **Mobus → Bunge.** Milieu $`M` disappears (ambient temperature and humidity vanish). Capacity labels disappear (the distinction between a temperature signal, a binary command, and a heat-energy flow is collapsed — all become bare pairs). Boundary properties, transforms, history, and time scale disappear.
 
 **Bunge → Klir.** Environment $`E` disappears. The distinction between "inside" and "outside" is lost. Room becomes a phantom in $`R`; outsideAir disappears entirely (it has no bonds).
