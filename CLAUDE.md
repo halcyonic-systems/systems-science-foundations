@@ -1,8 +1,8 @@
 # Systems Ontology --- Lean 4 Formalization
 
-Machine-verified commuting triangle of systems ontology: Klir's `S = (T, R)` (1969/2001) -> Bunge's CES triple (1979) -> Mobus's 8-tuple (2022). Three independently developed frameworks, one verified diagram. ~2,930 lines, zero `sorry`s.
+Machine-verified systems ontology in Lean 4 with Mathlib. Seven traditions (Klir, Bunge, Mobus, Myers, Wymore, Mesarović, Joslyn) encoded as shape categories with comparison functors and a common core theorem. ~4,700 lines, zero `sorry`s.
 
-**Key insight**: Bunge and Mobus both descend from Klir but never reference each other. The compatibility was *discovered* through formalization, not claimed by any author. The `rfl` proofs trace to both inheriting T = `Set α` and R = `Set (α × α)` from Klir without changing the mathematical type.
+**Key insight**: The common core of all seven independently developed systems definitions is Klir's S = (T, R) --- the walking arrow category **2**. A system, in the sense shared by every tradition from Mesarović (1964) through Myers (2023), is a morphism: relations depend on things. Everything else --- environment, boundary, state, input, output, time, mechanism, feedback --- is tradition-specific elaboration. This was *discovered* through formalization, not claimed by any author.
 
 ## Project Structure
 
@@ -26,11 +26,23 @@ Systems/
     Bridge.lean          toBunge projection, subsystem preservation, info loss
   Klir/                  Phase 3: Klir common root (146 lines)
     KlirSystem.lean      S = (T, R), projection maps, commuting triangle (rfl)
-  Category/              Categorification Phase 1 (~563 lines)
+  Category/              Categorification Phases 1-2 (~2,350 lines)
     SubsystemCategory.lean  Subsystem orderings as thin categories (Preorder instances)
     FlattenFunctor.lean     Flatten as functor, Finding 3 as naturality
     OrderingTriangle.lean   Three orderings as functor triangle, non-fullness witnesses
     BridgeFunctor.lean      Mobus→Bunge bridge factorization through structure family
+    ShapeKlir.lean          I_Klir: 2 obj, 1 arrow (walking arrow)
+    ShapeBunge.lean         I_Bunge: 3 obj, 3 arrows (CES dependency quiver)
+    ShapeMobus.lean         I_Mobus: 8 obj, 5 arrows + 3 isolated
+    ShapeMyers.lean         I_Myers: 3 obj, 2 arrows (lens/deterministic system)
+    ShapeWymore.lean        I_Wymore: 4 obj, 3 arrows (FSD quintuple + time)
+    ShapeMesarovic.lean     I_Mesarovic: 2-3 obj (I/O base + global state extension)
+    ShapeJoslyn.lean        I_Joslyn: 3 obj, 3 arrows (cyclic — feedback loop)
+    ShapeComparison.lean    I_Mobus → I_Bunge: faithful, not full, divergence catalogue
+    ShapeComparison_Myers.lean   I_Mobus → I_Myers: expose only, update unreachable
+    ShapeComparison_Wymore.lean  I_Wymore → I_Mobus: object-injective, time mediated
+    Diagram.lean            BungeDiagram: system-as-functor I_Bunge → Type
+    CommonCore.lean         K ≅ 𝟐: Klir embeds into all 7 shapes (common core theorem)
 Systems.lean             Root import
 docs/                    11 docs: abstracts, StructureFamily findings, reference material, retrospectives
 cql/                     CQL categorical database schemas
@@ -109,10 +121,19 @@ Phase 2 (Mobus):
 Phase 3 (Klir):
   KlirSystem imports Bridge (Phase 2) — connects all three frameworks
 
-Categorification (Phase 1):
+Categorification Phase 1 (thin categories):
   SubsystemCategory ──→ FlattenFunctor ──→ BridgeFunctor
   SubsystemCategory ──→ OrderingTriangle
   All import StructureFamily (Bunge) + Bridge (Mobus)
+
+Categorification Phase 2 (shape categories — free categories on quivers):
+  ShapeKlir, ShapeBunge, ShapeMobus, ShapeMyers, ShapeWymore,
+  ShapeMesarovic, ShapeJoslyn — all independent (Mathlib only)
+  ShapeComparison imports ShapeBunge + ShapeMobus
+  ShapeComparison_Myers imports ShapeMobus + ShapeMyers
+  ShapeComparison_Wymore imports ShapeWymore + ShapeMobus
+  Diagram imports ShapeBunge + Core/System
+  CommonCore imports all 7 shape categories
 ```
 
 ## Headline Results
@@ -125,6 +146,10 @@ Categorification (Phase 1):
 6. **Error detection** (System.lean) --- Bunge's "asymmetric" corrected to antisymmetric
 7. **Bridge factorization** (BridgeFunctor.lean) --- toBunge = toRichBunge ⋙ flatten (Finding 6)
 8. **Ordering triangle** (OrderingTriangle.lean) --- family ⟹ refinement ⟹ flat, strict (Finding 8)
+9. **Common core theorem** (CommonCore.lean) --- K ≅ **2**: Klir's walking arrow embeds faithfully into all 7 shape categories. The irreducible categorical content of "system" across 60 years of independent traditions is a single morphism: relations depend on things.
+10. **Shape category landscape** (Shape*.lean) --- 7 traditions encoded as free categories on dependency quivers; structural/operational/cybernetic divide diagnosed by arrow direction
+11. **Statics vs dynamics** (ShapeComparison_Myers.lean) --- Mobus→Myers: all structural constraints map to `expose`; `update` has no preimage. Mobus captures what systems ARE, Myers captures how they BEHAVE.
+12. **Temporal mediation** (ShapeComparison_Wymore.lean) --- Wymore→Mobus: object-injective, but `stateOnTime` requires length-2 path through boundary. Mobus mediates time through interface structure.
 
 ## Venue Milestones
 
