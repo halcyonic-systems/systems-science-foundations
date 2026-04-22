@@ -68,7 +68,7 @@ Two Mobus systems differing only in these six categories project to the **same**
 
 Beyond the commuting triangle itself, the formalization process corrected and extended the source texts.
 
-**Your question about S — answered.** You asked: *"S is a set of sets of tuples, right?"* Yes. But the formalization proves it doesn't matter for the theorems. Take the family of relations, extract the internal part of each, then union — same result as first flattening everything, then extracting internals. The flat encoding is a faithful quotient.
+**The type of S.** Joslyn asked: *"S is a set of sets of tuples, right?"* Yes. But the formalization proves it doesn't matter for the theorems. Take the family of relations, extract the internal part of each, then union — same result as first flattening everything, then extracting internals. The flat encoding is a faithful quotient.
 
 **Boundary completeness — derived, not axiomatized.** The systems-theoretic property that "all interaction is mediated by the boundary" is not assumed. It *follows structurally* from the bipartite constraint on external flows.
 

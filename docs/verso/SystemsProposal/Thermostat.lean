@@ -10,9 +10,9 @@ open Systems.Examples
 
 set_option pp.rawOnError true
 
-#doc (Manual) "The Thermostat — Your Example, Three Frameworks" =>
+#doc (Manual) "The Thermostat — One Example, Three Frameworks" =>
 
-You used the thermostat in the 1995 paper to derive the internal-state requirement (Proposition 29) and the semantic-relation argument. Here it is formalized under all three frameworks. 160 lines of Lean, zero `sorry`s.
+Joslyn used the thermostat in his 1995 paper to derive the internal-state requirement (Proposition 29) and the semantic-relation argument. Here it is formalized under all three frameworks. 160 lines of Lean, zero `sorry`s.
 
 # Entities and Action
 
@@ -27,7 +27,7 @@ A modeling decision: outsideAir does not act on anything discretely — its ther
 
 # Building the Mobus System
 
-The historical direction is Klir → Bunge → Mobus: increasing elaboration over 43 years. The formal direction is the reverse: Mobus → Bunge → Klir, increasing abstraction through projection. We follow the formal direction because it reveals the convergence — and because it preserves what the history obscures. Building *up* from Klir would suggest Mobus extends Bunge, which is exactly the "systematic extension" framing your question killed. Mobus never read Bunge. Building *down* from Mobus lets each framework stand independently, and the projections show where they meet without implying one derives from the other. The information loss table below shows exactly what each step of abstraction discards.
+The historical direction is Klir → Bunge → Mobus: increasing elaboration over 43 years. The formal direction is the reverse: Mobus → Bunge → Klir, increasing abstraction through projection. We follow the formal direction because it reveals the convergence — and because it preserves what the history obscures. Building *up* from Klir would suggest Mobus extends Bunge, which is exactly the "systematic extension" framing that collapsed once it became clear neither author references the other. Mobus never read Bunge. Building *down* from Mobus lets each framework stand independently, and the projections show where they meet without implying one derives from the other. The information loss table below shows exactly what each step of abstraction discards.
 
 We build the Mobus system first — it carries the most information — then derive the others by projection.
 
@@ -73,4 +73,4 @@ A structural observation: **room appears in the relation but not in the thing-se
 
 **But all three descriptions miss the same thing.** The controller's logic — *if temperature < setpoint then turn on furnace* — is a *rule*, not a law. It was selected from a variety of possible control functions. It could have been a PID controller, a bang-bang controller, or a machine-learning policy. Two Mobus thermostats differing only in transforms — one with bang-bang control, one with PID — project to the **same** Bunge CES triple. They are structurally identical. They differ only in what the controller *does*.
 
-This is precisely your point from the 1995 paper: the feedback function $`f : O_i \to O_e` *must be a rule (contingent entailment), not a natural law*. Rules are arbitrary, conventional, and selected — exactly the properties of Peircean signs. The formalization reaches its limit here.
+This is precisely Joslyn's point from the 1995 paper: the feedback function $`f : O_i \to O_e` *must be a rule (contingent entailment), not a natural law*. Rules are arbitrary, conventional, and selected — exactly the properties of Peircean signs. The formalization reaches its limit here.

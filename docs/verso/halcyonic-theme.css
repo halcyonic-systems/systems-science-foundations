@@ -27,10 +27,20 @@ pre, code {
 
 .hl.lean {
   background: var(--halcyonic-code-bg) !important;
+  color: #D4D0C8 !important;
   border-left: 3px solid var(--halcyonic-gold) !important;
   border-radius: 0 5px 5px 0;
   padding: 1.25rem 1.5rem !important;
 }
+
+.hl.lean a, .hl.lean a:hover {
+  color: #5DBB8A !important;
+}
+
+.hl.lean .keyword { color: #C9A73A !important; }
+.hl.lean .type { color: #5DBB8A !important; }
+.hl.lean .literal { color: #E06C5A !important; }
+.hl.lean .comment { color: #6E7A8A !important; font-style: italic; }
 
 /* Blockquotes — exact source citations */
 blockquote {
