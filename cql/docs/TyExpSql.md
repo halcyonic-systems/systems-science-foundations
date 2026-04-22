@@ -1,1 +1,0 @@
-The SQL typeside.  Contains only java types and no function symbols.
