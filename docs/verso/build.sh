@@ -5,10 +5,12 @@ set -e
 apply_theme() {
   local out="$1"
   cp halcyonic-theme.css "$out/"
-  find "$out" -name "index.html" -exec sed -i '' 's|</head>|<link rel="stylesheet" href="/halcyonic-theme.css"></head>|' {} \;
+  # Inject theme at END of </body> as <style> block to guarantee cascade priority
+  # This ensures our overrides beat Verso's inline <style> blocks
+  find "$out" -name "index.html" -exec sed -i '' "s|</body>|<link rel=\"stylesheet\" href=\"/halcyonic-theme.css\"></body>|" {} \;
 }
 
-echo "Building: A Formal Systems Ontology..."
+echo "Building: Foundations for Mathematical Systems Science..."
 lake exe proposal
 PROPOSAL_OUT="_out/html-multi"
 [ -d "$PROPOSAL_OUT" ] || PROPOSAL_OUT="_out/html-single"

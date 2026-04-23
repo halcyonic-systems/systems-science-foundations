@@ -4,7 +4,7 @@ Interactive documents built with [Verso](https://github.com/leanprover/verso), r
 
 ## Documents
 
-- **SystemsProposal** — "A Formal Systems Ontology and Its Open Frontier" (6 chapters, live Lean hovers)
+- **SystemsProposal** — "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem" (6 chapters, live Lean hovers)
 - **BuildingStory** — "Building Story" (development narrative, prose only)
 
 ## Building

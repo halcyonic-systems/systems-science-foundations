@@ -17,13 +17,13 @@ open Systems.Examples
 
 set_option pp.rawOnError true
 
-#doc (Manual) "A Formal Systems Ontology and Its Open Frontier" =>
+#doc (Manual) "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem" =>
 
 %%%
 authors := ["Shingai Thornton"]
 %%%
 
-*Klir, Bunge, and Mobus — three definitions, one tradition, and the open frontier beyond them.*
+*Seven independently developed definitions of "system," one shared categorical structure — machine-verified in Lean 4.*
 
 The general systems tradition contains several set-theoretic definitions of "system." An independent study paper framing Mobus's 8-tuple as a "systematic extension" of Bunge's CES triple led to a critical question: _does Mobus actually cite Bunge?_ He doesn't. Neither references the other.
 
