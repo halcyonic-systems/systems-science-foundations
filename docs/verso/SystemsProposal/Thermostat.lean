@@ -23,13 +23,13 @@ Five entities. Four causal bonds.
 #check entityActsOn
 ```
 
-A modeling decision: outsideAir does not act on anything discretely — its thermal effect enters through the milieu $`M`, not a point-source flow. This is the engineering judgment Mobus's $`E = \langle O, M \rangle` decomposition makes possible and Bunge's flat $`E` does not.
+A modeling decision: outsideAir does not act on anything discretely; its thermal effect enters through the milieu $`M`, not a point-source flow. This is the engineering judgment Mobus's $`E = \langle O, M \rangle` decomposition makes possible and Bunge's flat $`E` does not.
 
 # Building the Mobus System
 
-The historical direction is Klir → Bunge → Mobus: increasing elaboration over 43 years. The formal direction is the reverse: Mobus → Bunge → Klir, increasing abstraction through projection. We follow the formal direction because it reveals the convergence — and because it preserves what the history obscures. Building *up* from Klir would suggest Mobus extends Bunge, which is exactly the "systematic extension" framing that collapsed once it became clear neither author references the other. Mobus never read Bunge. Building *down* from Mobus lets each framework stand independently, and the projections show where they meet without implying one derives from the other. The information loss table below shows exactly what each step of abstraction discards.
+The historical direction is Klir → Bunge → Mobus: increasing elaboration over 43 years. The formal direction is the reverse: Mobus → Bunge → Klir, increasing abstraction through projection. We follow the formal direction because it reveals the convergence, and because it preserves what the history obscures. Building *up* from Klir would suggest Mobus extends Bunge, which is exactly the "systematic extension" framing that collapsed once it became clear neither author references the other. Mobus never read Bunge. Building *down* from Mobus lets each framework stand independently, and the projections show where they meet without implying one derives from the other. The information loss table below shows exactly what each step of abstraction discards.
 
-We build the Mobus system first — it carries the most information — then derive the others by projection.
+We build the Mobus system first (it carries the most information) then derive the others by projection.
 
 ```lean
 #check thermostatMobus
@@ -37,7 +37,7 @@ We build the Mobus system first — it carries the most information — then der
 
 The parametric fields are telling: transforms = `Unit`, history = `Unit`, timeScale = `Unit`. We have a structural skeleton but no theory of what the controller *does*, what it *remembers*, or *how fast* it operates.
 
-# Bunge and Klir — By Projection
+# Bunge and Klir: By Projection
 
 Rather than defining independently, we *extract* them from the Mobus 8-tuple via the projection maps:
 
@@ -46,7 +46,7 @@ Rather than defining independently, we *extract* them from the Mobus 8-tuple via
 #check thermostatKlir
 ```
 
-A structural observation: **room appears in the relation but not in the thing-set.** After the Bunge → Klir projection, the pairs (room, thermometer) and (furnace, room) are in $`R`, but room $`\notin T`. Room becomes a *phantom entity* — present in the system's relational structure but not counted among its things. This is the formal content of losing the environment component $`E`.
+A structural observation: **room appears in the relation but not in the thing-set.** After the Bunge → Klir projection, the pairs (room, thermometer) and (furnace, room) are in $`R`, but room $`\notin T`. Room becomes a *phantom entity*: present in the system's relational structure but not counted among its things. This is the formal content of losing the environment component $`E`.
 
 # The Triangle on This Instance
 
@@ -73,4 +73,4 @@ A structural observation: **room appears in the relation but not in the thing-se
 
 **But all three descriptions miss the same thing.** The controller's logic — *if temperature < setpoint then turn on furnace* — is a *rule*, not a law. It was selected from a variety of possible control functions. It could have been a PID controller, a bang-bang controller, or a machine-learning policy. Two Mobus thermostats differing only in transforms — one with bang-bang control, one with PID — project to the **same** Bunge CES triple. They are structurally identical. They differ only in what the controller *does*.
 
-This is precisely Joslyn's point from the 1995 paper: the feedback function $`f : O_i \to O_e` *must be a rule (contingent entailment), not a natural law*. Rules are arbitrary, conventional, and selected — exactly the properties of Peircean signs. The formalization reaches its limit here.
+This is precisely Joslyn's point from the 1995 paper: the feedback function $`f : O_i \to O_e` *must be a rule (contingent entailment), not a natural law*. Rules are arbitrary, conventional, and selected. These are exactly the properties of Peircean signs. The formalization reaches its limit here.

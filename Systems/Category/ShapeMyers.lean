@@ -10,7 +10,7 @@ import Mathlib.CategoryTheory.PathCategory.Basic
 
 The *shape category* `I_Myers` encodes the dependency structure of Myers's
 deterministic system definition S = ⟨State, Out, In, expose, update⟩
-(Categorical Systems Theory, Def 1.2.1.2, 2023).
+(Categorical Systems Theory, Def 1.2.1.2, 2023). Zotero key: 5HVAGR5N.
 
 ## Construction
 

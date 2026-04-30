@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foundations for Mathematical Systems Science</title>
+<meta name="description" content="Seven systems science traditions formalized in Lean 4. Common core theorem: K ≅ 2. ~4,700 lines, zero sorrys.">
+<meta property="og:title" content="Foundations for Mathematical Systems Science">
+<meta property="og:description" content="Seven traditions, one walking arrow. A Lean 4 formalization discovering the shared categorical structure of systems science.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟶</text></svg>">
+<style>
+  :root {
+    --cream: #FAFAF7;
+    --gold: #8B6914;
+    --gold-light: #a67f1a;
+    --dark: #1C1917;
+    --code-bg: #F0EBE2;
+    --quote-bg: #F5F0E8;
+    --border: #E8E0D0;
+    --muted: #6B6560;
+    --green: #2a6e5a;
+    --blue: #4a6e8a;
+    --red: #b35a3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: var(--cream);
+    color: var(--dark);
+    line-height: 1.75;
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  h1, h2, h3 {
+    color: var(--gold);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.3;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 1.35rem;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p { margin-bottom: 1rem; }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .subtitle a { color: var(--gold); text-decoration: none; }
+  .subtitle a:hover { text-decoration: underline; }
+
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--gold);
+    color: white;
+    padding: 8px;
+    z-index: 100;
+    font-size: 0.85rem;
+  }
+  .skip-link:focus { top: 0; }
+
+  nav.toc {
+    margin-bottom: 2rem;
+    padding: 1rem 1.25rem;
+    background: var(--code-bg);
+    border-radius: 5px;
+    font-size: 0.9rem;
+  }
+  nav.toc ol {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+  nav.toc li { margin: 0.2rem 0; }
+  nav.toc a { color: var(--dark); text-decoration: none; }
+  nav.toc a:hover { color: var(--gold); }
+
+  code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 0.85em;
+    background: var(--code-bg);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+  }
+
+  .code-block {
+    background: var(--code-bg);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 5px 5px 0;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.85rem;
+    overflow-x: auto;
+  }
+
+  blockquote {
+    background: var(--quote-bg);
+    border-left: 3px solid var(--gold);
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-style: italic;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  .table-wrap { overflow-x: auto; margin: 1rem 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  th {
+    background: var(--code-bg);
+    color: var(--gold);
+    font-weight: bold;
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 2px solid var(--gold);
+  }
+
+  td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .diagram-container {
+    margin: 2rem 0;
+    text-align: center;
+  }
+
+  .diagram-container svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .diagram-caption {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  .result-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+
+  .tag-proven {
+    background: rgba(42, 110, 90, 0.12);
+    color: var(--green);
+    border: 1px solid rgba(42, 110, 90, 0.3);
+  }
+
+  .tag-finding {
+    background: rgba(139, 105, 20, 0.12);
+    color: var(--gold);
+    border: 1px solid rgba(139, 105, 20, 0.3);
+  }
+
+  .open-item {
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 0;
+    background: rgba(179, 90, 58, 0.10);
+    border-left: 3px solid var(--red);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  @media print {
+    body { max-width: none; padding: 1cm; font-size: 10pt; }
+    h2 { page-break-after: avoid; }
+    .diagram-container { page-break-inside: avoid; margin: 1rem 0; }
+    hr { margin: 1.5rem 0; }
+    svg { max-width: 100% !important; }
+    .skip-link, nav.toc { display: none; }
+    .result-tag { border: 1px solid #000 !important; background: white !important; color: black !important; }
+    .open-item { background: #f5f5f5 !important; border-left-color: #666 !important; }
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 1.5rem 1rem 3rem; }
+    h1 { font-size: 1.6rem; }
+    table { font-size: 0.8rem; }
+    nav.toc { font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#what-this-is" class="skip-link">Skip to content</a>
+
+<h1>Foundations for Mathematical Systems Science</h1>
+<p class="subtitle">
+  Shingai Thornton &middot; Binghamton University &middot; 2026<br>
+  Lean 4 formalization &middot; ~4,700 lines &middot; zero <code>sorry</code>s (no unfinished proofs)<br>
+  Co-authored with Claude Opus 4.6 via <a href="https://claude.com/claude-code">Claude Code</a>.
+  Human editorial judgment; LLM Lean fluency; compiler final authority.<br>
+  <a href="https://github.com/halcyonic-systems/systems-ontology">Repository</a>
+</p>
+
+<nav class="toc" aria-label="Table of contents">
+<ol>
+  <li><a href="#what-this-is">What This Is</a></li>
+  <li><a href="#authors-note">Author's Note</a></li>
+  <li><a href="#notation">Notation</a></li>
+  <li><a href="#seven-definitions">Seven Definitions, One Tradition</a></li>
+  <li><a href="#five-results">Five Novel Results</a></li>
+  <li><a href="#embedding-table">The Embedding Table</a></li>
+  <li><a href="#comparison-functors">Comparison Functors</a></li>
+  <li><a href="#where-it-fails">Where It Fails</a></li>
+  <li><a href="#positioning">Positioning</a></li>
+</ol>
+</nav>
+
+<h2 id="what-this-is">What This Is</h2>
+
+<p>Seven systems science traditions, developed independently across six decades, encoded as formal definitions in the Lean 4 proof assistant. The compiler verifies their shared categorical structure; the encodings are editorial choices, but every claim about those encodings is machine-checked. This is a companion to the <a href="../verso/SystemsProposal/">interactive Verso document</a>, which presents the full narrative with hoverable Lean proofs. This page summarizes the key results with diagrams.</p>
+
+<h2 id="authors-note">Author's Note</h2>
+
+<p>I am a systems scientist, not a mathematician or computer scientist. I have no formal training in category theory, type theory, or proof assistants. What I do have is a decade of practice thinking in systems, access to foundational texts that much of the field has moved past without fully absorbing, and a willingness to use new tools at the boundary of what they can do.</p>
+
+<p>This document is the result of pairing that background with two things that did not exist five years ago: a large language model (Claude) fluent in Lean 4 syntax and Mathlib's API, and a proof assistant that does not care about credentials. The human contribution is editorial: which definitions to encode, how to interpret ambiguous source texts, and when the LLM's output is type-correct but conceptually wrong. The LLM contribution is mechanical fluency: tactic generation, library navigation, and the stamina to formalize seven traditions without cutting corners. The compiler's contribution is final authority. It accepted or rejected every claim. There are zero <code>sorry</code>s (unfinished proofs).</p>
+
+<p>The foundational systems science texts formalized here &mdash; Klir (1964&ndash;2001), Bunge (1979), Mesarovic (1975), Joslyn (1995), Mobus (2022) &mdash; are not obscure, but they are underutilized. Most working systems scientists cite them without comparing them formally. Most category theorists building new frameworks (lenses, polynomial functors, operads) do not engage with them at all. This work sits in the gap: it takes the old definitions seriously enough to type-check them, and discovers that they agree on more than anyone knew.</p>
+
+<p>The results should be read with that context. The category theory is real but elementary. The proofs are machine-checked but the encodings are mine. A trained category theorist would likely formalize differently and perhaps find more. What I can offer is the domain judgment to know which seven definitions matter, the editorial sense to encode them faithfully, and the honesty to say where the formalization reaches its limits.</p>
+
+<h2 id="notation">Notation</h2>
+
+<p>We write <strong>2</strong> for the <em>walking-arrow category</em>: two objects 0 and 1 with a single non-identity morphism <em>f</em> : 0 &rarr; 1. Throughout this document, <strong>2</strong> always denotes this category (bold to distinguish from the numeral).</p>
+
+<hr>
+
+<h2 id="seven-definitions">Seven Definitions, One Tradition</h2>
+
+<p>Each tradition defines "system" as a tuple with structural dependencies. We encode these as <strong>shape categories</strong> (free categories on dependency quivers) to make the relationships between traditions visible and comparable.</p>
+
+<div class="diagram-container">
+<svg viewBox="0 0 820 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="landscape-title landscape-desc" style="max-width:820px;">
+  <title id="landscape-title">The Seven-Tradition Landscape</title>
+  <desc id="landscape-desc">Seven systems science traditions arranged as shape category diagrams in three groups: structural/inward (Klir, Bunge, Mobus), operational/outward (Myers, Wymore, Mesarovic), and cybernetic/cyclic (Joslyn). Gold arrows from a central Common Core card (K ≅ 2) point outward to each tradition, showing faithful embeddings. Within each panel, the embedded edge (the image of the walking arrow) is highlighted in gold.</desc>
+  <style>
+    svg text { paint-order: stroke; stroke: #FAFAF7; stroke-width: 3px; stroke-linejoin: round; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1C1917"/>
+    </marker>
+    <marker id="arrow-gold" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8B6914"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#b35a3a"/>
+    </marker>
+    <marker id="arrow-gold-embed" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="7" markerHeight="5" orient="auto-start-reverse">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8B6914" opacity="0.5"/>
+    </marker>
+  </defs>
+
+  <!-- Section labels -->
+  <text x="150" y="28" font-family="Georgia" font-size="13" fill="#8B6914" font-weight="bold" text-anchor="middle">STRUCTURAL / INWARD</text>
+  <text x="540" y="28" font-family="Georgia" font-size="13" fill="#8B6914" font-weight="bold" text-anchor="middle">OPERATIONAL / OUTWARD</text>
+  <text x="710" y="380" font-family="Georgia" font-size="13" fill="#b35a3a" font-weight="bold" text-anchor="middle">CYBERNETIC</text>
+
+  <!-- ===== Klir: Things -> Relation ===== -->
+  <g transform="translate(30, 55)">
+    <text x="95" y="0" font-family="Georgia" font-size="12" fill="#6B6560" text-anchor="middle">I<tspan font-size="9" dy="3">Klir</tspan><tspan dy="-3"> &mdash; 2 obj, 1 arrow</tspan></text>
+    <rect x="30" y="15" width="50" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="55" y="34" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">Things</text>
+    <!-- EMBEDDED EDGE: gold -->
+    <line x1="84" y1="29" x2="115" y2="29" stroke="#8B6914" stroke-width="2" marker-end="url(#arrow-gold)"/>
+    <rect x="120" y="15" width="50" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="145" y="34" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">Rel</text>
+    <text x="95" y="58" font-family="Georgia" font-size="9" fill="#8B6914" text-anchor="middle" font-style="italic">= the common core itself</text>
+  </g>
+
+  <!-- ===== Bunge: S -> C, S -> E, E -> C ===== -->
+  <g transform="translate(30, 140)">
+    <text x="85" y="0" font-family="Georgia" font-size="12" fill="#6B6560" text-anchor="middle">I<tspan font-size="9" dy="3">Bunge</tspan><tspan dy="-3"> &mdash; 3 obj, 3 arrows</tspan></text>
+    <rect x="50" y="12" width="55" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="77" y="31" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">Struct</text>
+    <!-- EMBEDDED EDGE: struct -> comp (gold) -->
+    <line x1="50" y1="44" x2="25" y2="62" stroke="#8B6914" stroke-width="2" marker-end="url(#arrow-gold)"/>
+    <line x1="105" y1="44" x2="135" y2="62" stroke="#1C1917" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="0" y="65" width="50" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="25" y="84" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">Comp</text>
+    <rect x="120" y="65" width="42" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="141" y="84" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">Env</text>
+    <line x1="120" y1="79" x2="54" y2="79" stroke="#1C1917" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <text x="87" y="74" font-family="Georgia" font-size="8" fill="#6B6560" text-anchor="middle" font-style="italic">env&rarr;comp</text>
+  </g>
+
+  <!-- ===== Mobus: 8-tuple ===== -->
+  <g transform="translate(10, 275)">
+    <text x="140" y="0" font-family="Georgia" font-size="12" fill="#6B6560" text-anchor="middle">I<tspan font-size="9" dy="3">Mobus</tspan><tspan dy="-3"> &mdash; 8 obj, 5+3 isolated</tspan></text>
+    <!-- Components (central) -->
+    <rect x="95" y="25" width="50" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="120" y="44" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" fill="#1C1917">Comp</text>
+    <!-- EMBEDDED EDGE: Net -> Comp (gold) -->
+    <rect x="20" y="15" width="45" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="42" y="34" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" fill="#1C1917">Net</text>
+    <line x1="65" y1="29" x2="91" y2="35" stroke="#8B6914" stroke-width="2" marker-end="url(#arrow-gold)"/>
+    <!-- Env -> Comp -->
+    <rect x="20" y="55" width="45" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="42" y="74" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" fill="#1C1917">Env</text>
+    <line x1="65" y1="65" x2="91" y2="49" stroke="#1C1917" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <!-- ExtFlows -> Comp -->
+    <rect x="20" y="95" width="45" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="42" y="114" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" fill="#1C1917">Flows</text>
+    <line x1="65" y1="105" x2="112" y2="57" stroke="#1C1917" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <!-- Boundary -> Comp -->
+    <rect x="165" y="15" width="50" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="190" y="34" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" fill="#1C1917">Bdry</text>
+    <line x1="165" y1="33" x2="149" y2="37" stroke="#1C1917" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <!-- Isolated: Trans, Hist, Δt (dashed = identity morphisms only) -->
+    <rect x="165" y="73" width="40" height="20" rx="4" fill="none" stroke="#6B6560" stroke-width="1" stroke-dasharray="4 2"/>
+    <text x="185" y="87" font-family="'JetBrains Mono', monospace" font-size="8" text-anchor="middle" fill="#6B6560">Trans</text>
+    <rect x="210" y="73" width="35" height="20" rx="4" fill="none" stroke="#6B6560" stroke-width="1" stroke-dasharray="4 2"/>
+    <text x="227" y="87" font-family="'JetBrains Mono', monospace" font-size="8" text-anchor="middle" fill="#6B6560">Hist</text>
+    <rect x="250" y="73" width="28" height="20" rx="4" fill="none" stroke="#6B6560" stroke-width="1" stroke-dasharray="4 2"/>
+    <text x="264" y="87" font-family="'JetBrains Mono', monospace" font-size="8" text-anchor="middle" fill="#6B6560">Δt</text>
+    <text x="225" y="108" font-family="Georgia" font-size="8" fill="#6B6560" text-anchor="middle" font-style="italic">isolated (identity only)</text>
+  </g>
+
+  <!-- ===== Myers: State -> Out, State -> In ===== -->
+  <g transform="translate(400, 55)">
+    <text x="95" y="0" font-family="Georgia" font-size="12" fill="#6B6560" text-anchor="middle">I<tspan font-size="9" dy="3">Myers</tspan><tspan dy="-3"> &mdash; 3 obj, 2 arrows</tspan></text>
+    <rect x="60" y="12" width="55" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="87" y="31" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">State</text>
+    <!-- EMBEDDED EDGE: State -> Out (gold = expose) -->
+    <line x1="60" y1="44" x2="30" y2="62" stroke="#8B6914" stroke-width="2" marker-end="url(#arrow-gold)"/>
+    <line x1="115" y1="44" x2="145" y2="62" stroke="#1C1917" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="5" y="65" width="42" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="26" y="84" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">Out</text>
+    <rect x="130" y="65" width="36" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="148" y="84" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">In</text>
+    <text x="18" y="50" font-family="Georgia" font-size="8" fill="#8B6914" font-style="italic">expose</text>
+  </g>
+
+  <!-- ===== Wymore: State -> Out, State -> In, State -> Time ===== -->
+  <g transform="translate(400, 170)">
+    <text x="95" y="0" font-family="Georgia" font-size="12" fill="#6B6560" text-anchor="middle">I<tspan font-size="9" dy="3">Wymore</tspan><tspan dy="-3"> &mdash; 4 obj, 3 arrows</tspan></text>
+    <rect x="60" y="12" width="55" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="87" y="31" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">State</text>
+    <!-- EMBEDDED EDGE: State -> Out (gold = readout) -->
+    <line x1="60" y1="44" x2="20" y2="62" stroke="#8B6914" stroke-width="2" marker-end="url(#arrow-gold)"/>
+    <line x1="96" y1="44" x2="100" y2="62" stroke="#1C1917" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <line x1="115" y1="44" x2="155" y2="62" stroke="#1C1917" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="0" y="65" width="42" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="21" y="84" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">Out</text>
+    <rect x="82" y="65" width="36" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="100" y="84" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">In</text>
+    <rect x="140" y="65" width="42" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="161" y="84" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">Time</text>
+    <text x="13" y="50" font-family="Georgia" font-size="8" fill="#8B6914" font-style="italic">readout</text>
+  </g>
+
+  <!-- ===== Mesarovic: GlobalState -> Output, GlobalState -> Input ===== -->
+  <g transform="translate(400, 285)">
+    <text x="105" y="0" font-family="Georgia" font-size="12" fill="#6B6560" text-anchor="middle">I<tspan font-size="9" dy="3">Mesarovic</tspan><tspan dy="-3"> &mdash; 3 obj, 2 arrows</tspan></text>
+    <rect x="55" y="12" width="80" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="95" y="31" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" fill="#1C1917">GlobalState</text>
+    <!-- EMBEDDED EDGE: GlobalState -> Output (gold = response_output) -->
+    <line x1="55" y1="44" x2="25" y2="62" stroke="#8B6914" stroke-width="2" marker-end="url(#arrow-gold)"/>
+    <line x1="135" y1="44" x2="155" y2="62" stroke="#1C1917" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="0" y="65" width="48" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="24" y="84" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">Out</text>
+    <rect x="140" y="65" width="48" height="28" rx="4" fill="#FAFAF7" stroke="#1C1917" stroke-width="1.5"/>
+    <text x="164" y="84" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" fill="#1C1917">Input</text>
+  </g>
+
+  <!-- ===== Joslyn: cyclic ===== -->
+  <g transform="translate(620, 400)">
+    <text x="95" y="0" font-family="Georgia" font-size="12" fill="#6B6560" text-anchor="middle">I<tspan font-size="9" dy="3">Joslyn</tspan><tspan dy="-3"> &mdash; 3 obj, 3 arrows (cyclic)</tspan></text>
+    <rect x="0" y="18" width="75" height="28" rx="4" fill="#FAFAF7" stroke="#b35a3a" stroke-width="1.5"/>
+    <text x="37" y="37" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" fill="#b35a3a">Controlled</text>
+    <line x1="75" y1="32" x2="120" y2="32" stroke="#b35a3a" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+    <text x="97" y="25" font-family="Georgia" font-size="9" fill="#6B6560" text-anchor="middle" font-style="italic">disturb</text>
+    <rect x="125" y="18" width="65" height="28" rx="4" fill="#FAFAF7" stroke="#b35a3a" stroke-width="1.5"/>
+    <text x="157" y="37" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" fill="#b35a3a">Effector</text>
+    <!-- EMBEDDED EDGE: Effector -> Controlled (gold = efferent) -->
+    <line x1="157" y1="50" x2="157" y2="75" stroke="#8B6914" stroke-width="2" marker-end="url(#arrow-gold)"/>
+    <text x="180" y="70" font-family="Georgia" font-size="8" fill="#8B6914" font-style="italic">efferent</text>
+    <rect x="115" y="80" width="60" height="28" rx="4" fill="#FAFAF7" stroke="#b35a3a" stroke-width="1.5"/>
+    <text x="145" y="99" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" fill="#b35a3a">Sensor</text>
+    <line x1="115" y1="94" x2="75" y2="50" stroke="#b35a3a" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+    <text x="75" y="82" font-family="Georgia" font-size="9" fill="#6B6560" font-style="italic">afferent</text>
+  </g>
+
+  <!-- Dividing line -->
+  <line x1="295" y1="45" x2="295" y2="400" stroke="#E8E0D0" stroke-width="1" stroke-dasharray="6 4"/>
+
+  <!-- Common Core -->
+  <g transform="translate(250, 485)">
+    <rect x="0" y="0" width="260" height="90" rx="8" fill="none" stroke="#8B6914" stroke-width="2.5"/>
+    <rect x="2" y="2" width="256" height="86" rx="6" fill="#F5EFE0" stroke="none"/>
+    <text x="130" y="25" font-family="Georgia" font-size="15" fill="#8B6914" font-weight="bold" text-anchor="middle" letter-spacing="0.08em">COMMON CORE</text>
+    <text x="75" y="58" font-family="'JetBrains Mono', monospace" font-size="16" fill="#1C1917" text-anchor="middle">0</text>
+    <line x1="95" y1="53" x2="155" y2="53" stroke="#8B6914" stroke-width="2" marker-end="url(#arrow-gold)"/>
+    <text x="125" y="46" font-family="Georgia" font-size="12" fill="#8B6914" font-style="italic" text-anchor="middle">f</text>
+    <text x="180" y="58" font-family="'JetBrains Mono', monospace" font-size="16" fill="#1C1917" text-anchor="middle">1</text>
+    <text x="130" y="80" font-family="Georgia" font-size="13" fill="#8B6914" text-anchor="middle" font-style="italic">K &cong; 2</text>
+  </g>
+
+  <!-- Embedding arrows (gold, pointing OUTWARD from core to each tradition) -->
+  <!-- Origins spread across full card width (260-480); terminations at panel corners, not interiors -->
+  <line x1="265" y1="485" x2="105" y2="105" stroke="#8B6914" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.45" marker-end="url(#arrow-gold-embed)"/>
+  <line x1="295" y1="485" x2="110" y2="250" stroke="#8B6914" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.45" marker-end="url(#arrow-gold-embed)"/>
+  <line x1="330" y1="485" x2="115" y2="275" stroke="#8B6914" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.45" marker-end="url(#arrow-gold-embed)"/>
+  <line x1="400" y1="485" x2="490" y2="108" stroke="#8B6914" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.45" marker-end="url(#arrow-gold-embed)"/>
+  <line x1="430" y1="485" x2="500" y2="275" stroke="#8B6914" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.45" marker-end="url(#arrow-gold-embed)"/>
+  <line x1="460" y1="485" x2="500" y2="390" stroke="#8B6914" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.45" marker-end="url(#arrow-gold-embed)"/>
+  <line x1="490" y1="490" x2="695" y2="405" stroke="#8B6914" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.45" marker-end="url(#arrow-gold-embed)"/>
+</svg>
+<p class="diagram-caption">The Seven-Tradition Landscape. Gold edges within each panel mark the image of the walking arrow under faithful embedding. Dashed gold lines trace the embedding direction: from K &cong; <strong>2</strong> outward into each tradition.</p>
+</div>
+
+<p>Three orientations emerge from the encoding. <strong>Structural</strong> traditions (Klir, Bunge, Mobus) point arrows inward, converging toward components. <strong>Operational</strong> traditions (Myers, Wymore, Mesarovic) point arrows outward, radiating from state. <strong>Joslyn</strong> is the only <strong>cyclic</strong> tradition: feedback generates infinitely many morphisms in the free category. Same arrow, three orientations. The divergence is the history of systems science.</p>
+
+<hr>
+
+<h2 id="five-results">Five Novel Results</h2>
+
+<p>Findings the formalization produced, not claims from the source texts.</p>
+
+<h3 id="result-a"><span class="result-tag tag-proven">rfl</span> (a) The Commuting Triangle</h3>
+
+<p>The two paths from Mobus to Klir (direct, and via Bunge) produce definitionally identical results. The proof is <code>rfl</code>: the two functor-composites reduce to the same normal form, so the diagram commutes on the nose (definitional equality, not merely up to natural isomorphism). Neither Bunge nor Mobus knew their frameworks were this compatible.</p>
+
+<div class="diagram-container">
+<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="triangle-title" style="max-width:380px;">
+  <title id="triangle-title">The Commuting Triangle: Mobus to Bunge to Klir, and Mobus directly to Klir, with rfl proof.</title>
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1C1917"/>
+    </marker>
+  </defs>
+  <rect x="140" y="10" width="100" height="36" rx="6" fill="var(--code-bg)" stroke="#1C1917" stroke-width="1.5"/>
+  <text x="190" y="34" font-family="Georgia" font-size="14" text-anchor="middle" fill="#1C1917">Mobus</text>
+  <rect x="10" y="145" width="100" height="36" rx="6" fill="var(--code-bg)" stroke="#1C1917" stroke-width="1.5"/>
+  <text x="60" y="169" font-family="Georgia" font-size="14" text-anchor="middle" fill="#1C1917">Bunge</text>
+  <rect x="270" y="145" width="100" height="36" rx="6" fill="var(--code-bg)" stroke="#1C1917" stroke-width="1.5"/>
+  <text x="320" y="169" font-family="Georgia" font-size="14" text-anchor="middle" fill="#1C1917">Klir</text>
+  <line x1="155" y1="50" x2="80" y2="142" stroke="#1C1917" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="95" y="90" font-family="Georgia" font-size="11" fill="#6B6560" font-style="italic" transform="rotate(-45, 95, 90)">toBunge</text>
+  <line x1="114" y1="163" x2="266" y2="163" stroke="#1C1917" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="190" y="156" font-family="Georgia" font-size="11" fill="#6B6560" font-style="italic" text-anchor="middle">toKlir</text>
+  <line x1="225" y1="50" x2="300" y2="142" stroke="#1C1917" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="285" y="90" font-family="Georgia" font-size="11" fill="#6B6560" font-style="italic" transform="rotate(45, 285, 90)">direct</text>
+  <text x="190" y="125" font-family="'JetBrains Mono', monospace" font-size="16" fill="#8B6914" font-weight="bold" text-anchor="middle">rfl</text>
+</svg>
+<p class="diagram-caption">The Commuting Triangle. Both paths reduce to the same normal form. Proof: <code>rfl</code> (definitional equality).</p>
+</div>
+
+<h3 id="result-b"><span class="result-tag tag-finding">finding</span> (b) Bunge's 47-Year Error</h3>
+
+<p>Definition 1.6 in <em>Treatise on Basic Philosophy</em>, Vol. 4, Ch. 1 (1979) states the subsystem relation is "reflexive, asymmetric, and transitive." Reflexive + asymmetric is a contradiction (any inhabited element witnesses reflexivity and irreflexivity simultaneously). The compiler rejected it. Correct property: antisymmetric.</p>
+
+<h3 id="result-c"><span class="result-tag tag-proven">simp</span> (c) Structure Family Quotient</h3>
+
+<p>Two readings of Bunge's structure &mdash; flat (single relation) and family (set of relations) &mdash; both support the commuting triangle. The flat encoding is a faithful quotient. Bonus: Mobus's N/G separation <em>is</em> the natural 2-element structure family. Three distinct subsystem orderings satisfy strict containment: family &subne; refinement &subne; flat.</p>
+
+<h3 id="result-d"><span class="result-tag tag-proven">derived</span> (d) Boundary Completeness</h3>
+
+<p>"All interaction is mediated by the boundary" is not assumed. It follows from the bipartite constraint on external flows (the requirement that every flow edge connects an internal component to an external entity, never two internals or two externals). The boundary completeness property is derived, not axiomatized.</p>
+
+<h3 id="result-e"><span class="result-tag tag-proven">proven</span> (e) Common Core Theorem: K &cong; <strong>2</strong></h3>
+
+<p>Seven traditions, encoded as shape categories, all faithfully embed the walking arrow <strong>2</strong>. The common core is <strong>maximal</strong>: any shape category embedding faithfully into Klir's quiver (two objects, one non-identity arrow) has at most two objects and at most one non-identity arrow, hence is a quotient of <strong>2</strong>; faithfulness forces it to be <strong>2</strong> itself. The irreducible content of "system" is a single morphism: <em>relations depend on things</em>.</p>
+
+<h2 id="embedding-table">The Embedding Table</h2>
+
+<p>Each row is a faithful functor E<sub>X</sub> : <strong>2</strong> &rarr; I<sub>X</sub>. The gold edges in the landscape diagram above mark the image of each embedding. Diagram labels are expanded here to their semantic names:</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Tradition</th>
+      <th>0 (things) &mapsto;</th>
+      <th>1 (relation) &mapsto;</th>
+      <th>Arrow (<em>f</em>) &mapsto;</th>
+      <th>Orientation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Klir</strong></td>
+      <td>things</td>
+      <td>relation</td>
+      <td><code>rel_on_things</code></td>
+      <td style="color:var(--gold)"><em>is</em> the core</td>
+    </tr>
+    <tr>
+      <td><strong>Bunge</strong></td>
+      <td>composition (Comp)</td>
+      <td>structure (Struct)</td>
+      <td><code>struct_on_comp</code></td>
+      <td style="color:var(--gold)">inward</td>
+    </tr>
+    <tr>
+      <td><strong>Mobus</strong></td>
+      <td>components (Comp)</td>
+      <td>internalNetwork (Net)</td>
+      <td><code>network_on_components</code></td>
+      <td style="color:var(--gold)">inward</td>
+    </tr>
+    <tr>
+      <td><strong>Myers</strong></td>
+      <td>output (Out)</td>
+      <td>state (State)</td>
+      <td><code>expose</code></td>
+      <td style="color:var(--green)">outward</td>
+    </tr>
+    <tr>
+      <td><strong>Wymore</strong></td>
+      <td>output (Out)</td>
+      <td>state (State)</td>
+      <td><code>readout</code></td>
+      <td style="color:var(--green)">outward</td>
+    </tr>
+    <tr>
+      <td><strong>Mesarovic</strong></td>
+      <td>output (Out)</td>
+      <td>globalState (GlobalState)</td>
+      <td><code>response_output</code></td>
+      <td style="color:var(--green)">outward</td>
+    </tr>
+    <tr>
+      <td><strong>Joslyn</strong></td>
+      <td>controlled (Controlled)</td>
+      <td>effector (Effector)</td>
+      <td><code>efferent</code></td>
+      <td style="color:var(--red)">cyclic</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Structural traditions say: <em>relations are defined over things</em>. Operational traditions say: <em>state determines observables</em>. Joslyn says: <em>the regulator constrains what it controls</em>. The embedding picks the efferent arc (Effector &rarr; Sensor in the diagram); the afferent return has no counterpart in the walking arrow.</p>
+
+<hr>
+
+<h2 id="comparison-functors">Comparison Functors</h2>
+
+<p>Beyond the common core, functors between traditions reveal where the frameworks genuinely diverge:</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Functor</th><th>Property</th><th>What it reveals</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Mobus &rarr; Bunge</td>
+      <td>Faithful, not full</td>
+      <td>6 categories of divergence (boundary, milieu, capacity, transforms, history, timescale). The formal content of "engineering elaboration."</td>
+    </tr>
+    <tr>
+      <td>Mobus &rarr; Myers</td>
+      <td>Statics vs dynamics</td>
+      <td>All structural constraints map to <code>expose</code>. Myers's <code>update</code> has no preimage. Mobus captures what systems <em>are</em>; Myers captures how they <em>behave</em>.</td>
+    </tr>
+    <tr>
+      <td>Wymore &rarr; Mobus</td>
+      <td>Injective on objects, not full</td>
+      <td><code>stateOnTime</code> requires length-2 path through boundary. Mobus mediates time through interface structure.</td>
+    </tr>
+    <tr>
+      <td>Joslyn &rarr; any acyclic</td>
+      <td><em>Not formalized</em></td>
+      <td>Joslyn's cyclic shape generates infinite hom-sets. A faithful functor preserves distinct morphisms, so no faithful functor from Joslyn to a finite acyclic target can exist: the target has only finitely many morphisms to receive infinitely many distinct ones. The open problem.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<hr>
+
+<h2 id="where-it-fails">Where It Fails</h2>
+
+<p>Structure formalizes cleanly. Dynamics and semantics do not. These are the open problems:</p>
+
+<div class="open-item">
+  <strong>Transforms (&tau;)</strong>: encoded as <code>Unit</code>. No formal theory of what systems <em>do</em>. Mobus's transforms are where engineering content lives; the formalization treats them as opaque.
+</div>
+
+<div class="open-item">
+  <strong>Rule/law distinction</strong>: <code>ActsOn : &alpha; &rarr; &alpha; &rarr; Prop</code> is opaque. Cannot distinguish a thermostat's bang-bang control (a chosen rule) from Newton's law of cooling (a physical law). This is Joslyn's central concern.
+</div>
+
+<div class="open-item">
+  <strong>Control<sub>2</sub></strong> (Joslyn's notation, Def. 21): active maintenance of dynamic equilibrium against disturbance. Requires temporal reasoning beyond the current snapshot model.
+</div>
+
+<div class="open-item">
+  <strong>Variety measures</strong>: Joslyn's dimensional/cardinal variety has no formalization. The constraint equation C = X \ S (set-theoretic: the states ruled out by the system's constraint) is the quantitative layer this work lacks.
+</div>
+
+<div class="open-item">
+  <strong>Joslyn incomparability</strong>: what categorical structure can recover comparison between cyclic and acyclic traditions? Candidates: traces in the sense of Joyal&ndash;Street&ndash;Verity (feedback as a loop on a process), operads in the sense of May (composition with typed arities), or double categories (two-dimensional morphism structure with a dedicated feedback dimension).
+</div>
+
+<div class="open-item">
+  <strong>Operational common core</strong>: do Mesarovic, Wymore, and Myers share an analogous core to the structural traditions? Is it the same core "rotated," or a different one?
+</div>
+
+<div class="open-item">
+  <strong>Universal property of 2</strong>: the maximality proof is combinatorial (pigeonhole). Can the walking arrow be characterized as a limit, terminal object, or initial algebra in a 2-category of shapes? This would explain <em>why</em> the walking arrow is common, not merely <em>that</em> it is.
+</div>
+
+<hr>
+
+<h2 id="positioning">Positioning</h2>
+
+<p>Spivak, Fong, and Myers build new categorical frameworks from scratch: polynomial functors, lenses, operads. They capture <em>compositionality</em> beautifully. Note: David Jaz Myers appears in both roles here. His 2023 <em>Categorical Systems Theory</em> is one of the seven traditions encoded (I<sub>Myers</sub>), and he is also one of the researchers building the compositional future. The encoding treats his framework as a peer alongside Klir (1964) and Mesarovic (1975); the positioning places his broader program alongside Spivak's.</p>
+
+<p>This work is <em>comparative</em>: seven existing definitions as written, encoded faithfully, the encodings themselves editorial choices, the compatibility results verified by the compiler. The common core theorem is a <em>finding</em> about those particular encodings, not a design choice.</p>
+
+<p>They build the future of systems theory. This audits its past. The audit reveals the past already agrees on more than anyone knew.</p>
+
+<hr>
+
+<div class="footer">
+  <p>Machine-verified in Lean 4 with Mathlib. Seven shape categories, seven faithful embeddings, zero <code>sorry</code>s (no unfinished proofs).</p>
+  <p>Sources: Klir (2001), Bunge (1979, Vol. 4), Mobus (2022), Myers (2023), Wymore via Wach et al. (2021), Mesarovic &amp; Takahara (1975), Joslyn (1995).</p>
+  <p style="margin-top: 0.75rem;">Co-authored with Claude Opus 4.6 (Anthropic) via Claude Code. Human editorial judgment + LLM Lean fluency + compiler final authority.</p>
+</div>
+
+</body>
+</html>

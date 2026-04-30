@@ -10,5 +10,6 @@ def config : RenderConfig where
   emitHtmlSingle := .no
   emitHtmlMulti := .immediately
   htmlDepth := 1
+  destination := "_out/building-story"
 
 def main := manualMain (%doc BuildingStory) (config := config)

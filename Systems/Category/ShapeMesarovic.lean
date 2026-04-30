@@ -18,7 +18,7 @@ Mesarović & Takahara (1975), Ch. II:
 - Def 1.2: S ⊂ V × Y (I/O partition: V = input object, Y = output object)
 - Def 1.4: Given S, there exists a global state set C and response function R : C → V × Y
 
-Zotero storage: ZA3E2PD3, verified via OCR 2026-04-20.
+Zotero key: ZA3E2PD3, verified via OCR 2026-04-20.
 
 ## Shape 1: `I_Mesarovic_IO` (Def 1.2 — pure I/O system)
 

@@ -18,15 +18,19 @@ and that such a language should be
 
 This document is not that language. It is the verification layer beneath it.
 
+This formalization began as an independent study (Fall 2025) with Cliff Joslyn at Binghamton University, initially covering three structural traditions (Klir, Bunge, Mobus). The commuting triangle and six categories of information loss emerged from that work. The expansion to seven traditions and the categorification program are extensions that grew from a question Joslyn raised: what happens when you include the operational and cybernetic definitions?
+
 # Three Layers
 
 Three distinct layers, each serving a different function:
 
-1. _System Language_ (Mobus) — the speakable and viewable layer. How practitioners reason about, communicate, and diagram systems.
-2. _BERT_ (Bounded Entity Reasoning Toolkit) — the computational implementation. Renders the 8-tuple as interactive models that can be built, explored, and simulated.
-3. _Lean 4_ — the formal verification layer. Proves that the mathematical foundations beneath both are sound.
+1. _System Language_ (Mobus): the speakable and viewable layer. How practitioners reason about, communicate, and diagram systems.
+2. _BERT_ (Bounded Entity Reasoning Toolkit): the computational implementation. Renders the 8-tuple as interactive models that can be built, explored, and simulated.
+3. _Lean 4_: the formal verification layer. Proves that the mathematical foundations beneath both are sound.
 
-Lean does not replace the system language. It validates that its mathematical commitments are sound. The hard problems were not proof search — no proof required more than a few tactic steps. They were *representational*: should `ActsOn` reference `HasStateSpace`? Should `environment` be a field or derived? Should we use `Set` or `Finset`? These decisions propagate through the entire codebase and require understanding the source material, not Lean expertise.
+The coherence constraints Lean enforces (disjointness, bipartiteness, boundary completeness) are exactly the grammar rules that BERT's System Language compiler checks. The proofs ground the tool: BERT's composition rules are correct because Lean verified the structural properties they depend on.
+
+Lean does not replace the system language. It validates that its mathematical commitments are sound. The hard problems were not proof search; no proof required more than a few tactic steps. They were *representational*: should `ActsOn` reference `HasStateSpace`? Should `environment` be a field or derived? Should we use `Set` or `Finset`? These decisions propagate through the entire codebase and require understanding the source material, not Lean expertise.
 
 # How to Read This Document
 
