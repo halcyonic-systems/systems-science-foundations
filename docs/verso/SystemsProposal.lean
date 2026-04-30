@@ -4,6 +4,7 @@ import Systems.Klir.KlirSystem
 
 import SystemsProposal.Definitions
 import SystemsProposal.Triangle
+import SystemsProposal.Thermostat
 import SystemsProposal.Categorification
 import SystemsProposal.Frontier
 
@@ -52,6 +53,8 @@ A note on the Lean blocks: `#check` displays the type of a definition — think 
 {include 1 SystemsProposal.Definitions}
 
 {include 1 SystemsProposal.Triangle}
+
+{include 1 SystemsProposal.Thermostat}
 
 {include 1 SystemsProposal.Categorification}
 
