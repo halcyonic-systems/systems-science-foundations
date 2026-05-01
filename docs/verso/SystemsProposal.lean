@@ -7,6 +7,7 @@ import SystemsProposal.Triangle
 import SystemsProposal.Thermostat
 import SystemsProposal.Categorification
 import SystemsProposal.Frontier
+import SystemsProposal.Bibliography
 
 open Verso.Genre Manual
 open Verso.Genre.Manual.InlineLean
@@ -59,3 +60,5 @@ A note on the Lean blocks: `#check` displays the type of a definition — think 
 {include 1 SystemsProposal.Categorification}
 
 {include 1 SystemsProposal.Frontier}
+
+{include 1 SystemsProposal.Bibliography}
