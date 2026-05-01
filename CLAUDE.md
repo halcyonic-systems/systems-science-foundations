@@ -86,6 +86,18 @@ cql -i cql/test_instance.cql          # launch with file preloaded
 lake build          # Must pass with zero errors, zero sorrys
 ```
 
+## Site Deployment
+
+The Verso document and handout are deployed to GitHub Pages via the `gh-pages` branch.
+
+```bash
+./deploy.sh         # Build Verso, assemble site, push to gh-pages
+```
+
+This builds the Verso document (`docs/verso/`), copies the output alongside `site/handout/` and `site/index.html`, force-pushes to `gh-pages`, and switches back to `main`. One command, ~2 min.
+
+**After any Verso source change** (editing `.lean` files in `docs/verso/SystemsProposal/`), run `./deploy.sh` to update the live site. Source files are committed to `main`; built HTML lives only on `gh-pages`.
+
 ## Conventions
 
 - Every definition includes a docstring citing the source (Bunge Def #, Mobus Eq #, or Klir Eq #)

@@ -3,6 +3,8 @@
 cql/cql.jar
 docs/verso/.lake/
 docs/verso/_out/
+docs/verso/site/
+site/verso/
 
 # Binary assets (store externally, not in git)
 refs/*.pdf
