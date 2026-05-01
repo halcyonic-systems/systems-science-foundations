@@ -4,41 +4,60 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Foundations for Mathematical Systems Science</title>
+<meta name="description" content="Seven systems science traditions formalized in Lean 4. Common core theorem: K ≅ 2. ~4,700 lines, zero sorrys.">
 <style>
-  body { font-family: system-ui, sans-serif; max-width: 640px; margin: 4rem auto; padding: 0 1.5rem; line-height: 1.6; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
-  .subtitle { color: #666; margin-bottom: 2rem; }
-  a { color: #2563eb; text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  .links { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
-  .link-card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem 1.25rem; }
-  .link-card h2 { font-size: 1rem; margin: 0 0 0.25rem; }
-  .link-card p { margin: 0; font-size: 0.875rem; color: #666; }
-  .footer { margin-top: 3rem; font-size: 0.8rem; color: #999; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #FAFAF7;
+    color: #1C1917;
+    max-width: 36rem;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    line-height: 1.75;
+  }
+  h1 { color: #8B6914; font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .subtitle { color: #6B6560; font-size: 0.95rem; margin-bottom: 2.5rem; }
+  a { color: #8B6914; }
+  .links { margin-top: 2rem; }
+  .links a {
+    display: block;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+    border-radius: 0 5px 5px 0;
+    text-decoration: none;
+    color: #1C1917;
+  }
+  .links .handout { background: rgba(139, 105, 20, 0.08); border-left: 3px solid #8B6914; }
+  .links .handout:hover { background: rgba(139, 105, 20, 0.14); }
+  .links .verso { background: rgba(42, 110, 90, 0.08); border-left: 3px solid #2a6e5a; }
+  .links .verso:hover { background: rgba(42, 110, 90, 0.14); }
+  .links .repo { background: rgba(74, 110, 138, 0.08); border-left: 3px solid #4a6e8a; }
+  .links .repo:hover { background: rgba(74, 110, 138, 0.14); }
+  .links .label { font-weight: bold; display: block; }
+  .links .desc { font-size: 0.9rem; color: #6B6560; }
 </style>
 </head>
 <body>
-
 <h1>Foundations for Mathematical Systems Science</h1>
-<p class="subtitle">Seven Traditions, One Theorem</p>
+<p class="subtitle">Shingai Thornton &middot; Binghamton University &middot; 2026</p>
 
-<p>Machine-verified formalization of seven systems definitions (Klir, Bunge, Mobus, Myers, Wymore, Mesarovic, Joslyn) in Lean 4 with Mathlib. The common core theorem proves K &cong; <strong>2</strong>: every tradition shares the walking arrow &mdash; a system is relations that depend on things.</p>
+<p>A Lean 4 formalization (~4,700 lines, zero <code>sorry</code>s) of seven systems science traditions, discovering their shared categorical structure through machine verification.</p>
+
+<p class="subtitle" style="margin-bottom: 0;"><em>Built with Claude Code: human editorial judgment, LLM Lean fluency, compiler final authority.</em></p>
 
 <div class="links">
-  <a href="verso/" class="link-card">
-    <h2>Interactive Document</h2>
-    <p>Six chapters with live Lean code, typeset mathematics, and English prose. Hover any expression to see its type.</p>
+  <a href="handout/" class="handout">
+    <span class="label">Companion Handout</span>
+    <span class="desc">Standalone summary with SVG diagrams, embedding table, and open problems</span>
   </a>
-
-  <a href="handout/" class="link-card">
-    <h2>Standalone Handout</h2>
-    <p>Companion document with diagrams. Designed for reading without the Lean environment.</p>
+  <a href="verso/" class="verso">
+    <span class="label">Interactive Verso Document</span>
+    <span class="desc">Full narrative with hoverable Lean proofs across six chapters</span>
+  </a>
+  <a href="https://github.com/halcyonic-systems/systems-ontology" class="repo">
+    <span class="label">Source Repository</span>
+    <span class="desc">Lean 4 source, CQL schemas, and documentation</span>
   </a>
 </div>
-
-<p class="footer">
-  Shingai Thornton &middot; <a href="https://github.com/halcyonic-systems/systems-ontology">GitHub</a> &middot; Lean 4, zero <code>sorry</code>s
-</p>
-
 </body>
 </html>
