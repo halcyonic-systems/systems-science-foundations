@@ -33,7 +33,7 @@ The Topos Institute has called this program "pioneering a mathematical systems s
 
 The investigation began with a 2025 independent study paper (Thornton, SSCI independent study, Binghamton University, 2025) that framed Mobus's 8-tuple as an extension of Bunge's CES triple. A simple question — does Mobus cite Bunge? — encouraged investigation into the eerie similarities. He doesn't. Neither references the other. Two researchers, 43 years apart, arrived at structurally compatible frameworks without knowing each other's work.
 
-The answer turned out to be Klir. Both cite him. Both inherit $`T` = `Set α` and $`R` = `Set (α × α)` from his $`(T, R)` definition without changing the mathematical type. The formalization proves this — the two paths from Mobus back to Klir, one through Bunge and one direct, produce identical results.
+The answer turned out to be Klir. Both cite him. Both independently arrive at types compatible with his $`(T, R)` definition — $`T` = `Set α` and $`R` = `Set (α × α)` — though Bunge reaches them through ontological analysis, not mathematical inheritance. The formalization proves the convergence: the two paths from Mobus back to Klir, one through Bunge and one direct, produce identical results.
 
 This document presents what the formalization produced, and where it reaches its current limits.
 

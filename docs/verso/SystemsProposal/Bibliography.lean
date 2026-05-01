@@ -14,7 +14,7 @@ Bunge, M. (1979). *Treatise on Basic Philosophy*, Vol. 4: *Ontology II: A World 
 
 Bunge, M. (2000). *Systemism: The Alternative to Individualism and Holism*. *Journal of Socio-Economics*, 29(2), 147–157. Extends the CES framework into social science methodology.
 
-Klir, G.J. (2001). *Facets of Systems Science* (2nd ed.). New York: Springer. Equation 1.1 defines S = (T, R) — the common root from which both Bunge and Mobus inherit their foundational types.
+Klir, G.J. (2001). *Facets of Systems Science* (2nd ed.). New York: Springer. Equation 1.1 defines S = (T, R) — the common root that both Bunge and Mobus independently converge on, though via different paths (ontological and analytical respectively).
 
 Klir, G.J. & Valach, M. (1967). *Cybernetic Modelling*. London: Iliffe Books. Early systems formalization cited by Bunge as precedent for his own definition.
 
