@@ -1,35 +1,37 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd "$(dirname "$0")"
+REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
+REMOTE="$(cd "$REPO_DIR" && git remote get-url origin)"
 
 echo "=== Building Verso ==="
-cd docs/verso
+cd "$REPO_DIR/docs/verso"
 lake build
 .lake/build/bin/proposal
-cd ../..
 
 echo "=== Assembling site ==="
 tmp=$(mktemp -d)
-cp site/index.html "$tmp/"
-cp site/.nojekyll "$tmp/" 2>/dev/null || touch "$tmp/.nojekyll"
-cp -r site/handout "$tmp/handout"
-cp -r docs/verso/_out/html-multi "$tmp/verso"
+cp "$REPO_DIR/site/index.html" "$tmp/"
+touch "$tmp/.nojekyll"
+cp -r "$REPO_DIR/site/handout" "$tmp/handout"
+cp -r "$REPO_DIR/docs/verso/_out/html-multi" "$tmp/verso"
 
 echo "=== Deploying to gh-pages ==="
-git stash --include-untracked -q 2>/dev/null || true
-git checkout gh-pages 2>/dev/null || git checkout --orphan gh-pages
+deploy=$(mktemp -d)
+cd "$deploy"
+git init -q
+git remote add origin "$REMOTE"
+git checkout --orphan gh-pages
 
-git rm -rf . -q 2>/dev/null || true
 cp -r "$tmp"/* .
 cp "$tmp/.nojekyll" .
 rm -rf "$tmp"
 
 git add -A
-git commit -m "deploy: update site $(date +%Y-%m-%d)" --allow-empty
-git push origin gh-pages --force-with-lease
+git commit -m "deploy: update site $(date +%Y-%m-%d)" -q
+git push origin gh-pages --force -q
 
-git checkout main -q
-git stash pop -q 2>/dev/null || true
+rm -rf "$deploy"
+cd "$REPO_DIR"
 
 echo "=== Done. Site will be live at https://halcyonic.systems/systems-ontology/ ==="
