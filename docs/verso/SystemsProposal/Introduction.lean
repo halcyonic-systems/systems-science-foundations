@@ -18,7 +18,7 @@ and that such a language should be
 
 This document is not that language. It is the verification layer beneath it.
 
-This formalization began as an independent study (Fall 2025) with Cliff Joslyn at Binghamton University, initially covering three structural traditions (Klir, Bunge, Mobus). The commuting triangle and six categories of information loss emerged from that work. The expansion to seven traditions and the categorification program are extensions that grew from a question Joslyn raised: what happens when you include the operational and cybernetic definitions?
+This formalization began as an independent study (Fall 2025) with Cliff Joslyn at Binghamton University, initially covering three structural traditions (Klir, Bunge, Mobus). The commuting triangle and six categories of information loss emerged from that work. The expansion to seven traditions and the categorification program grew from a natural question: what happens when you include the operational and cybernetic definitions?
 
 # Three Layers
 

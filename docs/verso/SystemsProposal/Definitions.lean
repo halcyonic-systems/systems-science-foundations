@@ -88,7 +88,7 @@ Three coherence constraints bind the triple together, enforced at the type level
 #check @ConcreteSystem
 ```
 
-**Formalization choice.** Bunge writes "set of relations," plural. The formalization collapses this to a single flat relation `Set (α × α)`. Chapter 2 verifies this is a faithful quotient: flattening commutes with the internal/external decomposition, so no theorem depends on the distinction.
+**Formalization choice.** Bunge writes "set of relations," plural. The formalization collapses this to a single flat relation `Set (α × α)`. Chapter 3 verifies this is a faithful quotient: flattening commutes with the internal/external decomposition, so no theorem depends on the distinction.
 
 The `ActsOn` typeclass provides Bunge's action relation — `a ▷ b` means "a modifies b's trajectory." This is the primitive notion of bonding: causal influence between concrete things.
 

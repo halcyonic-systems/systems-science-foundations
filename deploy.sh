@@ -16,6 +16,10 @@ touch "$tmp/.nojekyll"
 cp -r "$REPO_DIR/site/handout" "$tmp/handout"
 cp -r "$REPO_DIR/docs/verso/_out/html-multi" "$tmp/verso"
 
+echo "=== Applying theme ==="
+find "$tmp/verso" -name "index.html" -exec sh -c 'cp "$1" "$(dirname "$2")/"' _ "$REPO_DIR/docs/verso/halcyonic-theme.css" {} \;
+find "$tmp/verso" -name "index.html" -exec sed -i '' 's|</body>|<link rel="stylesheet" href="halcyonic-theme.css"></body>|' {} \;
+
 echo "=== Deploying to gh-pages ==="
 deploy=$(mktemp -d)
 cd "$deploy"

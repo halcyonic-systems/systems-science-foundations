@@ -11,8 +11,6 @@ apply_theme() {
   # Inject theme at END of </body> as <style> block to guarantee cascade priority
   # This ensures our overrides beat Verso's inline <style> blocks
   find "$out" -name "index.html" -exec sed -i '' "s|</body>|<link rel=\"stylesheet\" href=\"/halcyonic-theme.css\"></body>|" {} \;
-  # Add "Introduction" entry before chapter 1 in the TOC (handles both "numbered" and "current numbered")
-  find "$out" -name "index.html" -exec sed -i '' 's|<tr class="\(.*\)numbered"><td class="num">1\.</td>|<tr class="numbered"><td class="num">0.</td><td><a href="/">Introduction</a></td></tr><tr class="\1numbered"><td class="num">1.</td>|' {} \;
 }
 
 echo "Building: Foundations for Mathematical Systems Science..."
