@@ -11,6 +11,7 @@ apply_theme() {
   # Inject theme at END of </body> as <style> block to guarantee cascade priority
   # This ensures our overrides beat Verso's inline <style> blocks
   find "$out" -name "index.html" -exec sed -i '' "s|</body>|<link rel=\"stylesheet\" href=\"/halcyonic-theme.css\"></body>|" {} \;
+  find "$out" -name "index.html" -exec sed -i '' 's|Foundations for Mathematical Systems Science: Seven Traditions, One Theorem</h1>|Foundations for Mathematical Systems Science</h1>|' {} \;
 }
 
 echo "Building: Foundations for Mathematical Systems Science..."

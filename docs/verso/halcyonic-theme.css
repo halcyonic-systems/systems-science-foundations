@@ -260,6 +260,22 @@ header, .local-nav {
   border-color: #E8E0D0 !important;
 }
 
+.header-title-wrapper {
+  overflow: hidden !important;
+  margin-right: 0.5rem !important;
+}
+
+.header-title {
+  margin: 0 !important;
+}
+
+.header-title h1 {
+  text-wrap: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  font-size: 1.4rem !important;
+}
+
 /* === SPACING FIXES === */
 
 /* Reduce excessive margins on code blocks */

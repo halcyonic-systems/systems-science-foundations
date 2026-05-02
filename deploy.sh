@@ -19,6 +19,7 @@ cp -r "$REPO_DIR/docs/verso/_out/html-multi" "$tmp/verso"
 echo "=== Applying theme ==="
 find "$tmp/verso" -name "index.html" -exec sh -c 'cp "$1" "$(dirname "$2")/"' _ "$REPO_DIR/docs/verso/halcyonic-theme.css" {} \;
 find "$tmp/verso" -name "index.html" -exec sed -i '' 's|</body>|<link rel="stylesheet" href="halcyonic-theme.css"></body>|' {} \;
+find "$tmp/verso" -name "index.html" -exec sed -i '' 's|Foundations for Mathematical Systems Science: Seven Traditions, One Theorem</h1>|Foundations for Mathematical Systems Science</h1>|' {} \;
 
 echo "=== Deploying to gh-pages ==="
 deploy=$(mktemp -d)
