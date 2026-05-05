@@ -29,7 +29,6 @@ The commuting triangle proves: Mobus → Bunge → Klir = Mobus → Klir. The pr
 
 | Resource | Description |
 |----------|-------------|
-| [Companion Handout](https://halcyonic.systems/systems-ontology/handout/) | Standalone summary with SVG diagrams, embedding table, and open problems |
 | [Interactive Verso Document](https://halcyonic.systems/systems-ontology/verso/) | Full narrative across six chapters with hoverable Lean proofs |
 | This repository | Lean 4 source, CQL schemas, and documentation |
 
