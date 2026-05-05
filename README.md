@@ -1,6 +1,6 @@
 # Foundations for Mathematical Systems Science
 
-Machine-verified formalization of seven systems science traditions in Lean 4, discovering their shared categorical structure.
+Machine-verified formalization of seven systems science traditions in Lean 4, discovering their shared categorical structure. They build the future of systems theory. This audits its past.
 
 **~4,700 lines | 34 files | zero `sorry`s | 7 traditions | K ≅ 2**
 
@@ -12,6 +12,18 @@ Three orientations emerge from the encoding:
 - **Structural** (Klir, Bunge, Mobus): arrows converge inward toward components
 - **Operational** (Mesarovic, Wymore, Myers): arrows radiate outward from state
 - **Cybernetic** (Joslyn): arrows form a cycle — the only tradition with feedback in its shape category
+
+## The Three Frameworks
+
+Each tradition adds structure to the one before it. The formalization encodes all three faithfully and proves they compose.
+
+| Tradition | Definition | What it captures |
+|-----------|-----------|-----------------|
+| **Klir** (1964) | `S = (T, R)` | Things and a relation. The simplest possible system. |
+| **Bunge** (1979) | `⟨C, E, S⟩` | Adds environment as first-class. Three coherence constraints. |
+| **Mobus** (2022) | 8-tuple | Adds flows, boundary, milieu, transforms, history, time. Five coherence constraints. |
+
+The commuting triangle proves: Mobus → Bunge → Klir = Mobus → Klir. The proof is `rfl` — the type-checker confirms without reasoning. Neither Bunge nor Mobus knew their frameworks were this compatible.
 
 ## Reading the Work
 
@@ -34,6 +46,15 @@ To build the Verso document locally: `cd docs/verso && lake build proposal && la
 | 5 | **Boundary completeness**: "all interaction mediated by boundary" is derived, not axiomatized | Structural consequence of bipartite constraint |
 | 6 | **Bridge factorization**: `toBunge = toRichBunge ⋙ flatten` | Functor composition |
 | 7 | **Joslyn incomparability**: cyclic shape generates infinite hom-sets; no faithful functor to any acyclic tradition | Open problem (traces, operads, double categories as candidates) |
+
+## Known Limits
+
+Structure formalizes cleanly. Dynamics and semantics don't. That's where the open problems live.
+
+- **Transforms (T)**: encoded as `Unit`. No formal theory of what systems *do* — only what they *are*.
+- **Rule/law distinction**: `ActsOn` is opaque — can't distinguish contingent from necessary relations.
+- **Control**: active maintenance against disturbance requires temporal reasoning beyond the snapshot model.
+- **Variety measures**: Joslyn's dimensional/cardinal variety has no formalization yet.
 
 ## Project Structure
 
