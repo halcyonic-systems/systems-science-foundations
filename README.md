@@ -2,7 +2,7 @@
 
 Machine-verified formalization of seven systems science traditions in Lean 4, discovering their shared categorical structure. They build the future of systems theory. This audits its past.
 
-**~4,700 lines | 34 files | zero `sorry`s | 7 traditions | K ≅ 2**
+**~6,265 lines | 39 files | zero `sorry`s | 7 traditions | K ≅ 2 | 12 → ≤11 principles**
 
 ## The Result
 
@@ -45,29 +45,52 @@ To build the Verso document locally: `cd docs/verso && lake build proposal && la
 | 5 | **Boundary completeness**: "all interaction mediated by boundary" is derived, not axiomatized | Structural consequence of bipartite constraint |
 | 6 | **Bridge factorization**: `toBunge = toRichBunge ⋙ flatten` | Functor composition |
 | 7 | **Joslyn incomparability**: cyclic shape generates infinite hom-sets; no faithful functor to any acyclic tradition | Open problem (traces, operads, double categories as candidates) |
+| 8 | **Unconditional composition**: system composition is valid at both CES and 8-tuple levels without interaction hypotheses | Coherence proofs don't reference cross-system data |
+| 9 | **Complexity is not an axiom**: structural measures derive from Systemness + Hierarchy + Networks | Complexity.lean compiles with only Core imports |
+| 10 | **Simon's named gap**: near-decomposability → time-scale separation requires an unstated StrictAnti assumption | Conditional theorem isolates the bridge |
+| 11 | **Timescale decomposition**: coupled dynamics decomposes into fast (within-module) and slow (between-module) around equilibria | Fast equilibria = product equilibria (by rfl) |
+
+## Principles Axiomatization (active)
+
+Mobus lists 12 principles of systems science. We're testing which are independent axioms and which are theorems — the first systematic axiomatization attempt.
+
+**Status**: 6 principles resolved. Complexity (#5) is not an axiom — it derives from Systemness + Hierarchy + Networks. Governance (#8) is an axiom — the set point is genuinely new structure. The 12 reduce to ≤11.
+
+| # | Principle | Status |
+|---|-----------|--------|
+| 1 | Systemness | **Axiom** — composition closure unconditional at CES and 8-tuple levels |
+| 2 | Hierarchy | **Axiom** — Simon's implicit assumption named (StrictAnti bridge to Dynamics) |
+| 3 | Networks | **Axiom** — complete |
+| 4 | Dynamics | **Axiom** — DynamicSystem, coupled dynamics, equilibrium, Flow, timescale decomposition |
+| 5 | Complexity | **Theorem** — structural measures derive from #1+#2+#3. First reduction. |
+| 8 | Governance | **Axiom** — Homeostat, GovernanceSubsystem, HCGS; set point is new structure not in Dynamics |
+
+Key findings: unconditional composition (CES and 8-tuple), Simon's named gap, forced environment formula, diversity from interaction profiles. See `docs/reference/principles-formalization-companion.md` for the full axiom table and findings.
 
 ## Known Limits
 
-Structure formalizes cleanly. Dynamics and semantics don't. That's where the open problems live.
-
-- **Transforms (T)**: encoded as `Unit`. No formal theory of what systems *do* — only what they *are*.
+- **Quantitative dynamics**: multi-timescale convergence needs metric space infrastructure (structural skeleton is complete).
 - **Rule/law distinction**: `ActsOn` is opaque — can't distinguish contingent from necessary relations.
-- **Control**: active maintenance against disturbance requires temporal reasoning beyond the snapshot model.
+- **Control**: Governance (#8) is formalized as an axiom. Connecting to ShapeJoslyn categorically (the cycle IS the feedback loop) is future work.
 - **Variety measures**: Joslyn's dimensional/cardinal variety has no formalization yet.
 
 ## Project Structure
 
 ```
 Systems/
-  Core/           Bunge ⟨C, E, S⟩ — things, bonds, subsystem order, emergence
-  Mobus/          Mobus 8-tuple — flows, boundary, coherence constraints, bridge to Bunge
-  Klir/           Klir S=(T,R) — common root, commuting triangle (rfl)
-  Category/       Shape categories, comparison functors, common core theorem
+  Core/           Bunge CES + Principles formalization
+                  Thing → Bond → System → Level → Assembly → Selection → State
+                  → Systemness → Complexity → Dynamics
+  Mobus/          8-tuple, flows, boundary, bridge to Bunge, 8-tuple composition
+  Klir/           S=(T,R) — common root, commuting triangle (rfl)
+  Category/       Shape categories (7), comparison functors, K ≅ 2
+  Bunge/          Experimental (StructureFamily, not imported)
+  Examples/       Thermostat
 docs/
-  verso/          Verso interactive document (6 chapters)
-  handout/        Standalone HTML+SVG companion
+  INDEX.md        Reading order for all documentation
+  reference/      15 technical docs (companion, roadmaps, Simon analysis)
   publications/   AITP 2026, ISSS 2026 abstracts
-  reference/      Technical docs, categorification roadmap
+  verso/          Verso interactive document (6 chapters)
 cql/              CQL categorical database schemas
 ```
 

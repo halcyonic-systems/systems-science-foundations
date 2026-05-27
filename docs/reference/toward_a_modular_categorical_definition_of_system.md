@@ -157,6 +157,8 @@ The result is a categorical system definition that is:
 
 Myers avoids the question of what a system *is*. This answers it — not by philosophical argument but by mathematical extraction from six decades of independent formalization.
 
+**Structural parallel from computable analysis.** The common core extraction — "the largest subcategory that embeds faithfully into all tradition-specific shape categories" — has a precise analogue in Pauly's theory of represented spaces (2015). Pauly defines *admissibility* as the property that identifies the largest subcategory of represented spaces where topological continuity and computability coincide (Theorem 36). Both are "largest joint subcategory" constructions: ours extracts what all systems traditions share; Pauly's extracts where topology and computation agree. That the same categorical operation (maximal common subcategory) appears in both contexts suggests the extraction method itself has universal content.
+
 ---
 
 ## 6. Application: System Language v1.0
@@ -266,7 +268,7 @@ The starting point is the *plurality* of system definitions as the primary datum
 
 **Thread 4.** Spivak, *Category Theory for the Sciences*. Fong–Spivak, *Seven Sketches in Compositionality*. Purvine–Joslyn–Robinson (2016). Curry's thesis.
 
-**Thread 5.** Goguen, *Realization is Universal* (1973). Ginali–Goguen (1978). Takahara & Takai (1985). Lambek–Scott. Moggi. Myers (2023). Gavranović et al. (2024). Joslyn (1995).
+**Thread 5.** Goguen, *Realization is Universal* (1973). Ginali–Goguen (1978). Takahara & Takai (1985). Lambek–Scott. Moggi. Myers (2023). Gavranović et al. (2024). Joslyn (1995). Pauly, *On the topological aspects of the theory of represented spaces* (2015) — develops the cartesian closed category of represented spaces (sets equipped with a representation from Cantor space); the Sierpiński space S = {⊥, ⊤} serves as the universal classifier for open/closed sets, structurally identical to **2**. Demonstrates that the walking arrow emerges as a classifying object in computable analysis independently of systems science. Admissibility (§9) characterizes the largest subcategory where topology and computability coincide — structurally parallel to the common core extraction in Direction C.
 
 ---
 

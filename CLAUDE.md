@@ -1,6 +1,6 @@
 # Systems Ontology --- Lean 4 Formalization
 
-Machine-verified systems ontology in Lean 4 with Mathlib. Seven traditions (Klir, Bunge, Mobus, Myers, Wymore, Mesarović, Joslyn) encoded as shape categories with comparison functors and a common core theorem. ~4,700 lines, zero `sorry`s.
+Machine-verified systems ontology in Lean 4 with Mathlib. Seven traditions (Klir, Bunge, Mobus, Myers, Wymore, Mesarović, Joslyn) encoded as shape categories with comparison functors and a common core theorem. ~6,265 lines, zero `sorry`s.
 
 **Key insight**: The common core of all seven independently developed systems definitions is Klir's S = (T, R) --- the walking arrow category **2**. A system, in the sense shared by every tradition from Mesarović (1964) through Myers (2023), is a morphism: relations depend on things. Everything else --- environment, boundary, state, input, output, time, mechanism, feedback --- is tradition-specific elaboration. This was *discovered* through formalization, not claimed by any author.
 
@@ -8,22 +8,28 @@ Machine-verified systems ontology in Lean 4 with Mathlib. Seven traditions (Klir
 
 ```
 Systems/
-  Core/                  Phase 1: Bunge (864 lines)
+  Core/                  Phase 1: Bunge + Principles formalization
     Thing.lean           Things, parthood, composition (§1.1-1.2)
     Bond.lean            ActsOn, bonding, bondage (§1.2, §2.2)
     System.lean          ConcreteSystem ⟨C,E,S⟩, subsystem order (Def 1.1-1.7)
-    Level.lean           Level precedence, recursive decomposition (Def 1.8, Eq 4.3)
+    Level.lean           Level precedence, NearDecomposable, Simon conditional (Def 1.8, Eq 4.3)
     Assembly.lean        Assembly, emergence as set operations (Def 1.12-1.14)
     Selection.lean       Selective action, composition theorem (Def 1.15, Thm 1.2)
     State.lean           State function, event space, history (§2.2)
+    Systemness.lean      RecursiveSystem, composition closure, organized/aggregate (Principle 1)
+    Complexity.lean      SameKind equivalence, derivability proof (Principle 5 → theorem)
+    Dynamics.lean        DynamicSystem, coupled dynamics, Flow, TimescaleDecomposition (Principle 4)
+    Lens.lean            Bidirectional lenses, composition, Conant-Ashby skeleton (Principle 8 bridge)
+    Governance.lean      Homeostat, GovernanceSubsystem, TwoLevelGovernance/HCGS (Principle 8)
   Core.lean              Imports all Core modules
-  Mobus/                 Phase 2: Mobus 8-tuple (886 lines)
+  Mobus/                 Phase 2: Mobus 8-tuple + composition
     FlowNetwork.lean     Directed graphs with parametric capacity κ (Eq. 4.4)
     Environment.lean     E = ⟨O, M⟩ with parametric milieu (book-revisions)
     Boundary.lean        B = ⟨P, I⟩, boundary completeness (Eq. 4.6)
     Interface.lean       Bipartite flow predicate, source/sink classification
     Tuple.lean           Full 8-tuple, 5 coherence constraints (Eq. 1)
     Bridge.lean          toBunge projection, subsystem preservation, info loss
+    Composition.lean     8-tuple composition, bipartite transfer theorem
   Klir/                  Phase 3: Klir common root (146 lines)
     KlirSystem.lean      S = (T, R), projection maps, commuting triangle (rfl)
   Category/              Categorification Phases 1-2 (~2,350 lines)

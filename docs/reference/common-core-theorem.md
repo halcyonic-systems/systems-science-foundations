@@ -189,4 +189,18 @@ Same arrow. Three interpretations. The divergence IS the history of systems scie
 
 *Machine-verified in Lean 4 with Mathlib. Seven shape categories, seven embeddings, zero sorry.*
 
+---
+
+## Independent Confirmation: Computable Analysis
+
+The walking arrow **2** appears independently as the fundamental classifying object in computable analysis. Pauly (2015) develops the category of *represented spaces* — sets equipped with a surjection from Cantor space — and shows that the Sierpiński space S = {⊥, ⊤} is the universal classifier for open and closed sets. S is categorically identical to **2**: two objects, one non-identity morphism.
+
+In Pauly's framework, every topological property of a represented space (compactness, overtness, separation, discreteness) is characterized by the computability of a specific map into or out of S. The category of represented spaces is cartesian closed, with S playing the role that **2** plays here: the minimal object that classifies observable properties.
+
+This is convergence from outside systems science entirely. Seven systems traditions independently converge on **2** as the common core of "system." Computable analysis independently converges on **2** as the common core of "observable property." The walking arrow is not an artifact of the systems landscape — it is the categorical structure that emerges whenever a formal tradition needs to distinguish "thing" from "what holds of thing."
+
+*Reference: Pauly, A. (2015). On the topological aspects of the theory of represented spaces. Computability, 5(2), 159–180. arXiv:1204.3763v3.*
+
+---
+
 *Sources: Klir (2001), Bunge (1979), Mobus (2022), Myers (2023), Wymore via Wach et al. (2021), Mesarović & Takahara (1975), Joslyn (1995).*
