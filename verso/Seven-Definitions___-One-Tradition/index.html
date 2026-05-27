@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      (function(){
+  const {protocol:proto, host:hostName, pathname:path, search:srch, hash:hsh} = window.location;
+  if (!(path.endsWith("/") || path.endsWith(".html"))) {
+    window.location.replace(`${proto}//${hostName}${path}/${srch}${hsh}`);
+  }
+})()</script>
+    <base href="./../"><meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Seven Definitions, One Tradition</title><link rel="stylesheet" href="book.css">
+    <link rel="stylesheet" href="verso-vars.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js" integrity="sha384-zbcZAIxlvJtNE3Dp5nxLXdXtXyxwOdnILY1TDPVmKFhl4r4nSUG1r8bcFXGVa4Te" crossorigin="anonymous"></script>
+    <script src="-verso-search/elasticlunr.min.js"></script>
+    <script src="-verso-search/fuzzysort.min.js"></script>
+    <script src="-verso-search/searchIndex.js"></script>
+    <script type="module" src="-verso-search/search-init.js"></script>
+    <link rel="stylesheet" href="-verso-search/search-box.css">
+    <link rel="stylesheet" href="-verso-search/search-highlight.css">
+    <link rel="stylesheet" href="-verso-search/domain-display.css">
+    <script src="-verso-data/popper.min.js"></script>
+    <script src="-verso-data/katex/math.js"></script>
+    <script src="-verso-data/tippy-bundle.umd.min.js"></script>
+    <script src="-verso-data/katex/katex.js"></script>
+    <link rel="stylesheet" href="-verso-data/tippy-border.css">
+    <link rel="stylesheet" href="-verso-data/katex/katex.css">
+    <style>
+
+.hl.lean {
+  white-space: pre;
+  font-weight: normal;
+  font-style: normal;
+  font-size: inherit;
+}
+
+.hl.lean .keyword {
+  color: var(--verso-code-keyword-color,);
+  font-weight: var(--verso-code-keyword-weight, bold);
+  font-style: var(--verso-code-keyword-style, normal);
+  font-family: var(--verso-code-keyword-font-family,);
+}
+
+.hl.lean .const {
+  color: var(--verso-code-const-color,);
+  font-weight: var(--verso-code-const-weight, normal);
+  font-style: var(--verso-code-const-style, normal);
+  font-family: var(--verso-code-const-font-family,);
+}
+
+.hl.lean .var {
+  color: var(--verso-code-var-color,);
+  font-weight: var(--verso-code-var-weight, normal);
+  font-style: var(--verso-code-var-style, italic);
+  font-family: var(--verso-code-var-font-family,);
+
+  position: relative;
+}
+
+.hl.lean .literal, .hl.lean .unknown {
+  color: var(--verso-code-color,);
+  font-weight: normal;
+  font-style: normal;
+  font-family: var(--verso-code-font-family,);
+}
+
+.hover-container {
+  width: 0;
+  height: 0;
+  position: relative;
+  display: inline;
+}
+
+.hl.lean a {
+  color: inherit;
+  text-decoration: currentcolor underline dotted;
+}
+
+.hl.lean a:hover {
+  text-decoration: currentcolor underline solid;
+}
+
+.hl.lean .hover-info {
+  white-space: normal;
+}
+
+.hl.lean .token .hover-info {
+  display: none;
+  position: absolute;
+  background-color: #e5e5e5;
+  border: 1px solid black;
+  padding: 0.5rem;
+  z-index: 300;
+}
+
+.hl.lean .hover-info.messages {
+  max-height: 10rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  padding: 0 0.5rem 0 0;
+  display: block;
+}
+
+.hl.lean .hover-info code {
+  white-space: pre-wrap;
+  background: none;
+  color: black;
+}
+
+.hl.lean .hover-info.messages > code {
+  padding: 0.5rem;
+  display: block;
+  width: fit-content;
+}
+
+.hl.lean .hover-info.messages > code:only-child {
+  margin: 0;
+}
+
+.hl.lean .hover-info.messages > code {
+  margin: 0.1rem;
+}
+
+.hl.lean .hover-info.messages > code:not(:first-child) {
+  margin-top: 0rem;
+}
+
+.hl.lean {
+}
+
+.hl.lean.block {
+  display: block;
+}
+
+.hl.lean.inline {
+  display: inline;
+  white-space: pre-wrap;
+}
+
+.hl.lean * {
+}
+
+.hl.lean .token {
+  transition: all 0.25s; /* Slight fade for highlights */
+}
+
+@media (hover: hover) {
+  .hl.lean .token.binding-hl, .hl.lean .literal.string:hover, .hl.lean .token.typed:hover {
+    background-color: #eee;
+    border-radius: 2px;
+    transition: none;
+  }
+}
+
+
+.hl.lean .has-info .token:not(.tactic-state):not(.tactic-state *), .hl.lean .has-info .inter-text:not(.tactic-state):not(.tactic-state *) {
+  text-decoration-style: wavy;
+  text-decoration-line: underline;
+  text-decoration-thickness: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.hl.lean .has-info .hover-info {
+  display: none;
+  position: absolute;
+  transform: translate(0.25rem, 0.3rem);
+  border: 1px solid black;
+  padding: 0.5rem;
+  z-index: 400;
+  text-align: left;
+}
+
+.hl.lean .has-info.error :not(.tactic-state):not(.tactic-state *){
+  text-decoration-color: red;
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.error:hover {
+    background-color: #ffb3b3;
+  }
+}
+
+.hl.lean .hover-info.messages > code.error {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid #ffb3b3;
+}
+
+.tippy-box[data-theme~='error'] .hl.lean .hover-info.messages > code.error {
+  background: none;
+  border: none;
+}
+
+.error .verso-message, .error .verso-message .token, .error .verso-message label {
+  color: var(--verso-error-color);
+}
+
+.error .verso-message .case-label:has(input[type="checkbox"])::before {
+  background-color: var(--verso-error-color) !important;
+}
+
+.hl.lean .has-info.warning :not(.tactic-state):not(.tactic-state *) {
+  text-decoration-color: var(--verso-warning-indicator-color);
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.warning:hover {
+    background-color:var(--verso-warning-color);
+  }
+}
+
+.hl.lean .hover-info.messages > code.warning {
+  background-color: var(--verso-warning-color);
+}
+
+.lean-output {
+  border-left: 0.2em solid transparent;
+  padding: 0 0 0 0.5em;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.lean-output.error {
+  border-color: var(--verso-error-indicator-color);
+}
+
+.lean-output.information {
+  border-color: var(--verso-info-indicator-color);
+}
+
+.lean-output.warning {
+  border-color: var(--verso-warning-indicator-color);
+}
+
+.hl.lean .hover-info.messages > code.error {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid var(--verso-warning-color);
+}
+
+.tippy-box[data-theme~='warning'] .hl.lean .hover-info.messages > code.warning {
+  background: none;
+  border: none;
+}
+
+
+.hl.lean .has-info.information :not(.tactic-state):not(.tactic-state *) {
+  text-decoration-color: var(--verso-info-indicator-color, blue);
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.information:hover {
+    background-color: #4777ff;
+  }
+}
+
+
+.hl.lean .hover-info.messages > code.information {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid #4777ff;
+}
+
+.tippy-box[data-theme~='info'] .hl.lean .hover-info.messages > code.information {
+  background: none;
+  border: none;
+}
+
+.hl.lean div.docstring {
+  font-family: var(--verso-text-font-family, sans-serif);
+  white-space: normal;
+  max-width: calc(min(40rem, 90vw));
+  width: max-content;
+}
+
+.hl.lean div.docstring > :last-child {
+  margin-bottom: 0;
+}
+
+.hl.lean div.docstring > :first-child {
+  margin-top: 0;
+}
+
+.hl.lean .hover-info .sep {
+  display: block;
+  width: auto;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0;
+  height: 1px;
+  border-top: 1px solid #ccc;
+}
+
+.hl.lean code {
+  font-family: var(--verso-code-font-family);
+}
+
+.hl.lean .tactic-state {
+  display: none;
+  position: relative;
+  width: fit-content;
+  border: 1px solid #888888;
+  border-radius: 0.1rem;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+
+.hl.lean.popup .tactic-state {
+  position: static;
+  display: block;
+  width: auto;
+  border: none;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+
+
+.hl.lean .tactic {
+  position: relative;
+  display: inline;
+  vertical-align: top;
+  /* Without these, mobile Safari will start making font sizes inconsistent when its text size adjustment feature is triggered.*/
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.hl.lean .tactic:has(.tactic-toggle:checked) {
+  display: inline-grid;
+  grid-template-columns: 1fr;
+}
+
+.hl.lean .tactic-toggle:checked ~ .tactic-state {
+  display: inline-block;
+  vertical-align: top;
+  grid-row: 2;
+  justify-self: start;
+}
+
+.hl.lean .tactic > label {
+  position: relative;
+  grid-row: 1;
+  display: inline;
+}
+
+@media (hover: hover) {
+  .hl.lean .tactic:has(.tactic-toggle:not(:checked)) > label:hover {
+    background-color: #eeeeee;
+  }
+}
+
+.hl.lean .tactic-toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  z-index: -10;
+}
+
+.hl.lean .tactic > label::after {
+  content: "";
+  border: 1px solid #bbbbbb;
+  /* These need to be em, not rem, to scale with the font */
+  border-radius: 1em;
+  height: 0.25em;
+  vertical-align: middle;
+  width: 0.6em;
+  margin-left: 0.1em;
+  margin-right: 0.1em;
+  display: inline-block;
+  transition: all 0.5s;
+}
+
+/*
+@media (hover: hover) {
+  .hl.lean .tactic > label:hover::after {
+    border: 1px solid #aaaaaa;
+    background-color: #aaaaaa;
+    transition: all 0.5s;
+  }
+}
+*/
+
+.hl.lean .tactic > label:has(+ .tactic-toggle:checked)::after {
+  border: 1px solid #999999;
+  background-color: #999999;
+  transition: all 0.5s;
+}
+
+.hl.lean .tactic-state .goal + .goal {
+  margin-top: 1.5em;
+}
+
+/*
+Some CSS frameworks customize details/summary in ways not compatible with Verso's output.
+*/
+
+.hl.lean details {
+  display: block !important;
+  margin: 0;
+}
+
+.hl.lean details summary {
+  display: list-item !important;
+  margin: 0;
+}
+
+.hl.lean details summary:focus {
+  outline: none;
+  outline-offset: none;
+  color: inherit;
+}
+
+.hl.lean ul > li {
+  margin-bottom: 0;
+}
+
+.hl.lean details summary::marker {
+  display: inline !important;
+}
+
+.hl.lean details > summary:first-of-type {
+  list-style-type: disclosure-closed;
+  list-style-position: inside;
+}
+
+.hl.lean details[open] > summary:first-of-type {
+  list-style-type: disclosure-open;
+}
+
+.hl.lean details summary::before, .hl.lean details summary::after {
+  content: "" !important;
+  background: none;
+  display: none;
+}
+
+.hl.lean .tactic-state summary {
+  /* These need to be em, not rem, to scale with the font */
+  margin-left: -0.5em;
+}
+
+.hl.lean .tactic-state details {
+  /* These need to be em, not rem, to scale with the font */
+  padding-left: 0.5em;
+}
+
+.hl.lean .case-label {
+  display: block;
+  position: relative;
+}
+
+.hl.lean .case-label input[type="checkbox"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  z-index: -10;
+}
+
+.hl.lean .case-label:has(input[type="checkbox"])::before {
+  display: inline-block;
+  background-color: black;
+  content: ' ';
+  transition: ease 0.2s;
+  margin-right: 0.7em;
+  clip-path: polygon(100% 0, 0 0, 50% 100%);
+  width: 0.6em;
+  height: 0.6em;
+  vertical-align: middle;
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]:not(:checked))::before {
+  transform: rotate(-90deg);
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]) {
+
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]:checked) {
+
+}
+
+
+.hl.lean .labeled-case > :not(:first-child) {
+  max-height: 0px;
+  display: block;
+  overflow: hidden;
+  transition: max-height 0.1s ease-in;
+  /* These need to be em, not rem, to scale with the font */
+  margin-left: 0.5em;
+  margin-top: 0.1em;
+}
+
+.hl.lean .labeled-case:has(.case-label input[type="checkbox"]:checked) > :not(:first-child) {
+  max-height: 100%;
+}
+
+
+.hl.lean .goal-name::before {
+  font-style: normal;
+  content: "case ";
+}
+
+.hl.lean .goal-name {
+  font-style: italic;
+  font-family: var(--verso-code-font-family);
+  color: inherit;
+}
+
+.hl.lean .hypotheses {
+  display: table;
+}
+
+.hl.lean .hypothesis {
+  display: table-row;
+}
+
+.hl.lean .hypothesis > * {
+  display: table-cell;
+}
+
+
+.hl.lean .hypotheses .colon {
+  text-align: center;
+  /* This needs to be em, not rem, to scale with the font */
+  min-width: 1em;
+}
+
+.hl.lean .hypotheses .name {
+  text-align: right;
+}
+
+.hl.lean .hypotheses .name,
+.hl.lean .hypotheses .type,
+.hl.lean .conclusion .type {
+  font-family: var(--verso-code-font-family);
+}
+
+.tippy-box {
+  /* Without these, mobile Safari will start making font sizes inconsistent when its text size adjustment feature is triggered.*/
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+
+}
+
+.tippy-box[data-theme~='lean'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 1px solid black;
+}
+.tippy-box[data-theme~='lean'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: #e5e5e5;
+}
+
+.tippy-box[data-theme~='message'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #e5e5e5;
+  border-width: 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='top'] > .tippy-arrow::after {
+  bottom: -11px;
+  border-width: 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-width: 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='bottom'] > .tippy-arrow::after {
+  top: -11px;
+  border-width: 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: #e5e5e5;
+  border-width: 11px 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='left'] > .tippy-arrow::after {
+  right: -11px;
+  border-width: 11px 0 11px 11px;
+}
+
+.tippy-box[data-theme~='message'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: #e5e5e5;
+  border-width: 11px 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='right'] > .tippy-arrow::after {
+  left: -11px;
+  border-width: 11px 11px 11px 0;
+}
+
+
+
+.tippy-box[data-theme~='warning'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid var(--verso-warning-color);
+}
+
+.tippy-box[data-theme~='error'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid #f7a7af;
+}
+
+.tippy-box[data-theme~='info'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid #99b3c2;
+}
+
+.tippy-box[data-theme~='tactic'] {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: white;
+}
+
+.extra-doc-links {
+  list-style-type: none;
+  margin-left: 0;
+  padding: 0;
+}
+
+.extra-doc-links > li {
+  display: inline-block;
+}
+
+.extra-doc-links > li:not(:last-child)::after {
+  content: '|';
+  display: inline-block;
+  margin: 0 0.25em;
+}
+
+.verso-message .trace {
+  display: block;
+}
+
+.verso-message .trace > summary::marker {
+  color: var(--verso-text-color);
+}
+
+.verso-message .trace-children {
+  margin: 0;
+  padding: 0;
+}
+
+.verso-message .trace-children > li {
+  list-style-type: none;
+  margin-left: 1.5em;
+}
+
+.verso-message .trace-children > li:not(:has(.trace)) {
+  margin-left: 0;
+}
+
+.verso-message .trace-class {
+  color: color-mix(in srgb, currentColor 70%, transparent);
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+
+.verso-message .text {
+  white-space: pre-wrap;
+}
+
+</style><script>
+      
+window.onload = () => {
+
+    // Don't show hovers inside of closed tactic states
+    function blockedByTactic(elem) {
+      let parent = elem.parentNode;
+      while (parent && "classList" in parent) {
+        if (parent.classList.contains("tactic")) {
+          const toggle = parent.querySelector("input.tactic-toggle");
+          if (toggle) {
+            return !toggle.checked;
+          }
+        }
+        parent = parent.parentNode;
+      }
+      return false;
+    }
+
+    function blockedByTippy(elem) {
+      // Don't show a new hover until the old ones are all closed.
+      // Scoped to the nearest "top-level block" to avoid being O(n) in the size of the document.
+      var block = elem;
+      const topLevel = new Set(["section", "body", "html", "nav", "header"]);
+      while (block.parentNode && !topLevel.has(block.parentNode.nodeName.toLowerCase())) {
+        block = block.parentNode;
+      }
+      for (const child of block.querySelectorAll(".token, .has-info")) {
+        if (child._tippy && child._tippy.state.isVisible) { return true };
+      }
+      return false;
+    }
+
+    for (const c of document.querySelectorAll(".hl.lean .token")) {
+        if (c.dataset.binding != "") {
+            c.addEventListener("mouseover", (event) => {
+                if (blockedByTactic(c)) {return;}
+                const context = c.closest(".hl.lean").dataset.leanContext;
+                for (const example of document.querySelectorAll(".hl.lean")) {
+                    if (example.dataset.leanContext == context) {
+                        for (const tok of example.querySelectorAll(".token")) {
+                            if (c.dataset.binding == tok.dataset.binding) {
+                                tok.classList.add("binding-hl");
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        c.addEventListener("mouseout", (event) => {
+            for (const tok of document.querySelectorAll(".hl.lean .token")) {
+                tok.classList.remove("binding-hl");
+            }
+        });
+    }
+    /* Render docstrings */
+    if ('undefined' !== typeof marked) {
+        for (const d of document.querySelectorAll("code.docstring, pre.docstring")) {
+            const str = d.innerText;
+            const html = marked.parse(str);
+            const rendered = document.createElement("div");
+            rendered.classList.add("docstring");
+            rendered.innerHTML = html;
+            d.parentNode.replaceChild(rendered, d);
+        }
+    }
+    // Add hovers
+    let docsJson = "-verso-docs.json";
+    fetch(docsJson).then((resp) => resp.json()).then((versoDocData) => {
+
+      function hideParentTooltips(element) {
+        let parent = element.parentElement;
+        while (parent) {
+          const tippyInstance = parent._tippy;
+          if (tippyInstance) {
+            tippyInstance.hide();
+          }
+          parent = parent.parentElement;
+        }
+      }
+
+
+
+      const defaultTippyProps = {
+        /* DEBUG -- remove the space: * /
+        onHide(any) { return false; },
+        trigger: "click",
+        // */
+        /* theme: "lean", */
+        maxWidth: "none",
+        appendTo: () => document.body,
+        interactive: true,
+        delay: [100, null],
+        /* ignoreAttributes: true, */
+        followCursor: 'initial',
+        onShow(inst) {
+          if (inst.reference.className == 'tactic') {
+
+            const toggle = inst.reference.querySelector("input.tactic-toggle");
+            if (toggle && toggle.checked) {
+              return false;
+            }
+            hideParentTooltips(inst.reference);
+            //if (blockedByTippy(inst.reference)) { return false; }
+
+          } else if (inst.reference.querySelector(".hover-info") || "versoHover" in inst.reference.dataset) {
+            if (blockedByTactic(inst.reference)) { return false };
+            if (blockedByTippy(inst.reference)) { return false; }
+          } else { // Nothing to show here!
+            return false;
+          }
+        },
+        content (tgt) {
+          const content = document.createElement("span");
+          if (tgt.className == 'tactic') {
+            const state = tgt.querySelector(".tactic-state").cloneNode(true);
+            state.style.display = "block";
+            content.appendChild(state);
+            content.style.display = "block";
+            content.className = "hl lean popup";
+          } else {
+            content.className = "hl lean";
+            content.style.display = "block";
+            content.style.maxHeight = "300px";
+            content.style.overflowY = "auto";
+            content.style.overflowX = "hidden";
+            const hoverId = tgt.dataset.versoHover;
+            const hoverInfo = tgt.querySelector(".hover-info");
+            if (hoverId) { // Docstrings from the table
+              // TODO stop doing an implicit conversion from string to number here
+              let data = versoDocData[hoverId];
+              if (data) {
+                const info = document.createElement("span");
+                info.className = "hover-info";
+                info.style.display = "block";
+                info.innerHTML = data;
+                content.appendChild(info);
+                /* Render docstrings - TODO server-side */
+                if ('undefined' !== typeof marked) {
+                    for (const d of content.querySelectorAll("code.docstring, pre.docstring")) {
+                        const str = d.innerText;
+                        const html = marked.parse(str);
+                        const rendered = document.createElement("div");
+                        rendered.classList.add("docstring");
+                        rendered.innerHTML = html;
+                        d.parentNode.replaceChild(rendered, d);
+                    }
+                }
+              } else {
+                content.innerHTML = "Failed to load doc ID: " + hoverId;
+              }
+            } else if (hoverInfo) { // The inline info, still used for compiler messages
+              content.appendChild(hoverInfo.cloneNode(true));
+            }
+            const extraLinks = tgt.parentElement.dataset['versoLinks'];
+            if (extraLinks) {
+              try {
+                const extras = JSON.parse(extraLinks);
+                const links = document.createElement('ul');
+                links.className = 'extra-doc-links';
+                extras.forEach((l) => {
+                  const li = document.createElement('li');
+                  li.innerHTML = "<a href=\"" + l['href'] + "\" title=\"" + l.long + "\">" + l.short + "</a>";
+                  links.appendChild(li);
+                });
+                content.appendChild(links);
+              } catch (error) {
+                console.error(error);
+              }
+            }
+          }
+          return content;
+        }
+      };
+
+
+      document.querySelectorAll('.hl.lean .const.token, .hl.lean .keyword.token, .hl.lean .literal.token, .hl.lean .option.token, .hl.lean .var.token, .hl.lean .typed.token, .hl.lean .level-var, .hl.lean .level-const, .hl.lean .level-op, .hl.lean .sort').forEach(element => {
+        element.setAttribute('data-tippy-theme', 'lean');
+      });
+      document.querySelectorAll('.hl.lean .has-info.warning').forEach(element => {
+        element.setAttribute('data-tippy-theme', 'warning message');
+      });
+      document.querySelectorAll('.hl.lean .has-info.information').forEach(element => {
+        element.setAttribute('data-tippy-theme', 'info message');
+      });
+      document.querySelectorAll('.hl.lean .has-info.error').forEach(element => {
+        element.setAttribute('data-tippy-theme', 'error message');
+      });
+      document.querySelectorAll('.hl.lean .tactic').forEach(element => {
+        element.setAttribute('data-tippy-theme', 'tactic');
+      });
+      let insts = tippy('.hl.lean .const.token, .hl.lean .keyword.token, .hl.lean .literal.token, .hl.lean .option.token, .hl.lean .var.token, .hl.lean .typed.token, .hl.lean .has-info, .hl.lean .tactic, .hl.lean .level-var, .hl.lean .level-const, .hl.lean .level-op, .hl.lean .sort', defaultTippyProps);
+  });
+}
+</script>
+    <script src="-verso-search/search-highlight.js" defer="defer"></script>
+    </head>
+  <body>
+    <header>
+      <div class="header-logo-wrapper"></div>
+      <div class="header-title-wrapper">
+        <a href="" class="header-title"><h1>
+            Foundations for Mathematical Systems Science</h1>
+          </a></div>
+      </header>
+    <label for="toggle-toc" id="toggle-toc-click"><span class="line line1"></span><span class="line line2"></span><span class="line line3"></span></label><div class="with-toc">
+      <div class="toc-backdrop" onclick="document.getElementById('toggle-toc-click')?.click()"></div>
+      <nav id="toc">
+        <input type="checkbox" id="toggle-toc"><div class="first">
+          <a href="" class="toc-title"><h1>
+              Foundations for Mathematical Systems Science</h1>
+            </a><div class="split-tocs">
+            <div class="split-toc book">
+              <div class="title">
+                <label for="--verso-manual-toc-----bookRoot" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-----bookRoot" checked="checked"></label><span class="">Table of Contents</span></div>
+              <table><tr class="numbered"><td class="num">1.</td><td><a href="Introduction/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Introduction">Introduction</a></td></tr><tr class="current numbered"><td class="num">2.</td><td><a href="Seven-Definitions___-One-Tradition/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition">Seven Definitions, One Tradition</a></td></tr><tr class="numbered"><td class="num">3.</td><td><a href="The-Commuting-Triangle/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle">The Commuting Triangle</a></td></tr><tr class="numbered"><td class="num">4.</td><td><a href="The-Thermostat-___-One-Example___-Three-Frameworks/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Thermostat-___-One-Example___-Three-Frameworks">The Thermostat — One Example, Three Frameworks</a></td></tr><tr class="numbered"><td class="num">5.</td><td><a href="Categorification___-Making-Relationships-Visible/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Categorification___-Making-Relationships-Visible">Categorification: Making Relationships Visible</a></td></tr><tr class="numbered"><td class="num">6.</td><td><a href="The-Open-Frontier/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Open-Frontier">The Open Frontier</a></td></tr><tr class="numbered"><td class="num">7.</td><td><a href="References/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--References">References</a></td></tr></table></div>
+            <div class="split-toc">
+              <div class="title">
+                <label for="--verso-manual-toc-Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition" class="toggle-split-toc"><input type="checkbox" class="toggle-split-toc" id="--verso-manual-toc-Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition" checked="checked"></label><span class="number">2.</span> <span class="current"><a href="Seven-Definitions___-One-Tradition/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition">Seven Definitions, One Tradition</a></span></div>
+              <table><tr class="numbered"><td class="num">2.1.</td><td><a href="Seven-Definitions___-One-Tradition/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Klir___-S-___-_LPAR_T___-R_RPAR_">Klir: S = (T, R)</a></td></tr><tr class="numbered"><td class="num">2.2.</td><td><a href="Seven-Definitions___-One-Tradition/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Bunge___-_LANGLE_C___-E___-S_RANGLE_">Bunge: ⟨C, E, S⟩</a></td></tr><tr class="numbered"><td class="num">2.3.</td><td><a href="Seven-Definitions___-One-Tradition/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Mobus___-The-8-Tuple">Mobus: The 8-Tuple</a></td></tr><tr class="numbered"><td class="num">2.4.</td><td><a href="Seven-Definitions___-One-Tradition/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Mesarovic___-S-___-V-___-Y">Mesarovic: S ⊆ V × Y</a></td></tr><tr class="numbered"><td class="num">2.5.</td><td><a href="Seven-Definitions___-One-Tradition/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Wymore___-Z-___-_LPAR_S___-I___-O___-N___-R_RPAR_">Wymore: Z = (S, I, O, N, R)</a></td></tr><tr class="numbered"><td class="num">2.6.</td><td><a href="Seven-Definitions___-One-Tradition/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Myers___-S-___-_LANGLE_State___-Out___-In___-expose___-update_RANGLE_">Myers: S = ⟨State, Out, In, expose, update⟩</a></td></tr><tr class="numbered"><td class="num">2.7.</td><td><a href="Seven-Definitions___-One-Tradition/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Joslyn___-Constraint___-Control___-and-Semantics">Joslyn: Constraint, Control, and Semantics</a></td></tr></table></div>
+            </div>
+          </div>
+        <div class="last"></div>
+        </nav>
+      <main><div class="content-wrapper">
+          <nav class="prev-next-buttons">
+            <a class="local-button active" href="Introduction/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Introduction" rel="prev" title="1. Introduction"><span class="arrow">←</span><span class="where">1. Introduction</span></a><a class="local-button active" href="The-Commuting-Triangle/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle" rel="next" title="3. The Commuting Triangle"><span class="where">3. The Commuting Triangle</span><span class="arrow">→</span></a></nav>
+          <section>
+            <h1>
+              2. Seven Definitions, One Tradition<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&amp;name=Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition" title="Permalink">🔗</a></span></h1>
+            <p>
+              The general systems tradition contains several set-theoretic definitions of "system." They are not competing alternatives but <strong>layers</strong> of commitment: to different ontological primitives, different mathematical machinery, and different answers to the question "what matters most about a system?" We present seven, developed independently across six decades, each in its formal definition with proper citations and the Lean 4 encoding.</p>
+            <p>
+              The first three (Klir, Bunge, and Mobus) are <strong>structural</strong>. Their arrows point inward: relations depend on things, structure depends on composition, networks depend on components. The next three (Mesarovic, Wymore, and Myers) are <strong>operational</strong>. Their arrows point outward: state determines what you can observe, what happens next, how subsystems compose. The seventh (Joslyn) is <strong>cybernetic</strong>. Its arrows form a cycle: feedback, constraint, and the semantics of control.</p>
+            <section>
+              <h2 id="Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Klir___-S-___-_LPAR_T___-R_RPAR_">
+                2.1. Klir: S = (T, R)<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&amp;name=Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Klir___-S-___-_LPAR_T___-R_RPAR_" title="Permalink">🔗</a></span></h2>
+              <p>
+                <code class="math display">S = (T, R)</code></p>
+              <blockquote><p>
+                  A system <code class="math inline">S</code> is an ordered pair <code class="math inline">S = (T, R)</code>, where <code class="math inline">T</code> is a set of things (<strong>thinghood</strong>) and <code class="math inline">R</code> is a relation on <code class="math inline">T</code> (<strong>systemhood</strong>).</p>
+                </blockquote><blockquote></blockquote><blockquote><p>
+                  — Klir, <strong>Facets of Systems Science</strong>, 2001, Eq. 1.1</p>
+                </blockquote><p>
+                The two components:</p>
+              <ul>
+                <li>
+                  <p>
+                    <code class="math inline">T</code> — <strong>Things</strong>: the raw material, the parts that exist before any relationship is asserted (<strong>thinghood</strong>)</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">R \subseteq T \times T</code> — <strong>Relation</strong>: which of those things are related (<strong>systemhood</strong>)</p>
+                  </li>
+                </ul>
+              <p>
+                A thing becomes a system when you specify which of its parts are related. This is the simplest formal definition of system in the general systems tradition, and, as we will prove, the common mathematical ancestor of both Bunge and Mobus.</p>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info information"><span class="hover-container"><span class="hover-info messages"><code class="verso-message information"><span class="text"></span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-Systems.KlirSystem" data-verso-hover="0">KlirSystem</span><span class="inter-text"></span></span><span class="text"> : </span><span class="highlighted"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type u_1</span><span class="inter-text"> </span><span class="unknown token" data-binding="">→</span><span class="inter-text"> </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type u_1</span></span></code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-2156">#check</span></span><span class="inter-text"> </span><span class="unknown token" data-binding="">@</span><span class="const token" data-binding="const-Systems.KlirSystem" data-verso-hover="0">KlirSystem</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                No time, no state, no environment, no boundary. Just <code class="math inline">T</code> and <code class="math inline">R</code>.</p>
+              <code class="hl lean block" data-lean-context="examples"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.example-2257">example</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="const token" data-binding="const-Systems.KlirSystem" data-verso-hover="0">KlirSystem</span><span class="inter-text"> </span><span class="const token" data-binding="const-Nat" data-verso-hover="2">Nat</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:=</span><span class="inter-text"> </span><span class="unknown token" data-binding="const-Systems.KlirSystem.mk" data-verso-hover="3">⟨</span><span class="unknown token" data-binding="">{</span><span class="typed token" data-binding="" data-verso-hover="4">1</span><span class="unknown token" data-binding="">,</span><span class="inter-text"> </span><span class="typed token" data-binding="" data-verso-hover="4">2</span><span class="unknown token" data-binding="">,</span><span class="inter-text"> </span><span class="typed token" data-binding="" data-verso-hover="4">3</span><span class="unknown token" data-binding="">}</span><span class="unknown token" data-binding="const-Systems.KlirSystem.mk" data-verso-hover="3">,</span><span class="inter-text"> </span><span class="unknown token" data-binding="">{</span><span class="unknown token" data-binding="">(</span><span class="typed token" data-binding="" data-verso-hover="4">1</span><span class="unknown token" data-binding="">,</span><span class="inter-text"> </span><span class="typed token" data-binding="" data-verso-hover="4">2</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="typed token" data-binding="" data-verso-hover="4">2</span><span class="unknown token" data-binding="">,</span><span class="inter-text"> </span><span class="typed token" data-binding="" data-verso-hover="4">3</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">}</span><span class="unknown token" data-binding="const-Systems.KlirSystem.mk" data-verso-hover="3">⟩</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                Three natural numbers, two ordered pairs. That is a system in Klir's sense. Everything else the systems tradition adds (environment, flows, boundaries, transforms) is elaboration on this seed.</p>
+              <p>
+                The definition looks trivially simple, but Klir (Ch. 2) emphasizes that <code class="math inline">T</code> and <code class="math inline">R</code> are "extremely rich in content." <code class="math inline">T</code> can be a single set or a family of distinct sets; when <code class="math inline">T</code> is a family, <code class="math inline">R</code> becomes a relation on their product.</p>
+              <p>
+                <strong>Formalization choice.</strong> We commit to the base case: <code class="math inline">T</code> is a single set (<code>Set α</code>), <code class="math inline">R</code> is a binary relation (<code>Set (α × α)</code>). This captures the structure common to all three frameworks without requiring dependent types. The payoff: projection maps compose by <code>rfl</code> — a fact that would be obscured by a richer encoding. Similarly, Klir allows <code class="math inline">R</code> to be an n-ary relation; the formalization restricts to binary pairs. Both choices — single carrier, binary relation — are the minimal base case. Richer arities would require dependent types without changing the structural comparison results.</p>
+              <p>
+                <strong>The thermostat as a Klir system.</strong></p>
+              <p>
+                <code class="math display">T = \{\text{thermometer}, \text{controller}, \text{furnace}\}</code></p>
+              <p>
+                <code class="math display">R = \{(\text{room}, \text{thermometer}), (\text{thermometer}, \text{controller}), (\text{controller}, \text{furnace}), (\text{furnace}, \text{room})\}</code></p>
+              <p>
+                The relation captures <strong>that</strong> things interact, not <strong>how</strong> or <strong>what kind</strong>. Note that <code class="math inline">(\text{room}, \text{thermometer}) \in R</code> is the same assertion that Bunge will write as <code class="math inline">\text{room} \triangleright \text{thermometer}</code> — ordered-pair membership and the action relation are two notations for the same fact.</p>
+              </section>
+            <section>
+              <h2 id="Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Bunge___-_LANGLE_C___-E___-S_RANGLE_">
+                2.2. Bunge: ⟨C, E, S⟩<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&amp;name=Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Bunge___-_LANGLE_C___-E___-S_RANGLE_" title="Permalink">🔗</a></span></h2>
+              <p>
+                <code class="math display">\sigma = \langle C(\sigma), E(\sigma), S(\sigma) \rangle</code></p>
+              <blockquote><p>
+                  Let <code class="math inline">T</code> be a nonempty set. Then the ordered triple <code class="math inline">\sigma = \langle C, E, S \rangle</code> is (or represents) a system over <code class="math inline">T</code> iff <code class="math inline">C</code> and <code class="math inline">E</code> are mutually disjoint subsets of <code class="math inline">T</code> (i.e. <code class="math inline">C \cap E = \emptyset</code>), and <code class="math inline">S</code> is a nonempty set of relations on the union of <code class="math inline">C</code> and <code class="math inline">E</code>.</p>
+                </blockquote><blockquote></blockquote><blockquote><p>
+                  — Bunge, <strong>Treatise on Basic Philosophy</strong> Vol. 4, 1979, Ch. 1</p>
+                </blockquote><p>
+                The three components:</p>
+              <ul>
+                <li>
+                  <p>
+                    <code class="math inline">C(\sigma)</code> — <strong>Composition</strong>: not the collection of all parts, but the set of <strong>atoms</strong> — those parts that independently enter into the system's relations. For a social system, the atoms are whole individuals, not their brains.</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">E(\sigma)</code> — <strong>Environment</strong>: the set of all things, not components of <code class="math inline">\sigma</code>, that act on or are acted upon by its components. Bunge is precise: this is the <strong>immediate</strong> environment, not the rest of the universe. "The immediate environment of a thing is the composition of its next supersystem."</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">S(\sigma)</code> — <strong>Structure</strong>: the set of relations among components and between components and environment, including both bonding relations (causal connections) and nonbonding relations (spatial configuration, for example).</p>
+                  </li>
+                </ul>
+              <p>
+                Bunge adds one primitive that Klir lacks: <strong>environment</strong>. A system exists <strong>within</strong> something, and that something is a first-class component of its description. Where Klir asks "what are the parts and how are they related?", Bunge asks "what is inside, what is outside, and how do they interact?"</p>
+              <p>
+                Three coherence constraints bind the triple together, enforced at the type level:</p>
+              <ol start="1">
+                <li>
+                  <p>
+                    <code class="math inline">C \cap E = \emptyset</code> — components and environment do not overlap. If the thermometer appeared in both <code class="math inline">C</code> and <code class="math inline">E</code>, the formalism would claim the same entity is simultaneously inside and outside the system. The compiler rejects this.</p>
+                  </li>
+                <li>
+                  <p>
+                    All relations in <code class="math inline">S</code> are defined on <code class="math inline">C \cup E</code> — no dangling references. A bond (satellite, controller) where satellite appears in neither <code class="math inline">C</code> nor <code class="math inline">E</code> would reference an entity the system does not know about.</p>
+                  </li>
+                <li>
+                  <p>
+                    At least two distinct components must be bonded: there exist <code class="math inline">a, b \in C</code> with <code class="math inline">a \neq b</code> and <code class="math inline">a</code> bonded to <code class="math inline">b</code>. Otherwise the collection is a heap, not a system. <code class="math inline">C</code> = {thermometer} with no bonds has thinghood but not systemhood.</p>
+                  </li>
+                </ol>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info information"><span class="hover-container"><span class="hover-info messages"><code class="verso-message information"><span class="text"></span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-Systems.ConcreteSystem" data-verso-hover="5">ConcreteSystem</span><span class="inter-text"></span></span><span class="text"> : </span><span class="highlighted"><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_pp_uniq.2" data-verso-hover="6">α</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type u_1</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">→</span><span class="inter-text"> </span><span class="unknown token" data-binding="">[</span><span class="const token" data-binding="const-Systems.ActsOn" data-verso-hover="7">ActsOn</span><span class="inter-text"> </span><span class="var token" data-binding="var-_pp_uniq.2" data-verso-hover="6">α</span><span class="unknown token" data-binding="">]</span><span class="inter-text"> </span><span class="unknown token" data-binding="">→</span><span class="inter-text"> </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type u_1</span></span></code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-6256">#check</span></span><span class="inter-text"> </span><span class="unknown token" data-binding="">@</span><span class="const token" data-binding="const-Systems.ConcreteSystem" data-verso-hover="5">ConcreteSystem</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                <strong>Formalization choice.</strong> Bunge writes "set of relations," plural. The formalization collapses this to a single flat relation <code>Set (α × α)</code>. Chapter 3 verifies this is a faithful quotient: flattening commutes with the internal/external decomposition, so no theorem depends on the distinction.</p>
+              <p>
+                The <code>ActsOn</code> typeclass provides Bunge's action relation — <code>a ▷ b</code> means "a modifies b's trajectory." This is the primitive notion of bonding: causal influence between concrete things.</p>
+              <p>
+                <strong>A 47-year-old error.</strong> Bunge's Definition 1.6 (<strong>Treatise on Basic Philosophy</strong>, Vol. 4, Ch. 1, 1979) states that the subsystem relation is <strong>"reflexive, asymmetric, and transitive."</strong> No relation can be both reflexive and asymmetric. Reflexivity gives <code class="math inline">x \leq x</code> for all <code class="math inline">x</code>; asymmetry requires <code class="math inline">x \leq y \implies \neg(y \leq x)</code> — substituting <code class="math inline">y = x</code> yields a contradiction. The compiler rejected the asymmetry claim. The correct property is <strong>antisymmetry</strong>: <code class="math inline">\sigma_1 \leq \sigma_2</code> and <code class="math inline">\sigma_2 \leq \sigma_1</code> implies equality of their CES triples as ordered tuples (composition, environment, and structure are pairwise equal as sets). This error has been in print since 1979.</p>
+              <p>
+                <strong>Note on CESM.</strong> Later work (Bunge, <strong>Systemism</strong>, 2000) extends the triple to <code class="math inline">\langle C, E, S, M \rangle</code> adding mechanism. The 1979 <strong>Treatise</strong> uses the triple. The formalization encodes the 1979 definition; mechanism enters through Mobus's transforms <code class="math inline">\tau</code>.</p>
+              <p>
+                <strong>The thermostat as a Bunge system.</strong></p>
+              <p>
+                <code class="math display">C = \{\text{thermometer}, \text{controller}, \text{furnace}\}</code></p>
+              <p>
+                <code class="math display">E = \{\text{room}, \text{outsideAir}\}</code></p>
+              <p>
+                <code class="math display">S = \{(\text{room} \triangleright \text{thermometer}),\; (\text{thermometer} \triangleright \text{controller}),\; (\text{controller} \triangleright \text{furnace}),\; (\text{furnace} \triangleright \text{room})\}</code></p>
+              <p>
+                A modeling decision: the room is environment because the thermostat acts <strong>on</strong> the room — the room is what the system is trying to regulate. A subtlety: outsideAir appears in <code class="math inline">E</code> but no component acts on it or is acted upon by it directly — it contributes a thermal disturbance, not a bond. Strictly, outsideAir is closer to Mobus's milieu <code class="math inline">M</code> (ambient conditions) than to Bunge's environment (bonded external things). We include it in <code class="math inline">E</code> here for continuity with the Mobus example; the tension is real and illustrates how the boundary between Bunge's and Mobus's ontologies is not always clean.</p>
+              <p>
+                <strong>Emergence, briefly.</strong> Philosophical debates about emergence can span hundreds of pages. Let <code class="math inline">\mathcal{P}(\sigma, t_1)</code> be the properties of a system before assembly and <code class="math inline">\mathcal{P}(\sigma, t_2)</code> the properties after. The formal definition reduces to set operations:</p>
+              <p>
+                <code class="math display">P_{emergent} = \mathcal{P}(\sigma, t_2) \setminus \mathcal{P}(\sigma, t_1)</code></p>
+              <p>
+                <code class="math display">P_{lost} = \mathcal{P}(\sigma, t_1) \setminus \mathcal{P}(\sigma, t_2)</code></p>
+              <p>
+                <code class="math display">P_{novel} = P_{emergent} \cup P_{lost} = \mathcal{P}(\sigma, t_1) \mathbin{\triangle} \mathcal{P}(\sigma, t_2)</code></p>
+              <p>
+                Qualitative novelty is the symmetric difference. <code>simp</code> closes it. Bunge's Definition 1.13 on emergence, once formalized, is a one-liner. This captures the <strong>bookkeeping</strong> of emergence — which properties appear and disappear — not its metaphysics. The philosophical claim that emergent properties are irreducible to lower-level descriptions is a separate assertion that no set operation can settle.</p>
+              </section>
+            <section>
+              <h2 id="Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Mobus___-The-8-Tuple">
+                2.3. Mobus: The 8-Tuple<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&amp;name=Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Mobus___-The-8-Tuple" title="Permalink">🔗</a></span></h2>
+              <p>
+                <code class="math display">S_{i,l} = \langle C, N, E, G, B, T, H, \Delta t \rangle_{i,l}</code></p>
+              <blockquote><p>
+                  The development of this approach was inspired originally by Klir (2001) although he, by his own claim, was a radical constructivist, whereas this work is inclined toward a realist interpretation. ... We start with a principle-based definition and then apply mathematics as a way to provide a structure for "holding" the details of a system description. We will not be doing math as much as using math.</p>
+                </blockquote><blockquote></blockquote><blockquote><p>
+                  — Mobus, <strong>Systems Science</strong>, Ch. 4, 2022</p>
+                </blockquote><p>
+                Mobus elaborates Klir in a different direction from Bunge, toward engineering methodology. Where Bunge asks "what <strong>is</strong> a system?", Mobus asks "how do you <strong>describe</strong> one?" He shares Klir's starting point but rejects his constructivism, and where Bunge and Klir treat the definition as an end in itself, Mobus treats it as a scaffold for capturing real-world system descriptions.</p>
+              <p>
+                The 8-tuple fields:</p>
+              <ul>
+                <li>
+                  <p>
+                    <code class="math inline">C</code> — <strong>Components</strong>: the set of entities at level <code class="math inline">l</code></p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">N = \langle C, L \rangle</code> — <strong>Internal network</strong>: directed flow graph among components, with capacity labels <code class="math inline">\kappa</code></p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">E = \langle O, M \rangle</code> — <strong>Environment</strong>: discrete objects <code class="math inline">O</code> plus an opaque <strong>milieu</strong> <code class="math inline">M</code></p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">G</code> — <strong>External flows</strong>: bipartite graph between <code class="math inline">O</code> and interface components</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">B = \langle P, I \rangle</code> — <strong>Boundary</strong>: properties <code class="math inline">P</code> plus interface components <code class="math inline">I \subseteq C</code></p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">T</code> — <strong>Transforms</strong>: domain-specific processing functions</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">H</code> — <strong>History</strong>: stored knowledge / memory</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">\Delta t</code> — <strong>Time scale</strong>: temporal resolution</p>
+                  </li>
+                </ul>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info information"><span class="hover-container"><span class="hover-info messages"><code class="verso-message information"><span class="text"></span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-Systems.MobusSystem" data-verso-hover="8">MobusSystem</span><span class="inter-text"></span></span><span class="text"> : </span><span class="highlighted"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type u_1</span><span class="inter-text"> </span><span class="unknown token" data-binding="">→</span><span class="inter-text">
+  </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type u_2</span><span class="inter-text"> </span><span class="unknown token" data-binding="">→</span><span class="inter-text">
+    </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type u_3</span><span class="inter-text"> </span><span class="unknown token" data-binding="">→</span><span class="inter-text">
+      </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type u_4</span><span class="inter-text"> </span><span class="unknown token" data-binding="">→</span><span class="inter-text"> </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type u_5</span><span class="inter-text"> </span><span class="unknown token" data-binding="">→</span><span class="inter-text"> </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type u_6</span><span class="inter-text"> </span><span class="unknown token" data-binding="">→</span><span class="inter-text"> </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type u_7</span><span class="inter-text"> </span><span class="unknown token" data-binding="">→</span><span class="inter-text"> </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type (max (max (max (max (max (max u_1 u_2) u_3) u_4) u_5) u_6) u_7)</span></span></code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-11240">#check</span></span><span class="inter-text"> </span><span class="unknown token" data-binding="">@</span><span class="const token" data-binding="const-Systems.MobusSystem" data-verso-hover="8">MobusSystem</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                Seven type parameters. Five coherence constraints enforced by the compiler:</p>
+              <ol start="1">
+                <li>
+                  <p>
+                    Internal network nodes <code class="math inline">=</code> components — the flow graph cannot reference entities that are not part of the system. No ghost nodes.</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">C \cap O = \emptyset</code> — the same disjointness as Bunge. An entity is either a component or an environmental object, never both.</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">I \subseteq C</code> — interface components must actually be components. The boundary cannot claim an entity the system does not contain.</p>
+                  </li>
+                <li>
+                  <p>
+                    External flows are <strong>bipartite</strong> between <code class="math inline">O</code> and <code class="math inline">I</code> — no flow connects two components (those are internal) or two environmental objects (those are co-environmental). Every cross-boundary flow has one foot inside and one foot outside.</p>
+                  </li>
+                <li>
+                  <p>
+                    External flow nodes <code class="math inline">\subseteq O \cup I</code> — no orphan endpoints. Every participant in an external flow is either an environmental object or an interface component.</p>
+                  </li>
+                </ol>
+              <p>
+                The bipartite constraint alone <strong>implies</strong> boundary completeness: all interaction between system and environment passes through the boundary. This is derived, not axiomatized. In the thermostat: every flow between system and room must pass through thermometer or furnace. No backdoor.</p>
+              <p>
+                <strong>Formalization choice.</strong> The first five fields (<code class="math inline">C, N, E, G, B</code>) are structurally active — they participate in proofs. The last three (<code class="math inline">T, H, \Delta t</code>) are parametric — carried data with no structural role in the ontology. This is a deliberate scope decision, not an oversight: transforms are domain-specific, history is implementation-specific, and time scale is observational. The formalization captures <strong>what a system has</strong>, not <strong>what it does</strong>. Mobus himself might object — in his engineering reading, the transforms <strong>are</strong> the system. What we formalize is the structural skeleton that all traditions share; the dynamics that distinguish them remain outside the current scope.</p>
+              <p>
+                <strong>The thermostat as a Mobus system.</strong></p>
+              <p>
+                <code class="math display">C = \{\text{thermometer}, \text{controller}, \text{furnace}\}</code></p>
+              <p>
+                <code class="math display">N: \text{thermometer} \xrightarrow{\text{mV}} \text{controller} \xrightarrow{\text{on/off}} \text{furnace} \xrightarrow{\text{BTU}} \text{thermometer}</code></p>
+              <p>
+                <code class="math display">E = \langle O, M \rangle \quad \text{where } O = \{\text{room}\},\; M = \text{outsideAir (ambient thermal)}</code></p>
+              <p>
+                <code class="math display">B = \langle P, I \rangle \quad \text{where } I = \{\text{thermometer}, \text{furnace}\}</code></p>
+              <p>
+                <code class="math display">T = \text{Unit}, \quad H = \text{Unit}, \quad \Delta t = \text{Unit}</code></p>
+              <p>
+                The last three fields are blank — Unit. No formal theory of what the controller <strong>does</strong>, no history, no time scale. That absence is the gap this document is building toward.</p>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info information"><span class="hover-container"><span class="hover-info messages"><code class="verso-message information"><span class="text"></span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-Systems.Examples.thermostatMobus" data-verso-hover="9">Systems.Examples.thermostatMobus</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="const token" data-binding="const-Systems.MobusSystem" data-verso-hover="8">MobusSystem</span><span class="inter-text"> </span><span class="const token" data-binding="const-Systems.Examples.Entity" data-verso-hover="10">Entity</span><span class="inter-text"> </span><span class="const token" data-binding="const-Unit" data-verso-hover="11">Unit</span><span class="inter-text"> </span><span class="const token" data-binding="const-Unit" data-verso-hover="11">Unit</span><span class="inter-text"> </span><span class="const token" data-binding="const-Unit" data-verso-hover="11">Unit</span><span class="inter-text"> </span><span class="const token" data-binding="const-Unit" data-verso-hover="11">Unit</span><span class="inter-text"> </span><span class="const token" data-binding="const-Unit" data-verso-hover="11">Unit</span><span class="inter-text"> </span><span class="const token" data-binding="const-Unit" data-verso-hover="11">Unit</span></span></code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-13861">#check</span></span><span class="inter-text"> </span><span class="const token" data-binding="const-Systems.Examples.thermostatMobus" data-verso-hover="9">thermostatMobus</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                ---</p>
+              <p>
+                The three definitions above are <strong>structural</strong>. Their characteristic move is inward: relations are defined over things, structure over composition, networks over components. The arrows in their shape categories converge toward the system's core.</p>
+              <p>
+                The next three traditions reverse this orientation. They begin not with what a system <em>is</em> but with what it <em>does</em>, and their arrows radiate outward from state. Where Mobus enumerates eight fields of internal structure, Mesarovic refuses to open the box at all.</p>
+              </section>
+            <section>
+              <h2 id="Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Mesarovic___-S-___-V-___-Y">
+                2.4. Mesarovic: S ⊆ V × Y<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&amp;name=Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Mesarovic___-S-___-V-___-Y" title="Permalink">🔗</a></span></h2>
+              <p>
+                <code class="math display">S \subseteq V \times Y</code></p>
+              <blockquote><p>
+                  We define a system <code class="math inline">S</code> as a relation on abstract sets: <code class="math inline">S \subseteq \prod_{i \in I} V_i</code>. ... This definition is deliberately kept at the most general level to cover, in a unified manner, the widest possible class of systems of interest.</p>
+                </blockquote><blockquote></blockquote><blockquote><p>
+                  — Mesarovic & Takahara, <strong>General Systems Theory</strong>, 1975, Def. 1.1</p>
+                </blockquote><p>
+                Mesarovic begins where the others do not: with pure observation. A system is not components or boundaries — it is a relation between what goes in and what comes out. Two sets and a subset:</p>
+              <ul>
+                <li>
+                  <p>
+                    <code class="math inline">V</code> — <strong>Input</strong>: the set of possible inputs (stimuli, perturbations, driving signals)</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">Y</code> — <strong>Output</strong>: the set of observable responses</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">S \subseteq V \times Y</code> — <strong>System</strong>: the relation itself. Not a function — the same input may yield different outputs</p>
+                  </li>
+                </ul>
+              <p>
+                This is the most parsimonious definition in the tradition. No state, no time, no structure. A system <strong>is</strong> its input-output behavior. Mesarovic refuses to answer "how?", only "what does it do?"</p>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info information"><span class="hover-container"><span class="hover-info messages"><code class="verso-message information"><span class="text"></span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-MesarovicIOShape" data-verso-hover="12">MesarovicIOShape</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type</span></span></code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-15439">#check</span></span><span class="inter-text"> </span><span class="const token" data-binding="const-MesarovicIOShape" data-verso-hover="12">MesarovicIOShape</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                The shape category is <strong>discrete</strong>: two objects, zero generating arrows. No dependency is asserted between input and output. The system is the relation <code class="math inline">S</code>, not a mapping from one to the other. This is the formal content of Mesarovic's extensional stance — the system is identified with its behavior, full stop.</p>
+              <p>
+                Mesarovic then asks: when <em>can</em> a system be captured by a state? This is not an idle question. Most real systems — economies, ecologies, organizations — resist state-space representation because their future behavior depends on their entire history, not a compressible summary. Admitting a global state is a commitment that most interesting systems fail. Definition 1.4 introduces the canonical extension for those that pass: if a global state <code class="math inline">x \in X</code> exists such that the response at any time depends only on <code class="math inline">x</code> and the input, the system admits a state-space representation:</p>
+              <p>
+                <code class="math display">F: X \times \Omega \rightarrow Y</code></p>
+              <p>
+                where <code class="math inline">\Omega</code> is the space of admissible input functions. The three-object shape emerges:</p>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info information"><span class="hover-container"><span class="hover-info messages"><code class="verso-message information"><span class="text"></span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-MesarovicShape" data-verso-hover="13">MesarovicShape</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type</span></span></code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-16507">#check</span></span><span class="inter-text"> </span><span class="const token" data-binding="const-MesarovicShape" data-verso-hover="13">MesarovicShape</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                Two arrows radiate from <code>globalState</code> — one toward input (the state constrains which inputs are admissible), one toward output (the state determines the response). This is the first <strong>outward</strong> shape we encounter: state is the source, not the target.</p>
+              <p>
+                <strong>The thermostat as a Mesarovic system.</strong></p>
+              <p>
+                <code class="math display">V = \{\text{setpoint adjustments}, \text{ambient temperature changes}\}</code></p>
+              <p>
+                <code class="math display">Y = \{\text{room temperature trajectories}\}</code></p>
+              <p>
+                <code class="math display">S = \text{the set of (input, output) pairs the thermostat can produce}</code></p>
+              <p>
+                Mesarovic's thermostat is a black box. We observe what goes in and what comes out. The thermometer, controller, and furnace are invisible — they may or may not exist. This is the sharpest possible contrast with Mobus, who begins by enumerating exactly those components.</p>
+              </section>
+            <section>
+              <h2 id="Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Wymore___-Z-___-_LPAR_S___-I___-O___-N___-R_RPAR_">
+                2.5. Wymore: Z = (S, I, O, N, R)<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&amp;name=Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Wymore___-Z-___-_LPAR_S___-I___-O___-N___-R_RPAR_" title="Permalink">🔗</a></span></h2>
+              <p>
+                <code class="math display">Z = (S_Z, I_Z, O_Z, N_Z, R_Z)</code></p>
+              <blockquote><p>
+                  A system is determined by its state space, its input space, its output space, a next-state function, and a readout function. ... The fundamental concept is that of a system design, i.e., a mathematical model which can be used to predict the future behavior of a system.</p>
+                </blockquote><blockquote></blockquote><blockquote><p>
+                  — Wymore, <strong>Model-Based Systems Engineering</strong>, 1993, Ch. 3</p>
+                </blockquote><p>
+                Where Mesarovic asks "what does it do?", Wymore asks "given its current state and an input, what happens next?" This is the engineer's definition. Five components:</p>
+              <ul>
+                <li>
+                  <p>
+                    <code class="math inline">S_Z</code> — <strong>State space</strong>: the set of all possible internal configurations</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">I_Z</code> — <strong>Input space</strong>: what the environment can send</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">O_Z</code> — <strong>Output space</strong>: what can be observed</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">N_Z: S \times I \rightarrow S</code> — <strong>Next-state function</strong>: dynamics. Given state and input, the successor state</p>
+                  </li>
+                <li>
+                  <p>
+                    <code class="math inline">R_Z: S \rightarrow O</code> — <strong>Readout function</strong>: observation. Given state, what the system reveals</p>
+                  </li>
+                </ul>
+              <p>
+                Wymore adds what Mesarovic deliberately omits: commitment to state, to dynamics, and to time. The admissible input function space <code class="math inline">\Omega</code> reappears as a first-class component — not all input sequences are physically realizable, and the system definition must say which ones are.</p>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info information"><span class="hover-container"><span class="hover-info messages"><code class="verso-message information"><span class="text"></span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-WymoreShape" data-verso-hover="14">WymoreShape</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type</span></span></code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-18572">#check</span></span><span class="inter-text"> </span><span class="const token" data-binding="const-WymoreShape" data-verso-hover="14">WymoreShape</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                Four objects, three arrows — all radiating from <code>state</code>. The shape adds a fourth vertex that no other tradition has: <code>time</code>. The arrow <code>stateOnTime</code> asserts that state is parameterized by a temporal index. This is structurally significant: when we compare Wymore's shape to Mobus's, the time vertex requires a <strong>length-2 path</strong> through boundary to find its image.</p>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info information"><span class="hover-container"><span class="hover-info messages"><code class="verso-message information"><span class="text"></span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-wymore_stateOnTime_length" data-verso-hover="15">wymore_stateOnTime_length</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="const token" data-binding="const-Quiver.Path.length" data-verso-hover="16">Quiver.Path.length</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="const token" data-binding="const-wymoreToMobusPre" data-verso-hover="17">wymoreToMobusPre</span><span class="unknown token" data-binding="">.</span><span class="const token" data-binding="const-Prefunctor.map" data-verso-hover="18">map</span><span class="inter-text"> </span><span class="const token" data-binding="const-WymoreArrow.stateOnTime" data-verso-hover="19">WymoreArrow.stateOnTime</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="const token" data-binding="const-Eq" data-verso-hover="20">=</span><span class="inter-text"> </span><span class="unknown token" data-binding="">2</span></span></code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-18969">#check</span></span><span class="inter-text"> </span><span class="const token" data-binding="const-wymore_stateOnTime_length" data-verso-hover="15">wymore_stateOnTime_length</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                Mobus does not have a direct "state at time <code class="math inline">t</code>" — temporal reasoning must be mediated through the interface structure. The path length is the formal measure of this disagreement. Wymore's willingness to commit to time is what makes his framework useful for simulation and what makes it fragile for systems whose temporal structure is not known in advance.</p>
+              <p>
+                <strong>The thermostat as a Wymore system.</strong></p>
+              <p>
+                <code class="math display">S_Z = \mathbb{R} \quad \text{(room temperature)}</code></p>
+              <p>
+                <code class="math display">I_Z = \mathbb{R} \times \{0, 1\} \quad \text{(setpoint, furnace command)}</code></p>
+              <p>
+                <code class="math display">O_Z = \mathbb{R} \quad \text{(displayed temperature)}</code></p>
+              <p>
+                <code class="math display">N_Z(s, i) = s + \alpha(i_{\text{furnace}} \cdot Q - \beta(s - T_{\text{outside}})) \quad \text{(thermal dynamics)}</code></p>
+              <p>
+                <code class="math display">R_Z(s) = s \quad \text{(thermometer reads room temperature)}</code></p>
+              <p>
+                Wymore's thermostat computes. Given the current room temperature and the furnace command, it produces the next temperature. The readout is identity — the thermometer reports what it measures. Compare to Mesarovic's black box: same thermostat, but now we have committed to how it works, not just what it does.</p>
+              </section>
+            <section>
+              <h2 id="Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Myers___-S-___-_LANGLE_State___-Out___-In___-expose___-update_RANGLE_">
+                2.6. Myers: S = ⟨State, Out, In, expose, update⟩<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&amp;name=Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Myers___-S-___-_LANGLE_State___-Out___-In___-expose___-update_RANGLE_" title="Permalink">🔗</a></span></h2>
+              <p>
+                <code class="math display">S = \langle \text{State}, \text{Out}, \text{In}, \text{expose}, \text{update} \rangle</code></p>
+              <blockquote><p>
+                  A deterministic system is a lens <code class="math inline">(\text{expose}, \text{update}) : (\text{State}, \text{State}) \leftrightarrows (\text{In}, \text{Out})</code>. The key property of lenses is that they compose.</p>
+                </blockquote><blockquote></blockquote><blockquote><p>
+                  — Myers, <strong>Categorical Systems Theory</strong>, 2023, §2.1</p>
+                </blockquote><p>
+                Myers arrives at a definition structurally identical to Wymore's at a single time step — state, input, output, two functions — but wraps it in the categorical machinery of <strong>lenses</strong>. The payoff is compositionality: two systems whose output-input types match can be composed, and the result is again a system. No other tradition proves this as a general theorem.</p>
+              <ul>
+                <li>
+                  <p>
+                    <strong>State</strong> — internal configuration</p>
+                  </li>
+                <li>
+                  <p>
+                    <strong>Out</strong> — observable output</p>
+                  </li>
+                <li>
+                  <p>
+                    <strong>In</strong> — accepted input</p>
+                  </li>
+                <li>
+                  <p>
+                    <strong>expose</strong>: State → Out — the observation function (Wymore's readout)</p>
+                  </li>
+                <li>
+                  <p>
+                    <strong>update</strong>: State × In → State — the dynamics function (Wymore's next-state)</p>
+                  </li>
+                </ul>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info information"><span class="hover-container"><span class="hover-info messages"><code class="verso-message information"><span class="text"></span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-MyersShape" data-verso-hover="21">MyersShape</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type</span></span></code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-21121">#check</span></span><span class="inter-text"> </span><span class="const token" data-binding="const-MyersShape" data-verso-hover="21">MyersShape</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                Three objects, two arrows from <code>state</code>. Drop the <code>time</code> vertex from Wymore and you have Myers. The structural equivalence is exact at one time step — the difference is that Myers embeds this in a composition framework where Wymore treats it as a standalone machine.</p>
+              <p>
+                The comparison functor from Mobus to Myers reveals the statics-dynamics divide:</p>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info information"><span class="hover-container"><span class="hover-info messages"><code class="verso-message information"><span class="text"></span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-myers_update_unreachable" data-verso-hover="22">myers_update_unreachable</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_pp_uniq.1" data-verso-hover="23">a</span><span class="inter-text"> </span><span class="var token" data-binding="var-_pp_uniq.2" data-verso-hover="23">b</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="const token" data-binding="const-MobusPosition" data-verso-hover="24">MobusPosition</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="unknown token" data-binding="">∀</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_pp_uniq.4" data-verso-hover="25">x</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="const token" data-binding="const-MobusArrow" data-verso-hover="26">MobusArrow</span><span class="inter-text"> </span><span class="var token" data-binding="var-_pp_uniq.1" data-verso-hover="23">a</span><span class="inter-text"> </span><span class="var token" data-binding="var-_pp_uniq.2" data-verso-hover="23">b</span><span class="unknown token" data-binding="">),</span><span class="inter-text"> </span><span class="const token" data-binding="const-myersComparisonObj" data-verso-hover="27">myersComparisonObj</span><span class="inter-text"> </span><span class="var token" data-binding="var-_pp_uniq.2" data-verso-hover="23">b</span><span class="inter-text"> </span><span class="const token" data-binding="const-Ne" data-verso-hover="28">≠</span><span class="inter-text"> </span><span class="const token" data-binding="const-MyersPosition.input" data-verso-hover="29">MyersPosition.input</span></span></code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-21502">#check</span></span><span class="inter-text"> </span><span class="const token" data-binding="const-myers_update_unreachable" data-verso-hover="22">myers_update_unreachable</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                No position in Mobus's 8-tuple maps to Myers's <code>update</code>. Every Mobus structural constraint — network on components, boundary in components, external flows on environment — maps to <code>expose</code>, the observation interface. But <code>update</code>, the dynamics function, has no preimage. Mobus captures what systems <strong>are</strong>. Myers captures how they <strong>behave</strong>. The statics-dynamics divide is not a matter of emphasis — it is a categorical gap, visible in the fiber structure of the comparison functor.</p>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info information"><span class="hover-container"><span class="hover-info messages"><code class="verso-message information"><span class="text"></span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-myers_fiber_input" data-verso-hover="30">myers_fiber_input</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_pp_uniq.1" data-verso-hover="23">p</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="const token" data-binding="const-MobusPosition" data-verso-hover="24">MobusPosition</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="const token" data-binding="const-myersComparisonObj" data-verso-hover="27">myersComparisonObj</span><span class="inter-text"> </span><span class="var token" data-binding="var-_pp_uniq.1" data-verso-hover="23">p</span><span class="inter-text"> </span><span class="const token" data-binding="const-Ne" data-verso-hover="28">≠</span><span class="inter-text"> </span><span class="const token" data-binding="const-MyersPosition.input" data-verso-hover="29">MyersPosition.input</span></span></code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-22035">#check</span></span><span class="inter-text"> </span><span class="const token" data-binding="const-myers_fiber_input" data-verso-hover="30">myers_fiber_input</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                The input fiber is also empty: no Mobus position maps to Myers's input. Mobus has no formal concept of "what the environment sends." The 8-tuple's environment field (<code class="math inline">E = \langle O, M \rangle</code>) describes what is <strong>outside</strong>; Myers's input describes what comes <strong>in</strong>. Presence is not entry.</p>
+              <p>
+                <strong>The thermostat as a Myers system.</strong> The dynamics are Wymore's. What Myers adds is the ability to compose. Define two lenses:</p>
+              <p>
+                <code class="math display">\text{Plant} = (\text{expose}_P, \text{update}_P) : \text{RoomState} \leftrightarrows (\text{TempReading}, \text{HeatInput})</code></p>
+              <p>
+                <code class="math display">\text{Controller} = (\text{expose}_C, \text{update}_C) : \text{SetpointState} \leftrightarrows (\text{HeatCommand}, \text{TempReading})</code></p>
+              <p>
+                The plant lens observes room temperature and accepts heat. The controller lens reads temperature and commands the furnace. Because their output-input types match (<code class="math inline">\text{TempReading}</code> flows from plant to controller, <code class="math inline">\text{HeatCommand}</code> flows back), Myers composes them:</p>
+              <p>
+                <code class="math display">\text{Thermostat} = \text{Controller} \circ \text{Plant}</code></p>
+              <p>
+                The result is again a lens — a closed-loop system with its own state, expose, and update. Wymore can describe either component; Myers can describe their composition as a system in the same formalism. This is the structural payoff of the lens framework, and it is exercised nowhere in the six other traditions.</p>
+              </section>
+            <section>
+              <h2 id="Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Joslyn___-Constraint___-Control___-and-Semantics">
+                2.7. Joslyn: Constraint, Control, and Semantics<span class="permalink-widget inline"><a href="find/?domain=Verso.Genre.Manual.section&amp;name=Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Joslyn___-Constraint___-Control___-and-Semantics" title="Permalink">🔗</a></span></h2>
+              <p>
+                <code class="math display">S \subseteq X = \prod_{i=1}^{n} X_i</code></p>
+              <blockquote><p>
+                  A system is a constraint: a restriction of the possible to the actual. ... The important question is not "what states does a system occupy?" but "what states does it exclude, and how?"</p>
+                </blockquote><blockquote></blockquote><blockquote><p>
+                  — Joslyn, "Semantic Control Systems," 1995/2000; building on Ashby, 1956</p>
+                </blockquote><p>
+                Joslyn asks a different question from every tradition above: <em>what does the system prevent, and how does it know?</em></p>
+              <p>
+                The intellectual lineage is specific. Ashby (1956) defined constraint as a subset of a product space and variety as the logarithm of distinguishable states. Pattee (1970s-1990s) formalized the "epistemic cut" between rate-dependent physical dynamics and rate-independent symbolic constraints. Rosen (1991) formalized cyclic closure to efficient causation in living systems using category theory — his (M,R)-systems share the cyclic shape property, but define a subclass (living systems) rather than systems in general. Joslyn (1995) cites all three, but produces something none of them did: a single framework that combines Ashby's constraint quantification, Pattee's semiotic distinction, and cyclic structure into a general set-theoretic definition of system with typed functional relations.</p>
+              <p>
+                Where Mesarovic defines a system by which states it <em>occupies</em>, Joslyn defines it by which states it <em>excludes</em>. The complement <code class="math inline">C := X - S</code> is the constraint — the set of states the system rules out. Four conceptual layers build upward:</p>
+              <p>
+                <strong>Definition 5</strong> (base). A system is a subset <code class="math inline">S \subseteq X = \prod X_i</code> — the same starting point as Mesarovic. What states does the system occupy?</p>
+              <p>
+                <strong>Definition 6</strong> (the flip). The constraint <code class="math inline">C := X - S</code>. Now the question reverses: what states are ruled out? A system with more constraint has fewer possible states and more "systemness." A heap rules out nothing.</p>
+              <p>
+                <strong>Definition 21</strong> (variety). Joslyn quantifies systemness along two axes:</p>
+              <ul>
+                <li>
+                  <p>
+                    <em>Dimensional variety</em>: how many variables <code class="math inline">X_i</code> are constrained (how many dimensions does the system span?)</p>
+                  </li>
+                <li>
+                  <p>
+                    <em>Cardinal variety</em>: how much of each <code class="math inline">X_i</code> is excluded (how tightly does the system constrain each variable?)</p>
+                  </li>
+                </ul>
+              <p>
+                No other tradition offers a quantitative measure of how constrained a system is. Two systems can now be compared not just by their structure but by the degree to which they restrict possibility.</p>
+              <p>
+                <strong>Proposition 29</strong> (control₂). A system that <em>maintains</em> its own constraints against disturbance must have a feedback loop. This is not assumed — it is derived. External disturbance pushes the system toward states in <code class="math inline">C</code> (the excluded region). Maintaining <code class="math inline">S</code> requires an effector that counteracts the disturbance, an afferent path carrying information about the current state back to the controller, and an efferent path through which the controller acts on the controlled variables. This afferent-efferent loop is the minimal structure of a control₂ system.</p>
+              <p>
+                The controller, effector, and controlled variables form a cycle. Joslyn then makes a move no other tradition attempts: he types the functional relations inhabiting the loop. A law is discovered (gravity constrains orbits). A rule is selected (the thermostat setpoint is chosen by an occupant). A code is constructed (DNA encodes proteins). The semiotic type — law, rule, code — determines how the constraint can change, who or what can change it, and whether the system can modify its own constraints. This is a structural claim about the <em>kind</em> of relation, not just its existence.</p>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info information"><span class="hover-container"><span class="hover-info messages"><code class="verso-message information"><span class="text"></span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-JoslynShape" data-verso-hover="31">JoslynShape</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="1">Type</span></span></code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-26934">#check</span></span><span class="inter-text"> </span><span class="const token" data-binding="const-JoslynShape" data-verso-hover="31">JoslynShape</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                Two properties distinguish this shape category from all six others. First, it is the only <em>cyclic</em> shape. Every other tradition's shape category is a DAG — a directed acyclic graph where morphisms compose along finite paths that terminate. Joslyn's has a cycle: effector → controlled (efferent) and controlled → effector (afferent). In the free category on this quiver, the cycle generates infinitely many morphisms — alternating paths of arbitrary length. The shape category is infinite where all others are finite.</p>
+              <p>
+                Second, Joslyn's is the only tradition that formally distinguishes the <em>kind</em> of relation inhabiting its functional positions. The other six traditions encode <em>that</em> components are related and <em>how</em> (structurally). Joslyn encodes <em>what kind</em> of relation it is — physical law, chosen rule, or constructed code — and this typing has consequences for what the system can do to itself.</p>
+              <p>
+                These two properties — feedback closure and semiotic typing — are precisely what the common core embedding cannot preserve:</p>
+              <code class="hl lean block" data-lean-context="examples"><span class="has-info information"><span class="hover-container"><span class="hover-info messages"><code class="verso-message information"><span class="text"></span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-klirToJoslyn" data-verso-hover="32">klirToJoslyn</span><span class="inter-text"></span></span><span class="text"> : </span><span class="highlighted"><span class="inter-text"></span><span class="const token" data-binding="const-CategoryTheory.Functor" data-verso-hover="33">CategoryTheory.Functor</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="const token" data-binding="const-CategoryTheory.Paths" data-verso-hover="34">CategoryTheory.Paths</span><span class="inter-text"> </span><span class="const token" data-binding="const-KlirPosition" data-verso-hover="35">KlirPosition</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="const token" data-binding="const-CategoryTheory.Paths" data-verso-hover="34">CategoryTheory.Paths</span><span class="inter-text"> </span><span class="const token" data-binding="const-JoslynPosition" data-verso-hover="36">JoslynPosition</span><span class="unknown token" data-binding="">)</span></span></code></span></span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.check-28008">#check</span></span><span class="inter-text"> </span><span class="unknown token" data-binding="">@</span><span class="const token" data-binding="const-klirToJoslyn" data-verso-hover="32">klirToJoslyn</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+                Klir's walking arrow maps <em>things</em> to <code>controlled</code> and <em>relation</em> to <code>effector</code>, with the arrow landing on <code>efferent</code> — the outward leg. The afferent return path and the disturbance arrow have no counterpart in the walking arrow. This is why <code class="math inline">K \cong \mathbf{2}</code> is maximal: the walking arrow cannot capture cycles. What Joslyn adds to the tradition — feedback, closure, semantic content — is what the common core necessarily loses.</p>
+              <p>
+                <strong>The thermostat as a Joslyn system.</strong></p>
+              <p>
+                <code class="math display">X = X_{\text{roomTemp}} \times X_{\text{outsideAir}}</code></p>
+              <p>
+                <code class="math display">S = \{(t, a) \in X \mid t_{\text{min}} \leq t \leq t_{\text{max}}\}</code></p>
+              <p>
+                <code class="math display">C = X - S = \{(t, a) \mid t &lt; t_{\text{min}} \text{ or } t &gt; t_{\text{max}}\}</code></p>
+              <p>
+                <code class="math display">O_E = \text{controller (compares setpoint to measured temp)}</code></p>
+              <p>
+                <code class="math display">O_I = \{\text{furnace (effector)}, \text{thermometer (sensor)}\}</code></p>
+              <p>
+                The thermostat is a control₂ system because it maintains <code class="math inline">S</code> against thermal disturbance. The afferent path: thermometer reads room temperature. The efferent path: controller commands furnace. The constraint <code class="math inline">C</code> is the set of temperatures the thermostat is designed to prevent. And the setpoint is a <em>rule</em>, not a law. It is chosen, not discovered. Someone set it to 68°F. They could have set it to 72°F. The constraint is semantic, not physical, and this distinction has no formal expression in any of the six traditions above.
+</p>
+              </section>
+            </section>
+          <nav class="prev-next-buttons">
+            <a class="local-button active" href="Introduction/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Introduction" rel="prev" title="1. Introduction"><span class="arrow">←</span><span class="where">1. Introduction</span></a><a class="local-button active" href="The-Commuting-Triangle/#Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle" rel="next" title="3. The Commuting Triangle"><span class="where">3. The Commuting Triangle</span><span class="arrow">→</span></a></nav>
+          </div>
+        </main></div>
+    <link rel="stylesheet" href="halcyonic-theme.css"></body>
+  </html>
+

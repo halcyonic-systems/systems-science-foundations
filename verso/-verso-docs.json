@@ -1,0 +1,157 @@
+{"9":
+ "<code>Systems.Examples.thermostatMobus : MobusSystem Entity Unit Unit Unit Unit Unit Unit</code>",
+ "89":
+ "<code>wymoreToMobusObj : WymorePosition → MobusPosition</code><span class=\"sep\"></span><code class=\"docstring\">Object-level comparison: Wymore positions projected into Mobus's 8-tuple. </code>",
+ "88":
+ "<code>wymoreToMobusObj_injective : Function.Injective wymoreToMobusObj</code><span class=\"sep\"></span><code class=\"docstring\">The comparison is injective on objects — no Wymore positions collapse.\nThis is stronger than the Mobus→Bunge or Mobus→Myers comparisons, where\nmultiple positions collapse. Wymore's 4-position structure fits cleanly\ninto Mobus's 8-position framework with room to spare. </code>",
+ "87":
+ "<code>MobusArrow.network_on_components : MobusArrow MobusPosition.internalNetwork MobusPosition.components</code>",
+ "86":
+ "<code>CategoryTheory.Functor.map.{v₁, v₂, u₁, u₂} {C : Type u₁} [CategoryTheory.Category.{v₁, u₁} C] {D : Type u₂}\n  [CategoryTheory.Category.{v₂, u₂} D] (self : CategoryTheory.Functor C D) {X Y : C} :\n  (X ⟶ Y) → (self.obj X ⟶ self.obj Y)</code><span class=\"sep\"></span><code class=\"docstring\">The action of a functor on morphisms. </code>",
+ "85":
+ "<code>comparisonFunctor : CategoryTheory.Functor (CategoryTheory.Paths MobusPosition) (CategoryTheory.Paths BungePosition)</code><span class=\"sep\"></span><code class=\"docstring\">The comparison functor from I_Mobus to I_Bunge, constructed via the universal property\nof the free category. Any prefunctor from a quiver into a category lifts uniquely to a\nfunctor from the path category. </code>",
+ "84":
+ "<code>And (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`And a b`, or `a ∧ b`, is the conjunction of propositions. It can be\nconstructed and destructed like a pair: if `ha : a` and `hb : b` then\n`⟨ha, hb⟩ : a ∧ b`, and if `h : a ∧ b` then `h.left : a` and `h.right : b`.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `∧` in identifiers is `and`.\n\n * The recommended spelling of `/\\` in identifiers is `and` (prefer `∧` over `/\\`).</code>",
+ "83":
+ "<code>comparisonFunctor.obj MobusPosition.internalNetwork ⟶ comparisonFunctor.obj MobusPosition.components</code>",
+ "82":
+ "<code>comparisonFunctor_not_full :\n  ∃ f,\n    Quiver.Path.length f = 2 ∧\n      Quiver.Path.length (comparisonFunctor.map (Quiver.Hom.toPath MobusArrow.network_on_components)) = 1</code><span class=\"sep\"></span><code class=\"docstring\">The comparison functor is NOT full: there exist Bunge morphisms between image\nobjects with no Mobus preimage in the corresponding hom-set.\n\nWitness: the composite path S → E → C (length 2) in I_Bunge lives in\nHom(structure', composition). But the only Mobus path from internalNetwork to\ncomponents is `network_on_components` (length 1), whose image is the direct\n`struct_on_comp` (length 1). The length-2 path has no preimage from that hom-set. </code>",
+ "81":
+ "<code>KlirArrow.relation_on_things : KlirArrow KlirPosition.relation KlirPosition.things</code>",
+ "80":
+ "<code>Quiver.Hom.toPath.{u_1, u_2} {V : Type u_1} [Quiver V] {a b : V} (e : a ⟶ b) : Quiver.Path a b</code><span class=\"sep\"></span><code class=\"docstring\">An arrow viewed as a path of length one. </code>",
+ "8":
+ "<code>Systems.MobusSystem.{u_1, u_2, u_3, u_4, u_5, u_6, u_7} (α : Type u_1) (κ : Type u_2) (μ : Type u_3) (π : Type u_4)\n  (τ : Type u_5) (η : Type u_6) (δ : Type u_7) : Type (max (max (max (max (max (max u_1 u_2) u_3) u_4) u_5) u_6) u_7)</code><span class=\"sep\"></span><code class=\"docstring\">A Mobus system: the revised 8-tuple S = ⟨C, N, E, G, B, T, H, Δt⟩.\n\nType parameters:\n- α: node type (components and environmental objects share this type)\n- κ: capacity type for flow edges (parametric — ℝ, ℕ, or any type)\n- μ: milieu type (ambient environmental variables, opaque)\n- π: boundary property type (opaque — \"exact form is still research\")\n- τ: transform type (domain-specific processing functions)\n- η: history type (stored knowledge / memory)\n- δ: time scale type (Δt — temporal resolution)\n\nThe first five type parameters (α, κ, μ, π) are structurally active —\nthey participate in coherence constraints. The last three (τ, η, δ)\nare carried data with no structural role in the ontology. </code>",
+ "79": "<code>KlirPosition.things : KlirPosition</code>",
+ "78": "<code>KlirPosition.relation : KlirPosition</code>",
+ "77":
+ "<code>Quiver.Path.{v, u} {V : Type u} [Quiver V] (a : V) : V → Type (max u v)</code><span class=\"sep\"></span><code class=\"docstring\">`Path a b` is the type of paths from `a` to `b` through the arrows of `G`. </code>",
+ "76": "<code>Quiver.Path KlirPosition.relation KlirPosition.things</code>",
+ "75":
+ "<code>klir_hom_unique (p : Quiver.Path KlirPosition.relation KlirPosition.things) :\n  p = Quiver.Hom.toPath KlirArrow.relation_on_things</code><span class=\"sep\"></span><code class=\"docstring\">Every path from `relation` to `things` equals the generating arrow.\nHom(relation, things) is a singleton in the free category. </code>",
+ "74":
+ "<code>Function.Injective.{u_1, u_2} {α : Sort u_1} {β : Sort u_2} (f : α → β) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">A function `f : α → β` is called injective if `f x = f y` implies `x = y`. </code>",
+ "73":
+ "<code>Fin (n : ℕ) : Type</code><span class=\"sep\"></span><code class=\"docstring\">Natural numbers less than some upper bound.\n\nIn particular, a `Fin n` is a natural number `i` with the constraint that `i &lt; n`. It is the\ncanonical type with `n` elements.\n</code>",
+ "72": "<code>Fin 3 → KlirPosition</code>",
+ "71":
+ "<code>klir_has_two_elements (f : Fin 3 → KlirPosition) : ¬Function.Injective f</code><span class=\"sep\"></span><code class=\"docstring\">KlirPosition has exactly 2 elements: any function from a 3-element type\ncannot be injective into KlirPosition (pigeonhole). </code>",
+ "70":
+ "<code>BungePosition : Type</code><span class=\"sep\"></span><code class=\"docstring\">The three positions in Bunge's CES system definition.\n\n- `composition`: C(σ,t) — the set of components\n- `environment`: E(σ,t) — the set of environmental things\n- `structure'`: S(σ,t) — the set of relations/bonds among components and environment\n</code>",
+ "7":
+ "<code>Systems.ActsOn.{u_1} (α : Type u_1) : Type u_1</code><span class=\"sep\"></span><code class=\"docstring\">Thing a acts on thing b: a modifies b's behavior/trajectory/history.\nBunge §1.2: a ▷ b symbolizes the acting of thing a on thing b.\nBunge §2.2 item (x): A(x,y) = h(y|x) ∩ h̄(y), the difference\nbetween forced and free trajectory.\n\nThis is abstract (Prop-valued) — concrete instances provide evidence. </code>",
+ "69":
+ "<code>klirToBunge : CategoryTheory.Functor (CategoryTheory.Paths KlirPosition) (CategoryTheory.Paths BungePosition)</code>",
+ "68":
+ "<code>Systems.MobusSystem.toRichBunge.{u_1, u_2, u_3, u_4, u_5, u_6, u_7} {α : Type u_1} {κ : Type u_2} {μ : Type u_3}\n  {π : Type u_4} {τ : Type u_5} {η : Type u_6} {δ : Type u_7} [ActsOn α] (sys : MobusSystem α κ μ π τ η δ)\n  (hflow : FlowInducesAction sys.internalNetwork) (hedge : sys.internalNetwork.edges.Nonempty) : RichConcreteSystem α</code><span class=\"sep\"></span><code class=\"docstring\">Project a Mobus 8-tuple to a RichConcreteSystem with a 2-element\nstructure family: {internal edges, external edges}.\n\nThis preserves the internal/external distinction that the flat\ntoBunge discards when it takes their union as totalRelation. </code>",
+ "67":
+ "<code>CategoryTheory.Functor.obj.{v₁, v₂, u₁, u₂} {C : Type u₁} [CategoryTheory.Category.{v₁, u₁} C] {D : Type u₂}\n  [CategoryTheory.Category.{v₂, u₂} D] (self : CategoryTheory.Functor C D) : C → D</code><span class=\"sep\"></span><code class=\"docstring\">The action of a functor on objects. </code>",
+ "66":
+ "<code>Systems.flattenFunctor.{u_1} {α : Type u_1} [ActsOn α] :\n  CategoryTheory.Functor (RichConcreteSystem α) (ConcreteSystem α)</code><span class=\"sep\"></span><code class=\"docstring\">The flatten functor: RichSys ⥤ BungeSys.\nObjects: `toConcreteSystem` (StructureFamily.lean:83)\nMorphisms: `flat_subsystem_preserved` (StructureFamily.lean:241)\n\nIn thin categories, `map_id` and `map_comp` are trivially satisfied\n(at most one morphism between any pair). </code>",
+ "65":
+ "<code>Systems.bridge_factors_functor.{u_1, u_2, u_3, u_4, u_5, u_6, u_7} {α : Type u_1} {κ : Type u_2} {μ : Type u_3}\n  {π : Type u_4} {τ : Type u_5} {η : Type u_6} {δ : Type u_7} [ActsOn α] (sys : MobusSystem α κ μ π τ η δ)\n  (hf : FlowInducesAction sys.internalNetwork) (hg : sys.internalNetwork.edges.Nonempty) :\n  sys.toBunge hf hg = flattenFunctor.obj (sys.toRichBunge hf hg)</code><span class=\"sep\"></span><code class=\"docstring\">Restating bridge_factors using the flatten functor:\nthe object-level factorization holds through flattenFunctor. </code>",
+ "64":
+ "<code>CategoryTheory.Functor.Full.{v₁, v₂, u₁, u₂} {C : Type u₁} [CategoryTheory.Category.{v₁, u₁} C] {D : Type u₂}\n  [CategoryTheory.Category.{v₂, u₂} D] (F : CategoryTheory.Functor C D) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">A functor `F : C ⥤ D` is full if for each `X Y : C`, `F.map` is surjective. </code>",
+ "63":
+ "<code>Not (a : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Not p`, or `¬p`, is the negation of `p`. It is defined to be `p → False`,\nso if your goal is `¬p` you can use `intro h` to turn the goal into\n`h : p ⊢ False`, and if you have `hn : ¬p` and `h : p` then `hn h : False`\nand `(hn h).elim` will prove anything.\nFor more information: [Propositional Logic](https://lean-lang.org/theorem_proving_in_lean4/propositions_and_proofs.html#propositional-logic)\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `¬` in identifiers is `not`.</code>",
+ "62":
+ "<code>Systems.not_full_forgetFamily : ¬forgetFamily.Full</code><span class=\"sep\"></span><code class=\"docstring\">forgetFamily is NOT full.\nWitness: sys_small ≤_ref sys_merged but ¬ (sys_small ≤_fam sys_merged).\nThere is a morphism in RefinementOrd with no preimage in FamilyOrd. </code>",
+ "61":
+ "<code>CategoryTheory.Functor.Faithful.{v₁, v₂, u₁, u₂} {C : Type u₁} [CategoryTheory.Category.{v₁, u₁} C] {D : Type u₂}\n  [CategoryTheory.Category.{v₂, u₂} D] (F : CategoryTheory.Functor C D) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">A functor `F : C ⥤ D` is faithful if for each `X Y : C`, `F.map` is injective. </code>",
+ "60":
+ "<code>Systems.forgetFamily.{u_1} {α : Type u_1} [ActsOn α] : CategoryTheory.Functor (FamilyOrd α) (RefinementOrd α)</code><span class=\"sep\"></span><code class=\"docstring\">Forgetful functor: FamilyOrd ⥤ RefinementOrd.\nIdentity on underlying data, relabels ordering from family to refinement. </code>",
+ "6": "<code>Type u_1</code>",
+ "59":
+ "<code>Systems.instFaithfulForgetFamily.{u_1} {α : Type u_1} [ActsOn α] : forgetFamily.Faithful</code><span class=\"sep\"></span><code class=\"docstring\">forgetFamily is faithful (at most one morphism between any pair). </code>",
+ "58":
+ "<code>Systems.Examples.thermostat_triangle_commutes : thermostatBunge.toKlir = thermostatKlir</code>",
+ "57": "<code>Systems.Examples.thermostatKlir : KlirSystem Entity</code>",
+ "56": "<code>Systems.Examples.thermostatBunge : ConcreteSystem Entity</code>",
+ "55": "<code>Systems.Examples.entityActsOn : ActsOn Entity</code>",
+ "54": "<code>sys.internalNetwork.edges.Nonempty</code>",
+ "53": "<code>FlowInducesAction sys.internalNetwork</code>",
+ "52":
+ "<code>Systems.triangle_commutes.{u_1, u_2, u_3, u_4, u_5, u_6, u_7} {α : Type u_1} {κ : Type u_2} {μ : Type u_3}\n  {π : Type u_4} {τ : Type u_5} {η : Type u_6} {δ : Type u_7} [ActsOn α] (sys : MobusSystem α κ μ π τ η δ)\n  (hflow : FlowInducesAction sys.internalNetwork) (hedge : sys.internalNetwork.edges.Nonempty) :\n  (sys.toBunge hflow hedge).toKlir = sys.toKlir</code><span class=\"sep\"></span><code class=\"docstring\">SHOWCASE THEOREM: The diagram commutes.\n\n```\n      toBunge\nMobus -------→ Bunge\n  \\              |\n   \\  toKlir    | toKlir\n    \\           |\n     ↘          ↓\n       Klir\n```\n\nGoing Mobus → Bunge → Klir (forget Mobus-specific structure, then\nforget environment) gives the same (T, R) as going Mobus → Klir\ndirectly (forget everything at once).\n\nThe `rfl` proof says: these paths are not merely equal — they are\n*definitionally* identical. The type-checker confirms this without\nany proof search. This traces to both Bunge and Mobus inheriting\nT = Set α and R = Set (α × α) from Klir's common-sense definition\nwithout changing the mathematical type. </code>",
+ "51":
+ "<code>Systems.MobusSystem.toKlir.{u_1, u_2, u_3, u_4, u_5, u_6, u_7} {α : Type u_1} {κ : Type u_2} {μ : Type u_3}\n  {π : Type u_4} {τ : Type u_5} {η : Type u_6} {δ : Type u_7} (sys : MobusSystem α κ μ π τ η δ) : KlirSystem α</code><span class=\"sep\"></span><code class=\"docstring\">Every Mobus 8-tuple projects to a Klir system by forgetting\neverything except (T, R): components become the thing-set, the\ntotal relation (union of internal and external flow relations,\nwith capacity discarded) becomes the relation.\n\nThis projection discards eight categories of information:\nenvironment (objects and milieu), internal/external network\nstructure, boundary, transforms, history, and time scale. </code>",
+ "50":
+ "<code>Set.Nonempty.{u} {α : Type u} (s : Set α) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">The property `s.Nonempty` expresses the fact that the set `s` is not empty. It should be used\nin theorem assumptions instead of `∃ x, x ∈ s` or `s ≠ ∅` as it gives access to a nice API thanks\nto the dot notation. </code>",
+ "5":
+ "<code>Systems.ConcreteSystem.{u_1} (α : Type u_1) [ActsOn α] : Type u_1</code><span class=\"sep\"></span><code class=\"docstring\">A concrete system is an ordered triple ⟨C, E, S⟩ where:\n- C: composition (set of components)\n- E: environment (set of external things bonded with components)\n- S: structure (set of relations among components and environment)\nThe key constraints are:\n- C ∩ E = ∅ (composition and environment are disjoint)\n- There exist at least two different connected things in C (Def 1.1)\n\nBunge Def 1.2: s_A(σ,t) = ⟨C_A(σ,t), E_A(σ,t), S_A(σ,t)⟩\n\nDESIGN: Time-parameterization is deferred — each ConcreteSystem represents\na snapshot at a given time t. This matches Bunge's \"at time t\" qualifier\nwhile keeping types simple for Phase 1. </code>",
+ "49":
+ "<code>Systems.FlowNetwork.edges.{u_1, u_2} {α : Type u_1} {κ : Type u_2} (self : FlowNetwork α κ) : Set (FlowEdge α κ)</code><span class=\"sep\"></span><code class=\"docstring\">The set of directed, capacity-labeled edges </code>",
+ "48":
+ "<code>Systems.MobusSystem.internalNetwork.{u_1, u_2, u_3, u_4, u_5, u_6, u_7} {α : Type u_1} {κ : Type u_2} {μ : Type u_3}\n  {π : Type u_4} {τ : Type u_5} {η : Type u_6} {δ : Type u_7} (self : MobusSystem α κ μ π τ η δ) : FlowNetwork α κ</code><span class=\"sep\"></span><code class=\"docstring\">N: the internal flow network among components.\nMobus Eq. 4.4: N_{i,l} = ⟨C_{i,l}, L_{i,l}⟩ </code>",
+ "47":
+ "<code>Systems.FlowInducesAction.{u_1, u_2} {α : Type u_1} {κ : Type u_2} [ActsOn α] (net : FlowNetwork α κ) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">Flow edges induce action: if there is a flow from a to b in the\ninternal network, then a acts on b in Bunge's sense.\n\nThis connects Mobus's graph-theoretic representation (flow edges)\nto Bunge's relation-theoretic one (ActsOn). The consistency\nassumption is necessary because ActsOn is abstract (Prop-valued)\nwhile FlowNetwork is concrete (edge-set-valued). </code>",
+ "46": "<code>MobusSystem α κ μ π τ η δ</code>",
+ "45": "<code>Type u_7</code>",
+ "44": "<code>Type u_6</code>",
+ "43": "<code>Type u_5</code>",
+ "42": "<code>Type u_4</code>",
+ "41": "<code>Type u_3</code>",
+ "40": "<code>Type u_2</code>",
+ "4": "<code>ℕ</code>",
+ "39":
+ "<code>Systems.MobusSystem.toBunge.{u_1, u_2, u_3, u_4, u_5, u_6, u_7} {α : Type u_1} {κ : Type u_2} {μ : Type u_3}\n  {π : Type u_4} {τ : Type u_5} {η : Type u_6} {δ : Type u_7} [ActsOn α] (sys : MobusSystem α κ μ π τ η δ)\n  (hflow : FlowInducesAction sys.internalNetwork) (hedge : sys.internalNetwork.edges.Nonempty) : ConcreteSystem α</code><span class=\"sep\"></span><code class=\"docstring\">SHOWCASE THEOREM #1: Every well-formed Mobus 8-tuple induces a\nBunge CES triple.\n\nThe map:\n  composition  := components           (exact)\n  environment  := environment.objects   (milieu discarded)\n  structure'   := totalRelation         (capacity discarded)\n\nRequires:\n- [ActsOn α]: Bunge's action relation in scope\n- FlowInducesAction: flow edges → action (connects the two frameworks)\n- At least one internal edge (for Bunge's bondage_nonempty)\n\nInformation projected away (no Bunge counterpart):\n  milieu M, boundary properties π, transforms τ,\n  history η, time scale δ, capacity labels κ </code>",
+ "38": "<code>ActsOn α</code>",
+ "37":
+ "<code>Systems.ConcreteSystem.toKlir.{u_1} {α : Type u_1} [ActsOn α] (s : ConcreteSystem α) : KlirSystem α</code><span class=\"sep\"></span><code class=\"docstring\">Every Bunge CES triple projects to a Klir system by forgetting\nenvironment. What remains is exactly Klir's (T, R): composition\nbecomes the thing-set, structure becomes the relation. </code>",
+ "36":
+ "<code>JoslynPosition : Type</code><span class=\"sep\"></span><code class=\"docstring\">The three positions in Joslyn's control₂ system definition CS = (C, O_E, O_I).\n\n- `controller`: C — the global environment (source of disturbances; hierarchically superior)\n- `effector`: O_E — the external/efferent component (the regulator/effector; active part)\n- `controlled`: O_I — the internal/afferent component (controlled variables; stable part)\n</code>",
+ "35":
+ "<code>KlirPosition : Type</code><span class=\"sep\"></span><code class=\"docstring\">The two positions in Klir's system definition S = (T, R).\n\n- `things`: T — the set of things that constitute the system\n- `relation`: R — the set of relations among those things\n</code>",
+ "34":
+ "<code>CategoryTheory.Paths.{u₁} (V : Type u₁) : Type u₁</code><span class=\"sep\"></span><code class=\"docstring\">A type synonym for the category of paths in a quiver.\n</code>",
+ "33":
+ "<code>CategoryTheory.Functor.{v₁, v₂, u₁, u₂} (C : Type u₁) [CategoryTheory.Category.{v₁, u₁} C] (D : Type u₂)\n  [CategoryTheory.Category.{v₂, u₂} D] : Type (max v₁ v₂ u₁ u₂)</code><span class=\"sep\"></span><code class=\"docstring\">`Functor C D` represents a functor between categories `C` and `D`.\n\nTo apply a functor `F` to an object use `F.obj X`, and to a morphism use `F.map f`.\n\nThe axiom `map_id` expresses preservation of identities, and\n`map_comp` expresses functoriality. </code>",
+ "32":
+ "<code>klirToJoslyn : CategoryTheory.Functor (CategoryTheory.Paths KlirPosition) (CategoryTheory.Paths JoslynPosition)</code>",
+ "31":
+ "<code>JoslynShape : Type</code><span class=\"sep\"></span><code class=\"docstring\">The shape category for Joslyn's semantic control systems: the free category on the\nfunctional-relation quiver.\n\nUnlike the DAG-shaped quivers of Bunge, Mobus, Myers, and Wymore, this shape category\nhas a cycle between `effector` and `controlled`. The free category on a cyclic quiver\nhas infinitely many morphisms between the cyclic vertices — each distinct path of\nalternating efferent/afferent arrows is a genuinely different control trajectory.\nThis infinite morphism structure formally encodes the open-ended nature of feedback. </code>",
+ "30":
+ "<code>myers_fiber_input (p : MobusPosition) : myersComparisonObj p ≠ MyersPosition.input</code><span class=\"sep\"></span><code class=\"docstring\">Input has an empty fiber — no Mobus position maps to Myers's input.\nThis is the categorical content of \"Mobus has no dynamics concept.\" </code>",
+ "3":
+ "<code>Systems.KlirSystem.mk.{u_1} {α : Type u_1} (things : Set α) (relation : Set (α × α)) : KlirSystem α</code>",
+ "29": "<code>MyersPosition.input : MyersPosition</code>",
+ "28":
+ "<code>Ne.{u} {α : Sort u} (a b : α) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`a ≠ b`, or `Ne a b` is defined as `¬ (a = b)` or `a = b → False`,\nand asserts that `a` and `b` are not equal.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `≠` in identifiers is `ne`.</code>",
+ "27":
+ "<code>myersComparisonObj : MobusPosition → MyersPosition</code><span class=\"sep\"></span><code class=\"docstring\">Object-level comparison: Mobus positions projected into Myers's lens schema.\n\nThe mapping reflects the statics/dynamics split:\n- `components → output`: composition is the OBSERVABLE aspect of a system\n- All other positions → `state`: internal structure is opaque state\n  from the lens perspective\n\nNote: `environment` maps to `state` (not `input`) because Mobus's environment\nparticipates in structural constraints (disjointness, flow endpoints) that are\nall about characterizing the system's observable decomposition, not about\nfeeding it dynamic input. </code>",
+ "26":
+ "<code>MobusArrow : MobusPosition → MobusPosition → Type</code><span class=\"sep\"></span><code class=\"docstring\">Generating morphisms for the Mobus shape quiver.\n\nEach arrow encodes a coherence constraint from the `MobusSystem` structure:\n- `network_on_components`: N depends on C (internal network nodes = components)\n- `interfaces_in_components`: B depends on C (interface components ⊆ components)\n- `external_on_env`: G depends on E (external flow nodes include environment objects)\n- `external_on_boundary`: G depends on B (external flow nodes include boundary interfaces)\n- `env_disjoint_comp`: E constrains C (components and environment are disjoint)\n</code>",
+ "25": "<code>MobusArrow a b</code>",
+ "24":
+ "<code>MobusPosition : Type</code><span class=\"sep\"></span><code class=\"docstring\">The eight positions in Mobus's system tuple S = (C, N, E, G, B, T, H, Δt).\n\n- `components`: C — the set of active components\n- `internalNetwork`: N — the directed graph of internal flows among components\n- `environment`: E — environmental objects and milieu\n- `externalFlows`: G — the bipartite flow graph crossing the boundary\n- `boundary`: B — interface components and their properties\n- `transforms`: T — domain-specific processing functions\n- `history`: H — stored knowledge / memory\n- `timeScale`: Δt — temporal resolution of observation\n</code>",
+ "23": "<code>MobusPosition</code>",
+ "22":
+ "<code>myers_update_unreachable (a b : MobusPosition) : ∀ (x : MobusArrow a b), myersComparisonObj b ≠ MyersPosition.input</code><span class=\"sep\"></span><code class=\"docstring\">Myers's `update` arrow targets `input`, but no Mobus position maps to `input`.\nTherefore `update` cannot appear in the image of any Mobus arrow under the comparison.\n\nThis is the formal content of \"Mobus is structural, Myers is computational\":\n- Mobus captures what systems ARE (observation/decomposition → expose)\n- Myers captures how systems BEHAVE (dynamics/transitions → update)\n- The missing `update` is exactly what BERT's transform (T) is supposed to provide\n  operationally — but T is isolated in I_Mobus (no generating arrows), so it cannot\n  fill this gap at the shape level. </code>",
+ "21":
+ "<code>MyersShape : Type</code><span class=\"sep\"></span><code class=\"docstring\">The shape category for Myers's deterministic systems: the free category on the lens quiver.\n\nThis is the simplest shape category in the landscape: 3 objects, 2 arrows, no composable\nchains (state is the only source, output and input are sinks). Every non-identity\nmorphism is a generating arrow — no composite paths exist.\n\nThe minimality of this shape is precisely Myers's design choice: he encodes ALL\ncompositional complexity in the lens/arena machinery rather than in the system definition\nitself. The comparison functor `I_Mobus → I_Myers` will show what Mobus carries\nstructurally that Myers delegates to the categorical framework. </code>",
+ "20":
+ "<code>Eq.{u_1} {α : Sort u_1} : α → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">The equality relation. It has one introduction rule, `Eq.refl`.\nWe use `a = b` as notation for `Eq a b`.\nA fundamental property of equality is that it is an equivalence relation.\n```\nvariable (α : Type) (a b c d : α)\nvariable (hab : a = b) (hcb : c = b) (hcd : c = d)\n\nexample : a = d :=\n  Eq.trans (Eq.trans hab (Eq.symm hcb)) hcd\n```\nEquality is much more than an equivalence relation, however. It has the important property that every assertion\nrespects the equivalence, in the sense that we can substitute equal expressions without changing the truth value.\nThat is, given `h1 : a = b` and `h2 : p a`, we can construct a proof for `p b` using substitution: `Eq.subst h1 h2`.\nExample:\n```\nexample (α : Type) (a b : α) (p : α → Prop)\n        (h1 : a = b) (h2 : p a) : p b :=\n  Eq.subst h1 h2\n\nexample (α : Type) (a b : α) (p : α → Prop)\n    (h1 : a = b) (h2 : p a) : p b :=\n  h1 ▸ h2\n```\nThe triangle in the second presentation is a macro built on top of `Eq.subst` and `Eq.symm`, and you can enter it by typing `\\t`.\nFor more information: [Equality](https://lean-lang.org/theorem_proving_in_lean4/quantifiers_and_equality.html#equality)\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `=` in identifiers is `eq`.</code>",
+ "2":
+ "<code>Nat : Type</code><span class=\"sep\"></span><code class=\"docstring\">The natural numbers, starting at zero.\n\nThis type is special-cased by both the kernel and the compiler, and overridden with an efficient\nimplementation. Both use a fast arbitrary-precision arithmetic library (usually\n[GMP](https://gmplib.org/)); at runtime, `Nat` values that are sufficiently small are unboxed.\n</code>",
+ "19":
+ "<code>WymoreArrow.stateOnTime : WymoreArrow WymorePosition.state WymorePosition.time</code>",
+ "18":
+ "<code>Prefunctor.map.{v₁, v₂, u₁, u₂} {V : Type u₁} [Quiver V] {W : Type u₂} [Quiver W] (self : V ⥤q W) {X Y : V} :\n  (X ⟶ Y) → (self.obj X ⟶ self.obj Y)</code><span class=\"sep\"></span><code class=\"docstring\">The action of a (pre)functor on edges/arrows/morphisms. </code>",
+ "17":
+ "<code>wymoreToMobusPre : WymorePosition ⥤q CategoryTheory.Paths MobusPosition</code><span class=\"sep\"></span><code class=\"docstring\">The comparison as a prefunctor into the Mobus path category.\n\nTwo arrows map to length-1 paths (generating arrows); one maps to a length-2\ncomposite path through boundary → components. </code>",
+ "16":
+ "<code>Quiver.Path.length.{u, u_1} {V : Type u} [Quiver V] {a b : V} : Quiver.Path a b → ℕ</code><span class=\"sep\"></span><code class=\"docstring\">The length of a path is the number of arrows it uses. </code>",
+ "15":
+ "<code>wymore_stateOnTime_length : Quiver.Path.length (wymoreToMobusPre.map WymoreArrow.stateOnTime) = 2</code><span class=\"sep\"></span><code class=\"docstring\">StateOnTime maps to a length-2 path: Mobus mediates time through boundary.\nThis is the structural content of their disagreement — Wymore allows state to be\ndirectly time-indexed, while Mobus requires temporal grounding to pass through\nthe interface/boundary layer before reaching components. </code>",
+ "14":
+ "<code>WymoreShape : Type</code><span class=\"sep\"></span><code class=\"docstring\">The shape category for Wymore's FSD: the free category on the system quiver.\n\nState is the sole source; input, output, and time are sinks. Every non-identity\nmorphism is a generating arrow — no composite paths exist (same as Myers).\n\nWithout the `time` vertex, this is isomorphic to `MyersShape`, confirming that\nMyers's lens-based deterministic system is Wymore's quintuple Z with the temporal\ndimension abstracted away. The FSD time object is what distinguishes Wymore's\nengineering-oriented framework from Myers's categorical one. </code>",
+ "13":
+ "<code>MesarovicShape : Type</code><span class=\"sep\"></span><code class=\"docstring\">The shape category for Mesarović's system with global state (Def 1.4): the free\ncategory on the response-projection quiver.\n\n3 objects, 2 arrows radiating outward from `globalState`. No composable chains exist\n(globalState is the only source; input and output are sinks). The shape is isomorphic\nto Myers's shape — both are the \"span\" category `• ← • → •` — but the interpretation\ndiffers: Mesarović's arrows are passive projections (R determines I/O), while Myers's\ninclude dynamic update. </code>",
+ "12":
+ "<code>MesarovicIOShape : Type</code><span class=\"sep\"></span><code class=\"docstring\">The shape category for Mesarović's I/O system (Def 1.2): the free category on a\ndiscrete quiver (no generating arrows).\n\nThis is a discrete category — the only morphisms are identities. This faithfully\nencodes Mesarović's extensional stance: the system IS identified with its I/O\nbehavior (the relation S), with no internal structure and no directed dependency\nbetween input and output objects. </code>",
+ "11":
+ "<code>Unit : Type</code><span class=\"sep\"></span><code class=\"docstring\">The canonical type with one element. This element is written `()`.\n\n`Unit` has a number of uses:\n* It can be used to model control flow that returns from a function call without providing other\n  information.\n* Monadic actions that return `Unit` have side effects without computing values.\n* In polymorphic types, it can be used to indicate that no data is to be stored in a particular\n  field.\n</code>",
+ "10": "<code>Systems.Examples.Entity : Type</code>",
+ "1":
+ "<code class=\"docstring\">A type universe. `Type ≡ Type 0`, `Type u ≡ Sort (u + 1)`. </code>",
+ "0":
+ "<code>Systems.KlirSystem.{u_1} (α : Type u_1) : Type u_1</code><span class=\"sep\"></span><code class=\"docstring\">A Klir system: the common-sense definition S = (T, R).\nKlir, Facets of Systems Science (2001), Eq. 1.1.\n\n- T (things): the set of entities that constitute the system\n- R (relation): the set of pairs encoding systemhood — which things\n  are related to which\n\nThis is the mathematical common ancestor of Bunge's CES triple\nand Mobus's 8-tuple. Both frameworks elaborate this pair in\ndifferent directions while preserving T and R as Set α and\nSet (α × α) respectively. </code>"}

@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foundations for Mathematical Systems Science — Halcyonic Systems</title>
+<meta name="description" content="K ≅ 2: seven systems science traditions share a common categorical core. Machine-verified in Lean 4. ~6,265 lines, zero sorrys.">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:ital,wght@0,400;0,500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #1c1a16;
+    --ink-dim: #4a4640;
+    --ink-faint: #9a9489;
+    --ground: #f7f4ef;
+    --ground-raised: #f0ece4;
+    --ground-border: #ddd8cf;
+    --accent: #8a6a3a;
+    --accent-dim: #b8966a;
+    --flow: #3a6e62;
+    --flow-bright: #2d5a50;
+    --glyph: #2d4a3a;
+    --serif: 'EB Garamond', Georgia, serif;
+    --display: 'Cormorant Garamond', Georgia, serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO CONVERGENCE ── */
+  .hero-convergence {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 6vh 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+    background: var(--ground);
+  }
+
+  .hero-convergence::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 60%, rgba(58,110,98,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 80% 30%, rgba(138,106,58,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-convergence svg {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+  }
+
+  .hero-convergence svg text {
+    user-select: none;
+  }
+
+  .hero-eyebrow-link {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 2;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--accent-dim);
+    transition: color 0.2s;
+  }
+  .hero-eyebrow-link:hover { color: var(--accent); }
+
+  .replay-btn {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 2rem;
+    z-index: 2;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s, color 0.2s;
+  }
+  .replay-btn.visible { opacity: 0.5; }
+  .replay-btn:hover { opacity: 1; color: var(--accent); }
+
+  .hero-scroll-cue {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.5s;
+    cursor: pointer;
+  }
+  .hero-scroll-cue.visible { opacity: 1; }
+  .hero-scroll-cue span {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--ink-faint), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ── PAYOFF SECTION ── */
+  .payoff {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+
+  .payoff-statement {
+    font-family: var(--display);
+    font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--ink);
+    max-width: 600px;
+    margin-bottom: 1rem;
+  }
+
+  .payoff-statement em {
+    font-style: italic;
+    color: var(--flow-bright);
+  }
+
+  .payoff-sub {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--ink-dim);
+    margin-bottom: 3rem;
+  }
+
+  .payoff-scroll {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 2rem 8rem;
+  }
+
+  .section {
+    padding: 5rem 0 0;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .section.visible { opacity: 1; transform: translateY(0); }
+
+  .section-number {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-number::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--ground-border);
+  }
+
+  h2 {
+    font-family: var(--display);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  p { margin-bottom: 1.4rem; color: var(--ink); font-size: 1.05rem; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.82em;
+    color: var(--flow-bright);
+    background: rgba(58,110,98,0.1);
+    padding: 0.1em 0.35em;
+    border-radius: 2px;
+  }
+
+  /* ── EMBEDDING TABLE ── */
+  .embedding-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 0.9rem;
+  }
+  .embedding-table th {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--ground-border);
+  }
+  .embedding-table td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--ground-border);
+    color: var(--ink-dim);
+  }
+  .embedding-table tr:hover td { background: rgba(58,110,98,0.03); }
+
+  .tradition-name { font-family: var(--display); font-weight: 600; color: var(--ink); }
+
+  .orientation-tag {
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+  }
+  .orient-structural { background: rgba(138,106,58,0.12); color: var(--accent); }
+  .orient-operational { background: rgba(58,110,98,0.12); color: var(--flow-bright); }
+  .orient-cybernetic { background: rgba(106,58,98,0.12); color: #6a3a62; }
+
+  /* ── RESULT CARDS ── */
+  .result-card {
+    border: 1px solid var(--ground-border);
+    background: var(--ground-raised);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1px;
+    transition: border-color 0.2s;
+  }
+  .result-card:first-child { border-radius: 2px 2px 0 0; }
+  .result-card:last-child { border-radius: 0 0 2px 2px; }
+  .result-card:hover { border-color: var(--accent-dim); z-index: 1; position: relative; }
+
+  .result-name { font-family: var(--display); font-size: 1.15rem; font-weight: 600; color: var(--ink); margin-bottom: 0.5rem; }
+  .result-body { font-size: 0.95rem; color: var(--ink-dim); line-height: 1.65; }
+  .result-lean { font-family: var(--mono); font-size: 0.7rem; color: var(--flow-bright); margin-top: 0.5rem; opacity: 0.7; }
+
+  /* ── BUNGE STANDALONE ── */
+  .bunge-headline {
+    font-family: var(--display);
+    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 2rem;
+  }
+  .bunge-body {
+    font-size: 1.05rem;
+    color: var(--ink-dim);
+    line-height: 1.75;
+    max-width: 640px;
+  }
+  .bunge-body em { color: var(--ink); }
+  .bunge-cite {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--flow-bright);
+    margin-top: 1rem;
+    opacity: 0.7;
+  }
+
+  /* ── LEAN PROOF BLOCK ── */
+  .lean-proof {
+    background: rgba(58, 110, 98, 0.06);
+    border: 1px solid rgba(58, 110, 98, 0.15);
+    border-radius: 2px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1rem;
+    overflow-x: auto;
+  }
+  .lean-proof pre {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: var(--flow-bright);
+    white-space: pre;
+    tab-size: 2;
+  }
+  .lean-proof-label {
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    border-left: 2px solid var(--accent-dim);
+    padding: 1.5rem 0 1.5rem 2rem;
+    margin: 2.5rem 0;
+    font-family: var(--display);
+    font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    font-style: italic;
+    color: var(--ink-dim);
+    line-height: 1.5;
+  }
+
+  /* ── OPEN PROBLEMS ── */
+  .problem-list { list-style: none; margin: 1.5rem 0; }
+  .problem-list li { padding: 0.75rem 0; border-bottom: 1px solid var(--ground-border); font-size: 0.95rem; color: var(--ink-dim); }
+  .problem-list li:last-child { border-bottom: none; }
+  .problem-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.25rem; }
+
+  /* ── ARTIFACT LINKS ── */
+  .artifact-row { display: flex; gap: 1rem; margin-top: 1.5rem; }
+  .artifact-link {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--ground-border);
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .artifact-link:hover { color: var(--accent); border-color: var(--accent-dim); background: rgba(138,106,58,0.04); }
+  .artifact-link.primary { color: var(--flow-bright); border-color: var(--flow); }
+  .artifact-link.primary:hover { background: rgba(58,110,98,0.06); }
+
+  /* ── DIVIDER ── */
+  .divider { display: flex; align-items: center; gap: 1.5rem; margin: 3rem 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--ground-border); }
+  .divider-mark { width: 4px; height: 4px; border-radius: 50%; background: var(--accent-dim); }
+
+  /* ── FOOTER ── */
+  .footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--ground-border); }
+  .footer-row { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+  .footer a { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; color: var(--ink-faint); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  .footer a:hover { color: var(--accent); }
+  .footer-note { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.06em; color: var(--ink-faint); line-height: 1.7; }
+
+  @keyframes scrollPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+  @media (max-width: 600px) {
+    body { font-size: 16px; }
+    .artifact-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HERO: CONVERGENCE ANIMATION ═══════════════ -->
+<section class="hero-convergence">
+  <a href="https://halcyonic.systems" class="hero-eyebrow-link">Halcyonic Systems</a>
+
+  <svg id="convergence" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet"
+       role="img" aria-label="Seven systems science frameworks converge on the walking arrow">
+    <defs>
+      <style>
+        .thinker-name { font-family: 'EB Garamond', Georgia, serif; font-size: 24px; fill: var(--ink); paint-order: stroke; stroke: transparent; stroke-width: 0; transition: fill 0.2s, stroke 0.15s, stroke-width 0.15s; }
+        .thinker-year { font-family: 'JetBrains Mono', monospace; font-size: 12px; fill: var(--ink-faint); }
+        .connector { stroke: var(--glyph); stroke-width: 1; stroke-opacity: 0.20; fill: none; }
+        .caption-text { font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 18px; fill: var(--ink-dim); }
+      </style>
+    </defs>
+
+    <!-- Connecting lines (drawn from final positions to center) -->
+    <g id="connectors"></g>
+
+    <!-- Walking arrow glyph at center — scaled 1.6× -->
+    <g id="glyph" transform="translate(600, 400) scale(1.6)" opacity="0">
+      <circle id="dot-left" cx="-40" cy="0" r="7" fill="var(--glyph)" opacity="0"/>
+      <circle id="dot-right" cx="40" cy="0" r="7" fill="var(--glyph)" opacity="0"/>
+      <line id="arrow-shaft" x1="-30" y1="0" x2="28" y2="0"
+            stroke="var(--glyph)" stroke-width="2.5"
+            stroke-dasharray="58" stroke-dashoffset="58"/>
+      <polygon id="arrow-head" points="28,-6 42,0 28,6" fill="var(--glyph)"
+               opacity="0" transform="scale(0.5)" transform-origin="35 0"/>
+    </g>
+    <!-- "2" label pulled down, larger, in glyph color -->
+    <text id="glyph-label" x="600" y="475" text-anchor="middle"
+          font-family="'Cormorant Garamond', Georgia, serif"
+          font-style="italic" font-size="46" font-weight="300"
+          fill="var(--glyph)" opacity="0">2</text>
+
+    <!-- Hover caption slot -->
+    <text id="hover-caption" x="600" y="530" text-anchor="middle"
+          class="caption-text" opacity="0"></text>
+
+    <!-- Seven thinker groups -->
+    <g id="thinkers"></g>
+  </svg>
+
+  <button class="replay-btn" id="replayBtn" onclick="runAnimation()">&#x21bb; replay</button>
+
+  <div class="hero-scroll-cue" id="scrollCue" onclick="document.querySelector('.payoff').scrollIntoView({behavior:'smooth'})">
+    <span>Read</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ PAYOFF ═══════════════ -->
+<section class="payoff">
+  <p class="payoff-statement">
+    A system, in every tradition, is <em>a morphism</em>.
+  </p>
+  <p class="payoff-sub">
+    The compiler found this. No author claimed it.
+  </p>
+  <a href="#traditions" class="payoff-scroll">↓ read</a>
+</section>
+
+<!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+<main class="content">
+
+  <section class="section" id="traditions">
+    <div class="section-number">§ 01 · The Traditions</div>
+    <h2>Seven Frameworks, Three Orientations</h2>
+
+    <p>Each tradition defines "system" as a tuple whose components stand in structural dependencies. We encode each as a <em>shape category</em>, a small category whose objects are the tradition's named concepts and whose arrows are the dependency relations between them. Then we ask: what do all seven shapes have in common?</p>
+
+    <table class="embedding-table">
+      <thead><tr><th>Tradition</th><th>Orientation</th><th>The arrow reads as</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tradition-name">Klir</span> <span style="color:var(--ink-faint)">(1969)</span></td><td><span class="orientation-tag orient-structural">Structural</span></td><td>Relations depend on things</td></tr>
+        <tr><td><span class="tradition-name">Bunge</span> <span style="color:var(--ink-faint)">(1979)</span></td><td><span class="orientation-tag orient-structural">Structural</span></td><td>Structure depends on composition</td></tr>
+        <tr><td><span class="tradition-name">Mobus</span> <span style="color:var(--ink-faint)">(2022)</span></td><td><span class="orientation-tag orient-structural">Structural</span></td><td>Network depends on components</td></tr>
+        <tr><td><span class="tradition-name">Mesarović</span> <span style="color:var(--ink-faint)">(1975)</span></td><td><span class="orientation-tag orient-operational">Operational</span></td><td>Output depends on input</td></tr>
+        <tr><td><span class="tradition-name">Wymore</span> <span style="color:var(--ink-faint)">(1993)</span></td><td><span class="orientation-tag orient-operational">Operational</span></td><td>State mediates I/O through time</td></tr>
+        <tr><td><span class="tradition-name">Myers</span> <span style="color:var(--ink-faint)">(2023)</span></td><td><span class="orientation-tag orient-operational">Operational</span></td><td>Expose/update lens on state</td></tr>
+        <tr><td><span class="tradition-name">Joslyn</span> <span style="color:var(--ink-faint)">(1995)</span></td><td><span class="orientation-tag orient-cybernetic">Cybernetic</span></td><td>Feedback cycle on the arrow</td></tr>
+      </tbody>
+    </table>
+
+    <p>Three orientations: <em>structural</em> traditions point arrows inward, <em>operational</em> traditions point arrows outward, and the <em>cybernetic</em> tradition closes the loop. All seven embed the same irreducible content: <strong>2</strong>, the category with two objects and one non-identity morphism.</p>
+
+    <p>Each embedding is a faithful functor from <strong>2</strong> into the tradition's shape category. The functor sends the two objects (<code>things</code>, <code>relation</code>) and the single arrow (<code>relation_on_things</code>) to their tradition-specific counterparts:</p>
+
+    <table class="embedding-table">
+      <thead><tr><th>Target</th><th><code>things</code> ↦</th><th><code>relation</code> ↦</th><th>arrow ↦</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tradition-name">Klir</span></td><td><code>things</code></td><td><code>relation</code></td><td><code>relation_on_things</code></td></tr>
+        <tr><td><span class="tradition-name">Bunge</span></td><td><code>composition</code></td><td><code>structure'</code></td><td><code>struct_on_comp</code></td></tr>
+        <tr><td><span class="tradition-name">Mobus</span></td><td><code>components</code></td><td><code>internalNetwork</code></td><td><code>network_on_components</code></td></tr>
+        <tr><td><span class="tradition-name">Mesarović</span></td><td><code>output</code></td><td><code>globalState</code></td><td><code>response_output</code></td></tr>
+        <tr><td><span class="tradition-name">Wymore</span></td><td><code>output</code></td><td><code>state</code></td><td><code>readout</code></td></tr>
+        <tr><td><span class="tradition-name">Myers</span></td><td><code>output</code></td><td><code>state</code></td><td><code>expose</code></td></tr>
+        <tr><td><span class="tradition-name">Joslyn</span></td><td><code>controlled</code></td><td><code>effector</code></td><td><code>efferent</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="divider"><div class="divider-mark"></div></div>
+
+  <section class="section" id="error">
+    <div class="section-number">§ 02 · The Error</div>
+    <h2 class="bunge-headline">The compiler caught a forty-seven-year-old error.</h2>
+    <p class="bunge-body">
+      Definition 1.6 in Mario Bunge's <em>Treatise on Basic Philosophy</em>, Vol. 4 (1979), states that the subsystem relation is "reflexive, asymmetric, and transitive." Reflexivity and asymmetry contradict. Any reflexive relation contains (x, x); asymmetry forbids it. The Lean 4 compiler rejected the conjunction on the first attempt. The correct property is <em>antisymmetric</em>: if x ≤ y and y ≤ x, then x = y.
+    </p>
+    <p class="bunge-body">
+      Bunge's text has been cited for over four decades. No reviewer caught it. The compiler did, in seconds.
+    </p>
+    <div class="bunge-cite">System.lean · subsystem_antisymm</div>
+  </section>
+
+  <div class="divider"><div class="divider-mark"></div></div>
+
+  <section class="section" id="results">
+    <div class="section-number">§ 03 · Four Results</div>
+    <h2>What the Compiler Found</h2>
+
+    <p>Four results that were not known before the formalization. Each is machine-verified. The Lean 4 compiler is the final authority, not the author.</p>
+
+    <div style="margin: 2rem 0;">
+      <div class="result-card">
+        <div class="result-name">The Commuting Triangle</div>
+        <div class="result-body">Two paths from Mobus to Klir (direct, and via Bunge) produce definitionally identical results. The proof is <code>rfl</code>: the compiler confirms the two compositions are the same function.</div>
+        <div class="result-lean">ShapeComparison.lean · toKlir_comm</div>
+      </div>
+      <div class="result-card">
+        <div class="result-name">Boundary Completeness Is Derived</div>
+        <div class="result-body">"All interaction is mediated by the boundary" is not an axiom. It follows from the bipartite constraint on external flows. What was assumed, the formalization derives.</div>
+        <div class="result-lean">Interface.lean · bipartite_transfer</div>
+      </div>
+      <div class="result-card">
+        <div class="result-name">Composition Is Unconditional</div>
+        <div class="result-body">Any two systems compose into a supersystem. The disjointness and interaction hypotheses add physical meaning but are mathematically unnecessary.</div>
+        <div class="result-lean">Systemness.lean · compose</div>
+      </div>
+      <div class="result-card">
+        <div class="result-name">The Common Core Is Maximal</div>
+        <div class="result-body">Every tradition faithfully embeds <strong>2</strong>. Nothing larger embeds into all seven. The irreducible content of "system" across every tradition is a single morphism: <em>relations depend on things</em>.</div>
+        <div class="result-lean">CommonCore.lean · klir_has_two_elements</div>
+        <div class="lean-proof">
+          <span class="lean-proof-label">Maximality by pigeonhole · CommonCore.lean lines 203–210</span>
+          <pre>theorem klir_has_two_elements :
+    ∀ (f : Fin 3 → KlirPosition), ¬ Function.Injective f := by
+  intro f hinj
+  have h : f 0 = f 1 ∨ f 0 = f 2 ∨ f 1 = f 2 := by
+    cases (f 0) &lt;;&gt; cases (f 1) &lt;;&gt; cases (f 2) &lt;;&gt; simp
+  rcases h with h | h | h
+  · exact absurd (hinj h) (by decide)
+  · exact absurd (hinj h) (by decide)
+  · exact absurd (hinj h) (by decide)</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull-quote">The formalization audits the past. Seven traditions across six decades. The theorem belongs to the future: a single categorical primitive for systems science.</div>
+  </section>
+
+  <div class="divider"><div class="divider-mark"></div></div>
+
+  <section class="section" id="limits">
+    <div class="section-number">§ 04 · Open Problems</div>
+    <h2>Where It Fails</h2>
+    <p>Honest about the boundaries. Four things the current formalization cannot reach:</p>
+    <ul class="problem-list">
+      <li><span class="problem-label">Transforms</span>What systems <em>do</em> (transformation functions, mechanisms, dynamics) is encoded as opaque. The formalization captures structure, not behavior.</li>
+      <li><span class="problem-label">Rule vs. Law</span>The distinction between chosen rules and physical laws cannot be expressed in the current type system.</li>
+      <li><span class="problem-label">Active Control</span>Maintaining dynamic equilibrium against disturbance requires temporal reasoning beyond the snapshot model.</li>
+      <li><span class="problem-label">Variety Measures</span>Joslyn's dimensional and cardinal variety lack formalization. Constraint analysis requires a quantitative layer.</li>
+    </ul>
+  </section>
+
+  <div class="divider"><div class="divider-mark"></div></div>
+
+  <section class="section" id="work">
+    <div class="section-number">§ 05 · What Remains</div>
+    <h2>One Open Question</h2>
+    <p>Joslyn's cybernetic tradition generates a cyclic shape category. The cycle produces infinitely many morphisms. No faithful functor to a finite acyclic target can exist. What categorical structure enables comparison? The six acyclic traditions converge cleanly. The seventh demands categorical machinery that does not yet exist for systems science.</p>
+    <p style="font-family: var(--mono); font-size: 0.8rem; color: var(--ink-faint); letter-spacing: 0.04em; margin-bottom: 2rem;">~6,265 lines · zero sorrys · 39 files · Lean 4 + Mathlib</p>
+    <div class="artifact-row">
+      <a href="verso/" class="artifact-link primary">Full document with Lean proofs →</a>
+      <a href="handout/" class="artifact-link">Reference handout →</a>
+      <a href="https://github.com/halcyonic-systems/systems-ontology" target="_blank" rel="noopener noreferrer" class="artifact-link">Source →</a>
+    </div>
+  </section>
+
+  <footer class="footer section" id="footer">
+    <div class="footer-row">
+      <a href="https://halcyonic.systems">Halcyonic Systems</a>
+      <a href="https://halcyonic.systems/instruments.html">The Instruments</a>
+    </div>
+    <p class="footer-note">
+      Shingai Thornton · 2026. Proofs developed with Claude Code under Lean 4 compiler verification.
+      Human editorial judgment, LLM Lean fluency, compiler final authority.
+    </p>
+  </footer>
+
+</main>
+
+<!-- ═══════════════ ANIMATION ENGINE ═══════════════ -->
+<script>
+const THINKERS = [
+  { name: 'Joslyn',     year: '1995', start: [600, 120],  caption: 'Feedback closes on the arrow.' },
+  { name: 'Klir',       year: '1969', start: [180, 180],  caption: 'Relations depend on things.' },
+  { name: 'Mobus',      year: '2022', start: [140, 400],  caption: 'Network depends on components.' },
+  { name: 'Bunge',      year: '1979', start: [240, 580],  caption: 'Structure depends on composition.' },
+  { name: 'Wymore',     year: '1993', start: [960, 600],  caption: 'State mediates input and output.' },
+  { name: 'Mesarović',  year: '1975', start: [1020, 240], caption: 'Output depends on input.' },
+  { name: 'Myers',      year: '2023', start: [1060, 420], caption: 'A lens exposes and updates state.' },
+];
+
+const CX = 600, CY = 400, RADIUS = 220;
+const N = THINKERS.length;
+THINKERS.forEach((t, i) => {
+  const angle = -Math.PI / 2 + (2 * Math.PI * i) / N;
+  t.end = [CX + RADIUS * Math.cos(angle), CY + RADIUS * Math.sin(angle)];
+});
+
+const svg = document.getElementById('convergence');
+const thinkersG = document.getElementById('thinkers');
+const connectorsG = document.getElementById('connectors');
+const hoverCaption = document.getElementById('hover-caption');
+const replayBtn = document.getElementById('replayBtn');
+const scrollCue = document.getElementById('scrollCue');
+
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function createElements() {
+  thinkersG.innerHTML = '';
+  connectorsG.innerHTML = '';
+
+  THINKERS.forEach((t, i) => {
+    // Connector line
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', t.end[0]);
+    line.setAttribute('y1', t.end[1]);
+    line.setAttribute('x2', CX);
+    line.setAttribute('y2', CY);
+    line.classList.add('connector');
+    line.dataset.index = i;
+    const len = Math.hypot(t.end[0] - CX, t.end[1] - CY);
+    line.style.strokeDasharray = len;
+    line.style.strokeDashoffset = reducedMotion ? 0 : len;
+    connectorsG.appendChild(line);
+
+    // Thinker group
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.classList.add('thinker');
+    g.dataset.index = i;
+    g.style.opacity = reducedMotion ? '0.85' : '0';
+    g.style.cursor = 'pointer';
+
+    const pos = reducedMotion ? t.end : t.start;
+    g.setAttribute('transform', `translate(${pos[0]}, ${pos[1]})`);
+
+    const nameEl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    nameEl.classList.add('thinker-name');
+    nameEl.setAttribute('text-anchor', 'middle');
+    nameEl.textContent = t.name;
+    g.appendChild(nameEl);
+
+    const yearEl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    yearEl.classList.add('thinker-year');
+    yearEl.setAttribute('text-anchor', 'middle');
+    yearEl.setAttribute('y', '22');
+    yearEl.textContent = t.year;
+    g.appendChild(yearEl);
+
+    // Hover handlers
+    g.addEventListener('mouseenter', () => onHover(i));
+    g.addEventListener('mouseleave', onLeave);
+
+    thinkersG.appendChild(g);
+  });
+}
+
+function onHover(idx) {
+  const groups = thinkersG.querySelectorAll('.thinker');
+  const lines = connectorsG.querySelectorAll('.connector');
+  groups.forEach((g, i) => {
+    g.style.transition = 'opacity 0.2s';
+    if (i === idx) {
+      g.style.opacity = '1';
+      const nameEl = g.querySelector('.thinker-name');
+      if (nameEl) { nameEl.style.fill = 'var(--glyph)'; nameEl.style.stroke = 'var(--glyph)'; nameEl.style.strokeWidth = '0.5'; }
+    } else {
+      g.style.opacity = '0.2';
+    }
+  });
+  lines.forEach((l, i) => {
+    l.style.transition = 'stroke-opacity 0.2s, stroke-width 0.2s';
+    l.style.strokeOpacity = i === idx ? '0.65' : '0.03';
+    l.style.strokeWidth = i === idx ? '1.5' : '1';
+  });
+  hoverCaption.textContent = THINKERS[idx].caption;
+  hoverCaption.style.transition = 'opacity 0.2s';
+  hoverCaption.style.opacity = '0.85';
+}
+
+function onLeave() {
+  const groups = thinkersG.querySelectorAll('.thinker');
+  const lines = connectorsG.querySelectorAll('.connector');
+  groups.forEach(g => {
+    g.style.opacity = '0.85';
+    const nameEl = g.querySelector('.thinker-name');
+    if (nameEl) { nameEl.style.fill = ''; nameEl.style.stroke = 'transparent'; nameEl.style.strokeWidth = '0'; }
+  });
+  lines.forEach(l => { l.style.strokeOpacity = '0.20'; l.style.strokeWidth = '1'; });
+  hoverCaption.style.opacity = '0';
+}
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function bezierPoint(p0, cp, p1, t) {
+  const u = 1 - t;
+  return [
+    u * u * p0[0] + 2 * u * t * cp[0] + t * t * p1[0],
+    u * u * p0[1] + 2 * u * t * cp[1] + t * t * p1[1],
+  ];
+}
+
+function ease(t) {
+  // cubic-bezier(0.65, 0, 0.35, 1) approximation
+  if (t < 0.5) return 4 * t * t * t;
+  return 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function runAnimation() {
+  // Reset
+  createElements();
+  const glyph = document.getElementById('glyph');
+  const dotL = document.getElementById('dot-left');
+  const dotR = document.getElementById('dot-right');
+  const shaft = document.getElementById('arrow-shaft');
+  const head = document.getElementById('arrow-head');
+  const label = document.getElementById('glyph-label');
+
+  glyph.style.opacity = '1';
+  dotL.style.opacity = '0';
+  dotR.style.opacity = '0';
+  shaft.style.strokeDashoffset = '58';
+  head.style.opacity = '0';
+  head.setAttribute('transform', 'scale(0.5)');
+  label.style.opacity = '0';
+  replayBtn.classList.remove('visible');
+  scrollCue.classList.remove('visible');
+
+  if (reducedMotion) {
+    dotL.style.opacity = '1';
+    dotR.style.opacity = '1';
+    shaft.style.strokeDashoffset = '0';
+    head.style.opacity = '1';
+    head.setAttribute('transform', 'scale(1)');
+    label.style.opacity = '0.7';
+    replayBtn.classList.add('visible');
+    scrollCue.classList.add('visible');
+    return;
+  }
+
+  const groups = thinkersG.querySelectorAll('.thinker');
+  const lines = connectorsG.querySelectorAll('.connector');
+  const startTime = performance.now();
+
+  function tick(now) {
+    const elapsed = (now - startTime) / 1000;
+
+    // Phase 1: fade in names (0 → 1.2s)
+    if (elapsed < 1.2) {
+      const t = Math.min(elapsed / 0.8, 1);
+      groups.forEach(g => { g.style.opacity = String(0.85 * t); });
+    }
+
+    // Phase 2: migrate names (1.2 → 2.8s)
+    if (elapsed >= 1.2 && elapsed < 2.8) {
+      const raw = (elapsed - 1.2) / 1.6;
+      const t = ease(Math.min(raw, 1));
+      groups.forEach((g, i) => {
+        const s = THINKERS[i].start;
+        const e = THINKERS[i].end;
+        const cp = [lerp(s[0], CX, 0.5), lerp(s[1], CY, 0.5)];
+        const [x, y] = bezierPoint(s, cp, e, t);
+        g.setAttribute('transform', `translate(${x}, ${y})`);
+      });
+    }
+
+    // Phase 3: draw connectors (2.0 → 2.8s)
+    if (elapsed >= 2.0 && elapsed < 2.8) {
+      const t = Math.min((elapsed - 2.0) / 0.8, 1);
+      lines.forEach(l => {
+        const len = parseFloat(l.style.strokeDasharray);
+        l.style.strokeDashoffset = String(len * (1 - t));
+      });
+    }
+
+    // Phase 4: dots appear (2.4 → 2.7s)
+    if (elapsed >= 2.4) {
+      const t = Math.min((elapsed - 2.4) / 0.3, 1);
+      dotL.style.opacity = String(t);
+      dotR.style.opacity = String(t);
+    }
+
+    // Phase 5: shaft draws (2.7 → 3.1s)
+    if (elapsed >= 2.7) {
+      const t = Math.min((elapsed - 2.7) / 0.4, 1);
+      shaft.style.strokeDashoffset = String(58 * (1 - t));
+    }
+
+    // Phase 6: arrowhead (3.1 → 3.3s)
+    if (elapsed >= 3.1) {
+      const t = Math.min((elapsed - 3.1) / 0.2, 1);
+      const scale = 0.5 + 0.5 * t;
+      head.style.opacity = String(t);
+      head.setAttribute('transform', `scale(${scale})`);
+    }
+
+    // Phase 7: label (3.3 → 3.5s)
+    if (elapsed >= 3.3) {
+      const t = Math.min((elapsed - 3.3) / 0.2, 1);
+      label.style.opacity = String(0.7 * t);
+    }
+
+    if (elapsed < 3.8) {
+      requestAnimationFrame(tick);
+    } else {
+      replayBtn.classList.add('visible');
+      scrollCue.classList.add('visible');
+    }
+  }
+
+  requestAnimationFrame(tick);
+}
+
+// Section reveal observer
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.section').forEach(el => sectionObserver.observe(el));
+
+// Persistent hero: show final composed state when scrolling back
+let animationHasRun = false;
+const heroSection = document.querySelector('.hero-convergence');
+const heroObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && animationHasRun) {
+      showFinalState();
+    }
+  });
+}, { threshold: 0.3 });
+
+function showFinalState() {
+  createElements();
+  const groups = thinkersG.querySelectorAll('.thinker');
+  const lines = connectorsG.querySelectorAll('.connector');
+  groups.forEach((g, i) => {
+    g.style.opacity = '0.85';
+    g.setAttribute('transform', `translate(${THINKERS[i].end[0]}, ${THINKERS[i].end[1]})`);
+  });
+  lines.forEach(l => { l.style.strokeDashoffset = '0'; });
+  const dotL = document.getElementById('dot-left');
+  const dotR = document.getElementById('dot-right');
+  const shaft = document.getElementById('arrow-shaft');
+  const head = document.getElementById('arrow-head');
+  const label = document.getElementById('glyph-label');
+  const glyph = document.getElementById('glyph');
+  glyph.style.opacity = '1';
+  dotL.style.opacity = '1';
+  dotR.style.opacity = '1';
+  shaft.style.strokeDashoffset = '0';
+  head.style.opacity = '1';
+  head.setAttribute('transform', 'scale(1)');
+  label.style.opacity = '0.7';
+  replayBtn.classList.add('visible');
+  scrollCue.classList.add('visible');
+}
+
+// Wrap runAnimation to track completion
+const _origRun = runAnimation;
+runAnimation = function() {
+  _origRun();
+  setTimeout(() => { animationHasRun = true; }, 4000);
+};
+
+heroObserver.observe(heroSection);
+
+// Init
+createElements();
+runAnimation();
+</script>
+
+</body>
+</html>

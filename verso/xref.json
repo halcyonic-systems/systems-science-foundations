@@ -1,0 +1,676 @@
+{"Verso.Genre.Manual.section":
+ {"title": "Sections or chapters of the manual",
+  "description": null,
+  "contents":
+  {"Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Thermostat-___-One-Example___-Three-Frameworks--The-Triangle-on-This-Instance":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Thermostat-___-One-Example___-Three-Frameworks--The-Triangle-on-This-Instance",
+     "data":
+     {"title": "The Triangle on This Instance",
+      "shortTitle": null,
+      "sectionNum": "4.4.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Thermostat — One Example, Three Frameworks",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "The Triangle on This Instance",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/The-Thermostat-___-One-Example___-Three-Frameworks/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Thermostat-___-One-Example___-Three-Frameworks--Entities-and-Action":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Thermostat-___-One-Example___-Three-Frameworks--Entities-and-Action",
+     "data":
+     {"title": "Entities and Action",
+      "shortTitle": null,
+      "sectionNum": "4.1.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Thermostat — One Example, Three Frameworks",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "Entities and Action", "shortTitle": null, "number": "1"}]},
+     "address": "/The-Thermostat-___-One-Example___-Three-Frameworks/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Thermostat-___-One-Example___-Three-Frameworks--Bunge-and-Klir___-By-Projection":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Thermostat-___-One-Example___-Three-Frameworks--Bunge-and-Klir___-By-Projection",
+     "data":
+     {"title": "Bunge and Klir: By Projection",
+      "shortTitle": null,
+      "sectionNum": "4.3.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Thermostat — One Example, Three Frameworks",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "Bunge and Klir: By Projection",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address": "/The-Thermostat-___-One-Example___-Three-Frameworks/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Thermostat-___-One-Example___-Three-Frameworks--Building-the-Mobus-System":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Thermostat-___-One-Example___-Three-Frameworks--Building-the-Mobus-System",
+     "data":
+     {"title": "Building the Mobus System",
+      "shortTitle": null,
+      "sectionNum": "4.2.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Thermostat — One Example, Three Frameworks",
+        "shortTitle": null,
+        "number": "4"},
+       {"title": "Building the Mobus System",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/The-Thermostat-___-One-Example___-Three-Frameworks/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Thermostat-___-One-Example___-Three-Frameworks":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Thermostat-___-One-Example___-Three-Frameworks",
+     "data":
+     {"title": "The Thermostat — One Example, Three Frameworks",
+      "shortTitle": null,
+      "sectionNum": "4.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Thermostat — One Example, Three Frameworks",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/The-Thermostat-___-One-Example___-Three-Frameworks/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Open-Frontier--Where-This-Is-Going":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Open-Frontier--Where-This-Is-Going",
+     "data":
+     {"title": "Where This Is Going",
+      "shortTitle": null,
+      "sectionNum": "6.4.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Open Frontier", "shortTitle": null, "number": "6"},
+       {"title": "Where This Is Going", "shortTitle": null, "number": "4"}]},
+     "address": "/The-Open-Frontier/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Open-Frontier--What-the-Formalization-Cannot-Yet-Express":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Open-Frontier--What-the-Formalization-Cannot-Yet-Express",
+     "data":
+     {"title": "What the Formalization Cannot Yet Express",
+      "shortTitle": null,
+      "sectionNum": "6.1.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Open Frontier", "shortTitle": null, "number": "6"},
+       {"title": "What the Formalization Cannot Yet Express",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/The-Open-Frontier/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Open-Frontier--The-Semiotic-Bridge":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Open-Frontier--The-Semiotic-Bridge",
+     "data":
+     {"title": "The Semiotic Bridge",
+      "shortTitle": null,
+      "sectionNum": "6.2.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Open Frontier", "shortTitle": null, "number": "6"},
+       {"title": "The Semiotic Bridge", "shortTitle": null, "number": "2"}]},
+     "address": "/The-Open-Frontier/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Open-Frontier--Positioning":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Open-Frontier--Positioning",
+     "data":
+     {"title": "Positioning",
+      "shortTitle": null,
+      "sectionNum": "6.3.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Open Frontier", "shortTitle": null, "number": "6"},
+       {"title": "Positioning", "shortTitle": null, "number": "3"}]},
+     "address": "/The-Open-Frontier/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Open-Frontier":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Open-Frontier",
+     "data":
+     {"title": "The Open Frontier",
+      "shortTitle": null,
+      "sectionNum": "6.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Open Frontier", "shortTitle": null, "number": "6"}]},
+     "address": "/The-Open-Frontier/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle--What-Gets-Lost-Along-the-Way":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle--What-Gets-Lost-Along-the-Way",
+     "data":
+     {"title": "What Gets Lost Along the Way",
+      "shortTitle": null,
+      "sectionNum": "3.3.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Commuting Triangle", "shortTitle": null, "number": "3"},
+       {"title": "What Gets Lost Along the Way",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address": "/The-Commuting-Triangle/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle--The-Two-Paths-Agree":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle--The-Two-Paths-Agree",
+     "data":
+     {"title": "The Two Paths Agree",
+      "shortTitle": null,
+      "sectionNum": "3.2.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Commuting Triangle", "shortTitle": null, "number": "3"},
+       {"title": "The Two Paths Agree", "shortTitle": null, "number": "2"}]},
+     "address": "/The-Commuting-Triangle/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle--Surprises-from-the-Compiler":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle--Surprises-from-the-Compiler",
+     "data":
+     {"title": "Surprises from the Compiler",
+      "shortTitle": null,
+      "sectionNum": "3.4.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Commuting Triangle", "shortTitle": null, "number": "3"},
+       {"title": "Surprises from the Compiler",
+        "shortTitle": null,
+        "number": "4"}]},
+     "address": "/The-Commuting-Triangle/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle--Stripping-Away-the-Additions":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle--Stripping-Away-the-Additions",
+     "data":
+     {"title": "Stripping Away the Additions",
+      "shortTitle": null,
+      "sectionNum": "3.1.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Commuting Triangle", "shortTitle": null, "number": "3"},
+       {"title": "Stripping Away the Additions",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/The-Commuting-Triangle/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle--How-Clean-Is-Too-Clean___":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle--How-Clean-Is-Too-Clean___",
+     "data":
+     {"title": "How Clean Is Too Clean?",
+      "shortTitle": null,
+      "sectionNum": "3.5.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Commuting Triangle", "shortTitle": null, "number": "3"},
+       {"title": "How Clean Is Too Clean?",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address": "/The-Commuting-Triangle/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--The-Commuting-Triangle",
+     "data":
+     {"title": "The Commuting Triangle",
+      "shortTitle": null,
+      "sectionNum": "3.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "The Commuting Triangle", "shortTitle": null, "number": "3"}]},
+     "address": "/The-Commuting-Triangle/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Wymore___-Z-___-_LPAR_S___-I___-O___-N___-R_RPAR_":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Wymore___-Z-___-_LPAR_S___-I___-O___-N___-R_RPAR_",
+     "data":
+     {"title": "Wymore: Z = (S, I, O, N, R)",
+      "shortTitle": null,
+      "sectionNum": "2.5.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Seven Definitions, One Tradition",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Wymore: Z = (S, I, O, N, R)",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address": "/Seven-Definitions___-One-Tradition/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Myers___-S-___-_LANGLE_State___-Out___-In___-expose___-update_RANGLE_":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Myers___-S-___-_LANGLE_State___-Out___-In___-expose___-update_RANGLE_",
+     "data":
+     {"title": "Myers: S = ⟨State, Out, In, expose, update⟩",
+      "shortTitle": null,
+      "sectionNum": "2.6.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Seven Definitions, One Tradition",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Myers: S = ⟨State, Out, In, expose, update⟩",
+        "shortTitle": null,
+        "number": "6"}]},
+     "address": "/Seven-Definitions___-One-Tradition/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Mobus___-The-8-Tuple":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Mobus___-The-8-Tuple",
+     "data":
+     {"title": "Mobus: The 8-Tuple",
+      "shortTitle": null,
+      "sectionNum": "2.3.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Seven Definitions, One Tradition",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Mobus: The 8-Tuple", "shortTitle": null, "number": "3"}]},
+     "address": "/Seven-Definitions___-One-Tradition/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Mesarovic___-S-___-V-___-Y":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Mesarovic___-S-___-V-___-Y",
+     "data":
+     {"title": "Mesarovic: S ⊆ V × Y",
+      "shortTitle": null,
+      "sectionNum": "2.4.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Seven Definitions, One Tradition",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Mesarovic: S ⊆ V × Y", "shortTitle": null, "number": "4"}]},
+     "address": "/Seven-Definitions___-One-Tradition/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Klir___-S-___-_LPAR_T___-R_RPAR_":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Klir___-S-___-_LPAR_T___-R_RPAR_",
+     "data":
+     {"title": "Klir: S = (T, R)",
+      "shortTitle": null,
+      "sectionNum": "2.1.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Seven Definitions, One Tradition",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Klir: S = (T, R)", "shortTitle": null, "number": "1"}]},
+     "address": "/Seven-Definitions___-One-Tradition/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Joslyn___-Constraint___-Control___-and-Semantics":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Joslyn___-Constraint___-Control___-and-Semantics",
+     "data":
+     {"title": "Joslyn: Constraint, Control, and Semantics",
+      "shortTitle": null,
+      "sectionNum": "2.7.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Seven Definitions, One Tradition",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Joslyn: Constraint, Control, and Semantics",
+        "shortTitle": null,
+        "number": "7"}]},
+     "address": "/Seven-Definitions___-One-Tradition/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Bunge___-_LANGLE_C___-E___-S_RANGLE_":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition--Bunge___-_LANGLE_C___-E___-S_RANGLE_",
+     "data":
+     {"title": "Bunge: ⟨C, E, S⟩",
+      "shortTitle": null,
+      "sectionNum": "2.2.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Seven Definitions, One Tradition",
+        "shortTitle": null,
+        "number": "2"},
+       {"title": "Bunge: ⟨C, E, S⟩", "shortTitle": null, "number": "2"}]},
+     "address": "/Seven-Definitions___-One-Tradition/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Seven-Definitions___-One-Tradition",
+     "data":
+     {"title": "Seven Definitions, One Tradition",
+      "shortTitle": null,
+      "sectionNum": "2.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Seven Definitions, One Tradition",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Seven-Definitions___-One-Tradition/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--References--Bibliography--Foundational-Definitions":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--References--Bibliography--Foundational-Definitions",
+     "data":
+     {"title": "Foundational Definitions",
+      "shortTitle": null,
+      "sectionNum": "7.1.1.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "References", "shortTitle": null, "number": "7"},
+       {"title": "Bibliography", "shortTitle": null, "number": "1"},
+       {"title": "Foundational Definitions",
+        "shortTitle": null,
+        "number": "1"}]},
+     "address": "/References/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--References--Bibliography--Cybernetics-and-Control-Tradition":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--References--Bibliography--Cybernetics-and-Control-Tradition",
+     "data":
+     {"title": "Cybernetics and Control Tradition",
+      "shortTitle": null,
+      "sectionNum": "7.1.3.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "References", "shortTitle": null, "number": "7"},
+       {"title": "Bibliography", "shortTitle": null, "number": "1"},
+       {"title": "Cybernetics and Control Tradition",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address": "/References/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--References--Bibliography--Categorical-and-Formal-Methods":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--References--Bibliography--Categorical-and-Formal-Methods",
+     "data":
+     {"title": "Categorical and Formal Methods",
+      "shortTitle": null,
+      "sectionNum": "7.1.2.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "References", "shortTitle": null, "number": "7"},
+       {"title": "Bibliography", "shortTitle": null, "number": "1"},
+       {"title": "Categorical and Formal Methods",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/References/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--References--Bibliography":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--References--Bibliography",
+     "data":
+     {"title": "Bibliography",
+      "shortTitle": null,
+      "sectionNum": "7.1.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "References", "shortTitle": null, "number": "7"},
+       {"title": "Bibliography", "shortTitle": null, "number": "1"}]},
+     "address": "/References/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--References":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--References",
+     "data":
+     {"title": "References",
+      "shortTitle": null,
+      "sectionNum": "7.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "References", "shortTitle": null, "number": "7"}]},
+     "address": "/References/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Introduction--Three-Layers":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Introduction--Three-Layers",
+     "data":
+     {"title": "Three Layers",
+      "shortTitle": null,
+      "sectionNum": "1.1.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Introduction", "shortTitle": null, "number": "1"},
+       {"title": "Three Layers", "shortTitle": null, "number": "1"}]},
+     "address": "/Introduction/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Introduction--How-to-Read-This-Document":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Introduction--How-to-Read-This-Document",
+     "data":
+     {"title": "How to Read This Document",
+      "shortTitle": null,
+      "sectionNum": "1.2.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Introduction", "shortTitle": null, "number": "1"},
+       {"title": "How to Read This Document",
+        "shortTitle": null,
+        "number": "2"}]},
+     "address": "/Introduction/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Introduction":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Introduction",
+     "data":
+     {"title": "Introduction",
+      "shortTitle": null,
+      "sectionNum": "1.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Introduction", "shortTitle": null, "number": "1"}]},
+     "address": "/Introduction/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Categorification___-Making-Relationships-Visible--The-Ordering-Triangle":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Categorification___-Making-Relationships-Visible--The-Ordering-Triangle",
+     "data":
+     {"title": "The Ordering Triangle",
+      "shortTitle": null,
+      "sectionNum": "5.1.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Categorification: Making Relationships Visible",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "The Ordering Triangle", "shortTitle": null, "number": "1"}]},
+     "address": "/Categorification___-Making-Relationships-Visible/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Categorification___-Making-Relationships-Visible--Shape-Categories-and-the-Common-Core":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Categorification___-Making-Relationships-Visible--Shape-Categories-and-the-Common-Core",
+     "data":
+     {"title": "Shape Categories and the Common Core",
+      "shortTitle": null,
+      "sectionNum": "5.3.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Categorification: Making Relationships Visible",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Shape Categories and the Common Core",
+        "shortTitle": null,
+        "number": "3"}]},
+     "address": "/Categorification___-Making-Relationships-Visible/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Categorification___-Making-Relationships-Visible--Methodology":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Categorification___-Making-Relationships-Visible--Methodology",
+     "data":
+     {"title": "Methodology",
+      "shortTitle": null,
+      "sectionNum": "5.5.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Categorification: Making Relationships Visible",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Methodology", "shortTitle": null, "number": "5"}]},
+     "address": "/Categorification___-Making-Relationships-Visible/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Categorification___-Making-Relationships-Visible--Comparison-Functors":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Categorification___-Making-Relationships-Visible--Comparison-Functors",
+     "data":
+     {"title": "Comparison Functors",
+      "shortTitle": null,
+      "sectionNum": "5.4.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Categorification: Making Relationships Visible",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Comparison Functors", "shortTitle": null, "number": "4"}]},
+     "address": "/Categorification___-Making-Relationships-Visible/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Categorification___-Making-Relationships-Visible--Bridge-Factorization":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Categorification___-Making-Relationships-Visible--Bridge-Factorization",
+     "data":
+     {"title": "Bridge Factorization",
+      "shortTitle": null,
+      "sectionNum": "5.2.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Categorification: Making Relationships Visible",
+        "shortTitle": null,
+        "number": "5"},
+       {"title": "Bridge Factorization", "shortTitle": null, "number": "2"}]},
+     "address": "/Categorification___-Making-Relationships-Visible/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Categorification___-Making-Relationships-Visible":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem--Categorification___-Making-Relationships-Visible",
+     "data":
+     {"title": "Categorification: Making Relationships Visible",
+      "shortTitle": null,
+      "sectionNum": "5.",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null},
+       {"title": "Categorification: Making Relationships Visible",
+        "shortTitle": null,
+        "number": "5"}]},
+     "address": "/Categorification___-Making-Relationships-Visible/"}],
+   "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem":
+   [{"id":
+     "Foundations-for-Mathematical-Systems-Science___-Seven-Traditions___-One-Theorem",
+     "data":
+     {"title":
+      "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+      "shortTitle": null,
+      "sectionNum": "",
+      "context":
+      [{"title":
+        "Foundations for Mathematical Systems Science: Seven Traditions, One Theorem",
+        "shortTitle": null,
+        "number": null}]},
+     "address": "/"}]}},
+ "Verso.Genre.Manual.doc.tech":
+ {"title": "Terminology",
+  "description": "Definitions of technical terms",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.tactic.conv":
+ {"title": "Conversion Tactics",
+  "description": "Tactics for performing targeted rewriting of subterms",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.tactic":
+ {"title": "Tactic Documentation",
+  "description": "Detailed descriptions of tactics",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.suggestion":
+ {"title": "Lean constant suggestions",
+  "description": "Search suggestions for Lean constants",
+  "contents": {}},
+ "Verso.Genre.Manual.doc.option":
+ {"title": "Compiler options", "description": null, "contents": {}},
+ "Verso.Genre.Manual.doc":
+ {"title": "Lean constant reference",
+  "description": "Documentation for Lean constants",
+  "contents": {}}}
