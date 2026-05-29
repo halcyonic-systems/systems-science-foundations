@@ -27,7 +27,7 @@ A few months ago I ran a similar test. Not for protocols. For systems.
 
 ## Seven Traditions, One Morphism
 
-Over the past few months, I formalized seven independently developed definitions of "system" in Lean 4 (a proof assistant used for machine-verified mathematics). The traditions:
+I formalized seven independently developed definitions of "system" in Lean 4 (a proof assistant for machine-verified mathematics). The traditions:
 
 - **Klir** (Czech, information theory, 1960s): things and relations
 - **Bunge** (Argentina, ontology, 1970s): composition, environment, structure
@@ -75,7 +75,7 @@ Four protocols. Four domains (networking, consensus, software interfaces, public
 
 ![Four domains, one structure: each protocol is a directed dependency from source to sink, and they share the same morphism.](figures/fig2-four-protocols.svg){width=80%}
 
-The categorical approach to protocol analysis has existing precedent. Melanie Swan's "Categorical Cryptoeconomics" (2024) catalogs twenty categorical primitives for blockchain study (optics, Petri nets, sheaves, homotopy type theory) and demonstrates that blockchain protocols have rich categorical structure. Swan proved the approach works for one protocol domain. K ≅ **2** says it generalizes: the categorical structure is not specific to blockchain. It is the common core of all systems, and therefore all protocols. What Swan found in one domain is an instance of what the walking arrow proves universally. Protocols are not merely describable in categorical terms. They *are* a category.
+The categorical approach to protocol analysis has existing precedent. Melanie Swan's "Categorical Cryptoeconomics" (2024) catalogs twenty categorical primitives for blockchain study (optics, Petri nets, sheaves, homotopy type theory) and demonstrates that blockchain protocols have rich categorical structure. Swan proved the approach works for one protocol domain. K ≅ **2** says it generalizes: the categorical structure is not specific to blockchain. It is the common core of all systems, and therefore all protocols. Protocols are not merely describable in categorical terms. They *are* a category.
 
 And protocol composition becomes concrete. TCP composed with HTTP composed with TLS gives you HTTPS. In the formalization, the composition theorem applies without preconditions. A separate result (conditional time-scale separation, building on Simon's near-decomposability) proves that protocol layering produces temporal hierarchy: lower layers run faster than higher layers. This is not an engineering heuristic. It is a structural consequence of how systems compose.
 
@@ -100,7 +100,7 @@ The protocol instantiations in this letter are informal. The seven systems tradi
 
 There is a specific open problem in the categorical layer. Among the seven traditions, Joslyn's cybernetic shape is the only one with cycles (the controller-effector feedback loop generates infinitely many morphisms). Cyclic structure is the natural home for protocol execution: the repeating send/receive/respond pattern. Composing cyclic systems requires traced monoidal categories, which the current formalization does not address. This is where protocol theory would push the systems formalization into genuinely new territory.
 
-The claim that "genuine kind" cashes out as *category* in the mathematical sense is itself a formalization, not an identity. Philosophy of science has older debates about natural kinds. But category theory is the strongest available language for what Rao means when he asks whether protocols support productive cross-domain reasoning. If instances compose, if structure transfers, if what you prove about one applies to others, you have a category. The convergence test is how you demonstrate it. That said, demonstrating the category is the beginning of the work, not the end.
+The claim that "genuine kind" cashes out as *category* in the mathematical sense is itself a formalization, not an identity. Philosophy of science has older debates about natural kinds. But category theory is the strongest available language for what Rao means when he asks whether protocols support productive cross-domain reasoning. If instances compose, if structure transfers, if what you prove about one applies to others, you have a category. The convergence test is how you demonstrate it.
 
 K ≅ **2** is a structural claim, not a predictive one. Knowing that protocols share the walking arrow does not tell you which protocols will succeed or fail. Prediction requires the elaborations, the concrete instances, the empirical grounding.
 
@@ -114,7 +114,7 @@ In the same month, OpenAI's reasoning model autonomously disproved a 1946 conjec
 
 The systems-science formalization I describe was built with a similar methodology. A human researcher (trained in the Mobus/Klir/Bunge tradition) decides what to formalize and why it matters. LLMs assist with Lean code generation and proof search. The Lean compiler accepts or rejects every step. The intellectual judgment is human. The verification is mechanical. The packaging bottleneck that kept systems science trapped in prose for decades is dissolving.
 
-This methodology applies directly to protocol theory. The formal infrastructure exists (Lean 4, mature libraries, proof automation). The conceptual infrastructure exists (seven traditions, the common core, the shape categories). What is missing is the concrete application: protocols formalized as systems, protocol-specific elaborations identified and proved, the cybernetic feedback between the formal tradition and the empirical cases.
+This methodology applies directly to protocol theory. The formal infrastructure exists (Lean 4, mature libraries, proof automation); the conceptual infrastructure exists (seven traditions, the common core, the shape categories). What is missing is the concrete application: protocols formalized as systems, their elaborations proved.
 
 ## The Invisible Tradition
 
