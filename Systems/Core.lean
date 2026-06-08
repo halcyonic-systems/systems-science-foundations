@@ -16,3 +16,5 @@ import Systems.Core.Complexity
 import Systems.Core.Dynamics
 import Systems.Core.Lens
 import Systems.Core.Governance
+import Systems.Core.InternalModel
+import Systems.Core.GoodRegulator

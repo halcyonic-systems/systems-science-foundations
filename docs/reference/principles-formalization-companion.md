@@ -172,6 +172,7 @@ As the formalizations accumulate, each principle is converging toward a one-line
 | 8 | Governance (hierarchy) | Higher governance levels modify lower levels' set points — feed-downward maps to TimescaleDecomposition with goals at each level |
 | 8 | Governance (lens) | A homeostat IS a bidirectional lens (observe/correct) equipped with a reference value — the set point parameterizes the backward channel |
 | 8 | Governance (Conant-Ashby) | A good regulator contains a homomorphic model of the system it regulates — the walking arrow connects governance to K ≅ **2** |
+| 9 | Internal Models | **Theorem, not an axiom.** A subsystem that holds a model of another system and simulates it one step ahead necessarily predicts it at every future step — one-step correctness lifts to all horizons. Anticipation is structural, not an extra feature. The model map is exactly the homomorphism a good regulator needs (#9 supplies #8). |
 
 The axiomatization question: how many of the 12 are independent? If Complexity derives from the structural principles, we're already down to fewer than 12. The ultimate deliverable is a dependency DAG showing which principles are axioms and which are theorems.
 
@@ -219,6 +220,14 @@ The formalization is systematically producing results that are stronger than, di
 
     *What this means practically:* The lens decomposition tells you that every governance structure has exactly two channels: a forward observation channel and a backward correction channel, parameterized by a reference value. For BERT, this means governance subsystems should be modeled as bidirectional connections with an explicit set point, not as generic coupled processes. The Conant-Ashby connection means the regulator's "model" of the system is formally the same structure as the system itself — the walking arrow at every level.
 
+12. **Anticipation is structural, not an advanced feature — and Internal Models needs no new axiom.** Mobus lists internal models as a principle and notes they range "up to complex anticipatory models," which reads as: anticipation is a sophisticated capability some models have. The formalization shows anticipation is *automatic*. Any internal model whose dynamics simulate the system for ONE step (the commuting square `model ∘ internalDyn = systemDyn ∘ model`) necessarily predicts it for ALL steps (`InternalModel.tracks`, proved by induction on the horizon). There is no separate "anticipatory" axiom — a correct one-step model is already a correct n-step predictor. Moreover, Internal Models is a **theorem-tier** principle: the model map is just a dynamics homomorphism (`Function.Semiconj`), built entirely from Dynamics (#4) with no new primitive — so realizing #9 adds no axiom (a second reduction after Complexity). And the model map is *exactly* the homomorphism a good regulator must contain: `InternalModel.toConantAshby` shows every internal model induces the Conant-Ashby skeleton, so #9 supplies precisely the structure #8 requires. Modelling a system and governing a system are the same walking arrow.
+
+    *What this means practically:* For BERT/GSR, model fidelity is a **one-step property to check** — if a subsystem correctly tracks another for a single step, it is automatically a valid predictor at any horizon; you don't separately validate "anticipation." And a governed process's internal model and the regulator's required model are the same object, so governance and prediction reuse one structure.
+
+13. **The Conant-Ashby Good Regulator theorem's engine is the strict concavity of −x·log x — now machine-checked.** Conant & Ashby (1970) prove the *information-theoretic* result that the simplest *optimal* (entropy-minimizing) regulator is a deterministic mapping `h: S→R` — a model of the system. The entire force of their proof is one entropy fact: shifting outcome probability mass to make `p(Z)` more unequal strictly lowers `H(Z)`. Formalized (`GoodRegulator.lean`, `negMulLog_transfer`), that fact is exactly the strict (Schur-)concavity of `negMulLog`: a fixed-sum transfer toward greater imbalance strictly decreases `negMulLog a + negMulLog b`. This is the genuine theorem's core, and reading the 1970 paper directly was decisive — it showed the earlier `ConantAshbySkeleton` (and the `InternalModel` simulation result) are the *structural/representational* direction (R→S), whereas the theorem's actual mapping is the dual *determination* direction `h: S→R`, forced by entropy. The determinism wrapper (an optimal regulator can't spread one state's mass over two outcomes without lowering entropy → it must be a mapping) is scoped with a full proof strategy in the file; the hard, novel part — the entropy engine — is verified.
+
+    *What this means practically:* "A good regulator is a model of the system" is not a metaphor or a structural convenience — it is *forced by entropy minimization*, and the forcing mechanism is a one-line concavity fact now in the library. This grounds the K ≅ **2** "governing = modelling" claim in the original information-theoretic theorem, not only the walking-arrow skeleton.
+
 These findings share a pattern: formalization reveals structure that informal reasoning cannot access. Each finding has both a theoretical and a practical consequence — the theoretical result changes how we understand the principle; the practical consequence informs how BERT, GSR, and Halcyonic modeling workflows should behave. The Lean proofs force the discoveries; the plain-English implications are the deliverable.
 
 ---
@@ -237,7 +246,7 @@ Full treatment: `docs/reference/simon-argument-formalized.md`
 
 ## Program status
 
-Six of twelve principles resolved (~6,265 lines, zero `sorry`):
+Seven of twelve principles resolved (~6,330 lines, zero `sorry`):
 
 | # | Principle | Tier | Verdict | Key result |
 |---|-----------|------|---------|------------|
@@ -247,5 +256,6 @@ Six of twelve principles resolved (~6,265 lines, zero `sorry`):
 | 4 | Dynamics | 2 | **Axiom** (complete, structural) | DynamicSystem, coupled, equilibrium, Flow, timescale decomposition, Simon's bridge |
 | 5 | Complexity | 1 | **Theorem** | Derives from #1+#2+#3. First reduction: 12 → ≤11 |
 | 8 | Governance | 2 | **Axiom** + lens bridge | Set point is new structure; Homeostat = lens + setPoint; Conant-Ashby skeleton connects to K ≅ **2** |
+| 9 | Internal Models | 2 | **Theorem** | Simulation relation lifts to all horizons (anticipation is structural); model map = Conant-Ashby homomorphism, so #9 supplies #8. No new axiom — second reduction. |
 
-**Next**: Principle 9 (Internal Models) — ConantAshbySkeleton provides prerequisite infrastructure. Amenability upgraded LOW → MEDIUM. Remaining unresolved: #6 Evolution, #7 Information, #9 Internal Models, #10 Self-Models, #11 Understandability, #12 Improvability.
+**Next**: Principle 10 (Self-Models) is now unblocked — it's the S = R case of #9, needing fixed-point machinery (Lawvere). Principle 7 (Information) is also open (channel capacity on flow networks, depends #3, done). Remaining unresolved: #6 Evolution, #7 Information, #10 Self-Models, #11 Understandability, #12 Improvability.

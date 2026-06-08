@@ -26,7 +26,7 @@
 | 6 | Evolution | Not formalized | Fitness landscapes, temporal logic | LOW | #4, #5 | 3 |
 | 7 | Information | Partial | Information theory, channel capacity | MEDIUM | #3 | 2 |
 | 8 | Governance | **Axiom** + lens bridge (homeostat = lens + setPoint, Conant-Ashby skeleton) | Control theory, feedback, lenses, fixed points | — | #4, #3 | 2 |
-| 9 | Internal Models | Not formalized (ConantAshbySkeleton provides prerequisite) | Lenses, fibrations, simulation | MEDIUM | #1, #7, #8 | 2 |
+| 9 | Internal Models | **Theorem** (InternalModel.lean — simulation lifts to all horizons; → Conant-Ashby) | Simulation relation, semiconjugacy, induction | — | #4, #8 | 2 |
 | 10 | Self-Models | Not formalized | Fixed-point theory, self-reference | LOW | #9 | 3 |
 | 11 | Understandability | Not formalized | Rosen modeling, Kolmogorov, epistemology | MEDIUM | #5, #9 | 2-3 |
 | 12 | Improvability | Not formalized | Fitness landscapes, design theory, agency | MEDIUM | #6, #9, #11 | 2-3 |
@@ -177,6 +177,8 @@
 ---
 
 ### Principle 9: Internal Models
+
+**✓ RESOLVED (2026-06-07, `Systems/Core/InternalModel.lean`).** Formalized the tractable core — the simulation relation — as the roadmap predicted. `InternalModel R S` carries a model map + internal/system dynamics with a one-step commuting square (`Function.Semiconj`). Main theorem `InternalModel.tracks`: one-step simulation lifts to every horizon (`model (internalDyn^[n] r) = systemDyn^[n] (model r)`) by induction — so **anticipation is structural, not an extra feature**. `InternalModel.toConantAshby` bridges to #8 (the model map is the good-regulator homomorphism). Theorem-tier: no new axiom (built from Dynamics #4). The anticipatory/stochastic versions remain future work; the deterministic simulation core is done. **Self-Models (#10) is now unblocked** — it's the S = R case.
 
 **Mobus**: "Systems contain models of other systems (e.g., simple built-in protocols for interaction with other systems and up to complex anticipatory models)."
 

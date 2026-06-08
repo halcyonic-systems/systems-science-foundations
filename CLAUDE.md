@@ -1,6 +1,6 @@
 # Systems Ontology --- Lean 4 Formalization
 
-Machine-verified systems ontology in Lean 4 with Mathlib. Seven traditions (Klir, Bunge, Mobus, Myers, Wymore, Mesarović, Joslyn) encoded as shape categories with comparison functors and a common core theorem. ~6,265 lines, zero `sorry`s.
+Machine-verified systems ontology in Lean 4 with Mathlib. Seven traditions (Klir, Bunge, Mobus, Myers, Wymore, Mesarović, Joslyn) encoded as shape categories with comparison functors and a common core theorem. ~6,330 lines, zero `sorry`s.
 
 **Key insight**: The common core of all seven independently developed systems definitions is Klir's S = (T, R) --- the walking arrow category **2**. A system, in the sense shared by every tradition from Mesarović (1964) through Myers (2023), is a morphism: relations depend on things. Everything else --- environment, boundary, state, input, output, time, mechanism, feedback --- is tradition-specific elaboration. This was *discovered* through formalization, not claimed by any author.
 
@@ -21,6 +21,7 @@ Systems/
     Dynamics.lean        DynamicSystem, coupled dynamics, Flow, TimescaleDecomposition (Principle 4)
     Lens.lean            Bidirectional lenses, composition, Conant-Ashby skeleton (Principle 8 bridge)
     Governance.lean      Homeostat, GovernanceSubsystem, TwoLevelGovernance/HCGS (Principle 8)
+    InternalModel.lean   InternalModel, tracks (simulation lifts to all horizons), → Conant-Ashby (Principle 9)
   Core.lean              Imports all Core modules
   Mobus/                 Phase 2: Mobus 8-tuple + composition
     FlowNetwork.lean     Directed graphs with parametric capacity κ (Eq. 4.4)
