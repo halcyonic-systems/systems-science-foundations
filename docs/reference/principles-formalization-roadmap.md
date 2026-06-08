@@ -24,7 +24,7 @@
 | 4 | Dynamics | **Complete** (structural — quantitative convergence deferred) | Dynamical systems, equilibrium, flows, timescale decomposition | — | #3 | 2 |
 | 5 | Complexity | **Derived** (structural part reduces to #1+#2+#3) | Equivalence relations, set operations | — | #1, #2, #3 | 1 |
 | 6 | Evolution | Not formalized | Fitness landscapes, temporal logic | LOW | #4, #5 | 3 |
-| 7 | Information | Partial | Information theory, channel capacity | MEDIUM | #3 | 2 |
+| 7 | Information | **Theorem** (layered core — Information.lean; genus = difference-that-makes-a-difference, Hartley nonspecificity, Shannon as bounded special case `entropy ≤ hartley`; mutual-info/capacity + semantic layer deferred) | Information theory, channel capacity | — | #3 | 2 |
 | 8 | Governance | **Axiom** + lens bridge (homeostat = lens + setPoint, Conant-Ashby skeleton) | Control theory, feedback, lenses, fixed points | — | #4, #3 | 2 |
 | 9 | Internal Models | **Theorem** (InternalModel.lean — simulation lifts to all horizons; → Conant-Ashby) | Simulation relation, semiconjugacy, induction | — | #4, #8 | 2 |
 | 10 | Self-Models | **Theorem** (tractable core — SelfModel.lean; diagonal of #9, self-anticipation, accurate set invariant; faithful-existence/Lawvere deferred) | Fixed-point theory, self-reference | — | #9 | 3 |
@@ -144,17 +144,15 @@
 
 **Mobus**: "Systems encode knowledge and receive and send information."
 
-**Current Lean state**: `Tuple.lean` has `history : η` as a parametric type representing accumulated knowledge. `FlowNetwork` classifies flows but doesn't distinguish information flows from material/energy flows.
+**✓ RESOLVED — layered core (2026-06-08, `Systems/Core/Information.lean`).** Formalized in three layers, each requiring strictly more structure than the last, so that **Shannon's communication-statistics is forced to be a bounded special case by the dependency graph, not asserted** (Klir's Generalized-Information-Theory stance):
 
-**What formalization would mean**:
-- Formal distinction between material/energy/information flows (currently all flows are typed by κ capacity labels, but there's no semantic classification)
-- `KnowledgeState` as a subsystem's internal model of its environment (connects to #9)
-- Information as a functional relation: messages that change receiver state vs. those that don't
-- Channel capacity constraints on interface flows
+1. **Genus (probability-free)** — information = *a difference that makes a difference* (Bateson). A `Channel` is a message-driven update `recv : S → M → S`; a message is `Informative` at `s` iff `recv s m ≠ s`. Knowledge is the state it updates — the internal model of #9 (`InternalModel.toChannel` exhibits the autonomous model as the input-free channel; `noninformative_iff_equilibrium` ties the genus to Dynamics #4).
+2. **Hartley nonspecificity (set-based, still probability-free)** — `hartley A = log |A|`, the amount that could be resolved with no distribution. `Channel.nonspecificity` is the Hartley measure of a channel's reachable set; it bottoms out to 0 exactly when nothing is informative.
+3. **Shannon (probability-based, the special case)** — reusing `entropy` from `GoodRegulator.lean`, the headline refinement `entropy_le_hartley_univ`: entropy is bounded **above** by Hartley, with equality only at the uniform distribution (`entropy_uniform_eq_log_card`), proved by Jensen on the concave `negMulLog`. Adding a distribution to the prob-free ceiling can only lower the measure.
 
-**Approach**: Sets first (classify flow types, define information as state-changing). Category theory later if encoding functors (system → model) prove useful.
-**Effort**: 2-3 sessions.
-**Risk**: Medium — the boundary between information and knowledge is philosophically contested. Mobus's distinction (information = received messages, knowledge = encoded patterns) gives a workable formal interpretation.
+Theorem-tier, no new axiom. **Deferred (research-level)**: mutual information, the data-processing inequality, operational channel capacity (sup of mutual information over input distributions), and the **semantic / viability layer** above the genus — meaning and goal-relevance, refining the genus by a set-point à la Governance #8. The top of the stack is left deliberately open per the long-term aim of a conception of information not constrained by Shannon's communication statistics.
+
+**Risk**: was MEDIUM (contested information/knowledge boundary); the layered architecture resolved it by making the genus probability-free and subordinating Shannon, rather than committing to a single measure.
 
 ---
 
