@@ -27,7 +27,7 @@
 | 7 | Information | Partial | Information theory, channel capacity | MEDIUM | #3 | 2 |
 | 8 | Governance | **Axiom** + lens bridge (homeostat = lens + setPoint, Conant-Ashby skeleton) | Control theory, feedback, lenses, fixed points | — | #4, #3 | 2 |
 | 9 | Internal Models | **Theorem** (InternalModel.lean — simulation lifts to all horizons; → Conant-Ashby) | Simulation relation, semiconjugacy, induction | — | #4, #8 | 2 |
-| 10 | Self-Models | Not formalized | Fixed-point theory, self-reference | LOW | #9 | 3 |
+| 10 | Self-Models | **Theorem** (tractable core — SelfModel.lean; diagonal of #9, self-anticipation, accurate set invariant; faithful-existence/Lawvere deferred) | Fixed-point theory, self-reference | — | #9 | 3 |
 | 11 | Understandability | Not formalized | Rosen modeling, Kolmogorov, epistemology | MEDIUM | #5, #9 | 2-3 |
 | 12 | Improvability | Not formalized | Fitness landscapes, design theory, agency | MEDIUM | #6, #9, #11 | 2-3 |
 
@@ -200,17 +200,11 @@
 
 **Mobus**: "Sufficiently complex, adaptive systems can contain self-models."
 
-**Current Lean state**: Not formalized.
+**✓ RESOLVED — tractable core (2026-06-08, `Systems/Core/SelfModel.lean`).** Formalized the self-model as the **diagonal case of Internal Models (#9)**: one state space `S` with `selfModel : S → S` simulating the system's own dynamics — exactly `InternalModel S S` with `internalDyn = systemDyn = dyn`. `SelfModel.toInternalModel` makes the reuse explicit, so every #9 result transfers: `SelfModel.tracks` gives **self-anticipation** (a correct one-step self-model predicts the system's own future at every horizon), and `equilibrium_image` carries fixed points through the self-model. Two findings beyond instantiation: (1) **existence is trivial** — the identity self-models any system (`SelfModel.trivial`), so the content is faithfulness, not existence; (2) **self-consistency is dynamics-invariant** — a state the model represents as itself (`selfModel s = s`) stays so under the dynamics (`accurate_invariant`), the self-reference loop closing into itself without heavy machinery. Theorem-tier, no new axiom (reuses #9).
 
-**What formalization would mean**:
-- Self-model = internal model (#9) where the modeled system is the containing system itself
-- Fixed-point construction: a system S contains a subsystem S' such that S' models S
-- Lawvere's fixed-point theorem as the existence proof
-- Diagonal argument connections (self-reference limitations)
+**Stretch still open (research-level, deferred)**: the existence/obstruction theorem for a *faithful* (non-trivial) self-model — can a proper part perfectly model the whole? — via **Lawvere's fixed-point theorem** and the diagonal argument. Mathlib carries only the powerset diagonal (`Function.cantor_surjective`/`cantor_injective`), not a general Lawvere theorem, so this must be built from scratch and is its own later session.
 
-**Approach**: Categorical from the start. This is genuinely higher-order and likely requires Lawvere's theorem or similar fixed-point machinery.
-**Effort**: Research-level. Unknown timeline.
-**Risk**: Very high — self-reference is where formalization gets hard. Defer.
+**Risk**: Core was LOW (clean extension of #9), as the roadmap predicted; the Lawvere/diagonal stretch remains high.
 
 ---
 
