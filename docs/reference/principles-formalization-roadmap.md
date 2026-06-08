@@ -152,6 +152,8 @@
 
 Theorem-tier, no new axiom. **Deferred (research-level)**: mutual information, the data-processing inequality, operational channel capacity (sup of mutual information over input distributions), and the **semantic / viability layer** above the genus — meaning and goal-relevance, refining the genus by a set-point à la Governance #8. The top of the stack is left deliberately open per the long-term aim of a conception of information not constrained by Shannon's communication statistics.
 
+  **FlowNetwork bridge (the distinctively-Mobus next step, carried over from the 6/09 scaffold)**: the current `Channel` genus is abstract. `Systems/Mobus/FlowNetwork.lean` carries a *parametric edge capacity κ*. The payoff that makes this "#7 Information" rather than generic info theory is to frame a flow edge as a channel and relate κ to channel capacity — a bridge theorem that a flow network carries information bounded by its capacities, connecting BERT's flow infrastructure to the information measures. Even a structural statement (definition + one capacity bound) would earn the Mobus connection; the full operational-capacity theorem can come later.
+
 **Risk**: was MEDIUM (contested information/knowledge boundary); the layered architecture resolved it by making the genus probability-free and subordinating Shannon, rather than committing to a single measure.
 
 ---
