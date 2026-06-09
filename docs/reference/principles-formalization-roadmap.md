@@ -23,7 +23,7 @@
 | 3 | Networks | **Done** | Graph theory, category theory | — | — | — |
 | 4 | Dynamics | **Complete** (structural — quantitative convergence deferred) | Dynamical systems, equilibrium, flows, timescale decomposition | — | #3 | 2 |
 | 5 | Complexity | **Derived** (structural part reduces to #1+#2+#3) | Equivalence relations, set operations | — | #1, #2, #3 | 1 |
-| 6 | Evolution | Not formalized | Fitness landscapes, temporal logic | LOW | #4, #5 | 3 |
+| 6 | Evolution | **Axiom — independent, blind** (Evolution.lean — generational step fitness-non-decreasing over an environmental preorder; `adapts` all-horizon; `Evolvable` CAES capacity; `evolvable_but_not_improvable` → #6⇏#12; blind dual of #12) | Fitness preorder (M&K §10.2.1.4), variation→selection algorithm (§10.2.2), Bunge selective-action substrate | — | #4, #5 | DONE 6/09 |
 | 7 | Information | **Theorem** (layered core — Information.lean; genus = difference-that-makes-a-difference, Hartley nonspecificity, Shannon as bounded special case `entropy ≤ hartley`; mutual-info/capacity + semantic layer deferred) | Information theory, channel capacity | — | #3 | 2 |
 | 8 | Governance | **Axiom** + lens bridge (homeostat = lens + setPoint, Conant-Ashby skeleton) | Control theory, feedback, lenses, fixed points | — | #4, #3 | 2 |
 | 9 | Internal Models | **Theorem** (InternalModel.lean — simulation lifts to all horizons; → Conant-Ashby) | Simulation relation, semiconjugacy, induction | — | #4, #8 | 2 |
@@ -135,8 +135,9 @@
 - Distinction between adaptation (reversible, within-lifetime) and evolution (irreversible, across generations)
 
 **Approach**: This likely needs dynamical systems formalism (Principle 4 as prerequisite) plus additional structure for selection and variation. Possibly category-theoretic from the start — rewriting systems or temporal type theory.
-**Effort**: Research-level. Multiple sessions, unclear endpoint.
-**Risk**: High — "evolution" is one of the most overloaded terms in science. Finding the right level of abstraction is the core challenge. Defer until Tiers 1-2 are solid.
+**RESOLVED 6/09 — `Evolution.lean`.** The "right level of abstraction" (the flagged core challenge) was settled by Mobus & Kalton 2015 itself: §10.2.2 frames evolution *as an algorithm* (variation → selection → retention), and §10.2.1.4 makes fitness *relational* — so the core is a generational `step : S → S` over an environmental fitness **preorder** with `selects : ∀ s, s ≤ step s` (fitness-non-decreasing). From it, `adapts` (fitness non-decreasing across all generations), `Evolvable` (the CAES *capacity*, ∃ a strict improvement), `IsAdapted` (a fitness peak). The decisive design choice — **no model/goal/understanding field** — is grounded in M&K's line that the selection criterion is "not resident in some mind but in the conditions imposed by the surrounding system." That blindness is what makes #6 the independent counterpart to #12 (directed) and applicable to any system. Capstone `evolvable_but_not_improvable`: the prime-cyclic 3-cycle is evolvable yet not improvable (#6 ⇏ #12). Mobus's "#12 corollary of #6" is misplaced — shared ontogenic skeleton, two independent specializations (environmental vs mental selection). **Deferred** (research-level, not gaps): explicit populations/replicators + mutation operators, stochastic/expected-fitness selection + Price equation, fitness landscapes (NK), the thermodynamic free-energy framing (Mobus 2022 Ch. 2), drift/neutral evolution, multi-level selection.
+
+**Effort**: Done — core was LOW once source-grounded (a `Preorder` + a monotone-iterate induction; the capstone reused today's `cyclic3_no_directed_improvement`). The "unclear endpoint" risk dissolved against M&K's own algorithmic framing.
 
 ---
 
@@ -285,7 +286,7 @@ Theorem-tier, no new axiom. **Deferred (research-level)**: mutual information, t
 **Goal**: Formalize the principles that involve self-reference and long-term change. These are research-level.
 
 8. **Self-Models (#10)** — Lawvere fixed points, diagonal arguments
-9. **Evolution (#6)** — Fitness, selection, accommodation. Temporal type theory or rewriting systems.
+9. **Evolution (#6)** — ✓ DONE 6/09. **Axiom, independent, blind** (not directed evolution): generational step fitness-non-decreasing over an environmental preorder; #6⇏#12 (evolvable-but-not-improvable); `Evolution.lean`. **Completes all 12.**
 10. **Understandability (#11)** — ✓ DONE 6/09. **Axiom, independent of #9** (not the claimed corollary): strict non-degenerate compression; `Understanding.lean`.
 11. **Improvability (#12)** — ✓ DONE 6/09. **Axiom, independent of #6, agential** (not directed evolution): external goal + intervention; #12⟹#11, #12⇏#6; `Improvability.lean`.
 
@@ -386,4 +387,4 @@ After each tier, we can begin testing dependency hypotheses:
 
 The ultimate deliverable: a dependency DAG showing which principles are axioms (independent) and which are theorems (derived). This is what turns the 12 principles from a list into a theory.
 
-**The 11/12 question was the most interesting finding — and it landed (6/09).** Understandability and Improvability are *not* corollaries but independent principles about the observer-system and designer-system relationships. Mobus's framework does contain a hidden epistemological/agential layer the "corollary" labeling obscured: #11 (observe/GET) and #12 (intervene/PUT) are the two channels of the agent's lens onto a system, distinct from the 10 ontological principles and interacting (improvement presupposes understanding). This is a contribution to the theory, not just the formalization. **Only #6 Evolution now remains** before the full 12-principle dependency DAG can be drawn.
+**The 11/12 question was the most interesting finding — and it landed (6/09).** Understandability and Improvability are *not* corollaries but independent principles about the observer-system and designer-system relationships. Mobus's framework does contain a hidden epistemological/agential layer the "corollary" labeling obscured: #11 (observe/GET) and #12 (intervene/PUT) are the two channels of the agent's lens onto a system, distinct from the 10 ontological principles and interacting (improvement presupposes understanding). This is a contribution to the theory, not just the formalization. **And #6 Evolution landed 6/09 as the independent *blind* axiom — completing all 12.** The agential layer (#11/#12) and the blind/directed axis (#6 vs #12) are both machine-checked; the full 12-principle dependency DAG can now be drawn.

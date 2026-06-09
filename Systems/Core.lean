@@ -22,3 +22,4 @@ import Systems.Core.SelfModel
 import Systems.Core.Information
 import Systems.Core.Understanding
 import Systems.Core.Improvability
+import Systems.Core.Evolution

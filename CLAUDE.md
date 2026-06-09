@@ -1,6 +1,6 @@
 # Systems Ontology --- Lean 4 Formalization
 
-Machine-verified systems ontology in Lean 4 with Mathlib. Seven traditions (Klir, Bunge, Mobus, Myers, Wymore, Mesarović, Joslyn) encoded as shape categories with comparison functors and a common core theorem. 11/12 Mobus principles formalized (only #6 Evolution remains). ~7,410 lines, zero `sorry`s.
+Machine-verified systems ontology in Lean 4 with Mathlib. Seven traditions (Klir, Bunge, Mobus, Myers, Wymore, Mesarović, Joslyn) encoded as shape categories with comparison functors and a common core theorem. **All 12 Mobus principles formalized** (#6 Evolution completed the set, 6/09). ~7,540 lines, zero `sorry`s.
 
 **Key insight**: The common core of all seven independently developed systems definitions is Klir's S = (T, R) --- the walking arrow category **2**. A system, in the sense shared by every tradition from Mesarović (1964) through Myers (2023), is a morphism: relations depend on things. Everything else --- environment, boundary, state, input, output, time, mechanism, feedback --- is tradition-specific elaboration. This was *discovered* through formalization, not claimed by any author.
 
@@ -27,6 +27,7 @@ Systems/
     Information.lean     Genus (difference-that-makes-a-difference) → Hartley → Shannon as bounded special case (Principle 7)
     Understanding.lean   Compression core: onto+lossy+non-degenerate abstraction (Principle 11), tracks/predict, card/Hartley drop, #9⇏#11 via one-state + Fin 3 prime-cycle witnesses — axiom-tier, dual to #9
     Improvability.lean   Agency framing (Principle 12): Improvement/DirectedAgent — external goal + intervention on dynamics; #12⟹#11 (carries Understanding), Homeostat the engine, #12⇏#6 (prime-cycle no directed agent); #11 GET + #12 PUT = agential layer — axiom-tier
+    Evolution.lean       Blind pillar (Principle 6): Evolution over an environmental fitness preorder — generational step fitness-non-decreasing; adapts (all-horizon), Evolvable (CAES capacity); evolvable_but_not_improvable (#6⇏#12, prime-cycle); no model/goal — blind dual of #12 — axiom-tier. Completes all 12.
   Core.lean              Imports all Core modules
   Mobus/                 Phase 2: Mobus 8-tuple + composition
     FlowNetwork.lean     Directed graphs with parametric capacity κ (Eq. 4.4)
