@@ -2,9 +2,9 @@
 
 *What each formalization says, what it means, and what's left*
 
-**Last updated**: 2026-05-24
-**Lean source**: `Systems/Core/Systemness.lean`, `Systems/Core/Level.lean`, `Systems/Core/Complexity.lean`, `Systems/Core/Dynamics.lean`
-**Technical roadmap**: `principles-formalization-roadmap.md`
+**Last updated**: 2026-06-09 — **all 12 principles formalized**
+**Lean source**: all `Systems/Core/*.lean` (aggregated by `Systems/Core.lean`)
+**Technical roadmap**: `principles-formalization-roadmap.md` · **Clean one-line axiom/theorem list**: `../paper/axiom-table.md`
 
 > **Update discipline**: The axiom table below is the PRIMARY output of every formalization session. After `lake build` succeeds on new theorems, update this table FIRST — one plain English sentence per result, no Lean type names. Then update the per-principle sections, tasknote, roadmap, and session file. If the axiom can't be stated in one sentence, the formalization isn't understood yet.
 
@@ -148,9 +148,9 @@ Governance.lean captures Mobus's HCGS: Homeostat, GovernanceSubsystem, TwoLevelG
 
 ---
 
-## What the axioms look like (emerging)
+## What the axioms look like (complete — all 12)
 
-As the formalizations accumulate, each principle is converging toward a one-line axiom:
+Each principle as a one-line axiom or theorem (the full machine-checked set; a clean grouped version for figures lives in `../paper/axiom-table.md`):
 
 | # | Principle | Axiom (candidate) |
 |---|-----------|-------------------|
@@ -257,6 +257,10 @@ The formalization is systematically producing results that are stronger than, di
 18. **Evolution is the blind axiom — the third pillar, and it completes the 12.** Mobus calls #12 a corollary of Evolution (#6); having shown #12 is an independent *agential* axiom, we formalize #6 (`Evolution.lean`) as the independent *blind* one. Grounded in Mobus & Kalton 2015 §10.2.2 ("Evolution as a Kind of Algorithm") and §10.2.1.4 ("Fit and Fitness" — fitness is "inherently relational, no meaning without the environment"), an `Evolution S` over an environmental fitness order `[Preorder S]` is a generational `step` with the single law `selects : ∀ s, s ≤ step s` (each generation at least as fit). From it, `adapts`: fitness is non-decreasing across *all* generations (one-step lifts to all-horizon, the #6 analogue of #11's `tracks` and #12's `persists`). `Evolvable` captures the CAES *capacity* (a state that strictly improves), distinct from the act; `IsAdapted` is a fitness peak (the fixed point the climb approaches). The structure deliberately has **no model, goal, or understanding** — the decisive M&K line is that evolution's criterion is "**not resident in some mind** but in the conditions imposed by the surrounding system." That blindness is the whole point: it lets #6 run on *any* system, and it is exactly what separates it from #12 (whose goal lives in an agent's mind). The seam is made concrete by **`evolvable_but_not_improvable`**: the prime-cyclic 3-cycle — which has a model but no understanding (#16) and so no directed agent (#17) — is nonetheless **evolvable**. A prime-cyclic system can be blindly evolved but not deliberately improved. Mobus's three ontogenic loops (auto-organization / biological evolution / intentional-organization) are one variation→selection skeleton instantiated blind (#6) or directed (#12); neither reduces to the other, so "#12 corollary of #6" is misplaced just as "#11 corollary of #9" was. **Axiom-tier, independent — and with it all 12 principles are formalized.**
 
     *What this means practically:* This closes the program and fixes the top-level taxonomy for BERT/GSR: **10 ontological principles** (what systems ARE and DO) + **2 agential** (#11 observe, #12 intervene) + the **blind/directed axis** on structural change (#6 evolution vs #12 engineering). "Can this system be improved?" and "can it evolve?" are different queries with different preconditions — improvement needs an understanding and a goal; evolution needs only an environmental fitness order. A system can be evolvable without being understandable, which is the formal content of "let it evolve" vs "engineer it." The 12 are now ready to be drawn as a dependency DAG (which principles are independent axioms, which are derived theorems).
+
+19. **Principles 6–12 are not "the complex-adaptive-systems principles" — the real boundary is the model line (#9), and #11/#12 float free of complexity entirely.** Mobus groups the higher principles (6–12) as characterizing complex adaptive/evolvable systems, with 1–5 holding for any system. The formalization refines this on two counts. *First, the boundary is not at #6.* Blind Evolution (#6) needs only an environmental fitness order and runs on nearly anything — we make a 2-state `Bool` system and the prime-cycle evolvable; Governance (#8) needs a set-point but no model. The genuine complex-adaptive threshold is the **model-bearing line at #9** (a system sophisticated enough to *contain* a model), with #10 (modelling itself) above it. *Second, and more sharply: Understandability (#11) and Improvability (#12) are orthogonal to system complexity.* They track whether an **agent holds a model** and whether the system **admits a compression** — not how complex the system is. The witnesses settle it: `noisyPairUnderstanding` is a *trivial* `Bool × Bool` system that is both understandable and improvable (the agential principles apply to a simple system), while the prime-cycle (`Fin 3`, dynamically richer) is *neither* understandable *nor* improvable, yet still evolvable. So "applies to complex adaptive systems" conflates two independent things — the system being complex, and an agent-with-a-model being present — and the formalization separates them. The demandingness gradient runs: **ontological core (any system) → regulation (#8) → models (#9, #10) → agency (#11, #12)**, with #6 a near-universal *blind* axis off to the side — not a clean cut at 6. *Honest caveat:* this is the *logical/structural* boundary under our minimal cores; Mobus's grouping also makes an empirical point (these principles are *exercised* in real complex adaptive systems) that a formal core does not address — we relocate the logical line, we do not deny the applied one.
+
+    *What this means practically:* A capability check for an agent/tooling layer should not gate the agential operations on "is this system complex?" but on the right preconditions: improvability needs an explicit model + goal; understandability needs a compressing abstraction to exist; evolvability needs only a fitness order. The prime-cycle is the cautionary witness — a system can be intricate and still admit no understanding or directed improvement, while a near-trivial system admits both.
 
 These findings share a pattern: formalization reveals structure that informal reasoning cannot access. Each finding has both a theoretical and a practical consequence — the theoretical result changes how we understand the principle; the practical consequence informs how BERT, GSR, and Halcyonic modeling workflows should behave. The Lean proofs force the discoveries; the plain-English implications are the deliverable.
 
