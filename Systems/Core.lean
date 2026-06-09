@@ -21,3 +21,4 @@ import Systems.Core.GoodRegulator
 import Systems.Core.SelfModel
 import Systems.Core.Information
 import Systems.Core.Understanding
+import Systems.Core.Improvability

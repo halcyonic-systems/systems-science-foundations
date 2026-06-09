@@ -29,7 +29,7 @@
 | 9 | Internal Models | **Theorem** (InternalModel.lean — simulation lifts to all horizons; → Conant-Ashby) | Simulation relation, semiconjugacy, induction | — | #4, #8 | 2 |
 | 10 | Self-Models | **Theorem** (tractable core — SelfModel.lean; diagonal of #9, self-anticipation, accurate set invariant; faithful-existence/Lawvere deferred) | Fixed-point theory, self-reference | — | #9 | 3 |
 | 11 | Understandability | **Axiom — independent of #9** (Understanding.lean — onto+lossy+non-degenerate compression, dynamics commute; predicts all horizons; `card M<card S` + Hartley drop; #9⇏#11 by two witnesses: one-state + 3-cycle/`Fin 3`; dual to #9) | Compression / coarse-graining, Rosen encoding, surjective non-injective, prime-cyclic incompressibility | — | #5, #9 | DONE 6/09 |
-| 12 | Improvability | Not formalized | Fitness landscapes, design theory, agency | MEDIUM | #6, #9, #11 | 2-3 |
+| 12 | Improvability | **Axiom — independent of #6, agential** (Improvability.lean — agent rewrites dynamics so an external goal becomes a stable rest state; goal not a function of the system; #12⟹#11 by containment, #8 governance the realized engine; #12⇏#6 via prime-cycle no-directed-agent) | Agency framing: external goal + intervention on dynamics, get/put duality with #11 | — | #11 (#9, #8) | DONE 6/09 |
 
 ---
 
@@ -250,10 +250,10 @@ Theorem-tier, no new axiom. **Deferred (research-level)**: mutual information, t
 
 4. **Agency framing** — Like #11's epistemic framing, #12 may be a principle about the *relationship between designer and system*, not about the system itself. Improvability requires an external agent with: (a) a model of the system (#9), (b) understanding of the system (#11), (c) a goal not supplied by the system's own dynamics, (d) the ability to intervene. This would make #12 depend on #11 (and transitively on #9), but add the new concept of *intentional intervention from outside the system boundary*.
 
-**Open question**: Does Improvability add genuinely new structure (intentional external intervention) that neither Evolution nor any other principle captures? If so, it's not a corollary — it's the principle that distinguishes engineering from natural science, and its independence would be meaningful.
+**Open question** *(RESOLVED 6/09 — `Improvability.lean`, agency framing, candidate #4)*: Does Improvability add genuinely new structure that no other principle captures? **Yes.** An `Improvement S` carries a `goal` (external set-point) and an `intervene : (S→S)→(S→S)` that rewrites the law so the goal becomes a stable rest state (`improves`/`persists`) where it was not one before (`genuine`). The structure is independent on three fronts: (i) **the goal is external** — the same dynamics admit improvements toward *different* goals (`goal_is_external`), so improvement is not a function of the system; (ii) **#12 ⟹ #11** — a `DirectedAgent` carries an `Understanding` of the system (`toUnderstanding`), and governance (#8) is the realized engine (`Homeostat.toImprovement` reusing `target_is_equilibrium`); (iii) **#12 ⇏ #6** — the prime-cyclic 3-cycle has a model but no understanding, so it admits *no directed agent* (`cyclic3_no_directed_improvement`): blindly evolvable, not deliberately improvable. So #12 is the principle that distinguishes engineering from natural science, and its independence is meaningful — exactly as the question hoped. The roadmap's other candidates (fitness landscapes #1, constraint-preserving optimization #3) remain optional deepenings.
 
-**Effort**: Depends on formalization path. The constraint-preserving transformation version (#3) could be attempted alongside Tier 1.
-**Risk**: Medium-high. The philosophical depth is real but the formal versions are tractable if scoped carefully.
+**Effort**: Done — core was LOW (reused #11's machinery, #8's `target_is_equilibrium`, and #4's `equilibrium_iterate`; the gem `cyclic3_no_directed_improvement` was one line off today's #11 work).
+**Risk realized as high-reward**: #12 is an independent agential axiom — with #11 it completes the agential layer (see cross-tier note below).
 
 ---
 
@@ -286,8 +286,8 @@ Theorem-tier, no new axiom. **Deferred (research-level)**: mutual information, t
 
 8. **Self-Models (#10)** — Lawvere fixed points, diagonal arguments
 9. **Evolution (#6)** — Fitness, selection, accommodation. Temporal type theory or rewriting systems.
-10. **Understandability (#11)** — Simplifying model existence. Corollary of #5 + #9.
-11. **Improvability (#12)** — Directed evolution. Corollary of #6.
+10. **Understandability (#11)** — ✓ DONE 6/09. **Axiom, independent of #9** (not the claimed corollary): strict non-degenerate compression; `Understanding.lean`.
+11. **Improvability (#12)** — ✓ DONE 6/09. **Axiom, independent of #6, agential** (not directed evolution): external goal + intervention; #12⟹#11, #12⇏#6; `Improvability.lean`.
 
 **Axiomatization test after Tier 3**: The ultimate deliverable — a dependency DAG of the 12 principles showing which arrows are provable theorems and which are independence witnesses. How many independent axioms does systems science actually need?
 
@@ -382,8 +382,8 @@ After each tier, we can begin testing dependency hypotheses:
 | Understandability is a corollary of Internal Models | Tier 3 | **Uncertain** — Mobus says yes, but the compression/simplification requirement may be independent. If #11 adds an epistemic axiom (models must be simpler than modeled), it's not a corollary. |
 | Improvability is a corollary of Evolution | Tier 3 | **Uncertain** — Mobus says yes, but directed intervention (goal + model + agency) may add structure that blind evolution lacks. If #12 adds intentional external intervention, it's independent. |
 | Evolution is independent of all other principles | Tier 3 | Likely yes — it adds selection/variation structure |
-| #11 and #12 are epistemological/agential, not ontological | Cross-tier | **Open question** — if true, the 12 principles split into two kinds: 10 about what systems ARE/DO, and 2 about what OBSERVERS/DESIGNERS can do WITH systems. This would be a structural insight about the principles themselves. |
+| #11 and #12 are epistemological/agential, not ontological | Cross-tier | **RESOLVED 6/09 — yes.** Both formalized as independent axioms, not corollaries. #11 (Understandability) = the observer's GET channel (`abstract : S → M`, read state out); #12 (Improvability) = the designer's PUT channel (`intervene` on the dynamics, write structure in). The 12 principles split: **10 ontological** (what systems ARE/DO) + **2 agential** (#11 observe, #12 intervene — what an agent does WITH a system). The two interact: directed improvement requires understanding (`cyclic3_no_directed_improvement`), so the un-understandable is un-engineerable. See `Understanding.lean`, `Improvability.lean`. |
 
 The ultimate deliverable: a dependency DAG showing which principles are axioms (independent) and which are theorems (derived). This is what turns the 12 principles from a list into a theory.
 
-**The 11/12 question is potentially the most interesting finding.** If Understandability and Improvability are *not* corollaries but independent principles about the observer-system and designer-system relationships, then Mobus's framework contains a hidden epistemological/agential layer that the "corollary" labeling obscures. Demonstrating this formally would be a contribution to the theory, not just to the formalization.
+**The 11/12 question was the most interesting finding — and it landed (6/09).** Understandability and Improvability are *not* corollaries but independent principles about the observer-system and designer-system relationships. Mobus's framework does contain a hidden epistemological/agential layer the "corollary" labeling obscured: #11 (observe/GET) and #12 (intervene/PUT) are the two channels of the agent's lens onto a system, distinct from the 10 ontological principles and interacting (improvement presupposes understanding). This is a contribution to the theory, not just the formalization. **Only #6 Evolution now remains** before the full 12-principle dependency DAG can be drawn.
