@@ -20,3 +20,4 @@ import Systems.Core.InternalModel
 import Systems.Core.GoodRegulator
 import Systems.Core.SelfModel
 import Systems.Core.Information
+import Systems.Core.Understanding
