@@ -1,0 +1,52 @@
+%% halcyonic-canvas v1
+%% title: Mobus's 12 Principles — Dependency DAG (8 axioms / 4 theorems)
+%% layout: layered
+%% role: p1=systems
+%% role: p2=systems
+%% role: p3=systems
+%% role: p4=systems
+%% role: p8=systems
+%% role: p6=research
+%% role: p11=primary
+%% role: p12=primary
+%% role: p5=knowledge
+%% role: p7=knowledge
+%% role: p9=knowledge
+%% role: p10=knowledge
+%% desc: p5=Theorem: every structural complexity measure is a function of 1+2+3 (12 to 11)
+%% desc: p9=Theorem: a one-step-correct internal model is correct at every horizon
+%% desc: p10=Theorem: a self-model is the diagonal case of 9; existence trivial
+%% desc: p7=Theorem: information genus; Shannon entropy a bounded special case
+%% desc: p6=Axiom (blind): change under environmental fitness selection; no model or goal
+%% desc: p8=Axiom: set-point not in the dynamics; a good regulator contains a model (K=2)
+%% desc: p11=Axiom (agential, observe/GET): a model strictly simpler than the system
+%% desc: p12=Axiom (agential, intervene/PUT): a goal from outside the boundary
+flowchart TD
+    p1["1 Systemness"]
+    p2["2 Hierarchy"]
+    p3["3 Networks"]
+    p4["4 Dynamics"]
+    p8["8 Governance"]
+    p6["6 Evolution"]
+    p9["9 Internal Models"]
+    p10["10 Self-Models"]
+    p7["7 Information"]
+    p5["5 Complexity"]
+    p11["11 Understandability"]
+    p12["12 Improvability"]
+
+    p1 ==> p5
+    p2 ==> p5
+    p3 ==> p5
+    p4 ==> p9
+    p9 ==> p10
+    p9 ==> p7
+    p1 -.->|"system's state"| p4
+    p3 -.->|"flow network"| p8
+    p4 -.->|"+ set-point"| p8
+    p9 -.->|"K=2"| p8
+    p5 -.->|"compression"| p11
+    p9 -.->|"refined by"| p11
+    p11 -.->|"directed by"| p12
+    p8 -.->|"engine for"| p12
+    p6 -.->|"blind / directed"| p12
