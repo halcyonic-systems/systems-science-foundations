@@ -5,7 +5,7 @@
 **Created**: 2026-05-20
 **Companion**: `strategy/research/formalization-manifesto.md` (the "why")
 **Plain English summary**: `docs/reference/principles-formalization-companion.md` (axiom candidates, what each formalization means, what's deferred)
-**Prerequisite**: K ≅ **2** common core theorem (complete, zero `sorry`s)
+**Prerequisite**: K ≅ **2** common core theorem (complete, zero `sorry`s). **Upgraded 6/11 — view-generation (`Systems/Klir/ViewGeneration.lean`):** the kernel is now data (`Kernel` = (T,R) + the dependency Prop), and Klir/Bunge/Mobus presentations are *generated* from it as faithful views with identity round trips. Costs: Bunge view requires a bond (`HasBond`), Mobus view requires irreflexivity. Companion finding 20. Gates the BERT "one kernel + lens overlays" refactor (bert#77).
 **Design principle**: Same as categorification roadmap — don't formalize for its own sake. Each formalization must answer a question that prose cannot.
 
 **Methodological commitment**: For each principle, explore *multiple* candidate formalizations from different mathematical foundations before committing to one. The workflow is: **deep source reading (Bunge, Mobus, Klir) → literature survey (Zotero, external) → multiple candidate sketches → prototype most promising → certify in Lean**. Premature commitment to one approach per principle is the main risk. The intellectual work is choosing the right formalization, not executing a predetermined one.
