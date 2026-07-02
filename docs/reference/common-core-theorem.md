@@ -203,4 +203,20 @@ This is convergence from outside systems science entirely. Seven systems traditi
 
 ---
 
-*Sources: Klir (2001), Bunge (1979), Mobus (2022), Myers (2023), Wymore via Wach et al. (2021), Mesarović & Takahara (1975), Joslyn (1995).*
+## Addendum: Eighth Entry — Spivak (2026-07-02)
+
+The body of this document describes the original seven-tradition result as proved. An eighth entry now meets the same shape+embedding standard: Spivak's adaptive arrangements ("Compositional Dynamics in Learning and Mechanics," arXiv:2606.28984, Defs 5.3.1–5.3.2), which define a system as a 0-ary operad morphism carrying (Q, ♯_Q, f⁺, f⁻, U).
+
+**Shape.** `I_Spivak` (`ShapeSpivak.lean`): 4 objects (`parameter`, `output`, `input`, `potential`), 5 generating arrows. `drive : parameter → potential` and `potential_on_parameter : potential → parameter` form a cycle — the second cyclic shape in the landscape. Joslyn's cycle is feedback through *observation* (efferent/afferent); Spivak's is feedback through *value*: the state changes because a potential evaluates it. That cycle is the tradition's new commitment — **potential + reaction: value-driven adaptation** — which no other entry formalizes.
+
+**Embedding.** `klirToSpivak` (CommonCore): 0 ↦ parameter, 1 ↦ output, f ↦ expose — the identical pattern to the Myers row. Faithfulness is inherited from I_Klir's shape as for all entries; `klirToSpivak_obj_injective` depends only on `propext`. Maximality is untouched (it is target-independent).
+
+**The commitments ladder as a theorem.** `myersToSpivak : I_Myers ⥤ I_Spivak` (state ↦ parameter, expose ↦ expose, update ↦ update) machine-checks Remark 4.1.2's ladder claim at the shape level: Spivak = Myers + potential + drive.
+
+**Independence caveat.** Spivak and Myers share the Topos-adjacent community and lens machinery (Myers appears in the paper's acknowledgments). The commitment is new; the sociological independence of this convergence entry is weaker than for the original seven. The `myersToSpivak` inclusion states that relationship in the mathematics rather than hiding it.
+
+**Standard met.** Shape file + CommonCore embedding + table row, `lake build` green, zero sorry. Data-level view generation (`Kernel.toSpivak` with round trips) remains follow-up work, as it does for four of the original seven.
+
+---
+
+*Sources: Klir (2001), Bunge (1979), Mobus (2022), Myers (2023), Wymore via Wach et al. (2021), Mesarović & Takahara (1975), Joslyn (1995), Spivak (2026).*

@@ -6,7 +6,7 @@
   - Core/     Bunge CES triple + Principles formalization (#1-#5)
   - Mobus/    8-tuple, flows, boundary, bridge, composition
   - Klir/     Common root S=(T,R), commuting triangle
-  - Category/ Shape categories (7 traditions), comparison functors, K ≅ 2
+  - Category/ Shape categories (8 traditions), comparison functors, K ≅ 2
 
   See docs/INDEX.md for documentation reading order.
   See CLAUDE.md for dependency graph and conventions.
@@ -40,6 +40,7 @@ import Systems.Category.ShapeMyers
 import Systems.Category.ShapeWymore
 import Systems.Category.ShapeMesarovic
 import Systems.Category.ShapeJoslyn
+import Systems.Category.ShapeSpivak
 import Systems.Category.ShapeComparison
 import Systems.Category.ShapeComparison_Myers
 import Systems.Category.ShapeComparison_Wymore

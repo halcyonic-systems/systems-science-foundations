@@ -11,22 +11,23 @@ import Systems.Category.ShapeMyers
 import Systems.Category.ShapeWymore
 import Systems.Category.ShapeMesarovic
 import Systems.Category.ShapeJoslyn
+import Systems.Category.ShapeSpivak
 
 /-!
 # The Common Core: I_Klir Embeds into Every Shape Category
 
-The common core of all seven systems traditions is `I_Klir` — the walking arrow
+The common core of all eight systems traditions is `I_Klir` — the walking arrow
 category S = (T, R) with a single dependency R → T.
 
 ## Theorem
 
 `I_Klir` is the largest CONNECTED subcategory that embeds faithfully into all
-seven shape categories. "Connected" means: there exists a non-identity morphism
+eight shape categories. "Connected" means: there exists a non-identity morphism
 (the category is not discrete). This excludes trivial embeddings of isolated points.
 
 The proof has two parts:
 
-1. **Existence**: Seven faithful embedding functors `I_Klir → I_X`
+1. **Existence**: Eight faithful embedding functors `I_Klir → I_X`
 2. **Maximality**: `I_Klir` is the bottleneck. It has 2 objects and exactly 1
    non-identity morphism per non-empty hom-set. Any faithful functor INTO I_Klir
    from a connected category maps at most 1 arrow per hom-set, and the only
@@ -35,7 +36,7 @@ The proof has two parts:
 ## Systems-Theoretic Meaning
 
 The one structural commitment shared by every tradition from Mesarović (1964)
-through Myers (2023): **a system has things and relations among them, and the
+through Spivak (2026): **a system has things and relations among them, and the
 relations depend on the things.**
 
 Everything else — environment, boundary, state, input, output, time, mechanism,
@@ -47,7 +48,9 @@ into two families:
 Klir sits at the root of both families. The `rfl` proofs of the commuting triangle
 (`KlirSystem.lean`) already showed both traditions produce the same (T, R) when
 projected. The common-core theorem shows this convergence is UNIVERSAL — not just
-Bunge and Mobus, but all seven traditions independently embed the walking arrow.
+Bunge and Mobus, but all eight traditions independently embed the walking arrow.
+(Independence caveat for the eighth: Spivak shares community and lens machinery
+with Myers — see `ShapeSpivak.lean`.)
 
 ## Embedding Table
 
@@ -59,6 +62,7 @@ Bunge and Mobus, but all seven traditions independently embed the walking arrow.
 | I_Wymore | output | state | readout |
 | I_Mesarovic | output | globalState | response_output |
 | I_Joslyn | controlled | effector | efferent |
+| I_Spivak | output | parameter | expose |
 -/
 
 open CategoryTheory
@@ -99,6 +103,13 @@ def klirToJoslynPre : Prefunctor KlirPosition (Paths JoslynPosition) where
   obj | .things => .controlled | .relation => .effector
   map | .relation_on_things => Quiver.Hom.toPath JoslynArrow.efferent
 
+/-- Embedding I_Klir into I_Spivak: things ↦ output, relation ↦ parameter.
+The output map f⁺ (parameter determines output) is the Klir arrow —
+the identical pattern to the Myers embedding. -/
+def klirToSpivakPre : Prefunctor KlirPosition (Paths SpivakPosition) where
+  obj | .things => .output | .relation => .parameter
+  map | .relation_on_things => Quiver.Hom.toPath SpivakArrow.expose
+
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- § Embedding Functors via Paths.lift
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -115,6 +126,8 @@ def klirToMesarovic : Paths KlirPosition ⥤ Paths MesarovicPosition :=
   Paths.lift klirToMesarovicPre
 def klirToJoslyn : Paths KlirPosition ⥤ Paths JoslynPosition :=
   Paths.lift klirToJoslynPre
+def klirToSpivak : Paths KlirPosition ⥤ Paths SpivakPosition :=
+  Paths.lift klirToSpivakPre
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- § Injectivity on objects (all embeddings send distinct positions to distinct positions)
@@ -137,6 +150,9 @@ theorem klirToMesarovic_obj_injective : Function.Injective klirToMesarovicPre.ob
 
 theorem klirToJoslyn_obj_injective : Function.Injective klirToJoslynPre.obj := by
   intro a b h; cases a <;> cases b <;> simp_all [klirToJoslynPre]
+
+theorem klirToSpivak_obj_injective : Function.Injective klirToSpivakPre.obj := by
+  intro a b h; cases a <;> cases b <;> simp_all [klirToSpivakPre]
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- § Faithfulness

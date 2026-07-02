@@ -61,6 +61,6 @@ Caveats to state wherever the row is claimed:
 
 ## Formalization targets (in order)
 
-1. Encode the 0-ary-morphism definition of system and the open/closed classifier (Def 5.3.2 vocabulary) over a minimal operad structure; show the kernel functor **2** → (system-arrows) — the "system = morphism" verification.
-2. Encode the abstract adaptive-arrangement datum (Def 4.1.1) and the commitments ladder (Remark 4.1.2) as named preconditions over the kernel — the entry-#8 gate.
+1. **DONE at shape level (2026-07-02).** Encode the 0-ary-morphism definition of system and the open/closed classifier (Def 5.3.2 vocabulary) over a minimal operad structure; show the kernel functor **2** → (system-arrows) — the "system = morphism" verification. *Shipped as `ShapeSpivak.lean` (4 positions, 5 arrows, the drive cycle) + `klirToSpivak` in CommonCore, at the same standard as the other seven entries. The operad-native encoding and open/closed classifier remain data-level follow-up.*
+2. **Ladder DONE at shape level (2026-07-02).** Encode the abstract adaptive-arrangement datum (Def 4.1.1) and the commitments ladder (Remark 4.1.2) as named preconditions over the kernel — the entry-#8 gate. *`myersToSpivak : I_Myers ⥤ I_Spivak` machine-checks the ladder claim (Spivak = Myers + potential + drive). The Def 4.1.1 datum (𝓜, 𝓠, J, R) as named preconditions remains data-level follow-up; read CLS24 (arXiv:2404.16140) first.*
 3. (Stretch) The two-integrators split as two views generated from one object — P2b dynamical form, likely needs substantial Poly infrastructure; assess mathlib coverage first.
