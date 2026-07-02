@@ -169,17 +169,30 @@ def parse_file(path):
                 ns.pop()
             i += 1
             continue
+        decl_part = s
         if s.startswith("@["):
-            pending_attrs.append(line)
-            depth = s.count("[") - s.count("]")
-            while depth > 0:
+            depth = 0
+            split = None
+            for j, ch in enumerate(s):
+                if ch == "[":
+                    depth += 1
+                elif ch == "]":
+                    depth -= 1
+                    if depth == 0:
+                        split = j + 1
+                        break
+            rest = s[split:].strip() if split is not None else ""
+            if not rest:
+                pending_attrs.append(line)
+                while depth > 0:
+                    i += 1
+                    pending_attrs.append(lines[i])
+                    depth += lines[i].count("[") - lines[i].count("]")
                 i += 1
-                pending_attrs.append(lines[i])
-                depth += lines[i].count("[") - lines[i].count("]")
-            i += 1
-            continue
+                continue
+            decl_part = rest
 
-        toks = s.split()
+        toks = decl_part.split()
         j = 0
         while j < len(toks) and toks[j] in MODIFIERS:
             j += 1
