@@ -39,4 +39,4 @@ git push origin gh-pages --force -q
 rm -rf "$deploy"
 cd "$REPO_DIR"
 
-echo "=== Done. Site will be live at https://halcyonic.systems/systems-ontology/ ==="
+echo "=== Done. Site will be live at https://halcyonic.systems/systems-science-foundations/ ==="
