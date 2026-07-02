@@ -1,6 +1,6 @@
 # Systems Ontology --- Lean 4 Formalization
 
-Machine-verified systems ontology in Lean 4 with Mathlib. Seven traditions (Klir, Bunge, Mobus, Myers, Wymore, Mesarović, Joslyn) encoded as shape categories with comparison functors and a common core theorem. **All 12 Mobus principles formalized** (#6 Evolution completed the set, 6/09). ~7,540 lines, zero `sorry`s.
+Machine-verified systems ontology in Lean 4 with Mathlib. Seven traditions (Klir, Bunge, Mobus, Myers, Wymore, Mesarović, Joslyn) encoded as shape categories with comparison functors and a common core theorem. **All 12 Mobus principles formalized** (#6 Evolution completed the set, 6/09). ~7,840 lines, zero `sorry`s.
 
 **Key insight**: The common core of all seven independently developed systems definitions is Klir's S = (T, R) --- the walking arrow category **2**. A system, in the sense shared by every tradition from Mesarović (1964) through Myers (2023), is a morphism: relations depend on things. Everything else --- environment, boundary, state, input, output, time, mechanism, feedback --- is tradition-specific elaboration. This was *discovered* through formalization, not claimed by any author.
 
@@ -96,8 +96,11 @@ cql -i cql/test_instance.cql          # launch with file preloaded
 ## Build & Verify
 
 ```bash
-lake build          # Must pass with zero errors, zero sorrys
+lake build                  # Must pass with zero errors, zero sorrys
+scripts/axiom-profile.sh    # Foundational-purity profile of the 12 headline theorems
 ```
+
+`axiom-profile.sh` runs `#print axioms` on one showcase theorem per Mobus principle and classifies each `constructive` / `choice-free` / `classical` / `UNSOUND` (sorryAx-reaching). It is the kernel-computed analogue of a "proof vector" — dependencies are computed, not asserted. Note: SSF's 8 systems axioms are structures/defs, not Lean `axiom`s, so this is a foundational-purity signal; the systems-level dependency vector lives in `docs/paper/dependency-dag.mmd`. The ontological core is constructive; only Evolution (#6) and Information (#7) reach `Classical.choice`. Full table: `docs/paper/axiom-table.md`. The build-check hook scans `lake build` output for transitive `sorry` as a zero-sorry guard.
 
 ## Site Deployment
 

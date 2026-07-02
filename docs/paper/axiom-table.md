@@ -25,6 +25,27 @@
 10. **Self-Models** — A self-model is the diagonal case of #9; existence is trivial (the identity), so the content is faithfulness, not existence.
 7. **Information** — Information is a difference that makes a difference (Bateson); Shannon entropy is a bounded special case (entropy ≤ Hartley nonspecificity, equality at the uniform distribution).
 
+## Foundational profile (machine-checked)
+
+*Kernel-computed via `#print axioms` on one showcase theorem per principle (`scripts/axiom-profile.sh`). `constructive` = no axioms; `choice-free` = `propext`/`Quot.sound` only; `classical` = pulls in `Classical.choice`. This is the rigorous analogue of a "proof vector" (cf. arXiv:2504.00063) — dependencies are computed, not asserted. Note: SSF's 8 systems axioms are structures/defs, not Lean `axiom`s, so the systems-level dependency vector lives in `dependency-dag.mmd`, not here; this column is a foundational-purity signal.*
+
+| # | Principle | Headline theorem | Foundational profile |
+|---|-----------|------------------|----------------------|
+| 1 | Systemness | `ConcreteSystem.composition_organized` | constructive |
+| 2 | Hierarchy | `ancestor_trans` | constructive |
+| 3 | Networks | `FlowNetwork.toRelation_irrefl` | constructive |
+| 4 | Dynamics | `coupled_equilibrium_iff_fixed` | choice-free |
+| 5 | Complexity | `sameKind_equivalence` | constructive |
+| 6 | Evolution | `evolvable_but_not_improvable` | classical |
+| 7 | Information | `entropy_le_log_card` | classical |
+| 8 | Governance | `Homeostat.target_is_equilibrium` | constructive |
+| 9 | Internal Models | `InternalModel.predict_correct` | choice-free |
+| 10 | Self-Models | `SelfModel.accurate_invariant` | constructive |
+| 11 | Understandability | `no_trivial_understanding` | constructive |
+| 12 | Improvability | `goal_is_external` | choice-free |
+
+The ontological core is constructive; only Evolution (#6) and Information (#7) reach `Classical.choice`. For #12 the core claim is choice-free — only the prime-cycle separation witness (`cyclic3_no_directed_improvement`) goes classical. Whether that dependence is essential or incidental is an open question (companion doc).
+
 ## The structure behind the list
 
 - **K ≅ 2 (the walking arrow):** modelling (#9), governing (#8), and understanding (#11) are the same morphism `R → T` — "a good regulator contains a model" is the internal model is the dual of understanding.

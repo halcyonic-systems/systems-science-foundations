@@ -282,6 +282,16 @@ Full treatment: `docs/reference/simon-argument-formalized.md`
 
 ---
 
+## Foundational profile — which results are constructive (open question)
+
+`scripts/axiom-profile.sh` runs `#print axioms` on one showcase theorem per principle — the kernel-computed analogue of a "proof vector" (cf. the Axiom-Based Atlas, arXiv:2504.00063, but *computed* rather than asserted; SSF's 8 systems axioms are structures/defs, not Lean `axiom`s, so this is a foundational-purity signal, not a systems-dependency vector — that lives in `dependency-dag.mmd`). Table in `docs/paper/axiom-table.md`.
+
+Finding: the ontological core is **constructive** (#1, #2, #3, #5, #8, #10, #11 use no axioms; #4, #9, #12 are choice-free — `propext`/`Quot.sound` only). Only **Evolution (#6)** and **Information (#7)** reach `Classical.choice`. For Improvability (#12) the core claim `goal_is_external` is choice-free; only the prime-cycle separation witness `cyclic3_no_directed_improvement` goes classical.
+
+**Open question (not investigated):** is the `Classical.choice` dependence in the #6 and #7 witnesses *essential* to the argument, or *incidental* — inherited from a Mathlib lemma that has a constructive replacement? If incidental, the seam results could be made fully constructive. Flagged, not pursued. A `sorryAx`/sorry-reaching check on the build output is the hygiene guard this profile doubles as.
+
+---
+
 ## Program status
 
 Nine of twelve principles resolved (~6,910 lines, zero `sorry`):

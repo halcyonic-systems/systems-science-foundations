@@ -2,7 +2,7 @@
 
 Machine-verified formalization of seven systems science traditions in Lean 4, discovering their shared categorical structure. They build the future of systems theory. This audits its past.
 
-**~6,265 lines | 39 files | zero `sorry`s | 7 traditions | K ≅ 2 | 12 → ≤11 principles**
+**~7,840 lines | 47 files | zero `sorry`s | 7 traditions | K ≅ 2 | all 12 principles formalized (12 → ≤11)**
 
 ## The Result
 
@@ -53,22 +53,30 @@ To build the Verso document locally: `cd docs/verso && lake build proposal && la
 | 11 | **Timescale decomposition**: coupled dynamics decomposes into fast (within-module) and slow (between-module) around equilibria | Fast equilibria = product equilibria (by rfl) |
 | 12 | **View generation**: the kernel alone generates the Klir/Bunge/Mobus presentations as faithful views; round trips are identities; the preconditions (Bunge: bond, Mobus: irreflexivity) are the costs of each view | Sections with `rfl` round trips + view coherence triangle |
 
-## Principles Axiomatization (active)
+## Principles Axiomatization
 
-Mobus lists 12 principles of systems science. We're testing which are independent axioms and which are theorems — the first systematic axiomatization attempt.
+Mobus lists 12 principles of systems science. We tested which are independent axioms and which are theorems — the first systematic axiomatization attempt.
 
-**Status**: 6 principles resolved. Complexity (#5) is not an axiom — it derives from Systemness + Hierarchy + Networks. Governance (#8) is an axiom — the set point is genuinely new structure. The 12 reduce to ≤11.
+**Status**: all 12 resolved (zero `sorry`). **8 axioms** (#1, #2, #3, #4, #8, #6, #11, #12) + **4 theorems** (#5 from #1+#2+#3; #7 information, Shannon as a bounded special case; #9 internal models lift to all horizons; #10 self-models as the diagonal of #9). The 12 reduce to ≤11.
 
-| # | Principle | Status |
-|---|-----------|--------|
-| 1 | Systemness | **Axiom** — composition closure unconditional at CES and 8-tuple levels |
-| 2 | Hierarchy | **Axiom** — Simon's implicit assumption named (StrictAnti bridge to Dynamics) |
-| 3 | Networks | **Axiom** — complete |
-| 4 | Dynamics | **Axiom** — DynamicSystem, coupled dynamics, equilibrium, Flow, timescale decomposition |
-| 5 | Complexity | **Theorem** — structural measures derive from #1+#2+#3. First reduction. |
-| 8 | Governance | **Axiom** — Homeostat, GovernanceSubsystem, HCGS; set point is new structure not in Dynamics |
+| # | Principle | Verdict | Key result |
+|---|-----------|---------|------------|
+| 1 | Systemness | **Axiom** | Composition closure unconditional at CES and 8-tuple levels |
+| 2 | Hierarchy | **Axiom** | Simon's implicit assumption named (StrictAnti bridge to Dynamics) |
+| 3 | Networks | **Axiom** | Directed flow network with capacities |
+| 4 | Dynamics | **Axiom** | DynamicSystem, coupled dynamics, equilibrium, Flow, timescale decomposition |
+| 5 | Complexity | **Theorem** | Structural measures derive from #1+#2+#3. First reduction (12 → ≤11). |
+| 6 | Evolution | **Axiom** | Blind variation+selection over a fitness preorder; `evolvable_but_not_improvable` (#6 ⇏ #12) |
+| 7 | Information | **Theorem** | Difference-that-makes-a-difference; Hartley nonspecificity; Shannon bounded (`entropy ≤ hartley`) |
+| 8 | Governance | **Axiom** | Homeostat, GovernanceSubsystem, HCGS; set point is new structure; Conant-Ashby → K ≅ 2 |
+| 9 | Internal Models | **Theorem** | Simulation lifts to all horizons; model map = good-regulator homomorphism, so #9 supplies #8 |
+| 10 | Self-Models | **Theorem** | Diagonal case of #9; existence trivial (identity), content is faithfulness |
+| 11 | Understandability | **Axiom** | Strictly-simpler model (onto, lossy, non-degenerate); independent of #9 (two witnesses) |
+| 12 | Improvability | **Axiom** | External agent rewrites dynamics so an external goal becomes a rest state; #12 ⇏ #6 (prime-cycle) |
 
-Key findings: unconditional composition (CES and 8-tuple), Simon's named gap, forced environment formula, diversity from interaction profiles. See `docs/reference/principles-formalization-companion.md` for the full axiom table and findings.
+**Foundational profile** (`scripts/axiom-profile.sh`): `#print axioms` on each headline theorem classifies it `constructive` / `choice-free` / `classical`. The ontological core is constructive; only Evolution (#6) and Information (#7) reach `Classical.choice`. The kernel-computed analogue of a "proof vector" (cf. arXiv:2504.00063), but dependencies are computed, not asserted.
+
+See `docs/paper/axiom-table.md` (clean reference + profile), `docs/paper/dependency-dag.mmd` (the systems-level dependency graph), and `docs/reference/principles-formalization-companion.md` (full findings).
 
 ## Known Limits
 
@@ -91,10 +99,12 @@ Systems/
   Examples/       Thermostat
 docs/
   INDEX.md        Reading order for all documentation
-  reference/      15 technical docs (companion, roadmaps, Simon analysis)
+  paper/          Axiom table (+ foundational profile), dependency DAG, outline
+  reference/      Technical docs (companion, roadmaps, Simon analysis)
   publications/   AITP 2026, ISSS 2026 abstracts
   verso/          Verso interactive document (6 chapters)
 cql/              CQL categorical database schemas
+scripts/          axiom-profile.sh (foundational-purity profile) + tooling
 ```
 
 ## Building
