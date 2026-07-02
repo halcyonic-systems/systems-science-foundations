@@ -27,6 +27,7 @@ Seven systems traditions encoded as shape categories, compared via functors, uni
 | [systems-theory-definitions.md](reference/systems-theory-definitions.md) | Definitions from all traditions with source citations |
 | [structure-family-context.md](reference/structure-family-context.md) | The RichConcreteSystem experiment (not imported) |
 | [recursive-component-architecture.md](reference/recursive-component-architecture.md) | Design decisions for RecursiveSystem vs RecursiveComponent |
+| [spivak-adaptive-arrangements.md](reference/spivak-adaptive-arrangements.md) | Spivak 2026 as candidate entry #8: "system = 0-ary morphism," Def 5.3.2 unpacked, formalization targets |
 
 ### Program 2: Principles Axiomatization (12 → ≤11)
 
@@ -47,6 +48,7 @@ Formalizing Mobus's 12 principles to test which are independent axioms and which
 | [joslyn-feedback-mapping.md](reference/joslyn-feedback-mapping.md) | Mapping Joslyn's feedback structure to the shape category |
 | [for-cliff-structure-of-S.md](reference/for-cliff-structure-of-S.md) | Structure analysis prepared for Cliff (advisor) |
 | [toward_a_modular_categorical_definition_of_system.md](reference/toward_a_modular_categorical_definition_of_system.md) | Early paper draft on modular categorical systems |
+| [formalization-practice-references.md](reference/formalization-practice-references.md) | LAMP (agentic proving + ontology-tool plan) and Scott 1972 (engineering patterns, genre precedent) |
 
 ### Publications
 
