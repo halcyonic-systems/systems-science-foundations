@@ -10,6 +10,8 @@ Seven definitions of "system," developed independently across six decades (Klir 
 
 The dependence also runs the other way. From the kernel alone, each tradition's presentation is *generated* as a faithful view, and the round trips are identities — the traditions are views of one invariant, not independent ontologies that happen to agree. The kernel was discovered by comparison, but it is logically prior: comparison detects the invariant; the invariant explains the convergence. What generation costs is explicit and machine-checked: the Bunge view requires a bond between distinct components; the Mobus view forbids self-dependency.
 
+An eighth tradition (Spivak 2026, energy-driven systems, added at the same standard) sharpened what "cost" means. Bunge's bond and Mobus's irreflexivity are *conditions* the kernel may already satisfy; Spivak's value channel — a potential driving the dynamics — is *data* the kernel can never supply. Every kernel-generated Spivak view is provably potential-free and static. Said without the machinery: bare relational structure contains no reason for anything to move. "Why" is not hiding inside "how" — it must be paid for from outside, and both directions are machine-checked (the kernel alone lands in the degenerate stratum; a supplied potential escapes it over the same kernel).
+
 Three orientations emerge from the encoding:
 - **Structural** (Klir, Bunge, Mobus): arrows converge inward toward components
 - **Operational** (Mesarovic, Wymore, Myers): arrows radiate outward from state
@@ -52,6 +54,7 @@ To build the Verso document locally: `cd docs/verso && lake build proposal && la
 | 10 | **Simon's named gap**: near-decomposability → time-scale separation requires an unstated StrictAnti assumption | Conditional theorem isolates the bridge |
 | 11 | **Timescale decomposition**: coupled dynamics decomposes into fast (within-module) and slow (between-module) around equilibria | Fast equilibria = product equilibria (by rfl) |
 | 12 | **View generation**: the kernel alone generates the Klir/Bunge/Mobus presentations as faithful views; round trips are identities; the preconditions (Bunge: bond, Mobus: irreflexivity) are the costs of each view | Sections with `rfl` round trips + view coherence triangle |
+| 13 | **No teleonomy in the kernel**: every kernel-generated Spivak (energy-driven) view is provably potential-free and static — value/drive is *data* (T, R) cannot supply, not a condition it might satisfy; a supplied potential escapes the stratum over the same kernel | Unconditional view + Def 5.3.2 classifier Props; axioms: `Quot.sound`/`propext` only |
 
 ## Principles Axiomatization
 
