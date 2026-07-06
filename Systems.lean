@@ -27,6 +27,7 @@ import Systems.Mobus.Composition
 -- Phase 3: Klir common root
 import Systems.Klir.KlirSystem
 import Systems.Klir.ViewGeneration
+import Systems.Klir.SpivakSystem
 
 -- Categorification: shape categories + common core theorem
 import Systems.Category.SubsystemCategory

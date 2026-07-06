@@ -215,7 +215,11 @@ The body of this document describes the original seven-tradition result as prove
 
 **Independence caveat.** Spivak and Myers share the Topos-adjacent community and lens machinery (Myers appears in the paper's acknowledgments). The commitment is new; the sociological independence of this convergence entry is weaker than for the original seven. The `myersToSpivak` inclusion states that relationship in the mathematics rather than hiding it.
 
-**Standard met.** Shape file + CommonCore embedding + table row, `lake build` green, zero sorry. Data-level view generation (`Kernel.toSpivak` with round trips) remains follow-up work, as it does for four of the original seven.
+**Standard met.** Shape file + CommonCore embedding + table row, `lake build` green, zero sorry.
+
+**Data level (2026-07-06).** `SpivakSystem.lean` carries the entry at ViewGeneration's data-level standard — with a cost of a new kind. The structure is shaped after CLS24 Definition 7 (arXiv:2404.16140: state, reaction, potential, exposure), with the factorization law `step_drives` making "value drives motion" structural: the step must route through the potential via the reaction, and `reaction_const` (constant valuation ⇒ no motion) is the Set-level shadow of the reaction being a bundle map T\*X → TX. The Def 5.3.2 vocabulary is formalized as classifier Props (potential-free, static, stateless, driven), with `potentialFree_static` as the classifier's bite.
+
+Unlike Bunge's bond and Mobus's irreflexivity — *conditions* on (T, R) a kernel may already satisfy — a value channel is *data* the kernel cannot supply. `Kernel.toSpivak` is therefore unconditional, and the cost surfaces as a stratum: every kernel-generated Spivak view is provably potential-free and static (`toSpivak_potentialFree`, `toSpivak_static`) — the kernel is pure exposed structure, all how-it-is, no why-it-moves. Round trip (`toSpivak_toKlir`) and faithfulness (`toSpivak_injective`) match the other views; `toSpivakWith` + `toSpivakWith_driven` prove the converse: supplied value data escapes the stratum while fixing the same kernel. The elaborations thus split into two kinds — conditions vs data — with Spivak the first entry whose cost is provably on the data side.
 
 ---
 
