@@ -12,6 +12,7 @@ import Systems.Category.ShapeWymore
 import Systems.Category.ShapeMesarovic
 import Systems.Category.ShapeJoslyn
 import Systems.Category.ShapeSpivak
+import Systems.Category.ShapeWillems
 
 /-!
 # The Common Core: I_Klir Embeds into Every Shape Category
@@ -63,6 +64,16 @@ with Myers — see `ShapeSpivak.lean`.)
 | I_Mesarovic | output | globalState | response_output |
 | I_Joslyn | controlled | effector | efferent |
 | I_Spivak | output | parameter | expose |
+| I_Willems | signal | behavior | evaluate |
+
+Willems row: LAYERED STATUS — kernel-neutrality witness, not counted in the
+eight-traditions headline. The embedding (`klirToWillems`, ShapeWillems.lean)
+shows the tradition most hostile to I/O orientation still carries the
+predication arrow. But as a shape I_Willems is isomorphic to I_Mesarovic
+(`willemsToMesarovic`), so a ninth-tradition claim would assert independence
+on the one measure — single-system shape — where Willems provably collapses.
+Willems' genuine independence lives at the composition layer (SSF #16),
+which this table does not measure. The headline stays eight.
 -/
 
 open CategoryTheory

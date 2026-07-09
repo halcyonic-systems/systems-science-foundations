@@ -42,6 +42,7 @@ import Systems.Category.ShapeWymore
 import Systems.Category.ShapeMesarovic
 import Systems.Category.ShapeJoslyn
 import Systems.Category.ShapeSpivak
+import Systems.Category.ShapeWillems
 import Systems.Category.ShapeComparison
 import Systems.Category.ShapeComparison_Myers
 import Systems.Category.ShapeComparison_Wymore

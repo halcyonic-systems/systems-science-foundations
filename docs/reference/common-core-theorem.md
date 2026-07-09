@@ -223,4 +223,20 @@ Unlike Bunge's bond and Mobus's irreflexivity — *conditions* on (T, R) a kerne
 
 ---
 
+## Addendum: Kernel-Neutrality Stress Test — Willems (2026-07-09)
+
+Willems' behavioral triple Σ = (T, W, B) (1991 Def II.1; 2007 pp. 50–51) entered as a deliberate stress test: the tradition most hostile to I/O orientation, defining a system as nothing but a set of admissible trajectories B ⊆ Wᵀ. If the kernel were secretly an input/output commitment, Willems would refuse it. The verdict is layered, and the layering itself is the result.
+
+**Kernel layer — embeds.** `klirToWillems` (`ShapeWillems.lean`): things ↦ signal, relation ↦ behavior, arrow ↦ evaluate. A behavior is a relation predicated on signal values; `dep_on` is predication, not causation, so the behavioral stance has nothing to refuse. The kernel survives its hardest audience.
+
+**Shape layer — collapses.** As a shape, I_Willems is the span time ← behavior → signal, isomorphic to Mesarović's Shape 2 span (`willemsToMesarovic` + inverse + object bijection + four arrow-correspondence theorems). The iso is forced to send `time ↦ input` and `behavior ↦ globalState` — semantically absurd assignments, since Willems has no state object (state is a latent variable of a *representation*, 1991 Def VII.1) and his time axis is nobody's input. The absurdity demonstrates the collapse is a shape-level artifact: the abstraction discards exactly what Willems means.
+
+**Composition layer — independent, not encoded.** Willems' genuine novelty (interconnection as B₁ ∩ B₂, I/O partition as theorem, latent-variable elimination) lives at the composition layer, which shape categories do not measure. Tracked as SSF #16.
+
+**The refinement this forced: entries are claims-at-a-layer.** The existing eight entries are all shape-layer claims and are unaffected in content — each contributes a distinct single-system dependency shape. Willems is NOT counted as a ninth tradition, and the reasoning is now uniform: a ninth-tradition claim would assert independence on the one measure (single-system shape) where Willems provably collapses. Spivak's precedent does not transfer — his caveat is sociological while his commitment stays shape-visible. Counting Willems would make "N traditions" mean two different things across rows. The headline stays eight; Willems ships as a kernel-neutrality witness with layered status.
+
+**Standard met.** Shape file + kernel embedding + both-direction collapse comparison, `lake build` green, zero sorry.
+
+---
+
 *Sources: Klir (2001), Bunge (1979), Mobus (2022), Myers (2023), Wymore via Wach et al. (2021), Mesarović & Takahara (1975), Joslyn (1995), Spivak (2026).*
