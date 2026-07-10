@@ -22,7 +22,7 @@
 
 5. **Complexity** — Every structural complexity measure is a function of #1 + #2 + #3 (the first reduction: 12 → ≤ 11).
 9. **Internal Models** — A one-step-correct internal model is correct at *every* horizon (anticipation is automatic); a Rosen fast model gaining `lead` steps per tick runs `n·lead` ahead, with lockstep the `lead = 1` case; the model map is exactly the good-regulator homomorphism, so #9 supplies #8.
-10. **Self-Models** — A self-model is the diagonal case of #9; existence is trivial (the identity), so the content is faithfulness, not existence.
+10. **Self-Models** — A self-model is the diagonal case of #9; existence is trivial (the identity), so the content is faithfulness, not existence — and faithfulness is expensive: an accurate *fast* self-model (lead ≥ 2) forces its own orbit into periodicity (perfect self-anticipation collapses time).
 7. **Information** — Information is a difference that makes a difference (Bateson); Shannon entropy is a bounded special case (entropy ≤ Hartley nonspecificity, equality at the uniform distribution).
 
 ## Foundational profile (machine-checked)
@@ -40,11 +40,11 @@
 | 7 | Information | `entropy_le_log_card` | classical |
 | 8 | Governance | `Homeostat.target_is_equilibrium` | constructive |
 | 9 | Internal Models | `AnticipatoryModel.tracks` | choice-free |
-| 10 | Self-Models | `SelfModel.accurate_invariant` | constructive |
+| 10 | Self-Models | `FastSelfModel.accurate_forces_periodic` | choice-free |
 | 11 | Understandability | `no_trivial_understanding` | constructive |
 | 12 | Improvability | `goal_is_external` | choice-free |
 
-The ontological core is constructive; only Evolution (#6) and Information (#7) reach `Classical.choice`. For #12 the core claim is choice-free — only the prime-cycle separation witness (`cyclic3_no_directed_improvement`) goes classical. Whether that dependence is essential or incidental is an open question (companion doc).
+The ontological core is constructive or choice-free; only Evolution (#6) and Information (#7) reach `Classical.choice`. For #12 the core claim is choice-free — only the prime-cycle separation witness (`cyclic3_no_directed_improvement`) goes classical. Whether that dependence is essential or incidental is an open question (companion doc).
 
 ## The structure behind the list
 
