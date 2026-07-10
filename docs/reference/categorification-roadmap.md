@@ -358,6 +358,8 @@ Cliff Joslyn (1995) "Semantic Control Systems" builds a theory of control from f
 
 ### 4.1 JoslynSystem Definition
 
+**✓ RESOLVED (2026-07-10, `Systems/Joslyn/JoslynSystem.lean`).** `JoslynSystem ι X` (indexed, Def 5) + binary `JoslynSystem₂ α`, with Def 21 constraint `C = Sᶜ` on both. **Foundational finding**: `compl_constraint` (`Cᶜ = S` — the synthetic definition's faithfulness) is essentially CLASSICAL — double complement is double-negation elimination, so "a system IS its constraint" is a theorem of classical set theory only; a constructivist passes from system to constraint but not faithfully back. The projection theorems (§4.3) are by contrast axiom-FREE.
+
 Joslyn's System₁ (Def 5) is Mesarovic's relational system:
 
 ```
@@ -415,6 +417,8 @@ structure Control₂ (α : Type*) extends Control₁ α where
 ```
 
 ### 4.3 Projection to Klir (Clean)
+
+**✓ RESOLVED (2026-07-10, same file).** `JoslynSystem₂.toKlir` (things = full carrier, relation = states) with partial section `KlirSystem.toJoslyn₂` (requires `relation.Nonempty`). **THE SEAM, machine-checked** (`mem_range_toKlir_iff`, axiom-free): a Klir system is in the image of the Joslyn projection **iff** its relation is nonempty and its thing-set is the full carrier — Joslyn's Def 5 excludes exactly Klir's degenerate systems (empty relation) and partial carriers. First machine-checked divergence on the Joslyn edge of the diagram; both §4.3 bridge theorems are fully constructive (no axioms at all).
 
 The Joslyn→Klir projection is straightforward — Joslyn explicitly builds on Mesarovic/Klir:
 
