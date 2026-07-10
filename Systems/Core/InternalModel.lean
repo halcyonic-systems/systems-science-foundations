@@ -127,4 +127,72 @@ def InternalModel.toConantAshby {R S : Type*} (im : InternalModel R S)
   regView := observe ∘ im.model
   model_compatible := rfl
 
+/-! ## Anticipatory models (Rosen): the model runs ahead of the system
+
+  Rosen's anticipatory system is a system whose internal model runs FASTER than
+  the system it models — per internal tick, the model advances `lead` system
+  steps. `InternalModel` is exactly the `lead = 1` case. -/
+
+/-- An anticipatory model: like `InternalModel`, but one internal tick of R
+    advances the modelled system by `lead` steps. The `simulates` square now
+    commutes with `systemDyn^[lead]` — the Rosen fast-model shape. -/
+structure AnticipatoryModel (R S : Type*) where
+  /-- R's internal representation of S. -/
+  model : R → S
+  /-- How the model evolves inside R. -/
+  internalDyn : R → R
+  /-- The actual dynamics of the modelled system S. -/
+  systemDyn : S → S
+  /-- System-steps gained per internal tick. -/
+  lead : ℕ
+  /-- One internal tick simulates `lead` system steps. -/
+  simulates : ∀ r, model (internalDyn r) = systemDyn^[lead] (model r)
+
+/- PROOF TARGET: an anticipatory model correct for one tick is correct at
+   every horizon, with the lead compounding.
+
+   MATHEMATICAL INTENT:
+   model (internalDyn^[n] r) = systemDyn^[n * lead] (model r) for every n.
+   After n internal ticks the model has raced n * lead system-steps ahead —
+   the growing lead that makes the model genuinely anticipatory (Rosen).
+   At lead = 1 this is exactly InternalModel.tracks.
+
+   AVAILABLE TOOLS:
+   - `AnticipatoryModel.simulates` (the one-tick, lead-step square)
+   - `Function.iterate_succ_apply : f^[n+1] x = f^[n] (f x)`
+   - `Function.iterate_add_apply : f^[m+n] x = f^[m] (f^[n] x)`
+   - `Nat.succ_mul : (n+1) * m = n * m + m`
+
+   STRATEGY HINT:
+   Induction on n, generalizing r — same skeleton as InternalModel.tracks,
+   then collapse the composed iterates with iterate_add_apply and succ_mul. -/
+theorem AnticipatoryModel.tracks {R S : Type*} (am : AnticipatoryModel R S)
+    (n : ℕ) (r : R) :
+    am.model (am.internalDyn^[n] r) = am.systemDyn^[n * am.lead] (am.model r) := by
+  induction n generalizing r with
+  | zero => simp
+  | succ n ih =>
+    rw [Function.iterate_succ_apply, ih (am.internalDyn r), am.simulates,
+        ← Function.iterate_add_apply, Nat.succ_mul]
+
+/-! ## Round-trip: `InternalModel` is the `lead = 1` case -/
+
+/-- Every internal model is an anticipatory model with unit lead. -/
+def InternalModel.toAnticipatory {R S : Type*} (im : InternalModel R S) :
+    AnticipatoryModel R S where
+  model := im.model
+  internalDyn := im.internalDyn
+  systemDyn := im.systemDyn
+  lead := 1
+  simulates := by simpa using im.simulates
+
+/-- At unit lead, anticipatory tracking specializes to `InternalModel.tracks`:
+    the round-trip confirming `AnticipatoryModel` generalizes `InternalModel`
+    rather than sitting beside it. -/
+theorem InternalModel.toAnticipatory_tracks {R S : Type*} (im : InternalModel R S)
+    (n : ℕ) (r : R) :
+    im.toAnticipatory.model (im.toAnticipatory.internalDyn^[n] r)
+      = im.systemDyn^[n] (im.model r) := by
+  simpa [InternalModel.toAnticipatory] using im.toAnticipatory.tracks n r
+
 end Systems

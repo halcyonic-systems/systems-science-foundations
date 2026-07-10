@@ -29,7 +29,7 @@ THEOREMS=(
   "6|Evolution|Systems.evolvable_but_not_improvable"
   "7|Information|Systems.entropy_le_log_card"
   "8|Governance|Systems.Homeostat.target_is_equilibrium"
-  "9|Internal Models|Systems.InternalModel.predict_correct"
+  "9|Internal Models|Systems.AnticipatoryModel.tracks"
   "10|Self-Models|Systems.SelfModel.accurate_invariant"
   "11|Understandability|Systems.no_trivial_understanding"
   "12|Improvability|Systems.goal_is_external"
