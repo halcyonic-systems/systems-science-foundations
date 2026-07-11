@@ -503,6 +503,8 @@ def control₂_to_hcgs : Control₂ α → HCGSDecomposition α := ...
 
 ### 4.6 The Extended Diagram
 
+**UNBLOCKED 2026-07-11** (4.3 + 4.4 + 4.5 all landed; witness item 3 below done early in BungeMap.lean). Tracked: [#17](https://github.com/halcyonic-systems/systems-science-foundations/issues/17).
+
 The commuting triangle becomes:
 
 ```
@@ -521,6 +523,8 @@ Mobus -------→ Bunge
 3. Non-functoriality witness: exhibit a morphism that Joslyn→Bunge does not preserve due to environment-as-derived vs. environment-as-primitive
 
 ### 4.7 The Independent Convergence Narrative
+
+**Formally grounded 2026-07-11** — convergence definitional (§4.5), three divergences machine-checked (env, feed-downward, Prop-29 tier boundary). Paper section tracked: [#19](https://github.com/halcyonic-systems/systems-science-foundations/issues/19); dynamical-tier faithful Prop 29 parked as [#20](https://github.com/halcyonic-systems/systems-science-foundations/issues/20).
 
 This is the publishing angle. Three facts:
 1. Joslyn (Klir's protégé) and Mobus (cites Klir, not Joslyn) independently develop hierarchical control decomposition with environment-as-constraint
