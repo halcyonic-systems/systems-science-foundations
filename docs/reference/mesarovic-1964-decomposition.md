@@ -10,6 +10,33 @@ Mesarovic "works almost exclusively with the structural kinds of systems … of 
 
 Joslyn's use: 2-fold systems admit input/output descriptions; from 3-fold up, one dimension can be neither input nor output — "complex systems require some concept of an internal state." Hence in a control₂ system, O must have internal states that vary to compensate (→ Prop 29's decomposition O = ⟨O_E, O_I⟩).
 
+## THE ACTUAL THEOREM (transcribed 2026-07-11 from scans of pp. 13–17; scans at `~/Desktop/mesarovic/`)
+
+**Setup (p. 13, "Decomposition and State of the System")**: a system is specified explicitly by a polyadic nth-order relation R[X₁, ···, Xₙ] (eq. 15). A relation R is a **relative product** of R₁ and R₂ iff
+
+> (xRy) ↔ [(xR₁z) ∩ (zR₂y)]   (eq. 16)
+
+Decomposition = finding R₁, R₂ with R = R₁/R₂, reticulating S into R₁[X₁, ···, X_j, Z] and R₂[Z, X_{j+1}, ···, Xₙ] (eq. 17). **The connecting middle term Z is a NEW term** — Joslyn's "m + p = n" bookkeeping is his simplification, not the source's.
+
+**Theorem (p. 14, verbatim structure)**: An nth-order system can be:
+1. **Decomposed into (n − 2) triadic relations {R₁, ···, Rₙ}** — unconditionally.
+2. **Decomposed into dyadic relations if and only if** for every triadic relation obtained from (1):
+   - (a) [XᵢRⱼ(Xᵢ₊₁, Xᵢ₊₂)] ↔ {(XᵢRⱼ¹Zⱼ) ∩ [ZⱼRⱼ²(Xᵢ₊₁, Xᵢ₊₂)]}   (eq. 18)
+   - (b) **Zⱼ = Xᵢ₊₁ ∪ Xᵢ₊₂**
+
+**The "exception clause" is precise, not vague**: dyadic decomposition is possible exactly when each triadic factor's medium term can be assembled from terms already present (condition b) rather than being genuinely new. "Except for some very special and complex cases" = "unless (18)+(b) hold" — a checkable condition, not hand-waving.
+
+**Proof shape (pp. 14–15)**:
+- Part 1 is **constructive**: iterated relative products peel off one coordinate at a time (eqs. 19–22), each step introducing a fresh middle term; "no restriction is imposed when introducing relative products" → n − 2 triadic subsystems, always.
+- Part 2 sufficiency: if (18) holds, each triadic factor splits with medium term Yⱼ² (eqs. 24–25) → 2(n − 2) binary subsystems.
+- Part 2 necessity: if some triadic factor's medium term cannot be one of the three original terms, any splitting Rⱼ = Rⱼ¹/Rⱼ² introduces a new term Z¹ and Rⱼ² **is again triadic** (eq. 26) — the order never drops. *(Schematic by modern standards: it exhibits the canonical splitting's failure; a formalization must close the "any splitting" generality gap.)*
+
+**Punchline (p. 15, author's emphasis)**: "in general, *a higher order system cannot be decomposed into the subsystems with less than triadic relations*."
+
+**State as a COROLLARY (pp. 15–17)**: the state concept is "introduced as a consequence of the theorem": for X₁RX₂(t) (order p + 1), the relative-product decomposition X₁R₁[X₂ʲ(t), Zʲ] ∩ ZʲR₂X₂ʲʳ(t) (eq. 33) makes "elements of Z represent the state of the system" — embodying the entire past history. p. 17: reducing the order below triadic is impossible "except in the case where the conditions of the theorem are satisfied. **The three terms of the triadic relation are, then, input, output, and state.**"
+
+**Corrections to Joslyn's paraphrase**: (i) part 1 is unconditional, not "at most... except special cases" — the exceptions attach only to the DYADIC question; (ii) the exception clause is the precise medium-term condition (18)+(b); (iii) relative products introduce new terms — his m + p = n arity arithmetic is not the source's convention.
+
 ## Modern restatement (target carrier: `JoslynSystem ι X`, landed 2026-07-10)
 
 Over S ⊆ ∏ᵢ Xᵢ:
@@ -34,20 +61,22 @@ The mature theory runs the SAME insight in the positive direction. **M&T Thm 1.1
 
 The pair is the two-sided justification of state-based systems theory, and the 1975 side is already on disk. Note: M&T's Thm 1.1 proof builds an arbitrary index set over the set of all functions contained in S — expect classicality (choice) in any faithful formalization of the existence direction; the polarity heuristic (companion doc) predicts the NEGATIVE direction (parity witness) is constructive.
 
-## Open questions (need the 1964 text itself)
+## Open questions — RESOLVED 2026-07-11 (source acquired as scans)
 
-1. Mesarovic's exact notion of "relational product" (the m + p = n arity arithmetic suggests composition along a shared coordinate that is consumed — confirm).
-2. The exception clauses ("except for some very special and complex cases") — which systems DO decompose into 2-fold systems? These hypotheses ARE the formalization difficulty for the positive direction.
-3. Whether p. 14's proof is constructive or cardinality/counting-based.
+1. ~~Relational product~~ → eq. 16: composition through a NEW existentially-connecting middle term; m + p = n was Joslyn's simplification.
+2. ~~Exception clauses~~ → precise: (18) + (b) Zⱼ = Xᵢ₊₁ ∪ Xᵢ₊₂ (medium term assembled from existing terms).
+3. ~~Proof character~~ → part 1 constructive (iterated relative products); part 2 necessity schematic (canonical-splitting argument with a generality gap to close in formalization).
 
-## Verdict: /goal-able slice EXISTS (negative direction only)
+Remaining reconstruction question: the exact modern typing of eq. 18's medium-term condition (Mesarovic's terms are sets; ∩ is conjunction; the existential over the middle element is implicit; (b) is a union of term SETS). This is reconstruction work, not acquisition work.
 
-**Yes** — and it does not need the 1964 text: formalize the parity witness as `binary projections do not determine ternary relations` at the set tier (`∃ S₁ S₂ : Set (Fin 2 × Fin 2 × Fin 2), S₁ ≠ S₂ ∧ all three binary projections agree` — or the sharper join-reconstruction form). This machine-checks the impossibility core that Joslyn's "internal state is forced" argument rests on, without touching the exception clauses.
+## Verdict (updated 2026-07-11, post-acquisition): /goal run 7 slice now COVERS BOTH DIRECTIONS' CORES
 
-**Not /goal-able yet**: the positive (n − 2)-ternary decomposition and hence Prop 29's existence direction — blocked on the source (exception clauses unknown). Do not attempt from the paraphrase.
+- **Part 1 is now /goal-able**: the unconditional (n − 2)-triadic decomposition is a constructive induction (fresh middle terms as tuple/product types over the remaining coordinates) — no exception clauses involved at all. This is the leg Prop 29's existence direction actually leans on, so **Prop 29 existence is NEARER than assumed**.
+- **Parity witness stays /goal-able** as the n = 3 impossibility grounding (binary shadows don't determine ternary relations) — the concrete face of part 2's necessity.
+- **Not yet**: the full part-2 iff (18)+(b) — needs the medium-term condition reconstructed in modern typing first, and the necessity proof's "any splitting" gap closed. One dedicated sketch session before any loop.
 
-## Source-acquisition status (2026-07-11)
+## Source-acquisition status (2026-07-11) — ACQUIRED
 
-- **1964 Views on General Systems Theory (Wiley)**: NOT in Zotero. Internet Archive has it (`viewsongeneralsy0000syst`) but lending-restricted — borrowable with a free archive.org account (1-hr loans); djvu text and search-inside both blocked unauthenticated. ResearchGate lists the chapter ([record](https://www.researchgate.net/publication/266693225_Foundations_for_a_general_systems_theory)); Google Books is snippet-only. Best routes: archive.org borrow (read p. 14, transcribe the theorem + exceptions) or ILL scan.
+- **1964 chapter ACQUIRED as page scans**: full chapter (pp. 4–24, incl. theorem pp. 13–17, goal-seeking section, references) captured 2026-07-11 from the archive.org lending copy (`viewsongeneralsy0000syst`); screenshots at `~/Desktop/mesarovic/` (11 spreads). TODO: import into Zotero as an item with attachments so the scans have a durable home.
 - **DTIC AD0659485** — ACQUIRED (2026-07-11, `~/Desktop/AD0659485.pdf`) and **checked: does NOT contain the p. 14 theorem**. It is Mesarovic's 1967 IEEE SSC conference paper ("General Systems Theory and its Mathematical Foundation"), a foundations restatement: cites the 1964 chapter as ref (1), discusses state objects informally as the auxiliary device for constructive specification, and defers technical content to SRC Report 85-A-66-33 ("On the Auxiliary Functions and Constructive Specification of the General Time Systems") and Windeknecht 1967. Corroborates the state-forcing narrative; useless for the exception clauses. SRC 85-A-66-33 is a further acquisition lead.
 - **In library now**: Joslyn 1995 (JXTBBK89, full passage above), M&T 1975 (ZA3E2PD3, full OCR).
