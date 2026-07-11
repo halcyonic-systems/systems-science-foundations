@@ -69,7 +69,7 @@ The pair is the two-sided justification of state-based systems theory, and the 1
 2. ~~Exception clauses~~ → precise: (18) + (b) Zⱼ = Xᵢ₊₁ ∪ Xᵢ₊₂ (medium term assembled from existing terms).
 3. ~~Proof character~~ → part 1 constructive (iterated relative products); part 2 necessity schematic (canonical-splitting argument with a generality gap to close in formalization).
 
-Remaining reconstruction question: the exact modern typing of eq. 18's medium-term condition (Mesarovic's terms are sets; ∩ is conjunction; the existential over the middle element is implicit; (b) is a union of term SETS). This is reconstruction work, not acquisition work.
+~~Remaining reconstruction question~~ **RESOLVED (run 8, same day)**: eq. 18+(b) modernized as pivot-factorizability — `MiddleFactorizable R ↔ R = middleJoin R` (`Systems/Mesarovic/Decomposition.lean`), with the factorization quantified over ALL dyadic pairs, closing the necessity proof's "any splitting" gap; parity refuses all three pivots (full n = 3 necessity face). Downstream, Prop 29's existence direction proved **degenerate at the set tier**: trivially true in stable-region form, false in envelope-faithful form (`Control₂.exists_realization` / `toControl₂_envelope_const` in `Systems/Joslyn/Control.lean`) — the faithful version is a dynamical-tier target.
 
 ## Verdict (updated 2026-07-11, post-acquisition): /goal run 7 slice now COVERS BOTH DIRECTIONS' CORES
 

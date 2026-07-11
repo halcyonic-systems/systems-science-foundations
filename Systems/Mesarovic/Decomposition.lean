@@ -132,4 +132,94 @@ theorem binaryJoin_parityRel_ne : binaryJoin parityRel ≠ parityRel := by
   rw [h] at hmem
   exact Bool.noConfusion hmem
 
+/-! ## Part 2's iff, modernized (the medium-term condition)
+
+  Mesarovic's eq. 18 + (b): a triadic factor decomposes into dyadic
+  relations exactly when its medium term is assembled from terms already
+  present. Modern form: R is dyadically factorizable through a pivot
+  coordinate iff R IS the join of its own two shadows through that pivot
+  (a conditional-independence shape). Crucially the factorization below
+  is existentially quantified over ALL dyadic pairs — this closes the
+  printed necessity proof's generality gap (p. 14–15 argues only the
+  canonical splitting). -/
+
+/-- Dyadic factorizability through the MIDDLE coordinate: the two factors
+    share only Y. This is eq. 18's shape with the medium term drawn from
+    the existing terms (condition (b)) rather than fresh. -/
+def MiddleFactorizable {X Y W : Type*} (R : Set (X × Y × W)) : Prop :=
+  ∃ (R₁ : Set (X × Y)) (R₂ : Set (Y × W)),
+    ∀ p : X × Y × W, p ∈ R ↔ (p.1, p.2.1) ∈ R₁ ∧ (p.2.1, p.2.2) ∈ R₂
+
+/-- Dyadic factorizability through the FIRST coordinate (pivot = X). -/
+def LeftFactorizable {X Y W : Type*} (R : Set (X × Y × W)) : Prop :=
+  ∃ (R₁ : Set (X × Y)) (R₂ : Set (X × W)),
+    ∀ p : X × Y × W, p ∈ R ↔ (p.1, p.2.1) ∈ R₁ ∧ (p.1, p.2.2) ∈ R₂
+
+/-- Dyadic factorizability through the THIRD coordinate (pivot = W). -/
+def RightFactorizable {X Y W : Type*} (R : Set (X × Y × W)) : Prop :=
+  ∃ (R₁ : Set (X × W)) (R₂ : Set (Y × W)),
+    ∀ p : X × Y × W, p ∈ R ↔ (p.1, p.2.2) ∈ R₁ ∧ (p.2.1, p.2.2) ∈ R₂
+
+/-- The join of R's own two shadows through the middle coordinate: the
+    best any middle-pivot dyadic reconstruction can do. -/
+def middleJoin {X Y W : Type*} (R : Set (X × Y × W)) : Set (X × Y × W) :=
+  {p | (∃ w', (p.1, p.2.1, w') ∈ R) ∧ (∃ x', (x', p.2.1, p.2.2) ∈ R)}
+
+/-- THE CHARACTERIZATION (part 2's iff, modernized — and the closure of
+    the "any splitting" gap): R is middle-factorizable, by ANY pair of
+    dyadic relations, iff R equals the join of its own two shadows.
+    Forward is the mixing argument: witnesses (x, y, w') ∈ R and
+    (x', y, w) ∈ R yield R₁(x, y) and R₂(y, w), which the factorization
+    recombines into (x, y, w) ∈ R. Backward: the shadows themselves
+    factorize. So non-factorizability never depends on which splitting
+    was tried — exactly what Mesarovic's canonical-splitting proof left
+    open. -/
+theorem middleFactorizable_iff_eq_middleJoin {X Y W : Type*}
+    (R : Set (X × Y × W)) : MiddleFactorizable R ↔ R = middleJoin R := by
+  constructor
+  · rintro ⟨R₁, R₂, h⟩
+    ext p
+    constructor
+    · intro hp
+      exact ⟨⟨p.2.2, hp⟩, ⟨p.1, hp⟩⟩
+    · rintro ⟨⟨w', hw⟩, ⟨x', hx⟩⟩
+      exact (h p).mpr ⟨((h _).mp hw).1, ((h _).mp hx).2⟩
+  · intro heq
+    refine ⟨{q | ∃ w', (q.1, q.2, w') ∈ R}, {q | ∃ x', (x', q.1, q.2) ∈ R},
+      fun p => ⟨fun hp => ⟨⟨p.2.2, hp⟩, ⟨p.1, hp⟩⟩, ?_⟩⟩
+    rintro ⟨⟨w', hw⟩, ⟨x', hx⟩⟩
+    rw [heq]
+    exact ⟨⟨w', hw⟩, ⟨x', hx⟩⟩
+
+/-- Parity refuses middle-pivot factorization: (t,t,f) and (f,t,t) are in
+    parity, so any factorization admits (t,t) into both factors — but
+    (t,t,t) violates parity. -/
+theorem parityRel_not_middleFactorizable : ¬ MiddleFactorizable parityRel := by
+  rintro ⟨R₁, R₂, h⟩
+  have h₁ : ((true, true, false) : Bool × Bool × Bool) ∈ parityRel := rfl
+  have h₂ : ((false, true, true) : Bool × Bool × Bool) ∈ parityRel := rfl
+  have : ((true, true, true) : Bool × Bool × Bool) ∈ parityRel :=
+    (h _).mpr ⟨((h _).mp h₁).1, ((h _).mp h₂).2⟩
+  exact Bool.noConfusion this
+
+/-- Parity refuses left-pivot factorization (same witness class). -/
+theorem parityRel_not_leftFactorizable : ¬ LeftFactorizable parityRel := by
+  rintro ⟨R₁, R₂, h⟩
+  have h₁ : ((true, true, false) : Bool × Bool × Bool) ∈ parityRel := rfl
+  have h₂ : ((true, false, true) : Bool × Bool × Bool) ∈ parityRel := rfl
+  have : ((true, true, true) : Bool × Bool × Bool) ∈ parityRel :=
+    (h _).mpr ⟨((h _).mp h₁).1, ((h _).mp h₂).2⟩
+  exact Bool.noConfusion this
+
+/-- Parity refuses right-pivot factorization (same witness class). With
+    the middle and left cases: NO pivot admits a dyadic factorization of
+    parity — the full necessity face of the p. 14 theorem at n = 3. -/
+theorem parityRel_not_rightFactorizable : ¬ RightFactorizable parityRel := by
+  rintro ⟨R₁, R₂, h⟩
+  have h₁ : ((true, false, true) : Bool × Bool × Bool) ∈ parityRel := rfl
+  have h₂ : ((false, true, true) : Bool × Bool × Bool) ∈ parityRel := rfl
+  have : ((true, true, true) : Bool × Bool × Bool) ∈ parityRel :=
+    (h _).mpr ⟨((h _).mp h₁).1, ((h _).mp h₂).2⟩
+  exact Bool.noConfusion this
+
 end Systems

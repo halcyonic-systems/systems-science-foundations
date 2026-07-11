@@ -28,13 +28,19 @@
   dimension ≥ 3 do not decompose into 2-fold input/output systems — they
   require internal state).
 
-  TRACTABLE CORE vs DEFERRED: `Control₂Realized` carries Prop 29's
+  TRACTABLE CORE vs EXISTENCE: `Control₂Realized` carries Prop 29's
   decomposition as data, and the coherence theorems below prove the
   realization IS control₂ (outer) and contains control₁ (inner), with the
   cancellation explicit. The EXISTENCE direction — every control₂ system
-  admits such a decomposition — is Prop 29's Mesarovic-dependent content
-  and is DEFERRED until Mesarovic 1964 is formalized (the same posture as
-  Lawvere for the faithful self-model, #10).
+  admits such a decomposition — was deferred on Mesarovic 1964; with the
+  source acquired and its cores formalized (2026-07-11,
+  Systems/Mesarovic/Decomposition.lean), it is RESOLVED as degenerate at
+  this tier: trivially true in stable-region form
+  (`Control₂.exists_realization`, via the ignore-the-disturbance
+  `trivialRealization`), false in envelope-faithful form
+  (`toControl₂_envelope_const`). Its semantic content — effector
+  VARIATION doing the cancelling — belongs to the dynamical tier. See
+  the Prop-29 section at the end of this file.
 
   MARKEN-FACE CHOICE: the outer control₂ extracted from a realization
   lands on the controlled variables I (Marken's "controlled event" IS
@@ -210,5 +216,87 @@ def Homeostat.toControl₂Realized {S O : Type*} [Nontrivial O]
       rw [Set.mem_singleton_iff] at ho
       refine Set.mem_biUnion (Set.mem_singleton _) ?_
       rw [Set.mem_singleton_iff, ho, hreach s]
+
+/-! ## Prop 29's existence direction — resolved at the set tier (2026-07-11)
+
+  With Mesarovic 1964 acquired and its cores formalized
+  (`Systems/Mesarovic/Decomposition.lean`), the deferred existence
+  direction turns out to be DEGENERATE at this tier, in a way that is
+  itself machine-checkable:
+
+  1. TRIVIALLY TRUE, stable-region form: every control₂ admits a
+     realization (`trivialRealization`) — but it "cancels" the
+     controller's variation by IGNORING it (constant effect).
+  2. FALSE, envelope-faithful form: the outer face of ANY realization has
+     constant envelopes (`toControl₂_envelope_const`, immediate from
+     `compensates`), so no realization recovers a control₂ whose
+     envelopes genuinely vary.
+
+  Prop 29's real content — the effector's VARIATION doing the cancelling
+  — is therefore inexpressible in set-tier data: the same gap class as
+  Joslyn's rule-vs-law distinction (§4.5 docstring discipline), but here
+  the boundary is exhibited by a theorem pair rather than narrated. The
+  faithful existence direction belongs to the dynamical tier. -/
+
+/-- The stable region of a control₂ system is a genuine constraint:
+    it sits inside some envelope, and envelopes never fill the space. -/
+theorem Control₂.stable_ne_univ {C O : Type*} [Nonempty C]
+    (ct : Control₂ C O) : ct.stable ≠ Set.univ := by
+  intro heq
+  obtain ⟨c₀⟩ := ‹Nonempty C›
+  apply ct.constrains c₀
+  ext x
+  exact ⟨fun _ => trivial, fun _ => ct.maintained c₀ (by rw [heq]; trivial)⟩
+
+/-- The trivial realization: effector := the controller itself, effect :=
+    constantly the stable region. Every `Control₂Realized` field is
+    satisfied — including the cancellation, which holds because the
+    effect never varied in the first place. Cancellation by IGNORING the
+    disturbance: formally admissible, semantically empty. This is the
+    degeneracy that shows the set tier cannot distinguish compensation
+    from ignorance. -/
+def Control₂.trivialRealization {C O : Type*} [Nonempty C]
+    (ct : Control₂ C O) : Control₂Realized C C O where
+  disturb := fun c => {c}
+  effect := fun _ => ct.stable
+  disturb_nonempty := fun c => Set.singleton_nonempty c
+  effect_nonempty := fun _ => ct.stable_nonempty
+  effect_constrains := fun _ => ct.stable_ne_univ
+  stableI := ct.stable
+  stableI_ne_univ := ct.stable_ne_univ
+  -- why: elementary two-inclusion proof keeps the construction axiom-free
+  -- (Set.biUnion_singleton routes through Classical.choice, run-4 lesson)
+  compensates := fun c => by
+    apply Set.Subset.antisymm
+    · intro i hi
+      obtain ⟨e, _, hie⟩ := Set.mem_iUnion₂.mp hi
+      exact hie
+    · intro i hi
+      exact Set.mem_biUnion rfl hi
+
+/-- PROP 29, EXISTENCE DIRECTION (set-tier form): every control₂ system
+    admits a realization with the same maintained region. TRIVIALLY true
+    via `trivialRealization` — and that triviality IS the finding. Joslyn
+    derived Prop 29 from Mesarovic's decomposition theorem as "O must
+    have internal states that vary to compensate"; at the set tier the
+    quantifier over realizations is satisfied by one that does not vary
+    at all. The semantic content of Prop 29 lives one tier up, where
+    variation is a real notion. Pair with `toControl₂_envelope_const`
+    for the obstruction half. -/
+theorem Control₂.exists_realization {C O : Type*} [Nonempty C]
+    (ct : Control₂ C O) :
+    ∃ R : Control₂Realized C C O, R.stableI = ct.stable :=
+  ⟨ct.trivialRealization, rfl⟩
+
+/-- THE OBSTRUCTION: the outer control₂ extracted from ANY realization
+    has constant envelopes — `compensates` pins every composite to the
+    same maintained region. So envelope-faithful recovery of a control₂
+    with genuinely varying envelopes is impossible through
+    `toControl₂`: Prop 29's existence direction is trivial in its
+    stable-region form and false in its envelope-faithful form. -/
+theorem Control₂Realized.toControl₂_envelope_const {C E I : Type*}
+    [Nonempty C] (R : Control₂Realized C E I) (c c' : C) :
+    R.toControl₂.envelope c = R.toControl₂.envelope c' :=
+  R.cancellation c c'
 
 end Systems
