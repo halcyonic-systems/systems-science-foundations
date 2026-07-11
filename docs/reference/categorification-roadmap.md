@@ -473,7 +473,13 @@ noncomputable def toBunge [ActsOn α]
 
 ### 4.5 Structural Isomorphism with Mobus HCGS
 
-Joslyn's Control₂ decomposition CS = ⟨C, ⟨O_E, O_I⟩⟩ is structurally isomorphic to Mobus's HCGS hierarchy:
+**✓ RESOLVED (2026-07-11, `Systems/Joslyn/HCGS.lean`).** All choice-free; `toCoupled`, `toCoupled_combinedLaw`, and `fast_ops_is_level_homeostat` fully axiom-free. Formalized against the REAL structures (`TwoLevelGovernance` + `TimescaleDecomposition`; the pseudo-code `HCGSDecomposition α` below never existed). Three results:
+
+1. **Convergence, level anatomy**: `levelRealizes` — each HCGS level, as a perfect homeostat, realizes Joslyn's control₂ through run 4's Governance bridge; `levelRealizes_stableI` — its maintained region is exactly the fed-down set point (definitional).
+2. **Convergence, timescale**: Joslyn Def 28's "hierarchically distinct level, slower time scale" ≡ `TimescaleDecomposition`, machine-checked: packaging the HCGS as coupled dynamics (`toCoupled`, coherence `toCoupled_combinedLaw = rfl`), the frozen-coordinator fast dynamics IS the level homeostat's feedback law (`fast_ops_is_level_homeostat = rfl`). The identification is definitional once both sides are packaged — as strong as an independent-convergence claim can land.
+3. **A NEW divergence (not anticipated below)**: `feedDownward_moves_stable` — Mobus's feed-downward is precisely what breaks Joslyn's Prop 29 cancellation. Different coordinator states issuing different set points MOVE the maintained region; Joslyn demands it be invariant under the upper level's variation. So the coordinator is an authority that retunes, not a disturbance that is cancelled — the table's "C ↦ Strategic context" is correct *because* context ≠ coordinator. **The §4.7 narrative is now formally grounded with the divergence as a theorem, not narration** (semantic gap rule-vs-law remains docstring-only per the discipline below).
+
+The one-tick perfect-regulator hypothesis (`hreach`) is inherited from run 4; the asymptotic version stays deferred.
 
 | Joslyn | Mobus HCGS |
 |---|---|

@@ -29,10 +29,11 @@ import Systems.Klir.KlirSystem
 import Systems.Klir.ViewGeneration
 import Systems.Klir.SpivakSystem
 
--- Phase 4: Joslyn fourth vertex (set-theoretic tier, 4.1 + 4.3 + 4.4)
+-- Phase 4: Joslyn fourth vertex (set-theoretic tier, 4.1 + 4.3 + 4.4 + 4.5)
 import Systems.Joslyn.JoslynSystem
 import Systems.Joslyn.Control
 import Systems.Joslyn.BungeMap
+import Systems.Joslyn.HCGS
 
 -- Categorification: shape categories + common core theorem
 import Systems.Category.SubsystemCategory
