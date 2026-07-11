@@ -441,6 +441,14 @@ toKlir : JoslynSystem → KlirSystem
 
 ### 4.4 Partial Mapping to Bunge (Non-Functorial)
 
+**✓ RESOLVED (2026-07-11, `Systems/Joslyn/BungeMap.lean`).** All choice-free (`toBunge`, `toBunge_ne_of_env_ne`, `support_mono` fully axiom-free). Three refinements over the plan below:
+
+1. **TWO seams, not one.** The sketch found a second obstruction hiding in the roadmap's `h : ...`: Bunge Def 1.1 demands `bondage_nonempty` (two distinct *Bonded* components), but `ActsOn` is abstract and Joslyn Def 5 states are pure relation. `toBunge` takes `env + hdisj` (the environment seam) **and** `hbond` (the action-semantics seam) as external inputs. Carrier discipline: composition = `JoslynSystem₂.support` (elements appearing in states), structure = the states themselves.
+2. **The non-functoriality witness landed** (§4.6 item 3): `joslyn_toBunge_not_canonical` — one Joslyn system on `Fin 3` (states `{(0,1)}`), two admissible environments (`∅` vs `{2}`), two different Bunge systems. The map is not a function of J alone.
+3. **The conditional result has exact formal shape**: `toBungeDerived` (env := `supportᶜ`, Joslyn-style derivation) is canonical, and `toBungeDerived_subsystem` shows it is **monotone from states-inclusion into Bunge's Subsystem partial order** (C ⊆ / E ⊇ / S ⊆ line up perfectly with Def 1.6) — a functor between the poset categories. "Would be a functor if E were derived", machine-checked.
+
+Foundational note: classicality predicted ABSENT during the sketch (positive-membership route, no double complement) and confirmed — the derived-environment leg is the *constructive* complement direction, in pointed contrast to Def 21's LEM-essential `compl_constraint` one file over. Two incidental `Classical.choice` pulls (`Set.inter_compl_self`, `Set.Nonempty.ne_empty`) eliminated by membership-level rewrites (run-4 method).
+
 The Joslyn→Bunge mapping is *not* a functor in the categorical sense, due to an ontological disagreement:
 
 | Concept | Joslyn | Bunge |
