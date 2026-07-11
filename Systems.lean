@@ -24,6 +24,9 @@ import Systems.Mobus.Tuple
 import Systems.Mobus.Bridge
 import Systems.Mobus.Composition
 
+-- Mesarovic 1964: decomposition theorem cores (peel lemma + dyadic floor)
+import Systems.Mesarovic.Decomposition
+
 -- Phase 3: Klir common root
 import Systems.Klir.KlirSystem
 import Systems.Klir.ViewGeneration

@@ -1,5 +1,7 @@
 # Mesarovic 1964 — the decomposition theorem behind Joslyn's Prop 29
 
+**FORMALIZED (cores) 2026-07-11**: `Systems/Mesarovic/Decomposition.lean` — `Set.peel` (part 1's constructive engine, state = prefix history) + `Set.quaternary_two_triadic` (one full crank, 2 = 4−2 factors) + `parityRel`/`binaryJoin` floor theorems. All five declarations **fully axiom-free** (not even propext). Part-2 iff remains the research-level remainder (below).
+
 *First-read note, 2026-07-11 (session ssf-mesarovic-source). Source-acquisition status at bottom. This is the comprehension-first record for the theorem Joslyn cites at p. 14 of Mesarovic 1964, which gates Prop 29's existence direction (deferred in `Systems/Joslyn/Control.lean`).*
 
 ## What Joslyn actually says (full passage, Joslyn 1995 pp. 105–106)
