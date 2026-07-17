@@ -126,6 +126,41 @@ theorem SpivakSystem.driven_not_potentialFree {α In V : Type*}
     (S : SpivakSystem α In V) (hd : S.Driven) : ¬S.PotentialFree :=
   fun hp => hd (S.potentialFree_static hp)
 
+/-! ## Value is data the kernel cannot supply — the differ-in-kind theorem
+
+  Bunge's bond and Mobus's irreflexivity are *conditions* on (T, R); the
+  kernel may already satisfy them. Spivak's cost is not a condition but a
+  *value type*. The theorems below make the distinction precise and general:
+  over a trivial value type — everything the kernel alone carries (`toSpivak`
+  uses `V = PUnit`) — a Spivak system provably cannot be driven. Drivenness
+  requires a non-trivial value type supplied from outside (`toSpivakWith`).
+  This is the exact sense in which the value maximum differs in kind from the
+  structural elaborations: it charges no precondition, but it can only ever
+  land in the static stratum unless external value data is added. -/
+
+/-- A trivial value type cannot distinguish states: every Spivak system whose
+    value type is a subsingleton is potential-free. -/
+theorem SpivakSystem.subsingleton_value_potentialFree {α In V : Type*}
+    [Subsingleton V] (S : SpivakSystem α In V) : S.PotentialFree :=
+  fun _ _ _ => Subsingleton.elim _ _
+
+/-- Hence static: value that distinguishes nothing leaves motion nowhere to
+    come from (via the factorization law). -/
+theorem SpivakSystem.subsingleton_value_static {α In V : Type*}
+    [Subsingleton V] (S : SpivakSystem α In V) : S.Static :=
+  S.potentialFree_static S.subsingleton_value_potentialFree
+
+/-- **Drivenness requires a non-trivial value type, which the kernel does not
+    carry.** Over a subsingleton value type — all the kernel alone supplies —
+    no Spivak system is driven. `Kernel.toSpivak` (`V = PUnit`) is the instance:
+    the kernel always enters Spivak's world, but only its static stratum;
+    escaping it needs value data from outside (`toSpivakWith`). This is the
+    value elaboration's cost stated as a theorem, in kind distinct from the
+    (T, R)-conditions charged by Bunge and Mobus. -/
+theorem SpivakSystem.subsingleton_value_not_driven {α In V : Type*}
+    [Subsingleton V] (S : SpivakSystem α In V) : ¬S.Driven :=
+  fun hd => hd S.subsingleton_value_static
+
 /-! ## The generated view
 
   Following the pattern of toBunge and toMobus, the elaboration slots are
