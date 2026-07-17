@@ -169,7 +169,7 @@ Theorem-tier, no new axiom. **Deferred (research-level)**: mutual information, t
 
 **Mobus**: "Systems have governance subsystems to achieve stability."
 
-**Current Lean state**: Not formalized. But the categorification roadmap Phase 4 plans to formalize Joslyn's Control1/Control2 hierarchy, which IS the governance principle in categorical form. `ShapeJoslyn` (the only cyclic shape category) encodes the feedback structure.
+**Current Lean state**: Not formalized as a governance principle. But `ShapeJoslyn` (the only cyclic shape category) encodes the feedback structure, and `JoslynIncomparability.lean` now proves the **negative theorem** `joslyn_no_faithful_functor`: Joslyn admits no faithful functor into any category with finite hom-sets (the feedback cycle makes `effector ⟶ effector` infinite; pigeonhole). Feedback is a proven boundary of the finite-shape comparison method — companion finding 22. The categorification roadmap Phase 4 still plans the positive Control1/Control2 hierarchy formalization.
 
 **What formalization would mean**:
 - `GovernanceSubsystem` structure: a distinguished subsystem whose outputs regulate other subsystems' behavior
