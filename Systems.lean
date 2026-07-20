@@ -30,6 +30,7 @@ import Systems.Mesarovic.Decomposition
 -- Phase 3: Klir common root
 import Systems.Klir.KlirSystem
 import Systems.Klir.ViewGeneration
+import Systems.Klir.Gates
 import Systems.Klir.GatesTruthTable
 import Systems.Klir.SpivakSystem
 

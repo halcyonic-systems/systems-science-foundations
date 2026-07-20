@@ -13,3 +13,9 @@ require mathlib from git
 lean_lib «Systems» where
   srcDir := "."
   roots := #[`Systems]
+
+-- Rung 1.5 subprocess oracle (bert-lenses#24): JSON (T, R) model on stdin,
+-- gate + mode verdicts on stdout. Built by `lake build` so CI catches any drift.
+@[default_target]
+lean_exe «gates-oracle» where
+  root := `Systems.Klir.GatesOracle
