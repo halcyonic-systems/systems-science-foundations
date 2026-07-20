@@ -24,6 +24,9 @@ import Systems.Mobus.Tuple
 import Systems.Mobus.Bridge
 import Systems.Mobus.Composition
 
+-- Hierarchical decomposition by reference: the seam contract (bert-lenses#89)
+import Systems.Core.Decomposition
+
 -- Mesarovic 1964: decomposition theorem cores (peel lemma + dyadic floor)
 import Systems.Mesarovic.Decomposition
 

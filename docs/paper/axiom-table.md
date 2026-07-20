@@ -57,3 +57,6 @@ The ontological core is constructive or choice-free; only Evolution (#6) and Inf
 - #11 is **not** a corollary of #9 (it adds a compression axiom #9 lacks).
 - #12 is **not** a corollary of #6 (it adds an external goal + a model #6 lacks).
 - #5 **is** a theorem, not an axiom (it derives from #1+#2+#3).
+
+## Changelog
+- **2026-07-20 — bert-lenses#89 decomposition seam** (`Systems/Core/Decomposition.lean`): **zero new axioms.** Seam structure + substitution soundness proven fully, assembly proven at depth 1; all results choice-free (`propext` + `Quot.sound` only). No change to the 8-axiom count above. Detail: companion doc, "Downstream bindings".
