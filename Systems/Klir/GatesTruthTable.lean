@@ -37,6 +37,7 @@
 -/
 
 import Systems.Klir.ViewGeneration
+import Systems.Klir.Gates
 
 namespace Systems.GatesTruthTable
 
@@ -70,20 +71,13 @@ def powerlist {α : Type*} : List α → List (List α)
 def subsets (n : ℕ) : List (List (Fin n × Fin n)) :=
   powerlist (allPairs n)
 
-/-! ## The gate booleans
+/-! ## The gate booleans and mode mapping
 
-  Computable Boolean forms of the two ViewGeneration preconditions, evaluated
-  during enumeration. -/
-
-/-- Structural gate: the dependency contains a distinct pair. Under the total
-    action pinning this is exactly `Kernel.HasBond` (see `hasBondB_iff`). -/
-def hasBondB {n : ℕ} (D : List (Fin n × Fin n)) : Bool :=
-  D.any fun p => decide (p.1 ≠ p.2)
-
-/-- Operational gate: no pair depends on itself. Exactly `Kernel.Irreflexive`
-    (see `irreflexiveB_iff`). -/
-def irreflexiveB {n : ℕ} (D : List (Fin n × Fin n)) : Bool :=
-  D.all fun p => decide (p.1 ≠ p.2)
+  `hasBondB`, `irreflexiveB`, `ModeVerdicts`, and `modesOf` now live in
+  `Systems.Klir.Gates`, so that this enumerator and the Rung 1.5 oracle share
+  one definition. Enumeration instantiates the gates at `Fin n` below; the
+  `_iff` theorems anchor those Boolean forms to the real ViewGeneration
+  predicates. -/
 
 /-! ## Chain of custody
 
@@ -123,13 +117,14 @@ def rowJson {n : ℕ} (D : List (Fin n × Fin n)) : String :=
     ((List.finRange n).map fun i => toString i.val)
   let hb := boolJson (hasBondB D)
   let irr := boolJson (irreflexiveB D)
+  let m := modesOf (hasBondB D) (irreflexiveB D)
   String.intercalate "" [
     "{\"n\": ", toString n,
     ", \"things\": [", things,
     "], \"dep\": [", dep,
     "], \"gates\": {\"has_bond\": ", hb, ", \"irreflexive\": ", irr,
-    "}, \"modes\": {\"core\": true, \"structural\": ", hb,
-    ", \"operational\": ", irr, ", \"full\": ", irr, "}}"
+    "}, \"modes\": {\"core\": ", boolJson m.core, ", \"structural\": ", boolJson m.structural,
+    ", \"operational\": ", boolJson m.operational, ", \"full\": ", boolJson m.full, "}}"
   ]
 
 /-- Every row, small `n` first, dependency subsets in `subsets` order. The bound
