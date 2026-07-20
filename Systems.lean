@@ -30,6 +30,7 @@ import Systems.Mesarovic.Decomposition
 -- Phase 3: Klir common root
 import Systems.Klir.KlirSystem
 import Systems.Klir.ViewGeneration
+import Systems.Klir.GatesTruthTable
 import Systems.Klir.SpivakSystem
 
 -- Phase 4: Joslyn fourth vertex (set-theoretic tier, 4.1 + 4.3 + 4.4 + 4.5)
