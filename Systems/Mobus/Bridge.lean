@@ -157,6 +157,14 @@ have no Bunge counterpart and are discarded:
 4. **Transforms τ** — domain-specific processing functions. Bunge's
    framework is structural (what's connected), not functional (what
    things do to their inputs).
+   This is the coordinate that carries Bunge's *mechanism* M(σ). The bridge
+   still discards it, so `toBunge` delivers CES (not CESM) — no M slot here.
+   M is approximated by `MechanismSpec` (Systems/Dynamics/Mechanism.lean): the
+   declared dynamics descriptor + typed transition, i.e. the coalgebra GENERATOR.
+   Full M(σ) requires unfolding that generator to the behavior set H (M ⊆ S^ω,
+   Bunge's "set of characteristic processes"), which is not yet a first-class Lean
+   type. Retitling to CESM is deferred to #97 Increment 2 (type H + verify the
+   unfolding + discharge the emptiness constraint on H).
 
 5. **History η** — stored knowledge / memory. Bunge addresses history
    in §2.2 (state functions over time) but not as a system component.
