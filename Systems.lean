@@ -63,3 +63,7 @@ import Systems.Category.ShapeComparison_Myers
 import Systems.Category.ShapeComparison_Wymore
 import Systems.Category.Diagram
 import Systems.Category.CommonCore
+
+-- The declared Dynamics record: τ refined from opaque to a checkable 5-field
+-- vocabulary (bert-lenses#112 / dynamics-position Q5; declaration only)
+import Systems.Dynamics.Record
