@@ -68,3 +68,4 @@ import Systems.Category.CommonCore
 -- vocabulary (bert-lenses#112 / dynamics-position Q5; declaration only)
 import Systems.Dynamics.Record
 import Systems.Dynamics.Transition
+import Systems.Dynamics.Mechanism
