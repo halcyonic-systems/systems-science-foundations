@@ -21,6 +21,7 @@ import Systems.Mobus.Environment
 import Systems.Mobus.Boundary
 import Systems.Mobus.Interface
 import Systems.Mobus.Tuple
+import Systems.Mobus.Lifecycle
 import Systems.Mobus.Bridge
 import Systems.Mobus.Composition
 
