@@ -8,7 +8,9 @@ Machine-verified formalization of seven systems science traditions in Lean 4, di
 
 Seven definitions of "system," developed independently across six decades (Klir 1964, Bunge 1979, Mesarovic 1975, Wymore 1993, Joslyn 1995, Mobus 2022, Myers 2023), all faithfully embed a single categorical structure: the walking arrow **2**. The irreducible content of "system" shared by every tradition is one morphism: *relations depend on things*.
 
-Maximality of the core is argued in `docs/reference/common-core-theorem.md` and is **not machine-checked**. What is in Lean is object-injectivity for each embedding, singleton hom-set lemmas for `I_Klir`, and a pigeonhole lemma (`klir_has_two_elements`). The quantified statement, and the choice of which notion of embedding makes it true, are open.
+The old maximality claim ("nothing larger embeds into all seven") was **false**, and the counterexample is now machine-checked: the fork shape has three objects and embeds into all eight free categories injectively-on-objects and faithfully (`SharedPrimitive.free_category_maximality_fails`). It slips into Joslyn through a *path*, `controller → effector → controlled`, a composite no tradition asserts.
+
+The claim holds one level down, on the generating quivers rather than their free categories. There, two edges of any embedding either coincide or share no vertex (`SharedPrimitive.edges_coincide_or_disjoint`), so a connected quiver has exactly one edge: **the only dependency all eight traditions directly assert is one.** Joslyn and Willems alone force this; the other six are not needed. The result is relative to the documented presentations, which is a real limitation and is stated as one in `Systems/Category/SharedPrimitive.lean`.
 
 The dependence also runs the other way. From the kernel alone, each tradition's presentation is *generated* as a faithful view, and the round trips are identities — the traditions are views of one invariant, not independent ontologies that happen to agree. The kernel was discovered by comparison, but it is logically prior: comparison detects the invariant; the invariant explains the convergence. What generation costs is explicit and machine-checked: the Bunge view requires a bond between distinct components; the Mobus view forbids self-dependency.
 
@@ -44,7 +46,8 @@ To build the Verso document locally: `cd docs/verso && lake build proposal && la
 
 | # | Finding | Proof method |
 |---|---------|--------------|
-| 1 | **Common core theorem**: K ≅ **2** embeds faithfully into all 7 shape categories | Functor construction + pigeonhole maximality |
+| 1 | **Common core**: K ≅ **2** embeds into all 8 shape categories, injective on objects and faithful | Functor construction + `klirTo*_obj_injective` + `klirTo*_faithful` |
+| 1b | **Shared primitive**: the only dependency all 8 traditions *directly assert* is one edge (forced by Joslyn + Willems alone) | Quiver-level obstructions, `edges_coincide_or_disjoint` |
 | 2 | **Commuting triangle**: Mobus → Bunge → Klir = Mobus → Klir | `rfl` (definitional equality) |
 | 3 | **Bunge's 47-year error**: Def 1.6 (*Treatise*, Vol. 4, 1979) says "reflexive, asymmetric" — contradictory; correct: antisymmetric | Compiler rejection |
 | 4 | **Statics-dynamics divide**: Mobus → Myers comparison functor — `update` has no preimage | Empty fiber |

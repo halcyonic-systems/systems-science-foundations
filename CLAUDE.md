@@ -2,7 +2,7 @@
 
 Machine-verified systems ontology in Lean 4 with Mathlib. Seven traditions (Klir, Bunge, Mobus, Myers, Wymore, Mesarović, Joslyn) encoded as shape categories with comparison functors and a common core theorem. **All 12 Mobus principles formalized** (#6 Evolution completed the set, 6/09). ~10,800 lines across 64 files, zero `sorry`s, zero custom axioms.
 
-**Claim hygiene**: faithfulness of the eight `klirTo*` embeddings is argued in comments, not stated as a Lean theorem. Maximality of the core is prose in `docs/reference/common-core-theorem.md`, not machine-checked. Do not describe either as verified.
+**Claim hygiene**: faithfulness of the eight `klirTo*` embeddings is now a theorem (`klirTo*_faithful`), and the proof is cheap — it follows from `I_Klir` being thin, so it says nothing about the target traditions. The old maximality claim was false; the counterexample is machine-checked in `SharedPrimitive.lean`. The repaired claim lives on quivers, not free categories, and is relative to the documented presentations. Never state maximality at the free-category level. `docs/reference/common-core-theorem.md` still carries the retired prose version and needs rewriting.
 
 **Key insight**: The common core of all seven independently developed systems definitions is Klir's S = (T, R) --- the walking arrow category **2**. A system, in the sense shared by every tradition from Mesarović (1964) through Myers (2023), is a morphism: relations depend on things. Everything else --- environment, boundary, state, input, output, time, mechanism, feedback --- is tradition-specific elaboration. This was *discovered* through formalization, not claimed by any author.
 

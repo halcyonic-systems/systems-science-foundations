@@ -2,7 +2,9 @@
 
 > A system is a morphism $f: R \to T$ in a category $\mathcal{C}$ — an object of the arrow category $\mathcal{C}^{\mathbf{2}}$.
 
-*Seven independent definitions of "system," one shared categorical structure.*
+*Independent definitions of "system," one shared structure.*
+
+> **Revised 2026-07-25.** The existence half is unchanged and is now fully machine-checked, faithfulness included. The **maximality half was wrong twice over** and has been rewritten. The old definition of the common core ("largest connected category admitting a faithful functor into every I_X") is false, and the old proof in this document was invalid on its own terms. Both are replaced below. The corrected claim lives on the dependency quivers rather than on the free categories over them, and is formalized in `Systems/Category/SharedPrimitive.lean`. The diagrams, the embedding table, and the interpretive sections are unaffected.
 
 ---
 
@@ -105,11 +107,15 @@ Each tradition defines "system" as a tuple with structural dependencies between 
 
 ## The Theorem
 
-**Definition.** For each tradition X, let I_X := Free(Q_X) be the shape category (free category on the dependency quiver).
+**Definition.** For each tradition X, let Q_X be its dependency quiver, and I_X := Free(Q_X) the shape category over it.
 
-**Definition.** The *common core* K is the largest connected category admitting a faithful functor into every I_X.
+**Theorem (Existence).** There is a functor **2** → I_X for every X, injective on objects and faithful. Each sends the single arrow of **2** to a *generating arrow* of Q_X, never to a composite.
 
-**Theorem.** K ≅ **2**, the walking arrow category:
+**Theorem (Shared primitive).** Let Q be a connected quiver admitting, for every X, a prefunctor Q → Q_X that is injective on vertices, sends edges to edges, and is injective on each edge set. Then Q has two vertices and one edge. Its free category is **2**.
+
+The second statement is what replaces "maximality," and the wording matters. The claim is not that **2** is the largest category embedding somewhere. It is that **the only dependency every tradition directly asserts is one.** See *Proof* below for why the free-category version is false and what the quiver level buys.
+
+The common core K ≅ **2**, the walking arrow category:
 
 ```
          f
@@ -181,13 +187,30 @@ Same arrow. Three interpretations. The divergence IS the history of systems scie
 
 ## Proof
 
-**(1) Existence.** Seven faithful functors constructed via `Paths.lift` from prefunctors mapping the single Klir arrow to a generating arrow in each target. Faithfulness: Hom_**2**(0, 1) = {f} is a singleton; injectivity on singletons is trivial. ∎
+**(1) Existence.** Eight functors constructed via `Paths.lift` from prefunctors mapping the single Klir arrow to a generating arrow in each target. Object-injectivity: `klirTo*_obj_injective`. Faithfulness: every hom-set of **2** is a subsingleton (`klir_path_subsingleton`), so every functor out of it is faithful (`faithful_of_subsingleton_hom`, giving `klirTo*_faithful`). Note this is a property of the *source*: the proof is cheap and says nothing about the targets. ∎
 
-**(2) Maximality.** |Ob(**2**)| = 2. By pigeonhole, no 3-object connected category embeds object-injectively into **2**. Non-injective faithful embeddings of connected categories into **2** must collapse two objects sharing a non-identity morphism, sending that morphism to a self-loop. But Hom_**2**(i, i) = {id} for both objects, so the non-identity morphism maps to identity — while the domain's identity at the source also maps to identity. Since these are in the same hom-set (after collapse), faithfulness (= injectivity per hom-set) is violated. ∎
+**(2) Why the old maximality proof failed.** The previous version of this document argued that a faithful functor from a connected category into **2** cannot collapse two objects joined by a non-identity morphism, because the morphism and the source identity would both land on `id`. That argument is invalid. In the domain, `f ∈ Hom(x, y)` and `id_x ∈ Hom(x, x)` lie in *different* hom-sets, and faithfulness is injectivity within each hom-set, not across them. Concretely, the three-object chain `a → b → c` is thin and connected and maps faithfully into **2** by collapsing two objects. Faithfulness constrains hom-sets, not objects, so it cannot carry the word "largest."
+
+**(3) Why strengthening the notion is not enough.** Requiring the functor to be faithful *and injective on objects* removes that counterexample and leaves a worse one. Let **V** be the fork: one source, two arrows, two distinct sinks. **V** is connected, has three objects, and embeds into all eight shape categories injectively-on-objects and faithfully. Machine-checked as `SharedPrimitive.free_category_maximality_fails`.
+
+Seven of the eight admit **V** through generating arrows, since each has a vertex of out-degree two. **Joslyn is the leak.** No vertex of Q_Joslyn has out-degree two, but I_Joslyn is a *free category*, so the composite `controller → effector → controlled` is a morphism. **V** enters through a dependency the tradition never asserts. The feedback cycle noted in the table above as "infinite hom-sets" is exactly what creates the extra room.
+
+**(4) The shared-primitive theorem.** Compare the quivers Q_X instead of the categories I_X. Derived composites stop counting, and two traditions then force the result:
+
+- **Q_Joslyn** has no vertex of out-degree two. This kills the fork `x → y`, `x → z` (`no_fork`).
+- **Q_Willems** has no vertex of in-degree two, killing the cofork `x → z ← y` (`no_cofork`); no composable pair of edges, killing the two-chain, every self-loop, and every antiparallel pair (`no_two_chain`, `no_loop`); and no parallel edges (`no_parallel`).
+
+Hence in any such Q, two edges either coincide or share no vertex at all (`edges_coincide_or_disjoint`). A connected Q with an edge therefore has exactly one, on two vertices. ∎
+
+The remaining six traditions are **not needed**. The core is forced jointly by the cybernetic shape and the behavioural shape.
+
+**Limits, stated rather than buried.** Quiver-level claims are not invariant under adding derived arrows, unlike free-category ones, so this theorem is relative to the presentations in the diagram above. Drawing Q_Joslyn with an extra `controller → controlled` edge, which one could argue for, readmits **V** and the theorem fails. The defence is that every edge is a documented primitive commitment of its source text; see `docs/language/terminology-concordance.md` for per-cell citations. This is a claim about what the literature asserts, so sensitivity to how each tradition states itself is the subject matter and not a defect. Separately, the step from `edges_coincide_or_disjoint` to "a connected quiver has exactly one edge" is elementary graph theory over an arbitrary vertex type and is not formalized.
+
+**On the level shift.** `Paths` is left adjoint to the forgetful functor **Cat** → **Quiv**, so the two levels are formally related and the choice is which side of the adjunction carries the comparison. The quiver side is where a tradition's *asserted* primitives live; the category side is where their *consequences* live. Existence was always a quiver-level fact and had merely been stated more weakly than it was proven.
 
 ---
 
-*Machine-verified in Lean 4 with Mathlib. Seven shape categories, seven embeddings, zero sorry.*
+*Machine-verified in Lean 4 with Mathlib. Eight shape categories, eight embeddings, zero sorry, zero custom axioms.*
 
 ---
 
@@ -209,7 +232,9 @@ The body of this document describes the original seven-tradition result as prove
 
 **Shape.** `I_Spivak` (`ShapeSpivak.lean`): 4 objects (`parameter`, `output`, `input`, `potential`), 5 generating arrows. `drive : parameter → potential` and `potential_on_parameter : potential → parameter` form a cycle — the second cyclic shape in the landscape. Joslyn's cycle is feedback through *observation* (efferent/afferent); Spivak's is feedback through *value*: the state changes because a potential evaluates it. That cycle is the tradition's new commitment — **potential + reaction: value-driven adaptation** — which no other entry formalizes.
 
-**Embedding.** `klirToSpivak` (CommonCore): 0 ↦ parameter, 1 ↦ output, f ↦ expose — the identical pattern to the Myers row. Faithfulness is inherited from I_Klir's shape as for all entries; `klirToSpivak_obj_injective` depends only on `propext`. Maximality is untouched (it is target-independent).
+**Embedding.** `klirToSpivak` (CommonCore): 0 ↦ parameter, 1 ↦ output, f ↦ expose — the identical pattern to the Myers row. Faithfulness is inherited from I_Klir's shape as for all entries; `klirToSpivak_obj_injective` depends only on `propext`.
+
+*Correction 2026-07-25:* this section originally read "Maximality is untouched (it is target-independent)." That was wrong on both counts. Maximality as then stated was false, and the repaired shared-primitive theorem is emphatically target-*dependent* — it is forced by Q_Joslyn and Q_Willems specifically. Adding an entry can therefore weaken it, if the new quiver is permissive enough to readmit a competitor. Q_Spivak is permissive (out-degree two at `parameter`), so it neither strengthens nor breaks the result; it simply does no work. Future entries must be checked against the fork, cofork, and two-chain obstructions rather than assumed neutral.
 
 **The commitments ladder as a theorem.** `myersToSpivak : I_Myers ⥤ I_Spivak` (state ↦ parameter, expose ↦ expose, update ↦ update) machine-checks Remark 4.1.2's ladder claim at the shape level: Spivak = Myers + potential + drive.
 
@@ -236,6 +261,10 @@ Willems' behavioral triple Σ = (T, W, B) (1991 Def II.1; 2007 pp. 50–51) ente
 **The refinement this forced: entries are claims-at-a-layer.** The existing eight entries are all shape-layer claims and are unaffected in content — each contributes a distinct single-system dependency shape. Willems is NOT counted as a ninth tradition, and the reasoning is now uniform: a ninth-tradition claim would assert independence on the one measure (single-system shape) where Willems provably collapses. Spivak's precedent does not transfer — his caveat is sociological while his commitment stays shape-visible. Counting Willems would make "N traditions" mean two different things across rows. The headline stays eight; Willems ships as a kernel-neutrality witness with layered status.
 
 **Standard met.** Shape file + kernel embedding + both-direction collapse comparison, `lake build` green, zero sorry.
+
+**Status upgrade 2026-07-25 — Willems is load-bearing.** This addendum introduced Willems as a stress test with "layered status," explicitly not counted in the headline. That framing understates it. In the repaired shared-primitive theorem, Q_Willems supplies three of the four obstructions: no in-degree two, no composable pair, no parallel edges. Q_Joslyn supplies the fourth. **Those two quivers alone force the core, and the other six are unnecessary.** The tradition admitted as the hardest audience for the kernel turns out to be half the reason the kernel is the size it is.
+
+This does not change the counting decision. Willems still collapses onto Mesarović's span at the shape layer, so a ninth-tradition claim would still assert independence on the measure where it provably collapses, and the headline stays eight. But "kernel-neutrality witness" is no longer an adequate description of what it does here.
 
 ---
 
