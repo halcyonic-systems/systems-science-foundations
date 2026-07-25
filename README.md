@@ -46,7 +46,8 @@ To build the Verso document locally: `cd docs/verso && lake build proposal && la
 
 | # | Finding | Proof method |
 |---|---------|--------------|
-| 1 | **Common core theorem**: K ≅ **2** embeds faithfully into all 7 shape categories | Functor construction + pigeonhole maximality |
+| 1 | **Common core**: K ≅ **2** embeds into all 8 shape categories, injective on objects and faithful | Functor construction + `klirTo*_obj_injective` + `klirTo*_faithful` |
+| 1b | **Shared primitive**: the only dependency all 8 traditions *directly assert* is one edge (forced by Joslyn + Willems alone) | Quiver-level obstructions, `edges_coincide_or_disjoint` |
 | 2 | **Commuting triangle**: Mobus → Bunge → Klir = Mobus → Klir | `rfl` (definitional equality) |
 | 3 | **Bunge's 47-year error**: Def 1.6 (*Treatise*, Vol. 4, 1979) says "reflexive, asymmetric" — contradictory; correct: antisymmetric | Compiler rejection |
 | 4 | **Statics-dynamics divide**: Mobus → Myers comparison functor — `update` has no preimage | Empty fiber |

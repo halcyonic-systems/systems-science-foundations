@@ -157,7 +157,11 @@ The result is a categorical system definition that is:
 
 Myers avoids the question of what a system *is*. This answers it — not by philosophical argument but by mathematical extraction from six decades of independent formalization.
 
-**Structural parallel from computable analysis.** The common core extraction — "the largest subcategory that embeds faithfully into all tradition-specific shape categories" — has a precise analogue in Pauly's theory of represented spaces (2015). Pauly defines *admissibility* as the property that identifies the largest subcategory of represented spaces where topological continuity and computability coincide (Theorem 36). Both are "largest joint subcategory" constructions: ours extracts what all systems traditions share; Pauly's extracts where topology and computation agree. That the same categorical operation (maximal common subcategory) appears in both contexts suggests the extraction method itself has universal content.
+**Structural parallel from computable analysis (weakened 2026-07-25).** This paragraph originally described the common core as "the largest subcategory that embeds faithfully into all tradition-specific shape categories" and drew a precise analogy to Pauly's theory of represented spaces (2015), where *admissibility* identifies the largest subcategory in which topological continuity and computability coincide (Theorem 36). The analogy was built on both being "largest joint subcategory" constructions.
+
+That framing no longer holds on our side. The largest-subcategory claim is false at the level of shape categories, and the surviving result is a statement about the dependency *quivers*: the only dependency every tradition directly asserts is a single edge (see `common-core-theorem.md` and `SharedPrimitive.lean`). Pauly's construction remains a genuine maximal-subcategory theorem; ours is not one.
+
+What survives is the weaker and still interesting observation that **2** turns up on both sides — as the shared primitive here, and as the Sierpiński classifier there. That is a convergence of the *object*, not of the extraction method. The claim that "the same categorical operation appears in both contexts" is withdrawn.
 
 ---
 
