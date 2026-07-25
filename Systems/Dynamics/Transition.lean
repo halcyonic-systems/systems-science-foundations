@@ -32,7 +32,16 @@ namespace Systems
     - `markov`        ↝ Nat-weighted finite successors (— Rutten `F X = Dist X`,
       here the finite, weight-counted form of bert-lenses#67; no Mathlib `PMF`)
     - `nondeterministic` ↝ finite successor list (— Rutten `F X = 𝒫 X`, the
-      life-cycle `ΔS ∈ F(S)` in its finite form). -/
+      life-cycle `ΔS ∈ F(S)` in its finite form).
+
+    The finiteness is not a convenience, and Rutten's `Dist`/`𝒫` are the
+    citation, never the type. Wrapped over the descriptor's ports these are
+    polynomial (container) functors, so a final coalgebra always exists and `H`
+    is well defined; **unrestricted `𝒫` has no final coalgebra in `Set`**
+    (Adámek–Milius–Velebil, MSCS 15 (2005), Ex. 3.14), so a kernel typed on it
+    could not carry `H`-as-behaviour at all. Do not "generalise" these to
+    `Dist`/`𝒫`. Settled 2026-07-25, with a compiled `#print axioms` probe:
+    vault `operations/sessions/2026-07-25/references/final-coalgebra-existence.md`. -/
 def kindCodomain (k : DynamicsKind) (X : Type) : Type :=
   match k with
   | .deterministic    => X
