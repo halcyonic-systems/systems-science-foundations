@@ -30,6 +30,17 @@
     - `NearDecomposable` from Systems/Core/Governance.lean
     - `composition_closure` theorem from Systemness.lean]
 
+   DOES NOT COUNT:
+   [Pre-register the near-misses that would look like success but aren't.
+    Written BEFORE proving starts, while it is still unknown which route is hard.
+    Prune this list to what is actually tempting for this target:
+    - the statement specialized to one structure instead of quantified over all
+    - an added hypothesis that closes the goal by assuming part of the claim
+    - decide / native_decide on a finite instance
+    - a new axiom introduced to bridge the gap
+    - `def A := B` where A was meant as an independent construction
+    - reduction to a lemma of the same strength as the target]
+
    STRATEGY HINT:
    [Suggested proof approach if known, e.g.:
     "Induction on RecursiveSystem depth, using closure_under_decomposition
@@ -48,6 +59,10 @@
 -- ============================================================
 
 /- ATTEMPT LOG (YYYY-MM-DD)
+   Route: [the mathematical idea, not the tactic text]
+   Status: LIVE | BLOCKED — [BLOCKED means this route now rests on a missing lemma
+           of the same strength as the target. Reopen only on a materially new
+           mechanism, invariant, or construction.]
    Strategy: [what was tried]
    Result: [specific compiler error or stuck point]
    Insight: [what was learned about the proof structure]
