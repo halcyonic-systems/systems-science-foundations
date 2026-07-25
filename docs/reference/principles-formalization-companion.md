@@ -91,9 +91,11 @@ These are two separate claims with a conjectured relationship: near-decomposabil
 
 ---
 
-## Principle 3: Networks — already complete
+## Principle 3: Networks — complete
 
-Fully formalized in `FlowNetwork.lean`, `Bond.lean`, `Interface.lean`. Directed graphs with capacity labels, source/sink classification, bipartite flow constraints. No further work needed at Tier 1.
+Fully formalized in `FlowNetwork.lean`, `Bond.lean`, `Interface.lean`. Directed graphs with capacity labels, source/sink classification, bipartite flow constraints.
+
+**Engineering note — a quantifier direction is half a definition.** `IsBipartiteFlow` quantifies over *edges* (every boundary-crossing flow lands on an interface) and was for a long time read as fully constraining the boundary. It does not: the converse over *interfaces* was absent, so a boundary could declare interfaces that transport nothing, while the docstring cited Mobus's **functional** definition of an interface ("components that transport flows across the boundary"). When a formalization quotes a functional definition but states only a positional one, check both quantifier directions before calling the tier closed. `interfaces_carry_flow` supplies the missing half; `MobusSystem.interfaces_sub_externalNodes` is the containment that could not be stated without it.
 
 ---
 
@@ -159,6 +161,7 @@ Each principle as a one-line axiom or theorem (the full machine-checked set; a c
 | 2 | Hierarchy (structure) | A system is hierarchical when within-module interaction uniformly exceeds between-module interaction |
 | 2 | Hierarchy (dynamics) | In a hierarchy, lower levels are strictly faster |
 | 3 | Networks | A system's internal structure is a directed flow network with capacity constraints |
+| 3 | Networks (boundary, both directions) | Every flow crossing the boundary passes through an interface, **and** every interface carries such a flow — so the interfaces are exactly the component-side endpoints of the external flows, and a system with no external flows declares no interfaces |
 | 4 | Dynamics (state) | A system has a state space and a law governing how state evolves |
 | 4 | Dynamics (composition) | When systems compose, their state spaces multiply and their dynamics combine independently |
 | 4 | Dynamics (coupling) | Coupled dynamics generalizes independent: each subsystem's evolution depends on the other's state |
