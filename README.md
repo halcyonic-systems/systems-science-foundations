@@ -2,11 +2,13 @@
 
 Machine-verified formalization of seven systems science traditions in Lean 4, discovering their shared categorical structure. They build the future of systems theory. This audits its past.
 
-**~7,840 lines | 47 files | zero `sorry`s | 7 traditions | K ≅ 2 | all 12 principles formalized (12 → ≤11)**
+**~10,800 lines | 64 files | zero `sorry`s | zero custom axioms | 7 traditions | K ≅ 2 | all 12 principles formalized (12 → ≤11)**
 
 ## The Result
 
-Seven definitions of "system," developed independently across six decades (Klir 1964, Bunge 1979, Mesarovic 1975, Wymore 1993, Joslyn 1995, Mobus 2022, Myers 2023), all faithfully embed a single categorical structure: the walking arrow **2**. The irreducible content of "system" shared by every tradition is one morphism — *relations depend on things*. The common core is maximal: nothing larger embeds into all seven.
+Seven definitions of "system," developed independently across six decades (Klir 1964, Bunge 1979, Mesarovic 1975, Wymore 1993, Joslyn 1995, Mobus 2022, Myers 2023), all faithfully embed a single categorical structure: the walking arrow **2**. The irreducible content of "system" shared by every tradition is one morphism: *relations depend on things*.
+
+Maximality of the core is argued in `docs/reference/common-core-theorem.md` and is **not machine-checked**. What is in Lean is object-injectivity for each embedding, singleton hom-set lemmas for `I_Klir`, and a pigeonhole lemma (`klir_has_two_elements`). The quantified statement, and the choice of which notion of embedding makes it true, are open.
 
 The dependence also runs the other way. From the kernel alone, each tradition's presentation is *generated* as a faithful view, and the round trips are identities — the traditions are views of one invariant, not independent ontologies that happen to agree. The kernel was discovered by comparison, but it is logically prior: comparison detects the invariant; the invariant explains the convergence. What generation costs is explicit and machine-checked: the Bunge view requires a bond between distinct components; the Mobus view forbids self-dependency.
 
