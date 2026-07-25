@@ -97,6 +97,8 @@ Fully formalized in `FlowNetwork.lean`, `Bond.lean`, `Interface.lean`. Directed 
 
 **Engineering note — a quantifier direction is half a definition.** `IsBipartiteFlow` quantifies over *edges* (every boundary-crossing flow lands on an interface) and was for a long time read as fully constraining the boundary. It does not: the converse over *interfaces* was absent, so a boundary could declare interfaces that transport nothing, while the docstring cited Mobus's **functional** definition of an interface ("components that transport flows across the boundary"). When a formalization quotes a functional definition but states only a positional one, check both quantifier directions before calling the tier closed. `interfaces_carry_flow` supplies the missing half; `MobusSystem.interfaces_sub_externalNodes` is the containment that could not be stated without it.
 
+**Engineering note — a new constraint owes a separating instance.** Adding a ninth field to `MobusSystem` proves nothing on its own: had the other eight implied it, the build would stay green and the field would be decoration. `interface_converse_independent` (Interface.lean) discharges that debt with concrete data satisfying all five pre-#31 structural constraints and failing `InterfacesCarryFlow` alone — component `2` is declared an interface that no external edge touches. Deliberately *not* the empty system: the witness carries a live external flow `1 → 0` through a genuine interface, so the separation cannot be dismissed as an artifact of a system with nothing flowing. The statement is at the level of the constraints rather than a `MobusSystem` value, because no inhabitant of the structure can exhibit the failure — the field is part of the type — and duplicating the 8-tuple as an eight-field shadow structure would cost a second definition of the ontology's central object to say the same thing.
+
 ---
 
 ## Principle 4: Dynamics — complete (structural)
@@ -162,6 +164,7 @@ Each principle as a one-line axiom or theorem (the full machine-checked set; a c
 | 2 | Hierarchy (dynamics) | In a hierarchy, lower levels are strictly faster |
 | 3 | Networks | A system's internal structure is a directed flow network with capacity constraints |
 | 3 | Networks (boundary, both directions) | Every flow crossing the boundary passes through an interface, **and** every interface carries such a flow — so the interfaces are exactly the component-side endpoints of the external flows, and a system with no external flows declares no interfaces |
+| 3 | Networks (boundary converse is independent) | The interface-side requirement is not implied by the flow-side one: there is data meeting every other 8-tuple constraint in which a declared interface transports nothing, so the constraint does real work rather than restating what was already true |
 | 4 | Dynamics (state) | A system has a state space and a law governing how state evolves |
 | 4 | Dynamics (composition) | When systems compose, their state spaces multiply and their dynamics combine independently |
 | 4 | Dynamics (coupling) | Coupled dynamics generalizes independent: each subsystem's evolution depends on the other's state |

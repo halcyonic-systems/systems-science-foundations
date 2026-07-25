@@ -79,7 +79,7 @@
 
 ### Principle 3: Networks — DONE
 
-**Current Lean state**: `FlowNetwork.lean` (directed capacity-labeled graphs, source/sink/internal classification, successors/predecessors), `Bond.lean` (ActsOn relation, bonded pairs), `Interface.lean` (bipartite flow property). Fully formalized. No further work needed at this tier.
+**Current Lean state**: `FlowNetwork.lean` (directed capacity-labeled graphs, source/sink/internal classification, successors/predecessors), `Bond.lean` (ActsOn relation, bonded pairs), `Interface.lean` (bipartite flow property, its interface-side converse, and the separating instance proving that converse independent of the other 8-tuple constraints). Fully formalized. No further work needed at this tier.
 
 ---
 
