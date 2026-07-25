@@ -78,17 +78,19 @@ Then something shifts. For Myers, *things* are *output* and *relation* is *state
 
 A structural divide emerges. Bunge and Mobus are *inward* — their arrows converge toward components. Myers, Wymore, and Mesarovic are *outward* — their arrows radiate from state. Joslyn is the only *cyclic* tradition — feedback generates infinitely many morphisms in the free category. All other shapes are acyclic. Same arrow, three orientations. The divergence is the history of systems science.
 
-**Is it maximal?** The obvious argument runs: `KlirPosition` has two elements, so by pigeonhole nothing with three objects embeds into Klir, so nothing larger is shared. That argument is circular, because it treats Klir as one of the targets and thereby reduces a claim about eight traditions to a claim about $`\mathbf{2}` alone. It is also false. Faithfulness constrains hom-sets, not objects: the three-object chain is thin and connected and maps faithfully into $`\mathbf{2}` by collapsing two objects.
+Two shapes joined the landscape after this section was first written, and the argument below needs both. $`I_{Spivak}` — 4 objects, 5 arrows, the second cyclic shape, feedback through *value* rather than through observation. $`I_{Willems}` — 3 objects, 2 arrows, the behavioral triple, admitted as a stress test because it is the tradition most hostile to input/output orientation. Both carry the walking arrow. Eight shapes in total.
 
-Strengthening to *faithful and injective on objects* does not rescue it. Let $`V` be the fork — one source, two arrows, two distinct sinks. $`V` is connected, has three objects, and embeds into all eight shape categories that way.
+*Is it maximal?* The obvious argument runs: `KlirPosition` has two elements, so by pigeonhole nothing with three objects embeds into Klir, so nothing larger is shared. That argument is circular, because it treats Klir as one of the targets and thereby reduces a claim about eight traditions to a claim about $`\mathbf{2}` alone. It is also false. Faithfulness constrains hom-sets, not objects: the three-object chain is thin and connected and maps faithfully into $`\mathbf{2}` by collapsing two objects.
 
-The leak is the sentence above about Joslyn. Feedback generates infinitely many morphisms in the free category, and $`V` walks in through one of them: there is no *arrow* controller $`\to` controlled, but there is a *path*, and in a free category every path is a morphism. $`V` enters through a dependency the tradition never asserts.
+Strengthening to _faithful and injective on objects_ does not rescue it. Let $`V` be the fork — one source, two arrows, two distinct sinks. $`V` is connected, has three objects, and embeds into all eight shape categories that way.
+
+The leak is the sentence above about Joslyn. Feedback generates infinitely many morphisms in the free category, and $`V` walks in through one of them: there is no _arrow_ controller $`\to` controlled, but there is a _path_, and in a free category every path is a morphism. $`V` enters through a dependency the tradition never asserts.
 
 ```lean
 #check @SharedPrimitive.free_category_maximality_fails
 ```
 
-**The claim holds one level down.** Compare the dependency quivers rather than the free categories over them, so that edges must map to edges and derived composites stop counting. Then two traditions force the result and the other six are not needed: no vertex of Joslyn's quiver has out-degree two, and Willems' quiver has no vertex of in-degree two and no composable pair of edges. Between them they exclude every two-edge connected configuration, so any two edges either coincide or share no vertex at all.
+*The claim holds one level down.* Compare the dependency quivers rather than the free categories over them, so that edges must map to edges and derived composites stop counting. Then two traditions force the result and the other six are not needed: no vertex of Joslyn's quiver has out-degree two, and Willems' quiver has no vertex of in-degree two and no composable pair of edges. Between them they exclude every two-edge connected configuration, so any two edges either coincide or share no vertex at all.
 
 ```lean
 #check @SharedPrimitive.no_fork
@@ -99,13 +101,13 @@ The leak is the sentence above about Joslyn. Feedback generates infinitely many 
 
 A connected quiver admitting such an embedding into every tradition therefore has exactly two vertices and one edge. Its free category is $`\mathbf{2}`.
 
-So the honest statement is not that $`\mathbf{2}` is the largest category anything embeds into. It is that **the only dependency all eight traditions directly assert is one**. This is a claim about what the literature commits to, and it is accordingly relative to how each tradition is drawn here: adding a controller $`\to` controlled edge to Joslyn would readmit $`V`. Each edge is a documented primitive of its source text, which is what makes the presentations defensible, but the dependence is real and worth stating.
+So the honest statement is not that $`\mathbf{2}` is the largest category anything embeds into. It is that *the only dependency all eight traditions directly assert is one*. This is a claim about what the literature commits to, and it is accordingly relative to how each tradition is drawn here: adding a controller $`\to` controlled edge to Joslyn would readmit $`V`. Each edge is a documented primitive of its source text, which is what makes the presentations defensible, but the dependence is real and worth stating.
 
 This is not a retreat from category theory. `Paths` is left adjoint to the forgetful functor from categories to quivers; the question is only which side of that adjunction carries the comparison. The quiver side is where a tradition's asserted primitives live, and the category side is where their consequences live. The existence half was always a quiver-level fact — every embedding sends Klir's arrow to a generating arrow, never a composite — and had simply been stated more weakly than it was proven.
 
 This document opened with a question: seven traditions, developed independently across six decades, are remarkably compatible. *How?* The answer is $`K \cong \mathbf{2}`. The irreducible categorical content of "system" is a single morphism: *relations depend on things*. Every tradition embeds this arrow. No tradition requires less. Environment, boundary, state, input, output, time, mechanism, feedback — all of it is elaboration of this one structural commitment.
 
-Whether $`\mathbf{2}` can be characterized as a universal construction — a limit, terminal object, or initial algebra — in an appropriate 2-category of shape categories remains open, and the failure of the naive maximality claim makes the question sharper rather than duller. The argument given above is combinatorial and lives in **Quiv**. A categorical characterization would explain *why* the walking arrow is the common core, not merely *that* it is, and would say whether anything survives the passage back across the adjunction into **Cat**. This is a question for 2-category theorists, not a claim this document can discharge.
+Whether $`\mathbf{2}` can be characterized as a universal construction — a limit, terminal object, or initial algebra — in an appropriate 2-category of shape categories remains open, and the failure of the naive maximality claim makes the question sharper rather than duller. The argument given above is combinatorial and lives in *Quiv*. A categorical characterization would explain *why* the walking arrow is the common core, not merely *that* it is, and would say whether anything survives the passage back across the adjunction into *Cat*. This is a question for 2-category theorists, not a claim this document can discharge.
 
 # Comparison Functors
 

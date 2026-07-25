@@ -65,9 +65,11 @@ Two traditions do all the work, and the remaining six are not needed:
 - Willems also has no parallel edges, which with edge-injectivity kills those too.
 
 Together: in any quiver embedding into both, two edges either coincide or share no
-vertex at all (`edges_coincide_or_disjoint`). A connected quiver with an edge
-therefore has exactly one, on two vertices. That quiver is `I_Klir`, whose free
-category is the walking arrow **2**.
+vertex at all (`edges_coincide_or_disjoint`). Adding weak connectivity closes it —
+nothing outside `{x, y}` is reachable from `x` once `x ⟶ y` is an edge
+(`zigzag_confined`), so the quiver has exactly two vertices and exactly one edge
+(`connected_is_single_arrow`). That quiver is `I_Klir`, whose free category is the
+walking arrow **2**.
 
 The reading is not "K is maximal" but: **the only dependency all eight traditions
 directly assert is one.** That the cybernetic shape (Joslyn) and the behavioural
@@ -86,9 +88,9 @@ for the per-cell citations. This is a claim about what the literature asserts, a
 sensitivity to how each tradition states itself is the subject matter rather than a
 defect. It should be disclosed, not buried.
 
-**Remaining gap.** The step from `edges_coincide_or_disjoint` to "a connected quiver
-has exactly one edge" is elementary graph theory over an arbitrary vertex type and is
-not formalized here. It is independent of any systems content.
+**No remaining gap.** The theorem is complete over an arbitrary vertex type, with
+connectivity given by `Zigzag`. Note what is *not* assumed: no finiteness, no
+decidable equality, no bound on the number of vertices or edges.
 -/
 
 open CategoryTheory
@@ -179,6 +181,53 @@ theorem edges_coincide_or_disjoint
       · by_cases hyv : y = v
         · subst hyv; exact absurd (no_cofork eW e f) hxu
         · exact Or.inr ⟨hxu, hyv, hxv, hyu⟩
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- § Connectivity, and the theorem in full
+-- ═══════════════════════════════════════════════════════════════════════════════
+
+/-- Weak connectivity for quivers: `x` and `y` are joined by a zigzag of edges,
+traversed in either direction. This is the "connected" of the theorem statement. -/
+inductive Zigzag : V → V → Prop
+  | refl (x : V) : Zigzag x x
+  | fwd {x y z : V} : Zigzag x y → (y ⟶ z) → Zigzag x z
+  | bwd {x y z : V} : Zigzag x y → (z ⟶ y) → Zigzag x z
+
+/-- Given an edge `x ⟶ y`, nothing outside `{x, y}` is reachable from `x`.
+
+Each step is blocked by one of the obstructions: leaving `x` forwards is a fork,
+leaving `y` forwards is a two-chain, entering `x` backwards is a two-chain, and
+entering `y` backwards is a cofork. -/
+theorem zigzag_confined (eJ : QuiverEmbedding V JoslynPosition)
+    (eW : QuiverEmbedding V WillemsPosition) {x y : V} (e : x ⟶ y) :
+    ∀ {w : V}, Zigzag x w → w = x ∨ w = y := by
+  intro w hw
+  induction hw with
+  | refl => exact Or.inl rfl
+  | fwd _ g ih =>
+      rcases ih with rfl | rfl
+      · exact Or.inr (no_fork eJ e g).symm
+      · exact (no_two_chain eW e g).elim
+  | bwd _ g ih =>
+      rcases ih with rfl | rfl
+      · exact (no_two_chain eW g e).elim
+      · exact Or.inl (no_cofork eW e g).symm
+
+/-- **The shared primitive is a single arrow.**
+
+A connected quiver embedding into both the Joslyn and Willems shapes, and having at
+least one edge, has exactly two vertices and exactly one edge. That quiver is
+`I_Klir`, whose free category is the walking arrow **2**. -/
+theorem connected_is_single_arrow
+    (eJ : QuiverEmbedding V JoslynPosition) (eW : QuiverEmbedding V WillemsPosition)
+    (conn : ∀ a b : V, Zigzag a b) {x y : V} (e : x ⟶ y) :
+    x ≠ y ∧ (∀ w : V, w = x ∨ w = y) ∧ ∀ (u v : V) (_ : u ⟶ v), u = x ∧ v = y := by
+  refine ⟨?_, fun w => zigzag_confined eJ eW e (conn x w), ?_⟩
+  · rintro rfl; exact no_loop eW e
+  · intro u v f
+    rcases zigzag_confined eJ eW e (conn x u) with rfl | rfl
+    · exact ⟨rfl, (no_fork eJ e f).symm⟩
+    · exact (no_two_chain eW e f).elim
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- § The counterexample, machine-checked
