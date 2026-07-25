@@ -37,14 +37,17 @@ category S = (T, R) with a single dependency R → T.
    larger than `I_Klir` therefore embeds faithfully into `I_Klir`.
 
    The defect is that faithfulness constrains hom-sets, not objects, so it cannot
-   support "largest". Strengthening the requirement to *faithful and injective on
-   objects* makes an object bound available, and `klir_has_two_elements` supplies
-   it. Note also that the eightfold quantification collapses: `I_Klir` is itself
-   among the targets, so any upper bound reduces to a statement about `2` alone.
+   support "largest". Strengthening to *faithful and injective on objects* is
+   necessary but **not sufficient**: the fork shape (one source, two arrows, two
+   sinks) still embeds into all eight that way, entering Joslyn through the path
+   `controller → effector → controlled`. That is machine-checked in
+   `Systems/Category/SharedPrimitive.lean` (`free_category_maximality_fails`).
 
-   Candidate repair, not yet formalized: if `C` is connected and admits a functor
-   into every `I_X` that is faithful and injective on objects, then `C` has at most
-   two objects and subsingleton hom-sets, hence embeds in `2`.
+   The claim is true one level down, on the generating quivers rather than their
+   free categories, where derived composites stop counting. See
+   `SharedPrimitive.lean` for the repaired statement, the two obstructions that
+   force it (Joslyn's out-degree and Willems' in-degree and lack of composables),
+   and the sensitivity caveat that comes with working at that level.
 
 ## Systems-Theoretic Meaning
 
