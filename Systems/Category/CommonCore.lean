@@ -22,17 +22,29 @@ category S = (T, R) with a single dependency R → T.
 
 ## Theorem
 
-`I_Klir` is the largest CONNECTED subcategory that embeds faithfully into all
-eight shape categories. "Connected" means: there exists a non-identity morphism
-(the category is not discrete). This excludes trivial embeddings of isolated points.
+1. **Existence** (proven): eight embedding functors `I_Klir → I_X`, each injective
+   on objects (`klirTo*_obj_injective`) and faithful (`klirTo*_faithful`).
 
-The proof has two parts:
+2. **Maximality** (OPEN — the statement below is false as written):
 
-1. **Existence**: Eight faithful embedding functors `I_Klir → I_X`
-2. **Maximality**: `I_Klir` is the bottleneck. It has 2 objects and exactly 1
-   non-identity morphism per non-empty hom-set. Any faithful functor INTO I_Klir
-   from a connected category maps at most 1 arrow per hom-set, and the only
-   connected subcategory of I_Klir is I_Klir itself.
+   > "`I_Klir` is the largest connected category admitting a faithful functor into
+   > every `I_X`."
+
+   Counterexample. Take the three-object chain `a → b → c`, which is thin and
+   connected, and send `a ↦ things`, `b ↦ things`, `c ↦ relation`... more simply,
+   map it into `2` collapsing two objects. Composition is preserved, every hom-set
+   of the chain is a singleton, so the functor is faithful. A category strictly
+   larger than `I_Klir` therefore embeds faithfully into `I_Klir`.
+
+   The defect is that faithfulness constrains hom-sets, not objects, so it cannot
+   support "largest". Strengthening the requirement to *faithful and injective on
+   objects* makes an object bound available, and `klir_has_two_elements` supplies
+   it. Note also that the eightfold quantification collapses: `I_Klir` is itself
+   among the targets, so any upper bound reduces to a statement about `2` alone.
+
+   Candidate repair, not yet formalized: if `C` is connected and admits a functor
+   into every `I_X` that is faithful and injective on objects, then `C` has at most
+   two objects and subsingleton hom-sets, hence embeds in `2`.
 
 ## Systems-Theoretic Meaning
 
@@ -212,17 +224,56 @@ theorem klir_hom_unique (p : Quiver.Path KlirPosition.relation KlirPosition.thin
       have h := klir_relation_self p
       subst h; rfl
 
+/-- There is no path from `things` to `relation`.
+Things is a sink: no arrow in the Klir quiver targets `relation`. -/
+theorem klir_no_path_things_relation
+    (p : Quiver.Path KlirPosition.things KlirPosition.relation) : False := by
+  cases p with
+  | cons _ e => exact nomatch e
+
+/-- Every hom-set of `I_Klir` is a subsingleton: the four cases are
+`{id}`, `∅`, `{relation_on_things}`, `{id}`. -/
+theorem klir_path_subsingleton :
+    ∀ (a b : KlirPosition) (p q : Quiver.Path a b), p = q := by
+  intro a b p q
+  cases a <;> cases b
+  · rw [klir_things_self p, klir_things_self q]
+  · exact (klir_no_path_things_relation p).elim
+  · rw [klir_hom_unique p, klir_hom_unique q]
+  · rw [klir_relation_self p, klir_relation_self q]
+
+instance klirHomSubsingleton (X Y : Paths KlirPosition) : Subsingleton (X ⟶ Y) :=
+  ⟨klir_path_subsingleton X Y⟩
+
+/-- A functor out of a thin category is faithful: injectivity on a subsingleton
+hom-set is vacuous. This is a property of the *source*, so it holds for every
+functor out of `I_Klir` regardless of target. -/
+theorem faithful_of_subsingleton_hom {C : Type*} [Category C] {D : Type*} [Category D]
+    [∀ X Y : C, Subsingleton (X ⟶ Y)] (F : C ⥤ D) : F.Faithful :=
+  ⟨fun _ => Subsingleton.elim _ _⟩
+
+-- The eight embeddings are faithful. Note what this does and does not say: it is a
+-- consequence of `I_Klir` being thin, not evidence about the target traditions. The
+-- content of the common-core claim lives in object-injectivity above, which is what
+-- rules out the degenerate embeddings that collapse `things` and `relation`.
+
+theorem klirToBunge_faithful : klirToBunge.Faithful := faithful_of_subsingleton_hom _
+theorem klirToMobus_faithful : klirToMobus.Faithful := faithful_of_subsingleton_hom _
+theorem klirToMyers_faithful : klirToMyers.Faithful := faithful_of_subsingleton_hom _
+theorem klirToWymore_faithful : klirToWymore.Faithful := faithful_of_subsingleton_hom _
+theorem klirToMesarovic_faithful : klirToMesarovic.Faithful := faithful_of_subsingleton_hom _
+theorem klirToJoslyn_faithful : klirToJoslyn.Faithful := faithful_of_subsingleton_hom _
+theorem klirToSpivak_faithful : klirToSpivak.Faithful := faithful_of_subsingleton_hom _
+theorem klirToWillems_faithful : klirToWillems.Faithful := faithful_of_subsingleton_hom _
+
 -- ═══════════════════════════════════════════════════════════════════════════════
--- § Maximality
+-- § Maximality — OPEN
 --
--- I_Klir is the largest connected shape that embeds faithfully into all seven
--- traditions. The bottleneck is I_Klir itself: any faithful functor from a
--- connected free category into I_Klir can have at most the structure of I_Klir.
---
--- Proof sketch (formalized as individual lemmas):
--- 1. KlirPosition has exactly 2 elements (pigeonhole excludes 3+ object embeddings)
--- 2. Hom(relation, things) is a singleton (no room for parallel arrows)
--- 3. These together mean I_Klir is the unique maximal connected subcategory of itself
+-- See the module docstring: the maximality statement is false under faithfulness
+-- alone, and the repair (faithful AND injective on objects) is not yet formalized.
+-- What follows is the object bound, which the repaired statement would use. It is
+-- a fact about KlirPosition, not a maximality theorem, and should not be cited as
+-- one.
 -- ═══════════════════════════════════════════════════════════════════════════════
 
 /-- KlirPosition has exactly 2 elements: any function from a 3-element type
