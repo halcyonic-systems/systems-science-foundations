@@ -134,6 +134,13 @@ def thermostatMobus : MobusSystem Entity Unit Unit Unit Unit Unit Unit where
     · left; left; rfl
     · right; left; rfl
     · right; right; rfl
+  interfaces_carry_flow := by
+    intro i hi
+    rcases hi with rfl | rfl
+    -- thermometer receives the room's temperature flow
+    · exact ⟨⟨room, thermometer, ()⟩, Or.inl ⟨rfl, rfl, rfl⟩, Or.inr rfl⟩
+    -- furnace exports heat to the room
+    · exact ⟨⟨furnace, room, ()⟩, Or.inr ⟨rfl, rfl, rfl⟩, Or.inl rfl⟩
 
 /-! ## Flow-Action Consistency -/
 

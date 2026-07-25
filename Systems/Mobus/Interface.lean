@@ -35,6 +35,59 @@ def IsBipartiteFlow {α : Type*} {κ : Type*}
   ∀ e ∈ net.edges,
     (e.source ∈ A ∧ e.target ∈ B) ∨ (e.source ∈ B ∧ e.target ∈ A)
 
+/-! ## Interfaces Carry Flow (the converse of bipartite) -/
+
+/-- Every interface carries at least one flow, stated over a bare edge set.
+
+    `IsBipartiteFlow` quantifies over EDGES: every boundary-crossing flow lands
+    on an interface. It says nothing about interfaces that carry no flow, so a
+    boundary may declare interfaces that do nothing. This predicate is the
+    missing converse, quantifying over INTERFACES.
+
+    Mobus's definition of an interface is functional, not positional —
+    interfaces are "components that transport flows across the boundary"
+    (§4.3), and in Listing 4.2 every `<interface>` carries a mandatory
+    `<recievesFrom>` or `<exportsTo>` naming an environmental source or sink.
+    An interface with no flow is not expressible in his own description
+    language: its `type` (RECEIVES / EXPORTS / hybrid) IS its flow direction. -/
+def InterfacesCarryEdges {α : Type*} {κ : Type*}
+    (edges : Set (FlowEdge α κ)) (I : Set α) : Prop :=
+  ∀ i ∈ I, ∃ e ∈ edges, i = e.source ∨ i = e.target
+
+/-- `InterfacesCarryEdges` on the edge set of a flow network. For external
+    flows (G): every interface component is an endpoint of some external flow. -/
+def InterfacesCarryFlow {α : Type*} {κ : Type*}
+    (net : FlowNetwork α κ) (I : Set α) : Prop :=
+  InterfacesCarryEdges net.edges I
+
+/-- An empty interface set carries flow vacuously. This is what keeps the
+    degenerate system (no environment, no boundary) constructible: a system
+    with no external flows must declare no interfaces, which it already does. -/
+theorem interfacesCarryFlow_empty {α : Type*} {κ : Type*}
+    (net : FlowNetwork α κ) : InterfacesCarryFlow net (∅ : Set α) :=
+  fun _ hi => absurd hi (Set.notMem_empty _)
+
+/-- Interfaces that carry flow are nodes of the flow network. This is the
+    payoff: the converse turns `externalFlows_nodes` from a one-way containment
+    into a statement with content on the interface side. -/
+theorem interfacesCarryFlow_sub_nodes {α : Type*} {κ : Type*}
+    (net : FlowNetwork α κ) (I : Set α)
+    (h : InterfacesCarryFlow net I) : I ⊆ net.nodes := by
+  intro i hi
+  obtain ⟨e, he, hsrc | htgt⟩ := h i hi
+  · exact hsrc ▸ (net.edges_on e he).1
+  · exact htgt ▸ (net.edges_on e he).2
+
+/-- Contrapositive: a declared interface that no external flow touches cannot
+    exist. This is the statement the current formalization is missing. -/
+theorem no_flowless_interface {α : Type*} {κ : Type*}
+    (net : FlowNetwork α κ) (I : Set α)
+    (h : InterfacesCarryFlow net I) (i : α) (hi : i ∈ I)
+    (hno : ∀ e ∈ net.edges, i ≠ e.source ∧ i ≠ e.target) : False := by
+  obtain ⟨e, he, hsrc | htgt⟩ := h i hi
+  · exact (hno e he).1 hsrc
+  · exact (hno e he).2 htgt
+
 /-! ## Bipartite Implies Boundary Complete -/
 
 /-- Bipartite external flows automatically satisfy boundary completeness.
