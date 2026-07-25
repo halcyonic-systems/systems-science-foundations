@@ -215,6 +215,7 @@ def Kernel.toMobus {α : Type*} (k : Kernel α) (hi : k.Irreflexive) :
   interfaces_sub := Set.empty_subset _
   bipartite := fun e he => absurd he (Set.notMem_empty e)
   externalFlows_nodes := Set.empty_subset _
+  interfaces_carry_flow := interfacesCarryFlow_empty _
 
 /-- The generated 8-tuple's total relation is exactly the kernel's
     dependency: internal flows recover R, external flows are empty. -/

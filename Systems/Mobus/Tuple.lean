@@ -106,6 +106,14 @@ structure MobusSystem (α : Type*) (κ : Type*) (μ : Type*)
   externalFlows_nodes :
     externalFlows.nodes ⊆ environment.objects ∪ boundary.interfaces
 
+  /-- Every interface carries a flow — the converse of `bipartite`.
+      `bipartite` quantifies over edges (flow ⟹ interface); this quantifies
+      over interfaces (interface ⟹ flow). Without it a boundary may declare
+      interfaces that transport nothing, which Mobus's functional definition
+      ("components that transport flows across the boundary") forbids. -/
+  interfaces_carry_flow :
+    InterfacesCarryFlow externalFlows boundary.interfaces
+
 /-! ## Derived Properties -/
 
 /-- Boundary completeness holds for any well-formed MobusSystem.
@@ -117,6 +125,29 @@ theorem MobusSystem.boundaryComplete {α κ μ π τ η δ : Type*}
     BoundaryComplete sys.boundary sys.externalFlows sys.environment.objects :=
   bipartite_implies_boundary_complete sys.boundary sys.externalFlows
     sys.environment.objects sys.bipartite
+
+/-- Interfaces are exactly the component-side nodes of G. `externalFlows_nodes`
+    gives G's nodes ⊆ O ∪ I; `interfaces_carry_flow` gives the interface half of
+    the reverse containment. Before the converse, `I` and `G` could drift apart
+    with only the ⊆ direction holding. -/
+theorem MobusSystem.interfaces_sub_externalNodes {α κ μ π τ η δ : Type*}
+    (sys : MobusSystem α κ μ π τ η δ) :
+    sys.boundary.interfaces ⊆ sys.externalFlows.nodes :=
+  interfacesCarryFlow_sub_nodes sys.externalFlows sys.boundary.interfaces
+    sys.interfaces_carry_flow
+
+/-- A system with no external flows has no interfaces. The degenerate case:
+    an isolated system's boundary declares nothing, rather than declaring
+    interfaces that transport nothing. -/
+theorem MobusSystem.no_flows_no_interfaces {α κ μ π τ η δ : Type*}
+    (sys : MobusSystem α κ μ π τ η δ)
+    (h : sys.externalFlows.edges = ∅) : sys.boundary.interfaces = ∅ := by
+  ext i
+  simp only [Set.mem_empty_iff_false, iff_false]
+  intro hi
+  obtain ⟨e, he, _⟩ := sys.interfaces_carry_flow i hi
+  rw [h] at he
+  exact absurd he (Set.notMem_empty e)
 
 /-! ## Total Structure (Bridge Preparation) -/
 
