@@ -536,20 +536,17 @@
         <div class="result-lean">Systemness.lean · compose</div>
       </div>
       <div class="result-card">
-        <div class="result-name">The Common Core Is Maximal</div>
-        <div class="result-body">Every tradition faithfully embeds <strong>2</strong>. Nothing larger embeds into all seven. The irreducible content of "system" across every tradition is a single morphism: <em>relations depend on things</em>.</div>
-        <div class="result-lean">CommonCore.lean · klir_has_two_elements</div>
+        <div class="result-name">The Shared Primitive Is a Single Arrow</div>
+        <div class="result-body">Every tradition embeds <strong>2</strong>, injectively on objects. The original maximality claim — nothing larger embeds into all seven — was falsified by our own machine-checked counterexample (<code>free_category_maximality_fails</code>: a three-object fork enters every free shape category through a composite no tradition asserts) and repaired one level down, on the generating quivers: the only dependency all the encoded traditions directly assert is a single morphism: <em>relations depend on things</em>.</div>
+        <div class="result-lean">SharedPrimitive.lean · connected_is_single_arrow</div>
         <div class="lean-proof">
-          <span class="lean-proof-label">Maximality by pigeonhole · CommonCore.lean lines 203–210</span>
-          <pre>theorem klir_has_two_elements :
-    ∀ (f : Fin 3 → KlirPosition), ¬ Function.Injective f := by
-  intro f hinj
-  have h : f 0 = f 1 ∨ f 0 = f 2 ∨ f 1 = f 2 := by
-    cases (f 0) &lt;;&gt; cases (f 1) &lt;;&gt; cases (f 2) &lt;;&gt; simp
-  rcases h with h | h | h
-  · exact absurd (hinj h) (by decide)
-  · exact absurd (hinj h) (by decide)
-  · exact absurd (hinj h) (by decide)</pre>
+          <span class="lean-proof-label">The repaired statement, quiver level · SharedPrimitive.lean</span>
+          <pre>theorem connected_is_single_arrow
+    (eJ : QuiverEmbedding V JoslynPosition)
+    (eW : QuiverEmbedding V WillemsPosition)
+    (conn : ∀ a b : V, Zigzag a b) {x y : V} (e : x ⟶ y) :
+    x ≠ y ∧ (∀ w : V, w = x ∨ w = y) ∧
+      ∀ (u v : V) (_ : u ⟶ v), u = x ∧ v = y</pre>
         </div>
       </div>
     </div>

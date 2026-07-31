@@ -514,7 +514,7 @@
 
 <h3 id="result-e"><span class="result-tag tag-proven">proven</span> (e) Common Core Theorem: K &cong; <strong>2</strong></h3>
 
-<p>Seven traditions, encoded as shape categories, all faithfully embed the walking arrow <strong>2</strong>. The common core is <strong>maximal</strong>: any shape category embedding faithfully into Klir's quiver (two objects, one non-identity arrow) has at most two objects and at most one non-identity arrow, hence is a quotient of <strong>2</strong>; faithfulness forces it to be <strong>2</strong> itself. The irreducible content of "system" is a single morphism: <em>relations depend on things</em>.</p>
+<p>Seven traditions, encoded as shape categories, all embed the walking arrow <strong>2</strong>, injectively on objects. (Faithfulness also holds but is automatic &mdash; <strong>2</strong> is thin, so every functor out of it is faithful; the content is object-injectivity.) The original maximality claim &mdash; nothing larger embeds into all of them &mdash; was <strong>false</strong>, and was falsified by our own machine-checked counterexample (<code>free_category_maximality_fails</code>): a three-object fork embeds into every free shape category through a composite no tradition asserts. The repaired result lives one level down, on the generating quivers (<code>connected_is_single_arrow</code>): a connected quiver embedding into both the Joslyn and Willems quivers has exactly two vertices and one edge. Honest reading: the only dependency all the encoded traditions directly assert is one &mdash; a single morphism, <em>relations depend on things</em>.</p>
 
 <h2 id="embedding-table">The Embedding Table</h2>
 
@@ -654,7 +654,7 @@
 </div>
 
 <div class="open-item">
-  <strong>Universal property of 2</strong>: the maximality proof is combinatorial (pigeonhole). Can the walking arrow be characterized as a limit, terminal object, or initial algebra in a 2-category of shapes? This would explain <em>why</em> the walking arrow is common, not merely <em>that</em> it is.
+  <strong>Universal property of 2</strong>: the repaired shared-primitive proof is combinatorial (quiver-level obstructions in the Joslyn and Willems shapes). Can the walking arrow be characterized as a limit, terminal object, or initial algebra in a 2-category of shapes? This would explain <em>why</em> the walking arrow is common, not merely <em>that</em> it is.
 </div>
 
 <hr>

@@ -84,7 +84,7 @@ invariant under adding derived arrows, unlike free-category ones. Drawing Joslyn
 an additional `controller ⟶ controlled` edge, which one could argue for, would let
 `V` back in and the result would fail. The defence is that each edge is a documented
 primitive commitment of its source text; see `docs/language/terminology-concordance.md`
-for the per-cell citations. This is a claim about what the literature asserts, and
+in the bert-lenses repo (not this one) for the per-cell citations. This is a claim about what the literature asserts, and
 sensitivity to how each tradition states itself is the subject matter rather than a
 defect. It should be disclosed, not buried.
 

@@ -25,7 +25,8 @@ category S = (T, R) with a single dependency R → T.
 1. **Existence** (proven): eight embedding functors `I_Klir → I_X`, each injective
    on objects (`klirTo*_obj_injective`) and faithful (`klirTo*_faithful`).
 
-2. **Maximality** (OPEN — the statement below is false as written):
+2. **Maximality** (REFUTED as stated; repaired at the quiver level, and the repair
+   is proven — `SharedPrimitive.connected_is_single_arrow`):
 
    > "`I_Klir` is the largest connected category admitting a faithful functor into
    > every `I_X`."
@@ -270,11 +271,13 @@ theorem klirToSpivak_faithful : klirToSpivak.Faithful := faithful_of_subsingleto
 theorem klirToWillems_faithful : klirToWillems.Faithful := faithful_of_subsingleton_hom _
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- § Maximality — OPEN
+-- § Maximality — REFUTED AS STATED; repaired theorem lives in SharedPrimitive.lean
 --
--- See the module docstring: the maximality statement is false under faithfulness
--- alone, and the repair (faithful AND injective on objects) is not yet formalized.
--- What follows is the object bound, which the repaired statement would use. It is
+-- See the module docstring: the original maximality claim is false, with a
+-- machine-checked counterexample (`SharedPrimitive.free_category_maximality_fails`).
+-- The repaired, quiver-level statement is proven, axiom-free:
+-- `SharedPrimitive.connected_is_single_arrow` — the only dependency all the encoded
+-- traditions directly assert is one. What follows is merely an object bound. It is
 -- a fact about KlirPosition, not a maximality theorem, and should not be cited as
 -- one.
 -- ═══════════════════════════════════════════════════════════════════════════════
