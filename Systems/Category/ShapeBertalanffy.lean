@@ -197,3 +197,113 @@ theorem bertalanffy_no_composable {a b c : BertalanffyPosition}
 theorem bertalanffy_no_parallel {a b : BertalanffyPosition}
     (e f : BertalanffyArrow a b) : e = f := by
   cases e <;> cases f <;> rfl
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- § The 1972 restatement — the environment becomes constitutive
+-- ═══════════════════════════════════════════════════════════════════════════════
+
+/-!
+Bertalanffy (1972), "The History and Status of General Systems Theory", *Academy of
+Management Journal* 15(4), p. 417 — human-verified against the page, 2026-08-05:
+
+> "A system may be defined as a set of elements standing in interrelation among themselves
+> **and with the environment**."
+
+Four years after the book, the environment is inside the definition rather than a distinction
+layered on afterwards (1968 introduces open vs. closed systems separately, chs. 6–8). The
+revision is visible in the shape: a third position and a second arrow. Encoding both versions
+is what makes "the definition changed, and here is how" a statement about mathematics rather
+than about prose.
+-/
+
+/-- The three positions in Bertalanffy's 1972 definition.
+
+- `elements`: the set of elements
+- `interrelation`: the relations they stand in
+- `environment`: what they also stand in interrelation *with*
+-/
+inductive Bertalanffy72Position
+  | elements
+  | interrelation
+  | environment
+  deriving DecidableEq, Inhabited
+
+/-- Two generating morphisms, one per clause of "among themselves and with the environment".
+
+- `interrelation_on_elements` ← "standing in interrelation among themselves"
+- `interrelation_on_environment` ← "and with the environment"
+
+Same declared convention as everywhere in this development: an arrow points from the dependent
+position to what it depends on. Read aloud: *the interrelation depends on the elements*, and
+*the interrelation depends on the environment*. -/
+inductive Bertalanffy72Arrow : Bertalanffy72Position → Bertalanffy72Position → Type
+  | interrelation_on_elements : Bertalanffy72Arrow .interrelation .elements
+  | interrelation_on_environment : Bertalanffy72Arrow .interrelation .environment
+
+instance : Quiver Bertalanffy72Position where
+  Hom := Bertalanffy72Arrow
+
+/-- The shape category for the 1972 definition: three objects, two arrows radiating from
+`interrelation`. The span `• ← • → •`.
+
+Structurally this is the same span as `MesarovicShape` (Def 1.4, `globalState → input`,
+`globalState → output`) — and the coincidence is worth naming rather than hiding, because the
+readings are unrelated: Mesarović's arrows are projections of a response function, and these
+are two clauses of one English sentence about what a relation holds between. Shape identity is
+not semantic identity; see the predicate-gap caveat at the head of this file. -/
+abbrev Bertalanffy72Shape := Paths Bertalanffy72Position
+
+/-- The revision as a functor: everything the 1968 definition committed to is still committed
+to in 1972, and the environment arrow is what was added. Injective on objects, so 1968 sits
+inside 1972 as a proper subshape rather than being re-encoded. -/
+def bert68To72Pre : Prefunctor BertalanffyPosition (Paths Bertalanffy72Position) where
+  obj := fun p => match p with
+    | .elements => .elements
+    | .interrelation => .interrelation
+  map := fun a => match a with
+    | .interrelation_on_elements =>
+        Quiver.Hom.toPath Bertalanffy72Arrow.interrelation_on_elements
+
+theorem bert68To72_obj_injective : Function.Injective bert68To72Pre.obj := by
+  intro a b h; cases a <;> cases b <;> simp_all [bert68To72Pre]
+
+/-- What the revision added, stated as the thing the 1968 shape cannot reach: no position of
+the 1968 quiver maps onto `environment`. -/
+theorem environment_is_new (p : BertalanffyPosition) :
+    bert68To72Pre.obj p ≠ Bertalanffy72Position.environment := by
+  cases p <;> simp [bert68To72Pre]
+
+/-!
+### Obstruction audit for the 1972 shape
+
+Unlike Q_Bertalanffy (1968), **Q_Bertalanffy72 is permissive**: `interrelation` has out-degree
+two, so the quiver admits the fork. By the same reasoning recorded for Q_Spivak, this neither
+strengthens nor breaks `SharedPrimitive.connected_is_single_arrow` — the repair is forced by
+Q_Joslyn (no out-degree two) and Q_Willems (no in-degree two, no composable pair), and a
+permissive entry simply does no work there. Stated explicitly rather than assumed, and the
+fork is proved present rather than asserted.
+-/
+
+/-- The 1972 quiver HAS a fork — out-degree two at `interrelation`. This is the permissive
+property; it is exhibited so the audit is a fact rather than a claim. -/
+theorem bertalanffy72_has_fork :
+    ∃ (x y z : Bertalanffy72Position) (_ : Bertalanffy72Arrow x y) (_ : Bertalanffy72Arrow x z),
+      y ≠ z :=
+  ⟨.interrelation, .elements, .environment,
+   .interrelation_on_elements, .interrelation_on_environment, by simp⟩
+
+/-- No cofork: every vertex still has in-degree at most one. -/
+theorem bertalanffy72_in_degree_le_one {a b c : Bertalanffy72Position}
+    (e : Bertalanffy72Arrow a c) (f : Bertalanffy72Arrow b c) : a = b := by
+  cases e <;> cases f <;> rfl
+
+/-- No two-chain: both arrows leave `interrelation`, and `elements` and `environment` are
+sinks, so no two edges compose. -/
+theorem bertalanffy72_no_composable {a b c : Bertalanffy72Position}
+    (e : Bertalanffy72Arrow a b) (f : Bertalanffy72Arrow b c) : False := by
+  cases e <;> cases f
+
+/-- No parallel edges. -/
+theorem bertalanffy72_no_parallel {a b : Bertalanffy72Position}
+    (e f : Bertalanffy72Arrow a b) : e = f := by
+  cases e <;> cases f <;> rfl
