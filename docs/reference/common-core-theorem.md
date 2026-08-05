@@ -269,3 +269,27 @@ This does not change the counting decision. Willems still collapses onto Mesarov
 ---
 
 *Sources: Klir (2001), Bunge (1979), Mobus (2022), Myers (2023), Wymore via Wach et al. (2021), Mesarović & Takahara (1975), Joslyn (1995), Spivak (2026).*
+
+---
+
+## Addendum: Bertalanffy — the core is a tradition's whole quiver (2026-08-05)
+
+Bertalanffy (1968), *General System Theory*, ch. 3, p. 55, defines a system verbally:
+
+> "A system can be defined as a complex of interacting elements. Interaction means that elements, p, stand in relations, R, so that the behavior of an element p in R is different from its behavior in another relation, R'."
+
+**Shape.** `I_Bertalanffy` (`ShapeBertalanffy.lean`): 2 objects (`elements`, `interrelation`), 1 generating arrow `interrelation_on_elements : interrelation → elements`. This **is** Q_Klir under renaming — proved, not observed: `positionEquiv` (a bijection of position types), `obj_roundtrip` and `obj_roundtrip'` (mutually inverse object maps, both directions), `arrow_unique`. `bertalanffyToKlir_obj_injective` and its converse depend only on `propext`; the roundtrips and `arrow_unique` are axiom-free.
+
+**The headline stays eight.** By the Willems precedent — a tradition that collapses onto another at the shape layer is not counted as an independent entry — Bertalanffy collapses onto Klir and is recorded as a **convergence witness**, not a ninth tradition. Claiming otherwise would assert independence on precisely the measure where it provably collapses.
+
+**What the collapse is worth, and it is not nothing.** Every other entry embeds Klir's shape *into* something larger; the core has so far been a common part abstracted from richer structures. Bertalanffy is the first tradition whose **entire quiver is the core** — the shared primitive turns out to be a position an actual tradition occupies, reached from organismic biology in 1968, independently of the information-theoretic lineage Klir wrote from in 1969/2001. That is the strongest available answer to the objection that **2** is an artifact of how the encodings were drawn.
+
+**Obstruction audit** (required since the 2026-07-25 Spivak correction; the repaired shared-primitive theorem is target-dependent, so a new entry can weaken it). Q_Bertalanffy is the most restrictive quiver possible and admits nothing Q_Klir does not: `bertalanffy_out_degree_le_one` (no fork), `bertalanffy_in_degree_le_one` (no cofork), `bertalanffy_no_composable` (no two-chain), `bertalanffy_no_parallel`. All four axiom-free. The result is untouched.
+
+**The negative result is the more valuable half.** Bertalanffy's interaction clause carries a condition Klir's `S = (T, R)` does not — the behaviour of an element **must differ** across relations — and that is a predicate on which R qualify, not a position and not a dependency. The quiver cannot express it and the embedding discards it. So **two definitions with isomorphic shapes make different demands**: the shape functor is not injective on definitional content. This is a limit of the method, exhibited with a separating instance rather than asserted, and it bounds what **K ≅ 2** claims — the dependency skeleton is shared; the qualifying conditions that separate a permissive tradition from a demanding one are not visible at this layer.
+
+Bunge makes the near-identical demand — "unlike a mere relation, a connection makes some difference to its relata" (1979, ch. 1 §1.2) — and *does* promote it to definitional force via the nonempty-bondage requirement, which `ShapeBunge` likewise cannot see. Two traditions converging on difference-making, in a register the shape layer discards, is a finding for the mapping layer rather than the category layer.
+
+**Not encoded here.** Bertalanffy (1972), AMJ 15(4) p. 417, restates the definition with the environment added — "standing in interrelation among themselves **and with the environment**" — which carries a second arrow and is a *different* shape. The 1968 → 1972 pair is a definition revising itself; encoding both would make the revision machine-checkable, as the Mobus 7-tuple → 8-tuple pair would.
+
+**Standard met.** Shape file, obstruction audit, `lake build` green (2266 jobs), zero sorry, zero custom axioms. **No `CommonCore` embedding row** — an isomorphism is not an embedding into a larger shape, and adding it to the eight-row table would misrepresent the collapse as an expansion.

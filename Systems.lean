@@ -49,6 +49,7 @@ import Systems.Category.SubsystemCategory
 import Systems.Category.FlattenFunctor
 import Systems.Category.OrderingTriangle
 import Systems.Category.BridgeFunctor
+import Systems.Category.ShapeBertalanffy
 import Systems.Category.ShapeKlir
 import Systems.Category.ShapeBunge
 import Systems.Category.ShapeMobus
