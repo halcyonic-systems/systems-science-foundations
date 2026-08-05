@@ -658,3 +658,21 @@ Phase 1 and Phase 2 can proceed in parallel. Phase 3 requires both. Phase 4 can 
 **Phase 2 risk: Composition proof for Btc.** Showing that transaction composition is associative with all validity constraints may be significantly harder than it looks. The intermediate states need to be valid, and the conservation constraint threads through every step. Mitigation: start with a simplified Btc (no fees, no coinbase) and extend.
 
 **Phase 3 risk: Square peg, round hole.** Mobus's 8-tuple may not map cleanly to polynomial functors. The boundary/interface structure is suggestive but the dynamics (T, H, Δt) may not have good polynomial representations. Mitigation: this is explicitly research — if it doesn't work, document why and what would need to change.
+
+---
+
+## Candidate Phase 5: Institutions — machinery for claims that cross traditions (recorded 2026-08-05)
+
+**Status: research direction, not a work item.** Recorded here rather than as an issue because it has no triggering defect and no defined first step. The concrete, triggered piece — carrying within-definition *conditions* — is SSF #42 (sketches), and it should land first.
+
+**The question.** The atlas and this development both make claims that cross traditions: Klir embeds into Bunge, Mobus's shape maps to Bunge's, Bertalanffy's is isomorphic to Klir's. What is currently missing is a principled account of **when a claim survives a translation** — and, more interestingly, when it does not. The embeddings say the structures relate; they say nothing about whether a statement true of one tradition's systems remains true of the other's.
+
+**Why institutions.** Goguen and Burstall built institutions for exactly this shape of problem: many logical systems with different vocabularies, translations between them, and a *satisfaction condition* guaranteeing that truth is preserved along a translation. Formally an institution is signatures (a category), sentences and models functorial over them, and a satisfaction relation with the coherence law. Map that onto the atlas: a signature is a tradition's vocabulary, sentences are the claims it can state, models are the things satisfying its definition, and an institution morphism is a mapping between traditions that provably preserves satisfaction.
+
+The payoff is the failure case. An institution morphism that *cannot* be constructed is a precise statement that two traditions are talking past each other, which is exactly the kind of finding the catalogue exists to expose and currently can only assert in prose (see the atlas's `P3-stance-axes.md`: refusals target the object, the analyst, the description's state, or nothing at all).
+
+**Ordering.** Sketches (#42) give each tradition its conditions. Institutions would then ask what travels between them. Doing institutions first would be building the transport before the cargo exists.
+
+**Prior art in the library.** Goguen material is in the vault at `archive/reference/Goguen/`. Melanie Swan's categorical-cryptoeconomics work (HoTT, UCL) is an adjacent contemporary use.
+
+**Risk.** Institutions are heavy machinery with a real chance of being the square peg — the atlas may never need full satisfaction-preservation, and a lighter apparatus (profunctors between shape categories, or simply sketch morphisms) may cover every case in practice. Mitigation is the ordering above: if #42 turns out to answer the cross-tradition questions too, this phase is correctly never started.
