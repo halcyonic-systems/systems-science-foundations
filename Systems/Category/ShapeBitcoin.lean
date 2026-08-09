@@ -178,6 +178,17 @@ theorem spendAncestry_injective : Function.Injective spendAncestry := by
 instance : Infinite (Quiver.Path BitcoinPosition.transaction BitcoinPosition.transaction) :=
   Infinite.of_injective spendAncestry spendAncestry_injective
 
+/-- The `coin` hom-set is trivial: no generating arrow targets `coin`, so the
+only self-path is the identity. Bitcoin's self-reference lives entirely on the
+THINGS side of the kernel embedding (transaction), never on the relation side
+(coin) — the UTXO half of the Bitcoin/Ethereum duality
+(`ShapeEthereum` §Separation). -/
+theorem bitcoin_coin_self
+    (p : Quiver.Path BitcoinPosition.coin BitcoinPosition.coin) : p = .nil := by
+  cases p with
+  | nil => rfl
+  | cons _ e => exact nomatch e
+
 /-- I_Bitcoin is not thin: the identity and one step of spend ancestry are
 distinct parallel morphisms. I_Klir, by contrast, is thin
 (`klir_path_subsingleton`). -/
