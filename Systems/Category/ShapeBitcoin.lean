@@ -23,9 +23,12 @@ protocol specification.
   digital signatures. Each owner transfers the coin to the next by digitally
   signing a hash of the previous transaction and the public key of the next
   owner and adding these to the end of the coin."
-- Nakamoto (2008), §3 Timestamp Server: the server "takes a hash of a block of
-  items to be timestamped"; "each timestamp includes the previous timestamp in
-  its hash, forming a chain."
+- Nakamoto (2008), §3 Timestamp Server: the server works "by taking a hash of
+  a block of items to be timestamped"; "Each timestamp includes the previous
+  timestamp in its hash, forming a chain."
+
+Quotes verified verbatim against the published whitepaper PDF
+(bitcoin.org/bitcoin.pdf), 2026-08-08.
 
 ## Construction
 

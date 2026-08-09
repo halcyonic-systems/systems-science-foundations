@@ -22,16 +22,18 @@ ROLE carries the endo-generator.
 
 ## Sources
 
-- Yakovenko (2017), Proof of History section: PoH provides a way to
-  cryptographically verify passage of time between two events; it runs a
-  sequential hash "in a loop, with the previous output used as the next
-  input," periodically recording the output and count.
-- Yakovenko (2017), event-timestamping subsection: data is inserted into the
-  sequence by combining it with the current output, proving the event came
-  after the prior state of the sequence.
+- Yakovenko (2017), §4 Proof of History: "Proof of History is a sequence of
+  computation that can provide a way to cryptographically verify passage of
+  time between two events." The function is run "in a sequence on a single
+  core, its previous output as the current input, periodically recording the
+  current output, and how many times its been called."
+- Yakovenko (2017), §4: "Data can be timestamped into this sequence by
+  appending the data (or a hash of some data) into the state of the
+  function" — the recording of state, index, and data provides the
+  timestamp.
 
-(Quote wording drawn from working memory of the whitepaper; verify exact
-phrasing against the PDF before any outward-facing citation.)
+Quotes verified verbatim against the published whitepaper PDF
+(solana.com/solana-whitepaper.pdf), 2026-08-08.
 
 ## Construction
 
@@ -50,8 +52,9 @@ Arrows point in the dependency direction (dependent → depended-on):
   Bitcoin's "a coin is a chain of digital signatures")
 - `hash_prev : entry → entry` — the previous output is the next input;
   the endo-generator
-- `records : entry → event` — an entry that timestamps an event combines
-  the event's data into its hash, so the entry depends on the event
+- `records : entry → event` — an entry that timestamps an event appends the
+  event's data into the state of the function, so the entry depends on the
+  event
 
 ## The Refinement (the finding)
 

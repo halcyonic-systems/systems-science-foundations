@@ -25,10 +25,15 @@ template that carried Bitcoin produces a provably different shape.
   the state-transition function σ_{t+1} ≡ Υ(σ_t, T).
 - Wood (2014), §4.1 World State: "a mapping between addresses (160-bit
   identifiers) and account states."
-- Wood (2014), §4.2: a transaction is a single cryptographically-signed
-  instruction constructed by an actor external to the scope of Ethereum.
-- Wood (2014), §4.3: a block comprises a header and its transactions; each
-  header carries the parent block's hash.
+- Wood (2014), §4.2: a transaction is "a single cryptographically-signed
+  instruction constructed by an actor externally to the scope of Ethereum."
+- Wood (2014), §4.4 The Block: "the collection of relevant pieces of
+  information (known as the block header)" together with the comprised
+  transactions; the header carries `parentHash`.
+
+Quotes verified verbatim against the published Yellow Paper PDF
+(ethereum.github.io/yellowpaper, current revision), 2026-08-08. Section
+numbers follow the current revision (the block section is §4.4 there).
 
 ## Construction
 
@@ -38,7 +43,7 @@ Positions are the roles Wood's definitional sentences name:
 - `account`: an account state, keyed by address (§4.1)
 - `transaction`: one signed instruction (§4.2)
 - `state`: the world state σ — the mapping over accounts (§4.1)
-- `block`: header + comprised transactions (§4.3)
+- `block`: header + comprised transactions (§4.4)
 
 Arrows point in the dependency direction (dependent → depended-on):
 
@@ -47,8 +52,8 @@ Arrows point in the dependency direction (dependent → depended-on):
 - `prior_state : state → state` — σ_{t+1} depends on σ_t (§2, Υ)
 - `applies : state → transaction` — and on the transaction applied (§2, Υ)
 - `signed_by : transaction → actor` — signed by an external actor (§4.2)
-- `includes : block → transaction` — a block comprises transactions (§4.3)
-- `parent : block → block` — the parent-hash chain (§4.3)
+- `includes : block → transaction` — a block comprises transactions (§4.4)
+- `parent : block → block` — the parent-hash chain (§4.4)
 
 ## The Separation (the finding)
 
@@ -84,7 +89,7 @@ eight-traditions headline.
 
 open CategoryTheory
 
-/-- The five positions Wood's definitional sentences name (2014, §2, §4.1–4.3).
+/-- The five positions Wood's definitional sentences name (2014, §2, §4.1–4.4).
 
 - `actor`: the external signer
 - `account`: an account state, keyed by address
