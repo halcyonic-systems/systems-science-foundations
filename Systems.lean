@@ -70,6 +70,7 @@ import Systems.Category.ShapeBitcoin
 import Systems.Category.ShapeEthereum
 import Systems.Category.ShapeSolana
 import Systems.Category.ShapeCosmos
+import Systems.Category.ShapeTendermint
 
 -- The declared Dynamics record: τ refined from opaque to a checkable 5-field
 -- vocabulary (bert-lenses#112 / dynamics-position Q5; declaration only)
