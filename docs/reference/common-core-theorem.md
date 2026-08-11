@@ -6,6 +6,8 @@
 
 > **Revised 2026-07-25.** The existence half is unchanged and is now fully machine-checked, faithfulness included. The **maximality half was wrong twice over** and has been rewritten. The old definition of the common core ("largest connected category admitting a faithful functor into every I_X") is false, and the old proof in this document was invalid on its own terms. Both are replaced below. The corrected claim lives on the dependency quivers rather than on the free categories over them, and is formalized in `Systems/Category/SharedPrimitive.lean`. The diagrams, the embedding table, and the interpretive sections are unaffected.
 
+> **Cold verification (added 2026-08-11).** Every headline claim in this document — the eight embeddings, the repaired quiver-level maximality, and the refutation of the free-category form — is restated with full types in the trusted statement file [`Systems/Challenge.lean`](../../Systems/Challenge.lean). Run `scripts/check-challenge.sh` to verify all 20 statements against the library proofs (kernel-checked, standard axioms only; `connected_is_single_arrow` is axiom-free). A skeptical reader needs that one file plus the quiver definitions it names, not this prose and not the proofs.
+
 ---
 
 ## The Landscape
