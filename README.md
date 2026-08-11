@@ -128,6 +128,12 @@ lake build    # compile all modules — zero errors, zero sorrys
 
 - [BERT](https://github.com/halcyonic-systems/bert) — Systems analysis tool implementing Mobus's framework. The coherence constraints Lean verifies (disjointness, bipartiteness, boundary completeness) are the grammar rules BERT's System Language compiles from.
 
+## Downstream Consumers
+
+- **mathematical-systems** (private, pre-publication) — atlas of applied systems; each entry carries declaration-level pointers into this repo, resolved by its lean bridge at build time against a pinned commit.
+- **protocols-are-systems** (private, pre-publication) — applied protocol instances; depends on this repo as a pinned lake dependency, with three verified protocol instances so far.
+- **bert-lenses** — planned consumer of the shape ladder (Klir/Bunge/Mobus) as its structural authoring core.
+
 ## Methodology
 
 Built in collaboration with Claude Code (Anthropic). Human editorial judgment and domain interpretation; LLM Lean syntax fluency and tactic generation; compiler final authority on every claim.
