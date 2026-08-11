@@ -79,3 +79,7 @@ import Systems.Category.ShapeIota
 import Systems.Dynamics.Record
 import Systems.Dynamics.Transition
 import Systems.Dynamics.Mechanism
+
+-- Trusted statement file: the K ≅ 2 headline claims restated for cold
+-- verification (comparator pattern). Check with scripts/check-challenge.sh.
+import Systems.Challenge

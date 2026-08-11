@@ -20,6 +20,7 @@ Seven systems traditions encoded as shape categories, compared via functors, uni
 | Document | What it covers |
 |----------|---------------|
 | [common-core-theorem.md](reference/common-core-theorem.md) | The main result: K ≅ **2** embeds into all 7 traditions, injectively on objects (faithfulness is automatic — **2** is thin) |
+| [../Systems/Challenge.lean](../Systems/Challenge.lean) | **Trusted statement file**: every headline claim restated with full types for cold verification (comparator pattern); run `scripts/check-challenge.sh` — 20 theorems, standard axioms only, `connected_is_single_arrow` axiom-free |
 | [categorification-roadmap.md](reference/categorification-roadmap.md) | Phase-by-phase plan for the categorical infrastructure |
 | [three-layer-architecture.md](reference/three-layer-architecture.md) | How Klir, Bunge, and Mobus layer on each other |
 | [mobus-bunge-system-definitions-reference.md](reference/mobus-bunge-system-definitions-reference.md) | Side-by-side definition comparison |
