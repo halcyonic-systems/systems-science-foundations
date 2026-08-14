@@ -1,10 +1,15 @@
 /-
   Systems/Dynamics/CircuitHistory.lean
-  RESEARCH PROTOTYPE — bert-lenses#112, the H-instantiation question.
-  NOT reviewed, NOT claimed as part of the audited kernel. See
-  docs/research/112-h-instantiation-plan.md for the write-up this file
-  supports; that document, not this header, is the source of the claim
-  boundaries.
+  RESEARCH, reviewed and merged 2026-08-14 — bert-lenses#112, the
+  H-instantiation question. See docs/research/112-h-instantiation-plan.md
+  for the write-up this file supports; that document is the source of the
+  claim boundaries. Review notes: `cbeh_unique` carries the finality
+  content; `recordedHistory_eq_orbit_prefix` is definitional by design and
+  says so; `circuitTransition` is defined to witness the
+  `deterministicClosed` instantiation but is not consumed by the proof
+  chain, which works over the abstract `f` directly. NOT a K≅2 headline
+  claim (not restated in Challenge.lean); the claim is about the dynamics
+  rung at the ABSTRACTED carrier, never about the Rust stepper itself.
 
   Instantiates `Transition.deterministicClosed` at a simplified but faithful
   abstraction of `bert-compose::Circuit`'s minimal state (a finite node set's
