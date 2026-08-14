@@ -73,6 +73,10 @@ import Systems.Category.SharedPrimitive
 import Systems.Dynamics.Record
 import Systems.Dynamics.Transition
 import Systems.Dynamics.Mechanism
+-- H at BERT's abstracted carrier (bert-lenses#112 §4): the recorded run
+-- history is the finite prefix of the final-coalgebra observable behaviour
+-- under the identity observer. Research-tier; not a Challenge.lean headline.
+import Systems.Dynamics.CircuitHistory
 
 -- Trusted statement file: the K ≅ 2 headline claims restated for cold
 -- verification (comparator pattern). Check with scripts/check-challenge.sh.
