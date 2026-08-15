@@ -58,8 +58,10 @@ import Systems.Category.ShapeMyers
 import Systems.Category.ShapeWymore
 import Systems.Category.ShapeMesarovic
 import Systems.Category.ShapeJoslyn
+import Systems.Category.CyclicObstruction
 import Systems.Category.JoslynIncomparability
 import Systems.Category.ShapeSpivak
+import Systems.Category.SpivakIncomparability
 import Systems.Category.ShapeWillems
 import Systems.Category.ShapeComparison
 import Systems.Category.ShapeComparison_Myers
