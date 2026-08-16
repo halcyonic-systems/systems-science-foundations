@@ -61,6 +61,7 @@ import Systems.Category.ShapeJoslyn
 import Systems.Category.CyclicObstruction
 import Systems.Category.JoslynIncomparability
 import Systems.Category.ShapeSpivak
+import Systems.Category.MyersSpivakFaithful
 import Systems.Category.SpivakIncomparability
 import Systems.Category.ShapeWillems
 import Systems.Category.ShapeComparison
