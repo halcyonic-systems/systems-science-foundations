@@ -5,6 +5,7 @@ Authors: Shingai Thornton
 -/
 import Systems.Category.ShapeJoslyn
 import Systems.Category.CyclicObstruction
+import Systems.Category.CommonCore
 
 /-!
 # Joslyn's feedback shape is a boundary of the finite-shape method
@@ -58,3 +59,21 @@ theorem joslyn_no_faithful_functor
     {C : Type*} [Category C] [∀ X Y : C, Finite (X ⟶ Y)]
     (F : JoslynShape ⥤ C) : ¬ F.Faithful :=
   paths_no_faithful_functor_of_cycle joslynLoop (by simp [joslynLoop_length]) F
+
+/-- Klir's walking arrow has finite hom-sets: every hom-set is a subsingleton
+(`klirHomSubsingleton`, acyclic two-object quiver), and a subsingleton is finite. -/
+instance (X Y : KlirShape) : Finite (X ⟶ Y) := Finite.of_subsingleton
+
+/-- **Mapping 001's composed obstruction: no faithful functor Joslyn → Klir.**
+The general theorem above, instantiated at the target the atlas's first mapping
+argues about. The finite-hom-set hypothesis is discharged by the instance above
+rather than by inspection-in-prose — this declaration is what lets the mapping's
+evidence code read machine-checked instead of MDHC.
+
+Presentation-relative, as the mapping states: both shapes are encodings of primary
+texts as dependency quivers, and a different defensible encoding of Joslyn 1995 —
+one that does not make the control loop a cycle at quiver level — could dissolve
+the obstruction. Not a maximality result. -/
+theorem no_faithful_joslyn_to_klir : ¬ ∃ F : JoslynShape ⥤ KlirShape, F.Faithful := by
+  rintro ⟨F, hF⟩
+  exact joslyn_no_faithful_functor F hF
