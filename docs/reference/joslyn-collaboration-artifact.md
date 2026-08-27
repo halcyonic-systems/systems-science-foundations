@@ -557,6 +557,17 @@ This is round two of a loop you started: your thirty red-text comments on the su
 paper produced thirteen machine-checked answers (§3; `joslyn-feedback-mapping.md`). The
 compiler settled what it could. This question it cannot settle — it is yours.
 
+Stated once more, in the vocabulary of your own 2026 abstract: the question is where the
+*closure* lives. The encoding drew control₂'s semantic closure as a cycle at quiver level —
+one drawing decision, from which everything downstream follows. Whether that closure is
+genuinely level-flat or unrolls across a metasystem transition is not a question lattice or
+topos machinery settles from outside; it is an interpretant only the author can supply. And
+the apparatus asking it is, in miniature, the thing your abstract calls for: symbols with
+machine-checked grounding (the gates, the theorems, the located verbatims) joined to human
+interpretation that is *recorded as such* (the evidence codes say, for every claim, whether
+a machine located it, a model drafted it, or a person ruled on it — who interpreted what,
+never blurred).
+
 *(Status note for §7's table: it reflects the February 2026 state. The Category program
 has since added the eleven-shape landscape, the embedding theorems, the cyclic
 obstruction, and the challenge file `Systems/Challenge.lean` — the one file a skeptical
