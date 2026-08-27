@@ -484,6 +484,86 @@ The formal ontology is not the endpoint — it is the foundation for **System La
 
 ---
 
+## 6.4 Addendum (2026-08-27): what has happened since — and the question only you can answer
+
+*Everything above stands as written in early 2026. This section is the delta, and it ends
+with an ask.*
+
+### Your tradition is now encoded — and it broke the comparison machinery
+
+The formalization grew a shape-category program: each tradition's definition encoded as the
+free category on its dependency quiver, with machine-checked comparison functors between
+them (Klir, Bunge, Mobus, Myers, Wymore, Mesarović, Spivak — and you). `ShapeJoslyn`
+encodes the control loop of Definitions 25/28 and Proposition 29: effector and controlled
+positions, efferent and afferent arrows — **a cyclic quiver, the landscape's first**.
+
+That cycle turned out to be load-bearing. Every DAG-shaped tradition has finite hom-sets
+and is placed by faithful comparison functors. Yours is not — and this is now a theorem,
+not a remark:
+
+> `no_faithful_joslyn_to_klir : ¬ ∃ F : JoslynShape ⥤ KlirShape, F.Faithful`
+
+(`Systems/Category/JoslynIncomparability.lean`; axioms `[propext, Classical.choice,
+Quot.sound]`, no `sorry`. The general form is proved once for any cyclic shape: the loop's
+powers are distinguished by length, so the feedback hom-set is infinite, and faithfulness
+would inject it into a finite one.) The comparison apparatus that places the other seven
+traditions **provably cannot reach yours**. Feedback is a boundary of the finite-shape
+method — converted from folklore to theorem.
+
+### Your definition is now in the catalogue
+
+The atlas this document gestured at is live at **math.systems**: nine definitions,
+verbatim, page-located at build time, provenance-graded, with the floor (the one shared
+dependency) as a page of its own. Entry 009 is your Definition 28 (Control₂), transcribed
+from the World Futures page images (the PDF's own text layer mangles your subscripts and
+flattens your angle brackets — the transcription restores them), with five of your case
+rulings encoded: thermostat and the decoupled-envelope thermodynamic pair admitted; the
+damped spring, the boiling liquid, and the spinning top refused. Its evidence code is
+displayed live and honest — model-drafted until a human pass promotes it, per the
+catalogue's own discipline.
+
+One provenance finding from the ingest, offered for your correction: the pipeline graded
+Definition 25 (control₁) as a *restatement* — you present it as Turchin's 1992 Principia
+Cybernetica definition, "offered again here" — so under the catalogue's restatement rule
+the control₁ base is Turchin's and Definition 28 is the first control definition that is
+yours alone. If that reading is wrong, it is exactly the kind of correction the catalogue
+exists to receive.
+
+### The ask
+
+The incomparability theorem carries a caveat, written into its docstring before anyone
+asked you:
+
+> *Presentation-relative: both shapes are encodings of primary texts as dependency
+> quivers, and a different defensible encoding of Joslyn 1995 — one that does not make
+> the control loop a cycle at quiver level — could dissolve the obstruction. Not a
+> maximality result.*
+
+**You are the only person who can rule on whether the cycle is faithful to what you
+meant.** Three outcomes, each of which we would count a result:
+
+1. **You defend the cycle** — the incomparability theorem becomes author-endorsed, and
+   "feedback is where the finite-shape method stops" stands with the strongest provenance
+   a formalization can have.
+2. **You propose an acyclic encoding** — e.g. one that unrolls the loop across MST levels,
+   which your own hierarchy machinery suggests — and the obstruction dissolves for that
+   encoding: a new shape enters the landscape, and presentation-relativity is demonstrated
+   live rather than asserted.
+3. **You rule both encodings defensible** — the first documented case of one primary text
+   supporting two shapes with different comparison behavior, which is the sharpest
+   possible exhibit for the layer of validation no kernel checks.
+
+This is round two of a loop you started: your thirty red-text comments on the summer 2025
+paper produced thirteen machine-checked answers (§3; `joslyn-feedback-mapping.md`). The
+compiler settled what it could. This question it cannot settle — it is yours.
+
+*(Status note for §7's table: it reflects the February 2026 state. The Category program
+has since added the eleven-shape landscape, the embedding theorems, the cyclic
+obstruction, and the challenge file `Systems/Challenge.lean` — the one file a skeptical
+reader needs, kernel-checked against the library.)*
+
+---
+
 ## 7. Codebase Summary
 
 | Phase | Module | Lines | Theorems | Content |
