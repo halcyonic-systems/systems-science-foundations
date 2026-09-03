@@ -21,7 +21,12 @@ import Systems.Mobus.FlowNetwork
 
 namespace Systems
 
-/-! ## Axioms — the eight structures that are not derived from the others -/
+/-! ## Axioms — the eight primitive structures
+
+  "Axiom" here means: a `structure` whose fields no other principle's structures
+  produce. It is a definition of a kind of object (what a Homeostat *is*), not an
+  asserted proposition; theorems quantify over its instances, and every structure
+  is inhabited by a concrete value in source (consistency). -/
 
 /-- **#1 Systemness** (axiom, `ConcreteSystem`, Systemness.lean). A system's composition
     is organized: its bondage is non-empty, so it is not a bare aggregate. -/
@@ -80,7 +85,12 @@ theorem principle12_improvability :
       imp₁.dyn = dyn ∧ imp₂.dyn = dyn ∧ imp₁.goal ≠ imp₂.goal :=
   goal_is_external
 
-/-! ## Theorems — the four principles that do no independent work -/
+/-! ## Theorems — the four derived notions
+
+  Each is *definable* from the axioms' structures (no new primitive: #5 is a def
+  over `ActsOn`, #9 over #4's dynamics, #10 is #9 with `R = S`, #7 is stated
+  through #9's model). Their content is the theorem proved about the derived
+  notion, not a new commitment. -/
 
 /-- **#5 Complexity** (theorem from #1 #2 #3, Complexity.lean). Kind-diversity is an
     equivalence derived from the acts-on relation alone; the first reduction, 12 → ≤ 11. -/
@@ -109,10 +119,13 @@ theorem principle10_self_models {S : Type*} (fsm : FastSelfModel S) {s : S} {n :
     fsm.dyn^[n * (fsm.lead - 1)] (fsm.dyn^[n] s) = fsm.dyn^[n] s :=
   FastSelfModel.accurate_forces_periodic fsm h1 h2
 
-/-! ## Witnesses — the non-derivability results that are actually checked
+/-! ## Witnesses — separating instances
 
-  These are the only independence facts the kernel has seen. Everything else in
-  "eight independent axioms" is the absence of a derivation, not a proof of one. -/
+  A separating instance is a concrete value that satisfies one principle's
+  structure and provably cannot satisfy another's; it shows the second is not a
+  consequence of the first. These are the only independence statements that exist
+  as theorems. For every other pair, "independent" is the absence of a derivation
+  in the library, which no theorem here asserts. -/
 
 /-- **#9 ⇏ #11, minimal.** A one-state system has a model and no understanding. -/
 theorem witness_modeling_not_understanding :
