@@ -17,6 +17,7 @@ import Systems.Core
 -- The twelve principles, front door: one re-export per principle + checked witnesses
 import Systems.Principles
 import Systems.Principles.Witnesses
+import Systems.Principles.Matrix
 
 -- Phase 2: Mobus 8-tuple
 import Systems.Mobus.FlowNetwork
