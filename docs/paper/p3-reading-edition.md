@@ -529,6 +529,22 @@ Every other directed pair (for example #1 ⇏ #4, #4 ⇏ #8, #12 ⇏ #6, #2 ⇏ 
 
 ---
 
+### The component–state bridge (recon 2026-09-03, read-only, sources cited)
+
+The 5 → 11 arrow and the cross-block cells of the independence matrix both wait on one decision: how a system's state relates to its components. Three positions already exist in the tree, and they disagree.
+
+| Position | Where | Reading |
+|---|---|---|
+| **No bridge** | `Systems/Mobus/Tuple.lean:44-49`, `Lifecycle.lean` (imports only `Tuple`) | The 8-tuple has no state slot; H is opaque carried data. The life-cycle paper makes the tuple *itself* the state (`scaffold.md:96-97`: "X = set of all oct-tuples = state space"; `paper.tex:216-253`), so birth/death are component-set edits and no S ever appears. |
+| **Union bridge** (Bunge) | `Systems/Bunge/AggregateBridge.lean:77-80, 93-94`; `State.lean:114-116` | Bunge p. 640 read as a union over one shared S; machine-checked independent of the bond criterion (`bondFree_yet_stateSystem`, `AggregateBridge.lean:117-128`). |
+| **Product bridge** (requested, unbuilt) | `Complexity.lean:167-172` ("future bridge theorem", S^N), `Dynamics.lean:56-64` | State = Π over components of a per-component state. Would let system dynamics move inside a fixed product while life-cycle dynamics changes the index set, which is exactly the distinction the life-cycle paper needs and does not state. |
+
+**Mobus's own text** (`operations/systems-science/mobus/4-a-model-of-system.md:460-461`, near-verbatim at `10-model-archetypes.md:505`): the state σᵢ is "the instantaneous measure of all of these dynamical elements", read off "every flow (connection) and every reservoir"; H is "a set of measures (a list of variables in the system), H_t = [v₁, …, vₙ]_t" (`:423-428`). No occurrence of "state vector", "component state", or "cartesian product" anywhere in his vault text (those appear only in Wymore and Myers). His state is an aggregated reading over flows *and* reservoirs: closer to a measured multigraph than to a product over components.
+
+**Verdict.** The product reading is consistent with the life-cycle encoding (which says nothing about states), extends `Complexity.lean` in the direction it asks for, **contradicts** the Bunge union bridge (two incompatible readings of one Bunge passage would then coexist; `bondFree_yet_stateSystem`'s witness is union-specific), and is **incompatible with H as Mobus writes it**, because a component-indexed product drops the flow readings his σ explicitly includes. A faithful bridge would index readings by components *and* internal links.
+
+**Questions for Mobus** (also filed in `mobus-lifecycle-paper/docs/`): (1) Is a state the tuple, or something the tuple has? ΔS = ⟨ΔC, ΔN, …⟩ makes a state change a change of element sets, while §4's σ holds structure fixed and reads flows. (2) What indexes a state reading: components only, or components plus internal links? (3) When a component leaves C, what happens to readings indexed by it: does the trajectory walk between different state spaces, or does H keep the departed fibre?
+
 ## §11 Pointer map
 
 From any claim to its proof. Paths are relative to the SSF repository root.
