@@ -59,6 +59,17 @@ Two consequences follow. First, "principle A is an axiom" here means "A is encod
 
 **Where the encoding decisions are recorded.** File headers carry them. `Systems/Mobus/Tuple.lean` states which 8-tuple slots are structurally active (C, N, E, G, B) and which are carried data with no structural role (T, H, Δt). `Systems/Core/Complexity.lean` states in its header that the import list is the proof. `Systems/Core/Understanding.lean` records why the `nontrivial` field exists. The paper should draw from these, not from summaries of them.
 
+**The pipeline, and who does what.** Four steps, each leaving a record a second reader can check without trusting the first.
+
+| Step | Artifact | Who | What can go wrong here | How it is caught |
+|---|---|---|---|---|
+| 1. The sentence | Mobus's one-liner, verbatim, with source line (§2; and, per the docstring rule, in the structure's own docstring) | Shingai transcribes; the author owns it | Misquotation, paraphrase drift | Transcription against the primary text; the atlas transcription gate for definitions |
+| 2. The tractable core | A Lean `structure` whose fields are the sentence's nouns and whose constraints are its verbs, with named deferrals | Drafted with a model; read against the sentence by Shingai; encoding decisions recorded in file headers | Wrong reading; a noun dropped; a constraint smuggled in | Docstring "Encoding:" and "Not encoded:" lines; cases (step 3); the author (step 4) |
+| 3. Consequences and cases | Theorems (derivations), separating instances (non-derivations), inhabitation witnesses (consistency) | Model-drafted proof attempts; the Lean kernel checks every one | A vacuous structure that anything satisfies; a "separation" that separates the wrong thing | `#print axioms`; the vacuity checks in the independence matrix; a constraint owes a separating instance |
+| 4. The author's audit | Co-authorship (Mobus on this paper), or a faithfulness ask to the author (Joslyn, SSF#50) | The person whose prose it is | The reading is coherent but not what was meant | Only the author can say; recorded as an author caveat, never silently overwritten |
+
+What Lean guarantees is confined to step 3. Steps 1 and 2 are human readings with a written trail; step 4 is the only check on whether the trail leads to what the author meant. The language model's role is drafting in steps 2 and 3 and nothing in steps 1 and 4; every draft is stamped with how much of it a human has read (the atlas's evidence codes are the general form of that stamp). This division is the paper's method section, and it is also its claim-hygiene: nothing downstream of step 2 is described as "what Mobus says," only as "what this reading of Mobus implies."
+
 ---
 
 ## §4 The eight axioms
@@ -355,7 +366,30 @@ A fourth relocation is not a correction of a stated dependency but of a grouping
 
 **The demandingness gradient.** Ontological core (any system: #1 to #4) → regulation (#8, a set-point) → models (#9, #10) → agency (#11, #12), with #6 a near-universal blind axis alongside. "Complex adaptive" begins at the model line, not at #6.
 
-**The dependency DAG** (from `dependency-dag.mmd`; solid arrows are derives-from, dashed are presupposes or is-refined-by):
+**The two carriers.** The eight axioms do not live on one kind of object, and this is worth seeing before the DAG. Three are about *components*: a component type with a relation on it (acts-on for Systemness, immediate-ancestor for Hierarchy, flow edges for Networks). Five are about *states*: a state type with a law on it (Dynamics, and everything that adds structure to a law: a set-point for Governance, a fitness order for Evolution, a coarse-graining for Understandability, an external goal for Improvability). `DynamicSystem α S` holds one of each, a `ConcreteSystem α` and a `law : S → S`, and no map between `α` and `S`. That missing map is the component–state bridge; it is where the 5 → 11 arrow waits (§9), and it is why the independence matrix (`independence-matrix.md`) can be filled within each block now and across blocks only after the bridge is decided.
+
+```mermaid
+flowchart LR
+    subgraph C["Component carrier: a type α with a relation"]
+        c1["1 Systemness · ConcreteSystem α"]
+        c2["2 Hierarchy · ImmediateAncestor α"]
+        c3["3 Networks · FlowNetwork α κ"]
+        c5["5 Complexity · SameKind (theorem)"]
+    end
+    subgraph S["State carrier: a type S with a law S → S"]
+        s4["4 Dynamics · law"]
+        s8["8 Governance · + set-point"]
+        s6["6 Evolution · + fitness order"]
+        s11["11 Understandability · + coarse-graining"]
+        s12["12 Improvability · + external goal"]
+        s9["9 Internal Models (theorem)"]
+        s10["10 Self-Models (theorem)"]
+        s7["7 Information (theorem)"]
+    end
+    C -->|"DynamicSystem α S: system + law, no map α ↔ S"| S
+```
+
+**The dependency DAG** (from `dependency-dag.mmd`; solid arrows are derives-from, dashed are presupposes or is-refined-by, fine-dotted grey is a conjecture with no Lean home):
 
 ```mermaid
 flowchart TD
@@ -382,7 +416,8 @@ flowchart TD
     p3 -.->|"flow network"| p8
     p4 -.->|"+ set-point"| p8
     p9 -.->|"K=2"| p8
-    p5 -.->|"compression"| p11
+    p5 -. "compression (conjecture: needs the component–state bridge)" .-> p11
+    linkStyle 10 stroke-dasharray: 2 6, stroke: #999
     p9 -.->|"refined by"| p11
     p11 -.->|"directed by"| p12
     p8 -.->|"engine for"| p12
@@ -441,7 +476,7 @@ Every claim the paper wants to make, against what the kernel has seen. "Checked"
 | 8-tuple composition unconditional | Prose | the companion cites `MobusSystem.compose`; no declaration of that name exists in `Systems/Mobus/Composition.lean`, which holds `bipartite_edge_classification` and `MobusSystem.external_edges_survive_bipartite` | either locate or restore the definition, or drop the 8-tuple composition claim to what those two theorems state |
 | Simon's unstated premise is `StrictAnti f` | Checked | `NearDecomposable.conditional_time_scale_separation`, `InteractionDynamicsBridge`, `simon_from_bridge` | as stated |
 | Boundary completeness is derived | Checked | `bipartite_implies_boundary_complete` | as stated |
-| The `5 → 11` DAG arrow (understanding's fibres are `SameKind` lumping) | Prose | companion finding 16, last paragraph | draw the arrow as a conjecture, or prove it |
+| The `5 → 11` DAG arrow (understanding's fibres are `SameKind` lumping) | Prose | companion finding 16, last paragraph | **Ruled 2026-09-03: drawn as a conjecture** (fine-dotted grey in the DAG); a theorem waits on the component–state bridge, a question for Mobus |
 | Conant-Ashby's determinism conclusion | Prose (proof strategy in file) | `negMulLog_transfer` is checked; the wrapper is a comment | "the entropy engine is machine-checked; the determinism wrapper is scoped, not proved" |
 | Eight INDEPENDENT axioms | **Not fully checked** | see the pair table below | see below |
 

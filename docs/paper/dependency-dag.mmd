@@ -1,5 +1,6 @@
 %% halcyonic-canvas v1
 %% title: Mobus's 12 Principles — Dependency DAG (8 axioms / 4 theorems)
+%% legend: solid = derives-from (theorem); dashed = presupposes/refined-by (a Lean def or field); fine-dotted grey = conjecture, no Lean home (5→11, ruled 2026-09-03)
 %% layout: layered
 %% role: p1=systems
 %% role: p2=systems
@@ -45,7 +46,8 @@ flowchart TD
     p3 -.->|"flow network"| p8
     p4 -.->|"+ set-point"| p8
     p9 -.->|"K=2"| p8
-    p5 -.->|"compression"| p11
+    p5 -. "compression (conjecture: needs the component–state bridge)" .-> p11
+    linkStyle 10 stroke-dasharray: 2 6, stroke: #999
     p9 -.->|"refined by"| p11
     p11 -.->|"directed by"| p12
     p8 -.->|"engine for"| p12
