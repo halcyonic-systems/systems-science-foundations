@@ -43,6 +43,12 @@
 -/
 import Systems.Principles
 
+/- Four declarations were renamed at merge (2026-09-03) to avoid clashing with
+   `Systems/Principles/Witnesses.lean`: `Homeostat.ofLaw` → `Homeostat.ofLawAt` (this one
+   takes a set point), `Homeostat.ofLaw_feedbackLaw` → `Homeostat.ofLawAt_feedbackLaw`,
+   `evolvable_iff_exists_lt` → `evolvable_iff_exists_lt'` (explicit `S`),
+   `no_understanding_of_bool` → `no_understanding_of_bool'`. -/
+
 namespace Systems
 
 /-! ## Component block: {#1 Systemness, #2 Hierarchy, #3 Networks} -/
@@ -294,7 +300,7 @@ def Evolution.trivial (S : Type*) [Preorder S] : Evolution S := ⟨id, fun _ => 
     everything else" is an Evolution. So the `Evolvable (Fin 3)` half of
     `evolvable_but_not_improvable` is the statement `0 < 1` in `Fin 3`; `fin3climb` plays no
     role in it. `#print axioms`: propext, Classical.choice, Quot.sound. -/
-theorem evolvable_iff_exists_lt (S : Type*) [Preorder S] : Evolvable S ↔ ∃ s t : S, s < t := by
+theorem evolvable_iff_exists_lt' (S : Type*) [Preorder S] : Evolvable S ↔ ∃ s t : S, s < t := by
   constructor
   · rintro ⟨e, s, hs⟩
     exact ⟨s, e.step s, hs⟩
@@ -309,11 +315,11 @@ theorem evolvable_iff_exists_lt (S : Type*) [Preorder S] : Evolvable S ↔ ∃ s
 /-- VACUITY (#8): every law is the feedback law of a homeostat — sensor the identity, set point
     ignored, correction the law. The set point is data the feedback law need not read. The
     neutrality and effectiveness conditions in `Governs` are what make #8 non-degenerate. -/
-def Homeostat.ofLaw {S : Type*} (s₀ : S) (f : S → S) : Homeostat S S :=
+def Homeostat.ofLawAt {S : Type*} (s₀ : S) (f : S → S) : Homeostat S S :=
   ⟨s₀, id, fun o _ => o, fun o _ => f o⟩
 
-theorem Homeostat.ofLaw_feedbackLaw {S : Type*} (s₀ : S) (f : S → S) :
-    (Homeostat.ofLaw s₀ f).feedbackLaw = f := rfl
+theorem Homeostat.ofLawAt_feedbackLaw {S : Type*} (s₀ : S) (f : S → S) :
+    (Homeostat.ofLawAt s₀ f).feedbackLaw = f := rfl
 
 /-- VACUITY (#12, bare): a law admits an `Improvement` iff some state moves. The `intervene`
     field is unconstrained, so "drive straight to the goal" always works; `improves` and
@@ -518,7 +524,7 @@ theorem directed_of_governs_finite {S : Type*} [Fintype S] (f : S → S)
 /-- No two-state system is understood, for any dynamics: an onto map from `Bool` to a
     nontrivial type is injective. (`Understanding.card_lt` gives the general
     `card S ≤ 2` form; the direct proof avoids a `Fintype M`.) `#print axioms`: propext, Classical.choice, Quot.sound. -/
-theorem no_understanding_of_bool {M : Type*} (u : Understanding Bool M) : False := by
+theorem no_understanding_of_bool' {M : Type*} (u : Understanding Bool M) : False := by
   obtain ⟨a, b, hab, hne⟩ := Function.not_injective_iff.mp u.compresses
   have hconst : ∀ x, u.abstract x = u.abstract a := by
     intro x
@@ -530,7 +536,7 @@ theorem no_understanding_of_bool {M : Type*} (u : Understanding Bool M) : False 
   exact hm ((hconst x₁).trans (hconst x₂).symm)
 
 theorem not_understood_bool (f : Bool → Bool) : ¬ Understood f :=
-  fun ⟨_, u, _⟩ => no_understanding_of_bool u
+  fun ⟨_, u, _⟩ => no_understanding_of_bool' u
 
 theorem not_directed_bool (f : Bool → Bool) : ¬ Directed f :=
   fun h => not_understood_bool f (understood_of_directed h)
@@ -559,7 +565,7 @@ theorem sep_dynamics_evolution : Moving not ∧ ¬ EvolvesBy not :=
 
 /-- **#4 ⇏ #8** (`sep_dynamics_governance`). The toggle has no fixed point, so no neutral
     effective homeostat has it as feedback law: a dynamics with no rest state has nothing to
-    hold. (Contrast `Homeostat.ofLaw`: without neutrality any law, the toggle included, is a
+    hold. (Contrast `Homeostat.ofLawAt`: without neutrality any law, the toggle included, is a
     feedback law.) `#print axioms`: none. -/
 theorem sep_dynamics_governance : Moving not ∧ ¬ Governs not :=
   ⟨⟨true, by decide⟩, not_governs_of_no_fixed fun s => by cases s <;> decide⟩
@@ -605,7 +611,7 @@ theorem sep_evolution_understanding :
 /-- **#6 ⇏ #12 (full)** (`sep_evolution_directed`). Same carrier: evolvable, not directed —
     by cardinality only (`directed_of_evolvesBy_finite`). Bare #12 holds. Note the library's
     `evolvable_but_not_improvable` is NOT a tied witness: its `Evolvable` half is the order on
-    `Fin 3` (`evolvable_iff_exists_lt`) and its un-improvable half is a different law, the
+    `Fin 3` (`evolvable_iff_exists_lt'`) and its un-improvable half is a different law, the
     3-cycle. `#print axioms`: propext, Classical.choice, Quot.sound. -/
 theorem sep_evolution_directed :
     EvolvesBy (fun _ : Bool => true) ∧ ¬ Directed (fun _ : Bool => true) ∧

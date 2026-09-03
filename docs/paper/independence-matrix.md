@@ -19,7 +19,7 @@ The eight axiom structures split by what their carrier is.
 |---|---|---|---|
 | #4 | `Moving f` | some state moves | the whole content of #4 once the law is fixed |
 | #6 | `EvolvesBy f` | `f` is the `step` of an `Evolution` for *some* fitness preorder on `S`, with a strict climb somewhere | `Evolvable`-style strictness, quantified over orders |
-| #8 | `Governs f` | `f` is the `feedbackLaw` of a homeostat that is neutral at its set point (the two hypotheses of `target_is_equilibrium`) and effective (corrects some off-target state onto target in one tick) | neutrality + effectiveness; without them `Homeostat.ofLaw` makes every law a feedback law |
+| #8 | `Governs f` | `f` is the `feedbackLaw` of a homeostat that is neutral at its set point (the two hypotheses of `target_is_equilibrium`) and effective (corrects some off-target state onto target in one tick) | neutrality + effectiveness; without them `Homeostat.ofLawAt` makes every law a feedback law |
 | #11 | `Understood f` | some `Understanding S M` has `systemDyn = f` | `compresses`, `nontrivial` (already in the structure) |
 | #12 | `Improved f` / `Directed f` | some `Improvement S` has `dyn = f` / some `DirectedAgent S M` has `understanding.systemDyn = f` | `genuine` (already in the structure); `Directed` also carries an understanding |
 
@@ -77,8 +77,8 @@ There are no (c) cells. The (b) cells:
 | `FlowNetwork` | `⟨∅, ∅, _, _⟩` | (immediate) | "no network" is never true; separations use edge-nonemptiness |
 | `DynamicSystem` | any law, stock component side | `DynamicSystem.ofLaw` | tied #4 = `Moving` |
 | `Evolution` | `step := id` | `Evolution.trivial` | tied #6 needs a strict climb |
-| `Evolvable S` | — | `evolvable_iff_exists_lt` | **`Evolvable` is a property of the fitness preorder alone**: it holds iff the order has a strict pair, whatever the dynamics. The `Evolvable (Fin 3)` half of `evolvable_but_not_improvable` is `0 < 1`; `fin3climb` plays no role in it |
-| `Homeostat` | sensor `id`, set point ignored, `correct := f` | `Homeostat.ofLaw`, `ofLaw_feedbackLaw` | **every law is a feedback law**; the set point is data the loop need not read. Only the neutrality hypotheses of `target_is_equilibrium` plus effectiveness make #8 non-degenerate |
+| `Evolvable S` | — | `evolvable_iff_exists_lt'` (Matrix.lean; `evolvable_iff_exists_lt` in Witnesses.lean is the same statement) | **`Evolvable` is a property of the fitness preorder alone**: it holds iff the order has a strict pair, whatever the dynamics. The `Evolvable (Fin 3)` half of `evolvable_but_not_improvable` is `0 < 1`; `fin3climb` plays no role in it |
+| `Homeostat` | sensor `id`, set point ignored, `correct := f` | `Homeostat.ofLawAt`, `ofLaw_feedbackLaw` | **every law is a feedback law**; the set point is data the loop need not read. Only the neutrality hypotheses of `target_is_equilibrium` plus effectiveness make #8 non-degenerate |
 | `Improvement` | `intervene := const goal` | `improved_iff_moving` | bare #12 ⇔ non-degenerate #4 |
 | `Understanding` | "am I at the unreachable state?", `modelDyn := const false` | `Understanding.ofMissingPoint` | legitimate per the encoding, predicts nothing that changes; drives finding 9 |
 
@@ -92,7 +92,7 @@ There are no (c) cells. The (b) cells:
 |---|---|---|
 | `ImmediateAncestor` | acyclic: `¬ Ancestor x x` (or `WellFounded immediateAncestor`), matching Level.lean's "strict partial order" showcase | kills the two `Unit` witnesses; (#2,#1) becomes Wᵃ only, (#2,#3) becomes D |
 | `FlowNetwork` | `edges.Nonempty` | makes "no network" statable; already what the witnesses use |
-| `Homeostat` | the two neutrality hypotheses of `target_is_equilibrium` as fields, plus effectiveness | this is `Governs`; would let `Homeostat.ofLaw` be rejected as a homeostat |
+| `Homeostat` | the two neutrality hypotheses of `target_is_equilibrium` as fields, plus effectiveness | this is `Governs`; would let `Homeostat.ofLawAt` be rejected as a homeostat |
 | `Understanding` | `modelDyn` not constant (the model predicts something that changes) | excludes `Understanding.ofMissingPoint`; finding 9 would need re-examination, and the 4-cycle parity understanding (`modelDyn := not`) and both library examples (`modelDyn := id`) survive |
 | `Improvement` | constrain `intervene` (e.g. it must agree with `dyn` away from the goal, or be a homeostat's feedback law) | would separate bare #12 from #4 |
 | `Evolvable` | tie it to a step: `∃ e, ∃ s, s < e.step s` with `e.step` the system's law | this is `EvolvesBy`; the untied form is order-only |
