@@ -413,7 +413,7 @@ flowchart TD
     p9 ==> p10
     p9 ==> p7
     p1 -.->|"system's state"| p4
-    p3 -.->|"flow network"| p8
+    p1 -.->|"system field"| p8
     p4 -.->|"+ set-point"| p8
     p9 -.->|"K=2"| p8
     p5 -. "compression (conjecture: needs the component–state bridge)" .-> p11
@@ -424,7 +424,7 @@ flowchart TD
     p6 -.->|"blind / directed"| p12
 ```
 
-Reading guide for the dashed arrows, each of which has a Lean home: `1 → 4` is the `system : ConcreteSystem α` field of `DynamicSystem`; `3 → 8` and `4 → 8` are `GovernanceSubsystem` extending `CoupledDynamicSystem` with a set-point; `9 → 8` is `InternalModel.toConantAshby`; `5 → 11` is the remark that the fibres of `abstract` are the lumping `SameKind` performs (prose, not a theorem; see §9); `9 → 11` is the forgetful direction from `Understanding` to a homomorphism; `11 → 12` is `DirectedAgent.toUnderstanding`; `8 → 12` is `Homeostat.toImprovement`; `6 → 12` is `evolvable_but_not_improvable`.
+Reading guide for the dashed arrows, each of which has a Lean home: `1 → 4` is the `system : ConcreteSystem α` field of `DynamicSystem`; `1 → 8` and `4 → 8` are `GovernanceSubsystem`: it carries `system : ConcreteSystem α` (the #1 field) and a set-point over a law (audit 2026-09-03: the arrow previously drawn as `3 → 8`, "flow network", had no Lean home; `Governance.lean` imports no `FlowNetwork`, so it is redrawn from #1); `9 → 8` is `InternalModel.toConantAshby`; `5 → 11` is the remark that the fibres of `abstract` are the lumping `SameKind` performs (prose, not a theorem; see §9); `9 → 11` is the forgetful direction from `Understanding` to a homomorphism; `11 → 12` is `DirectedAgent.toUnderstanding`; `8 → 12` is `Homeostat.toImprovement`; `6 → 12` is `evolvable_but_not_improvable`.
 
 ---
 
@@ -479,6 +479,10 @@ Every claim the paper wants to make, against what the kernel has seen. "Checked"
 | The `5 → 11` DAG arrow (understanding's fibres are `SameKind` lumping) | Prose | companion finding 16, last paragraph | **Ruled 2026-09-03: drawn as a conjecture** (fine-dotted grey in the DAG); a theorem waits on the component–state bridge, a question for Mobus |
 | Conant-Ashby's determinism conclusion | Prose (proof strategy in file) | `negMulLog_transfer` is checked; the wrapper is a comment | "the entropy engine is machine-checked; the determinism wrapper is scoped, not proved" |
 | Eight INDEPENDENT axioms | **Not fully checked** | see the pair table below | see below |
+| `Evolvable S` is a substantive property of the dynamics | **False as encoded** | `evolvable_iff_exists_lt` (Witnesses.lean): `Evolvable S ↔ ∃ s t, s < t` | Evolvability is a property of the environment's order alone; the `Evolution` data contributes nothing. Every #12 ⇏ #6 witness must therefore use a flat order (`improvable_but_not_evolvable`). Either strengthen `Evolvable` (e.g. require the step to be fitness-increasing somewhere it was not already trivially so) or state #6 as the near-universal blind axis it already is in §7 |
+| #5 derives from #1 + #2 + #3 | Checked for #1 + #2 only | `Complexity.lean` imports only `Systemness` (closure: System, Level, Bond, Thing); `FlowNetwork` is not in it | Say "definable from #1 and #2; the relational data Mobus calls network is already the `structure'` field of #1". The axiom table's "+ #3" overstates #3's role at the import level |
+| The `3 → 8` DAG arrow ("flow network") | **No Lean home** | `GovernanceSubsystem` carries `system : ConcreteSystem α`, not a `FlowNetwork` | Redrawn 2026-09-03 as `1 → 8` ("system field") |
+| #8 (`Homeostat`) and #4 (`DynamicSystem`) can be excluded on some carrier | **False as encoded** | `Homeostat.ofLaw` (any `S → S` is a feedback law), `ConcreteSystem.toStaticDynamics` (any system + `id`) | Separations *into* #4 or #8 are not statable in the carrier sense; their content is the theorems (`target_is_equilibrium`, `coupled_equilibrium_iff_fixed`), not inhabitation. Non-degeneracy conditions would be a new encoding decision |
 
 **Pairwise independence, honestly.** Eight axioms give 28 unordered pairs and 56 directed non-derivability claims. The source contains separating witnesses for exactly the following directed claims between axioms:
 
