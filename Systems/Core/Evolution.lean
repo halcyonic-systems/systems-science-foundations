@@ -62,7 +62,25 @@ namespace Systems
 
 /-! ## Evolution as blind, fitness-monotone selection -/
 
-/-- An `Evolution` over a system whose configurations are ordered by environmental fitness
+/-- Mobus (2022, 2-principles-of-systems-science.md:234): "Systems evolve to accommodate long-term changes in their
+    environments."
+    Mobus (2022, 2-principles-of-systems-science.md:346–347): "All systems can be in one of three situations. They can be
+    evolving toward higher organization, maintaining a steady-state dynamic, or decaying."
+    (footnote marker omitted)
+    Mobus & Kalton (2015, mobus-kalton-2015/10-auto-organization-and-emergence.md:506–508):
+    "what is selected for is always a matter of fit with some sort of criterion." ... "the
+    criterion is not resident in some mind but in the conditions imposed by the nature,
+    shape, and functioning of the surrounding system."
+    Encoding: "evolve"→`step` (one generation); "fit with some sort of criterion ... imposed by
+    ... the surrounding system"→the fitness preorder `≤` on `S`; selection→`selects`
+    (`s ≤ step s`); "evolving toward higher organization"→`Evolvable` (strict improvement
+    exists); "steady-state"→`IsAdapted` (fixed point).
+    Not encoded: "long-term changes in their environments" (the preorder is fixed — the
+    environment does not change); "decaying" (fitness is non-decreasing by law); variation
+    and retention as separate operators; populations; the energy-flow basis Mobus gives for
+    the principle.
+
+    An `Evolution` over a system whose configurations are ordered by environmental fitness
     (`[Preorder S]`, with `a ≤ b` meaning "b is at least as fit as a"): a generational
     `step : S → S` that is fitness-non-decreasing (`selects`). The net variation+selection
     operator of M&K's algorithm. There is no model/goal/understanding — selection is blind,

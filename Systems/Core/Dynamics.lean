@@ -37,7 +37,18 @@ namespace Systems
   This is the minimal structure that adds dynamics to Bunge's CES triple:
   the system has states, and states change according to a law. -/
 
-/-- A dynamic system: a ConcreteSystem with an associated state space
+/-- Mobus (2022, 2-principles-of-systems-science.md:232): "Systems are dynamic on multiple time scales."
+    Mobus (2022, 2-principles-of-systems-science.md:323): "Dynamics (or overt behavior) refers to how the processes operate
+    or change inputs into outputs over time."
+    Encoding: system→`system : ConcreteSystem α`; "dynamic ... over time"→`law : S → S` (one
+    tick of state change; iterated by `evolve`, recorded by `trajectory`); "multiple time
+    scales"→not in this structure: `TimeScaleSeparation` (Level.lean), `TimescaleDecomposition`
+    and `InteractionDynamicsBridge` (this file).
+    Not encoded: inputs and outputs (`law` is closed — no input argument); multiple time scales
+    in a single system (one law, one tick); continuous time (`Flow` below); spatial scales
+    (the section title pairs them with time scales); stochastic transitions.
+
+    A dynamic system: a ConcreteSystem with an associated state space
     and a deterministic state-transition law.
 
     The law captures "what happens next" — the core content of Dynamics

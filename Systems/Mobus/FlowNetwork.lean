@@ -45,7 +45,21 @@ def FlowEdge.toPair {α : Type*} {κ : Type*} (e : FlowEdge α κ) : α × α :=
 
 /-! ## Flow Network -/
 
-/-- A directed flow network: a set of nodes with capacity-labeled edges.
+/-- Mobus (2022, 2-principles-of-systems-science.md:231): "Systems are themselves and can be represented abstractly
+    as, networks of relations between components."
+    Mobus (2022, 2-principles-of-systems-science.md:301): "In a flow graph, the links show a single direction of influence
+    but the influence is carried by a flow of a real substance, i.e., matter, energy, or
+    informational messages. In these cases, the rate and magnitude of the flow are
+    considerations and need to be represented in some fashion."
+    Mobus (2022, 4-a-model-of-system.md:280): N "is generally a flow network through which
+    real substances are moving from one node (component) to the next with causal influence."
+    Encoding: components→`nodes`; relations/links→`edges`; "single direction of influence"→
+    `FlowEdge.source` / `FlowEdge.target`; "rate and magnitude"→`FlowEdge.capacity : κ`.
+    Not encoded: the kind of substance carried (matter / energy / message — edges are untyped);
+    flow conservation or balance at nodes; any constraint on `κ` (Mobus uses ℝ∞); the
+    representation claim itself ("can be represented abstractly as") is meta-level.
+
+    A directed flow network: a set of nodes with capacity-labeled edges.
 
     Mobus Eq. 4.4: N_{i,l} = ⟨C_{i,l}, L_{i,l}⟩
     - C is the node set (components at level l)

@@ -42,7 +42,22 @@ namespace Systems
   A subsystem R that holds a model of system S, with internal dynamics that
   simulate S's dynamics through the model map. -/
 
-/-- An internal model: subsystem state space `R` carries a representation
+/-- Mobus (2022, 2-principles-of-systems-science.md:237): "Systems contain models of other systems (e.g., simple
+    built-in protocols for interaction with other systems and up to complex anticipatory
+    models)."
+    Mobus (2022, 2-principles-of-systems-science.md:364): "In general, systems encode in some form models of the
+    environment or aspects of the environment with which they interact, though this modeling
+    element of functional relationships is realized in many different ways and levels in
+    different sorts of systems."
+    Encoding: the containing system→`R` (its state space); "other systems"→`S` with
+    `systemDyn`; "models of"→`model : R → S` evolving by `internalDyn`; the model being a model
+    (tracking)→`simulates` (one-step commuting square, lifted by `tracks`).
+    Not encoded: "contain" as part–whole (`R` is not exhibited as a subsystem of a
+    `ConcreteSystem`); "protocols for interaction" (no interaction or interface — the model is
+    passive); "aspects of the environment" (the model is a total, exact map — no partial or
+    approximate models); the gradation "simple ... up to complex".
+
+    An internal model: subsystem state space `R` carries a representation
     `model : R → S` of system `S`, and R's internal dynamics `internalDyn`
     simulate S's actual dynamics `systemDyn` one step at a time.
 
@@ -133,7 +148,16 @@ def InternalModel.toConantAshby {R S : Type*} (im : InternalModel R S)
   the system it models — per internal tick, the model advances `lead` system
   steps. `InternalModel` is exactly the `lead = 1` case. -/
 
-/-- An anticipatory model: like `InternalModel`, but one internal tick of R
+/-- Mobus (2022, 2-principles-of-systems-science.md:237): "Systems contain models of other systems (e.g., simple
+    built-in protocols for interaction with other systems and up to complex anticipatory
+    models)."
+    Source: Rosen, Anticipatory Systems (1985) — verbatim not in vault.
+    Encoding: "anticipatory models"→`lead` system-steps gained per internal tick, with
+    `simulates` commuting against `systemDyn^[lead]`; the lead compounds in `tracks`.
+    Not encoded: what the anticipation is used for (no action on the system — #8 / #12);
+    approximate anticipation; `lead = 0` is admitted (a model that never advances).
+
+    An anticipatory model: like `InternalModel`, but one internal tick of R
     advances the modelled system by `lead` steps. The `simulates` square now
     commutes with `systemDyn^[lead]` — the Rosen fast-model shape. -/
 structure AnticipatoryModel (R S : Type*) where

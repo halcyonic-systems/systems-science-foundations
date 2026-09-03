@@ -72,7 +72,20 @@ namespace Systems
 
 /-! ## Improvement — directed intervention toward an external goal -/
 
-/-- An `Improvement` of a system with native dynamics `dyn : S → S`: an external `goal`
+/-- Mobus (2022, 2-principles-of-systems-science.md:240): "Systems can be improved (a corollary of #6)-Engineering."
+    Mobus (2022, 2-principles-of-systems-science.md:384): "But unless this causal functioning somehow aims at some result,
+    all results are equal and the notion of improvement has no basis, no metric."
+    Encoding: "aims at some result"→`goal`; "improved"→`intervene` rewriting `dyn` so that
+    `improves : IsEquilibrium (intervene dyn) goal`; "no basis" without an aim→`genuine`
+    (the goal was not already a rest state of `dyn`); the aim being supplied from outside→
+    `goal_is_external`.
+    Not encoded: "better" as an order (no fitness or utility ordering — improvement is
+    reaching a chosen rest state, not increasing a measure); competing aims and trade-offs
+    (Mobus's "Who's to say?", line 382); "a corollary of #6" (this file argues the opposite:
+    `cyclic3_no_directed_improvement`); cost or feasibility of the intervention; convergence
+    to the goal from other starts.
+
+    An `Improvement` of a system with native dynamics `dyn : S → S`: an external `goal`
     and an `intervene : (S → S) → (S → S)` that rewrites the law so the goal becomes a rest
     state (`improves`) where it was not one natively (`genuine`).
 
@@ -102,7 +115,18 @@ theorem Improvement.persists {S : Type*} (imp : Improvement S) (n : ℕ) :
   An agent that understands the system (#11) and intervenes on it toward a goal. The
   `understanding` field makes the dependency #12 ⟹ #11 structural. -/
 
-/-- A `DirectedAgent` improving a system: it carries an `Understanding S M` of the system
+/-- Mobus (2022, 2-principles-of-systems-science.md:240): "Systems can be improved (a corollary of #6)-Engineering."
+    Mobus (2022, 2-principles-of-systems-science.md:259, "A note on Principles 11 and 12"): "For intentional agents,
+    like birds that build nests or humans that design spacecraft, the system in which they
+    operate can be evolved (improved) for a purpose."
+    Encoding: "intentional agents"→`DirectedAgent`; "Engineering" presupposing understanding→
+    `understanding : Understanding S M` (#11); "for a purpose"→`goal`; "improved"→`intervene`
+    with `improves` and `genuine`.
+    Not encoded: the agent operating *within* the system ("the system in which they operate" —
+    the agent here is outside the boundary); "evolved" in the #6 sense (no variation or
+    selection); "better" as an order; competing purposes.
+
+    A `DirectedAgent` improving a system: it carries an `Understanding S M` of the system
     (the observe/GET channel, #11), a `goal`, and an `intervene` (the PUT channel) that makes
     the goal a rest state of the understood system's dynamics, where it was not one before. -/
 structure DirectedAgent (S M : Type*) where
