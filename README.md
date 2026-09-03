@@ -84,7 +84,7 @@ Mobus lists 12 principles of systems science. We tested which are independent ax
 
 **Foundational profile** (`scripts/axiom-profile.sh`): `#print axioms` on each headline theorem classifies it `constructive` / `choice-free` / `classical`. The ontological core is constructive; only Evolution (#6) and Information (#7) reach `Classical.choice`. The kernel-computed analogue of a "proof vector" (cf. arXiv:2504.00063), but dependencies are computed, not asserted.
 
-See `docs/paper/axiom-table.md` (clean reference + profile), `docs/paper/dependency-dag.mmd` (the systems-level dependency graph), and `docs/reference/principles-formalization-companion.md` (full findings).
+**Front door: `Systems/Principles.lean`** — one re-export per principle in Mobus's order, each with its full signature, plus the checked non-derivability witnesses; `#print axioms` on any line reproduces the profile below. See `docs/paper/axiom-table.md` (clean reference + profile), `docs/paper/dependency-dag.mmd` (the systems-level dependency graph), `docs/reference/principles-formalization-companion.md` (full findings), and `docs/paper/p3-reading-edition.md` (the integrated reading edition).
 
 ## Known Limits
 

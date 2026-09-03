@@ -14,6 +14,8 @@
 
 -- Phase 1: Bunge foundations + Principles formalization
 import Systems.Core
+-- The twelve principles, front door: one re-export per principle + checked witnesses
+import Systems.Principles
 
 -- Phase 2: Mobus 8-tuple
 import Systems.Mobus.FlowNetwork
