@@ -52,7 +52,20 @@ variable {S : Type*}
 
   A system whose state space carries a model of its own dynamics. -/
 
-/-- A self-model: a system with dynamics `dyn : S → S` together with an internal
+/-- Mobus (2022, 2-principles-of-systems-science.md:238): "Sufficiently complex, adaptive systems can contain
+    self-models."
+    Mobus (2022, 2-principles-of-systems-science.md:368): "Creatures capable of having mentally mediated roles and
+    identities include models of themselves, and these likewise may involve greater or lesser
+    accuracy."
+    Encoding: the system→`dyn : S → S`; "models of themselves"→`selfModel : S → S` on the same
+    state space, tracking `dyn` via `self_simulates`; "greater or lesser accuracy"→`accurate`
+    (pointwise: `selfModel s = s`).
+    Not encoded: "sufficiently complex, adaptive" (no complexity or adaptivity precondition —
+    every system has `SelfModel.trivial`); "contain" as part–whole (model and modelled share
+    one state space); graded accuracy (exact-or-not, no metric); "mentally mediated roles and
+    identities".
+
+    A self-model: a system with dynamics `dyn : S → S` together with an internal
     self-representation `selfModel : S → S` that simulates the system's OWN
     dynamics one step at a time.
 
@@ -155,7 +168,15 @@ theorem SelfModel.accurate_invariant (sm : SelfModel S) {s : S}
   genuinely fast one (`lead ≥ 2`) can only stay correct on a nearly-static
   orbit — perfect self-anticipation collapses time. -/
 
-/-- A fast self-model: the system's self-representation gains `lead` steps of
+/-- Mobus (2022, 2-principles-of-systems-science.md:238): "Sufficiently complex, adaptive systems can contain
+    self-models."
+    Source: Rosen, Anticipatory Systems (1985) — verbatim not in vault.
+    Encoding: "self-models"→`selfModel : S → S` against the system's own `dyn`; anticipation→
+    `lead` steps of `dyn` per tick in `self_simulates`; accuracy→`accurate`.
+    Not encoded: "sufficiently complex, adaptive" (no precondition); "contain" as part–whole;
+    graded accuracy.
+
+    A fast self-model: the system's self-representation gains `lead` steps of
     the system's own dynamics per tick — `AnticipatoryModel S S` with one
     shared `dyn` (the diagonal), as `SelfModel` is the diagonal of
     `InternalModel`. -/

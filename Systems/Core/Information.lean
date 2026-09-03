@@ -60,7 +60,22 @@ namespace Systems
   Probability-free. A receiver is a message-driven state update; a message
   carries information iff it changes the state. Knowledge is the state. -/
 
-/-- A channel: a receiver whose state `S` is updated by messages `M`.
+/-- Mobus (2022, 2-principles-of-systems-science.md:235): "Systems encode knowledge and receive and send information."
+    Mobus (2022, 3-system-ontology.md:215): "Whereas information is the measure of
+    uncertainty reduced when a message is received by a competent recipient (i.e., able to
+    decode the modulations appropriately), knowledge is the a priori structure (which
+    channels energy flows) of the recipient."
+    Mobus (2022, 3-system-ontology.md:242): "Any time one system sends a message that is
+    received by a second system, and that second system is altered by its receipt, learning
+    has occurred. Knowledge has been increased."
+    Encoding: message→`M`; "received by a ... recipient"→`recv`; knowledge / "a priori
+    structure of the recipient"→the state `S`; "altered by its receipt"→`Informative`
+    (`recv s m ≠ s`); "measure of uncertainty"→`hartley` / `entropy` (below).
+    Not encoded: "send" (no sender or transmitter — receiver only); "competent" decoding;
+    structure changing "in proportion to the amount of information" (the update is
+    unquantified); the energy stream carrying the message.
+
+    A channel: a receiver whose state `S` is updated by messages `M`.
     `recv s m` is the receiver's new state after receiving `m` in state `s`.
     The state IS the receiver's knowledge (Mobus: knowledge = encoded pattern);
     a message is transient (Mobus: information = received message). -/
@@ -104,7 +119,19 @@ theorem InternalModel.toChannel_informative_iff {R S : Type*}
   The amount of potential information in a set of equally-possible distinguishable
   states is the log of their count (Hartley 1928). No distribution required. -/
 
-/-- Hartley measure (nonspecificity) of a finite set of distinguishable outcomes:
+/-- Mobus (2022, 2-principles-of-systems-science.md:235): "Systems encode knowledge and receive and send information."
+    Mobus (2022, 3-system-ontology.md:198): "we follow the basic insight of Shannon (Shannon
+    and Weaver 1949) that information is the measure of uncertainty regarding the state of a
+    message, or the next "symbol" to be received in a message stream, which is a property of
+    the receiver" (sentence continues in source).
+    Encoding: "measure of uncertainty"→`hartley A = log |A|` over the distinguishable outcomes
+    `A` (no distribution); Mobus's Shannon form→`entropy p` (GoodRegulator.lean), bounded by
+    Hartley in `entropy_le_hartley_univ`.
+    Not encoded: "encode knowledge" and "receive and send" (this is the quantity only — the
+    receiver is `Channel`); the message stream / next-symbol framing; probability of
+    outcomes (deliberately: Hartley is the probability-free layer).
+
+    Hartley measure (nonspecificity) of a finite set of distinguishable outcomes:
     `log |A|`. Measured in nats here (natural log, matching `entropy`); the base
     is a unit convention (bits = log₂) and does not affect the refinement
     relations below. -/

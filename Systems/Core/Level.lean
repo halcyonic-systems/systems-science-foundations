@@ -99,7 +99,21 @@ SHOWCASE THEOREM #5: The ancestry relation is a strict partial order
 (irreflexive and transitive). We define immediate ancestry and take
 its transitive closure. -/
 
-/-- Immediate ancestor relation.
+/-- Mobus (2022, 2-principles-of-systems-science.md:230): "Systems are processes organized in structural and
+    functional hierarchies."
+    Mobus (2022, 2-principles-of-systems-science.md:287): "The next higher layer consists of subsystems composed of
+    components from the lower layer in which component interactions within the subsystem are
+    stronger than interactions between components in other subsystems."
+    Encoding: "organized in ... hierarchies"→`immediateAncestor` and its transitive closure
+    `Ancestor` (a strict order of descent, Bunge Def 1.16), alongside `LevelStructure.levels`
+    / `precedence` (layers, Bunge Def 1.8) and `RecursiveComponent` (Mobus Eq. 4.3);
+    "interactions within ... stronger than ... between"→`NearDecomposable.within_strong` /
+    `between_weak` (below).
+    Not encoded: "processes" (no dynamics here — Dynamics.lean, #4); "functional" hierarchy
+    (only structural nesting is represented); the layer-size asymmetry ("numbers of components
+    are large" at the bottom).
+
+    Immediate ancestor relation.
     Bunge Def 1.16(i): x is an immediate ancestor of y iff x or a part
     of x is a precursor in the assembly of y. -/
 class ImmediateAncestor (α : Type*) where
@@ -149,7 +163,15 @@ theorem ancestor_trans {α : Type*} [ImmediateAncestor α] {x y z : α}
   The time-scale type T is linearly ordered and parametric — it could be
   ℝ (continuous), ℕ (discrete), or any ordered type. -/
 
-/-- A time-scale separation over a level structure: a monotone map from
+/-- Mobus (2022, 2-principles-of-systems-science.md:287): "In general, also, the time constants for dynamics of
+    layers lower in the structure are much smaller, i.e., things happen faster."
+    Encoding: layers→level indices `Fin ls.levels.length` (lowest first); time constants→
+    `timescale`; "much smaller ... faster"→`separation` (strict `<` for lower index).
+    Not encoded: "much" (only strict inequality, no magnitude gap); the hedge "in general"
+    (encoded as universal); dynamics itself (`T` is an abstract ordered type — the
+    structure→dynamics bridge is `InteractionDynamicsBridge`, Dynamics.lean).
+
+    A time-scale separation over a level structure: a monotone map from
     level indices to time scales, with lower levels strictly faster.
 
     Mobus §2.3.2: "the time constants for dynamics of layers lower in

@@ -18,7 +18,20 @@ namespace Systems
 
 /-! ## Concrete System (Bunge Def 1.1, 1.2) -/
 
-/-- A concrete system is an ordered triple ⟨C, E, S⟩ where:
+/-- Mobus (2022, 2-principles-of-systems-science.md:229): "Systemness: Bounded networks of relations among
+    parts constitute a holistic unit. Systems interact with other systems, forming yet
+    larger systems. The Universe is composed of systems of systems."
+    Mobus (2022, 2-principles-of-systems-science.md:273): "Systems of all kinds are found to be composed of
+    components, which may themselves be subsystems (i.e., systems in their own rights)."
+    Encoding: parts→`composition`; relations among parts→`structure'`; bounded→`disjoint`
+    (C ∩ E = ∅ fixes the boundary) with the outside as `environment`; "constitute a holistic
+    unit"→`bondage_nonempty` (at least one bonded pair, Bunge Def 1.1); "interact with other
+    systems, forming yet larger systems"→`ConcreteSystem.compose` (Systemness.lean);
+    "systems of systems"→`RecursiveSystem` (Systemness.lean).
+    Not encoded: "holistic unit" as anything beyond nonempty bondage (no emergence claim);
+    the Universe as a closed top-level system; time (the triple is a snapshot at t).
+
+    A concrete system is an ordered triple ⟨C, E, S⟩ where:
     - C: composition (set of components)
     - E: environment (set of external things bonded with components)
     - S: structure (set of relations among components and environment)

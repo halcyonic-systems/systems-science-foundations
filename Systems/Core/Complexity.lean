@@ -56,7 +56,20 @@ namespace Systems
   This resolves the key derivability question: diversity does NOT
   require a new typing system. It derives from Systemness (#1). -/
 
-/-- Two things are of the same kind iff they have identical interaction
+/-- Mobus (2022, 2-principles-of-systems-science.md:233): "Systems exhibit various kinds and levels of complexity."
+    Mobus (2022, 2-principles-of-systems-science.md:334): "Ultimately the complexity of any identified system is based on
+    the total number of components, number of kinds of components, and the attributes of
+    networks within a level and between levels (i.e., the degree of modularization)."
+    Encoding: "number of kinds of components"→the count of `SameKind` equivalence classes on
+    `composition` (kind = interaction profile under `▷`); "total number of components"→
+    `has_two_components` (lower bound); "attributes of networks"→`structure'` counts
+    (`compose_internalStructure_ge_*`); "between levels"→`RecursiveSystem.depth`.
+    Not encoded: "levels of complexity" as a graded scale (no single complexity measure is
+    defined); "degree of modularization" (Level.lean `NearDecomposable`); behavioral
+    complexity (Mobus defers it); kinds as intrinsic types — two physically different
+    components with identical interaction profiles count as one kind.
+
+    Two things are of the same kind iff they have identical interaction
     profiles: they act on exactly the same things, and exactly the same
     things act on them.
 

@@ -43,7 +43,29 @@ namespace Systems
   The HCGS is a hierarchy of homeostats operating at different time
   scales. -/
 
-/-- A homeostat: the basic cybernetic control unit.
+/-- Mobus (2022, 2-principles-of-systems-science.md:236): "Systems have governance subsystems to achieve stability."
+    Mobus (2022, 12-governance-model.md:307): "The basic theory of cybernetics is the use of
+    feedback information to cause a system to modify its activities in order to maintain an
+    output function in a viable or nominal value range in the face of disturbances that might
+    otherwise cause the output to deviate from a desired value. The system is goal-maintaining
+    in this sense."
+    Mobus (2022, 12-governance-model.md:309): "If a disturbance to the process causes the value
+    to vary from an ideal, as represented by the "set point" constant, either higher or lower,
+    an error signal is generated and fed back to the computational engine that uses the
+    control model. This information is used to generate a control signal that activates an
+    actuator (e.g., a motor) that changes the internal operations of the work process in
+    opposition to the error."
+    Source: Ashby, Design for a Brain (homeostat) — verbatim not in vault.
+    Encoding: "set point constant" / "desired value"→`setPoint`; output value→`sensor`;
+    "error signal"→`error`; "control signal ... changes the internal operations"→`correct`;
+    "feedback"→`feedbackLaw` (sense → compare → correct); "goal-maintaining" / "stability"→
+    `atTarget`, `target_is_equilibrium`.
+    Not encoded: "in opposition to the error" (`correct` carries no sign or direction
+    constraint — negative feedback is not enforced); disturbances (no input); "value range"
+    (a single point, not a band); stability as attraction (only a fixed point is shown, not
+    convergence to it); "subsystem" (no `ConcreteSystem` here — `GovernanceSubsystem` adds it).
+
+    A homeostat: the basic cybernetic control unit.
 
     Given a state space S with a measurable output O:
     - `setPoint`: the desired output value (reference state)

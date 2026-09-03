@@ -79,7 +79,25 @@ namespace Systems
 
 /-! ## Understanding as proper (strict, non-degenerate) compression -/
 
-/-- An `Understanding` of a system with dynamics `systemDyn : S → S`: a coarse-graining
+/-- Mobus (2022, 2-principles-of-systems-science.md:239): "Systems can be understood (a corollary of #9)-Science."
+    Mobus (2022, 2-principles-of-systems-science.md:374): "When you understand you can make predictions, or at least
+    project scenarios that can then be tested."
+    Mobus (2022, 2-principles-of-systems-science.md:378): "When we say that systems can be understood, then, we are
+    referring to our ability to function successfully through the guidance of models in the
+    mind that correlate with relevant features of systems in the world. A model is not
+    identical with the object it models, so our understanding of a system is not identical
+    with the system itself, and therefore is never final."
+    Encoding: "models in the mind"→`M` with `modelDyn`; "correlate with relevant features of
+    systems in the world"→`abstract : S → M` and `abstracts` (one-step commuting square);
+    "relevant" (no junk model states)→`surjective`; "not identical with the object it models"→
+    `compresses` (not injective) together with `nontrivial`; "make predictions"→`predict` /
+    `predict_correct`.
+    Not encoded: "never final" (a single fixed understanding — no refinement order over models);
+    "function successfully" (no agent or action — that is `DirectedAgent`, #12); "a corollary
+    of #9" (this file argues the opposite: `modeling_does_not_imply_understanding`); science as
+    a social process; approximate or erroneous models (the square is exact).
+
+    An `Understanding` of a system with dynamics `systemDyn : S → S`: a coarse-graining
     `abstract : S → M` onto a model space `M`, with model dynamics `modelDyn : M → M`
     that commute with the system one step at a time (`abstracts`), where the
     coarse-graining is **onto** (`surjective`), **lossy** (`compresses`: not injective),

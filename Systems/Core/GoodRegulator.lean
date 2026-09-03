@@ -41,7 +41,15 @@ open Real Finset
   `entropy q = ∑ z, negMulLog (q z) = -∑ z, q z · log (q z)` for an outcome
   distribution `q : Z → ℝ` over a finite outcome set. -/
 
-/-- Shannon entropy of a finite outcome distribution. -/
+/-- Mobus (2022, 2-principles-of-systems-science.md:235): "Systems encode knowledge and receive and send information."
+    Mobus (2022, 3-system-ontology.md:198): "information is the measure of uncertainty
+    regarding the state of a message" (Mobus following Shannon; sentence continues in
+    source).
+    Encoding: outcome distribution→`q`; "measure of uncertainty"→`entropy q`.
+    Not encoded: sender, receiver, message, knowledge (see `Channel`, Information.lean);
+    this is the probabilistic special case of `hartley`.
+
+    Shannon entropy of a finite outcome distribution. -/
 noncomputable def entropy {Z : Type*} [Fintype Z] (q : Z → ℝ) : ℝ :=
   ∑ z, Real.negMulLog (q z)
 
