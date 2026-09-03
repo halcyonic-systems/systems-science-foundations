@@ -127,8 +127,9 @@ theorem witness_cyclic3_modeling_not_understanding :
         (∀ x : Fin 3, u.systemDyn x = x + 1) → False) :=
   cyclic3_modeling_not_understanding
 
-/-- **#12 ⇏ #6 direction, stated as #6 without #12.** The 3-cycle is evolvable and not
-    improvable (same statement as `principle6_evolution`; listed here as the witness). -/
+/-- **#6 ⇏ #12.** The 3-cycle is evolvable and not improvable: #6 holds, #12 fails
+    (same statement as `principle6_evolution`; listed here as the witness). The converse
+    direction, #12 ⇏ #6, has no witness in source. -/
 theorem witness_evolvable_not_improvable :
     Evolvable (Fin 3) ∧
       (∀ (M : Type) (a : DirectedAgent (Fin 3) M),
