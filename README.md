@@ -2,7 +2,7 @@
 
 Machine-verified formalization of seven systems science traditions in Lean 4, discovering their shared categorical structure. They build the future of systems theory. This audits its past.
 
-**~10,800 lines | 64 files | zero `sorry`s | zero custom axioms | 7 traditions | K ≅ 2 | all 12 principles formalized (12 → ≤11)**
+**~14,400 lines | 74 files (counted 2026-09-03) | zero `sorry`s | zero custom axioms | 7 traditions | K ≅ 2 | all 12 principles formalized (12 → ≤11)**
 
 ## The Result
 

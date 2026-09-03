@@ -219,6 +219,8 @@ The formalization is systematically producing results that are stronger than, di
 
 7. **8-tuple composition is also unconditional.** We predicted that Mobus's boundary constraints (bipartite external flows, boundary completeness, interface containment) might make composition conditional — that the boundary would be the point where "modeler's choice" ends. The formalization proves otherwise: MobusSystem.compose compiles with the same hypotheses as CES-level compose (disjoint components only). The bipartite property transfers because composition only REMOVES external edges (reclassifying them as internal when both endpoints become components), never adds them. The remaining edges still cross between environment and interfaces. Mobus's boundary is an organizational tool, not a composition gate.
 
+   > **Audit 2026-09-03:** `MobusSystem.compose` is not in the source and `git log -S` finds it never was. `Systems/Mobus/Composition.lean` holds `bipartite_edge_classification` and `external_edges_survive_bipartite` only. So the claim that 8-tuple composition *compiles unconditionally* is not machine-checked as written; what is checked is CES-level `ConcreteSystem.compose` (Systemness.lean) plus the two edge lemmas. Finding 8 inherits the same caveat. Left in place, annotated, per the correct-live-docs rule.
+
     *What this means practically:* The entire Mobus 8-tuple — flow networks, boundaries, interfaces, capacity labels — imposes no composition constraint beyond what the minimal CES triple requires. BERT model composition at the full 8-tuple level is as free as at the structural level. Validate flow structure AFTER composing, not as a precondition.
 
 8. **Unconditional composition is structurally inevitable, not accidental.** The reason composition works at both CES and 8-tuple levels goes deeper than "the proofs happen to go through." All constraints in both formalisms are either UNIVERSAL (for all edges/components, P) or EXISTENTIAL-ABOUT-INTERNALS (there exist bonded pairs in the composition). Universal constraints are preserved when edges are removed. Internal existential constraints are preserved because composition doesn't modify internal structure. Composition only removes external edges (reclassifies as internal) and never adds edges. So ANY constraint of these two forms is composition-safe. This is a design property of Bunge's and Mobus's formalisms — and neither of them knew it.
@@ -349,7 +351,7 @@ Finding: the ontological core is **constructive** (#1, #2, #3, #5, #8, #11 use n
 
 ## Program status
 
-Nine of twelve principles resolved (~6,910 lines, zero `sorry`):
+All twelve principles resolved (header corrected 2026-09-03; the table below is current, the old "nine of twelve" line was stale). Repo: 74 files, ~14,400 lines, zero `sorry`. Front door: `Systems/Principles.lean`; reading edition: `docs/paper/p3-reading-edition.md`.
 
 | # | Principle | Tier | Verdict | Key result |
 |---|-----------|------|---------|------------|
