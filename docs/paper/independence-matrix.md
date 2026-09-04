@@ -100,3 +100,18 @@ There are no (c) cells. The (b) cells:
 ## What the table supports
 
 Inside each block, with one law per carrier, every ordered pair of the eight axiom structures is either separated by a machine-checked witness or realized by a machine-checked derivation; no pair is undecided. Eighteen directed separations hold, eight directed derivations hold (plus the conditional and induced-action derivations listed above), and four of the separations (the ones from #6 or #8 into #11 or full #12) hold only on carriers with at most two states, because on finite carriers with three or more states a blind evolution or an effective homeostat already yields an understanding and a directed agent. The sentence the paper can carry is: *within each block the encoded structures are pairwise non-derivable except for the listed directions, which are derivable and now proved; the "eight independent axioms" claim is false as stated for #1/#3 (the same graph read twice), for bare #12/#4 (the same condition), and for #8/#6 (governance is an evolution), and true as a claim of pairwise non-identity supported by eighteen witnesses.* Cross-block independence remains unaddressed pending the bridge.
+
+
+## Addendum 2026-09-04: #2 re-headlined on Mobus Eq. 4.3 (`Systems/Principles/Hierarchy.lean`)
+
+The component-block cells involving #2 were recomputed with `Hierarchical σ T` in place of `ImmediateAncestor`. Full report: `hierarchy-reheadline-report.md`.
+
+| A \ B | #1 Sys | #2 Hier | #3 Net |
+|---|---|---|---|
+| **#1 Sys** | — | W `sep_systemness_hierarchical` (uniform strength, on the system that is hierarchical under `gradedStrength`; ᵃ in strength); Wᶜ `sep_systemness_hierarchical_bool` (any strength, any action) | D `ConcreteSystem.toFlowNetwork` + `toFlowNetwork_edges_nonempty` |
+| **#2 Hier** | D by construction `Hierarchical.toConcreteSystem` (Eq. 4.3: a complex component is a system) | — | D `Hierarchical.toFlowNetwork` + `toFlowNetwork_edges_nonempty` |
+| **#3 Net** | Wᵃ `sep_networks_systemness`; D under induced action `FlowNetwork.toConcreteSystem` | W `sep_networks_hierarchical` (uniform strength; choice-free in the action, ᵃ in strength) | — |
+
+#2 is now `Hierarchical σ T` (Principles/Hierarchy.lean): a `RecursiveComponent` decomposition of `σ` (Mobus Eq. 4.3) with a subsystem level, every complex node a system, disjoint siblings, and `NearDecomposable` top-level modules. The ambient for #2 is `InteractionStrength α T`, in the role `ActsOn α` plays for #1; superscript ᵃ in the #2 column means "the strength profile was chosen". The vacuity-table row for `ImmediateAncestor` no longer applies to #2, and both old `Unit` witnesses are retired: a decomposition needs three components in two modules (`Hierarchical.exists_split`). Hierarchy so encoded is a property of the strength profile, not the bond graph: `twoLevel` flips between hierarchical and not with its bonds unchanged.
+
+Witness carriers added: `Fin 3` with `chainActs` and `uniformStrength (Fin 3) 1` for (#1,#2) and (#3,#2); `Fin 3` with `chainActs` and `gradedStrength` for the positive instance `twoLevelHierarchical`; `Bool` with `lineageBool.toActsOn` and any strength for (#1,#2)ᶜ.

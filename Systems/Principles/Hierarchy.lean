@@ -554,4 +554,24 @@ theorem sep_networks_hierarchical :
    + `toFlowNetwork_edges_nonempty` (D), `sep_networks_systemness` (Wᵃ) with
    `FlowNetwork.toConcreteSystem` (D under the induced action), all in Matrix.lean. -/
 
+
+/-- **#2 Hierarchy, re-headlined** (axiom, `RecursiveComponent` + `NearDecomposable`, Level.lean;
+    predicate `Hierarchical`, this file). Mobus Eq. 4.3:
+      c_{i,j,l} = S_{i,j,l+1}  if component is complex
+                  c_a            if component is atomic
+    A hierarchical system has a subsystem level, every complex component is a system, and
+    within-module interaction exceeds between-module interaction. Levels stack, and the
+    stacking has content: under a uniform interaction strength no system is hierarchical
+    (`not_hierarchical_of_uniform`), and a hierarchical system has at least three
+    components in at least two modules (`Hierarchical.exists_split`).
+    Supersedes `principle2_hierarchy` in `Systems/Principles.lean` (kept as the Bunge
+    ancestry form). -/
+theorem principle2_hierarchical {α : Type*} [ActsOn α] {σ : ConcreteSystem α}
+    {T : Type*} [LinearOrder T] [InteractionStrength α T] (h : Hierarchical σ T) :
+    2 ≤ h.tree.depth ∧
+      ∃ m₁ ∈ h.nd.modules, ∃ m₂ ∈ h.nd.modules, m₁ ≠ m₂ ∧
+        ∀ x ∈ m₁, ∀ y ∈ m₁, x ≠ y → ∀ z ∈ m₂,
+          @strength α T _ x z < @strength α T _ x y :=
+  ⟨h.two_le_depth, h.within_exceeds_between_somewhere⟩
+
 end Systems

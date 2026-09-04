@@ -6,7 +6,7 @@
 
 **Ontological — hold for any system:**
 1. **Systemness** — A system is a bounded, organized collection of systems/primitives; any two systems compose into a supersystem.
-2. **Hierarchy** — Organization is hierarchical: within-module interaction exceeds between-module, and lower levels run faster.
+2. **Hierarchy** — Organization is hierarchical: within-module interaction exceeds between-module, and lower levels run faster. *(2026-09-04: showcase moved from Bunge's `ImmediateAncestor` to Mobus Eq. 4.3 `Hierarchical` in `Principles/Hierarchy.lean`; presupposes #1 by construction.)*
 3. **Networks** — A system's interior is a directed flow network with capacities.
 4. **Dynamics** — A system has a state space and an evolution law; composition multiplies state spaces and combines laws.
 8. **Governance** — A governed system has a set-point (reference) not contained in its dynamics; a good regulator contains a homomorphic model of what it regulates (K ≅ **2**).
@@ -20,7 +20,7 @@
 
 ## Theorems (4 — derived, not axioms)
 
-5. **Complexity** — Every structural complexity measure is a function of #1 + #2 + #3 (the first reduction: 12 → ≤ 11).
+5. **Complexity** — Every structural complexity measure is a function of #1 + #2 (+ #3's data, which is #1's `structure'` field; import audit 2026-09-03) (the first reduction: 12 → ≤ 11).
 9. **Internal Models** — A one-step-correct internal model is correct at *every* horizon (anticipation is automatic); a Rosen fast model gaining `lead` steps per tick runs `n·lead` ahead, with lockstep the `lead = 1` case; the model map is exactly the good-regulator homomorphism, so #9 supplies #8.
 10. **Self-Models** — A self-model is the diagonal case of #9; existence is trivial (the identity), so the content is faithfulness, not existence — and faithfulness is expensive: an accurate *fast* self-model (lead ≥ 2) forces its own orbit into periodicity (perfect self-anticipation collapses time).
 7. **Information** — Information is a difference that makes a difference (Bateson); Shannon entropy is a bounded special case (entropy ≤ Hartley nonspecificity, equality at the uniform distribution).
