@@ -13,6 +13,14 @@
   SHOWCASE THEOREM #3: A thing is an aggregate iff its state space
   equals the union of its component state spaces.
 -/
+/-
+  AUDIT 2026-09-04: the "union" reading of Bunge 1979 p. 640 used by `isAggregate` below is
+  refuted on Bunge's own three-neuron aggregate (1977: state space {0,1}^3, eight states):
+  see `Systems/Core/JointState.lean`, `union_misses_neuron_aggregate`. The product reading
+  (`JointState`, `Factors`) is the candidate replacement; this file is left as-is pending
+  the ruling recorded in docs/paper/p3-reading-edition.md §9 and
+  docs/reference/component-state-bridge-memo.md §E.
+-/
 
 import Systems.Core.System
 
