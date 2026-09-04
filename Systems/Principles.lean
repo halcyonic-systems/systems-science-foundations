@@ -34,8 +34,12 @@ theorem principle1_systemness {α : Type*} [ActsOn α] (σ : ConcreteSystem α) 
     IsOrganized σ.composition :=
   ConcreteSystem.composition_organized σ
 
-/-- **#2 Hierarchy** (axiom, `ImmediateAncestor`, Level.lean). The ancestor relation is
-    transitive: levels stack. -/
+/-- **#2 Hierarchy** (Bunge ancestry form; `ImmediateAncestor`, Level.lean). The ancestor
+    relation is transitive: levels stack. NOTE (2026-09-04): this structure is a bare relation
+    and asserts nothing (independence matrix); the paper's #2 is `principle2_hierarchical` in
+    `Systems/Principles/Hierarchy.lean`, on Mobus Eq. 4.3 `RecursiveComponent` + Simon's
+    `NearDecomposable`, which can fail. Kept here so `#print axioms` on the old showcase stays
+    reproducible. -/
 theorem principle2_hierarchy {α : Type*} [ImmediateAncestor α] {x y z : α}
     (hxz : Ancestor x z) (hzy : Ancestor z y) : Ancestor x y :=
   ancestor_trans hxz hzy
