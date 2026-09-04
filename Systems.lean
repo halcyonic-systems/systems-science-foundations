@@ -19,6 +19,7 @@ import Systems.Principles
 import Systems.Principles.Witnesses
 import Systems.Principles.Matrix
 import Systems.Principles.Hierarchy
+import Systems.Principles.NonDegenerate
 
 -- Phase 2: Mobus 8-tuple
 import Systems.Mobus.FlowNetwork
