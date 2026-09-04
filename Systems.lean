@@ -34,8 +34,12 @@ import Systems.Mobus.Composition
 -- Hierarchical decomposition by reference: the seam contract (bert-lenses#89)
 import Systems.Core.Decomposition
 import Systems.Core.InterfaceDecomposition
--- CANDIDATE component–state bridge (dependent product; docs/reference/component-state-bridge-memo.md)
+-- Component–state bridge, ADOPTED 2026-09-04 (dependent product over components and
+-- flows; docs/reference/component-state-bridge-memo.md). The aggregate criterion is
+-- `IsProductAggregate`; the union reading of Bunge p. 640 is retired, not deleted.
 import Systems.Core.JointState
+-- Bond criterion vs product criterion: independent both ways, Cor 5.14 as hypotheses
+import Systems.Bunge.AggregateBridge
 
 -- Mesarovic 1964: decomposition theorem cores (peel lemma + dyadic floor)
 import Systems.Mesarovic.Decomposition

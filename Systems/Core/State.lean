@@ -10,16 +10,16 @@
   - Event space E_L(K) ⊆ S_L × S_L
   - History h(x) = {⟨t, F(t)⟩ | t ∈ τ}
 
-  SHOWCASE THEOREM #3: A thing is an aggregate iff its state space
-  equals the union of its component state spaces.
--/
-/-
-  AUDIT 2026-09-04: the "union" reading of Bunge 1979 p. 640 used by `isAggregate` below is
-  refuted on Bunge's own three-neuron aggregate (1977: state space {0,1}^3, eight states):
-  see `Systems/Core/JointState.lean`, `union_misses_neuron_aggregate`. The product reading
-  (`JointState`, `Factors`) is the candidate replacement; this file is left as-is pending
-  the ruling recorded in docs/paper/p3-reading-edition.md §9 and
-  docs/reference/component-state-bridge-memo.md §E.
+  SHOWCASE THEOREM #3: A thing is an aggregate iff its law factors
+  component-wise on the full product of its components' state spaces
+  (`JointState.Factors` together with `lawful = univ`; see
+  `Systems/Core/JointState.lean`, `IsProductAggregate`, and the bridge on it in
+  `Systems/Bunge/AggregateBridge.lean`).
+
+  History: until 2026-09-04 this file read Bunge 1979 p. 640 as a UNION of
+  component state spaces (`isAggregateUnion` below, retired, kept as a
+  deprecated alias `isAggregate`); `JointState.union_misses_neuron_aggregate`
+  refutes that reading on Bunge's own three-neuron aggregate.
 -/
 
 import Systems.Core.System
@@ -106,44 +106,63 @@ def totalAction {T : Type*} {S : Type*}
     (forcedHistory freeHistory : Set (T × S)) : Set (T × S) :=
   {p | p ∈ forcedHistory ∧ p ∉ freeHistory}
 
-/-! ## Aggregate vs System Characterization (Bunge p. 640)
+/-! ## Aggregate vs System Characterization (Bunge p. 640) — RETIRED union reading
 
-SHOWCASE THEOREM #3: A thing is an aggregate iff its state space equals
-the union of its component state spaces.
+RETIRED 2026-09-04. Bunge p. 640 says an aggregate's state space is "the
+union of the partial state spaces". Read literally over one shared carrier,
+that union misclassifies Bunge's own three-neuron aggregate (1977, {0,1}^3,
+eight points: three embedded two-point spaces cover at most six), see
+`JointState.union_misses_neuron_aggregate`. The live criterion is
+`JointState.IsProductAggregate` (the law factors component-wise on the full
+product); the bridge to the bond criterion is `Systems/Bunge/AggregateBridge.lean`.
 
-Bunge p. 640: a thing is an aggregate if and only if its state space
-equals the union of the state spaces of its components, otherwise it
-is a (concrete) system.
+The definitions below are kept, renamed `*Union`, so that every theorem
+about the retired reading still compiles and can be cited as such. Nothing
+here is deleted; the old names survive as deprecated aliases. -/
 
-We formalize this as a definitional characterization. -/
+/-- RETIRED 2026-09-04: the union reading of Bunge 1979 p.640 misclassifies
+    Bunge's own three-neuron aggregate (1977, {0,1}^3); see
+    `JointState.union_misses_neuron_aggregate`. Replaced by
+    `IsProductAggregate`.
 
-/-- A composite state space is an aggregate (non-interacting) if and only if
-    the total state space equals the union of the partial state spaces. -/
-def isAggregate {S : Type*}
+    Retired definition: a composite state space is an aggregate iff the total
+    state space equals the union of the partial state spaces. -/
+def isAggregateUnion {S : Type*}
     (totalSpace : Set S) (componentSpaces : List (Set S)) : Prop :=
   totalSpace = componentSpaces.foldl (· ∪ ·) ∅
 
-/-- A composite is a system (not an aggregate) iff the total state space
-    strictly differs from the union of component state spaces.
-    "In the case of a system the state of every component is determined,
-    at least partly, by the states other system components are in." -/
+/-- RETIRED 2026-09-04: the union reading of Bunge 1979 p.640 misclassifies
+    Bunge's own three-neuron aggregate (1977, {0,1}^3); see
+    `JointState.union_misses_neuron_aggregate`. Replaced by
+    `IsProductAggregate`. Deprecated alias of `isAggregateUnion`. -/
+@[deprecated isAggregateUnion (since := "2026-09-04")]
+alias isAggregate := isAggregateUnion
+
+/-- ABOUT THE RETIRED READING. A composite is a system (not an aggregate)
+    iff the total state space strictly differs from the union of component
+    state spaces. "In the case of a system the state of every component is
+    determined, at least partly, by the states other system components are
+    in." Live form: `¬ IsProductAggregate`. -/
 def isSystemByStateSpace {S : Type*}
     (totalSpace : Set S) (componentSpaces : List (Set S)) : Prop :=
-  ¬isAggregate totalSpace componentSpaces
+  ¬isAggregateUnion totalSpace componentSpaces
 
-/-- If a thing is an aggregate, it is not a system (by state space criterion).
-    Bunge p. 640: the two conditions are complementary. -/
+/-- ABOUT THE RETIRED READING. If a thing is a union-aggregate, it is not a
+    union-system. Bunge p. 640: the two conditions are complementary. This
+    relates the criterion only to its own literal negation (SSF #48 vacuity);
+    the substantive bridge is `AggregateBridge.lean`. -/
 theorem aggregate_not_system {S : Type*}
     (totalSpace : Set S) (componentSpaces : List (Set S))
-    (h : isAggregate totalSpace componentSpaces) :
+    (h : isAggregateUnion totalSpace componentSpaces) :
     ¬isSystemByStateSpace totalSpace componentSpaces :=
   fun hn => hn h
 
-/-- If a thing is a system (by state space criterion), it is not an aggregate. -/
+/-- ABOUT THE RETIRED READING. If a thing is a union-system, it is not a
+    union-aggregate. Same vacuity as `aggregate_not_system`. -/
 theorem system_not_aggregate {S : Type*}
     (totalSpace : Set S) (componentSpaces : List (Set S))
     (h : isSystemByStateSpace totalSpace componentSpaces) :
-    ¬isAggregate totalSpace componentSpaces :=
+    ¬isAggregateUnion totalSpace componentSpaces :=
   h
 
 end Systems
