@@ -32,6 +32,8 @@ import Systems.Mobus.Composition
 -- Hierarchical decomposition by reference: the seam contract (bert-lenses#89)
 import Systems.Core.Decomposition
 import Systems.Core.InterfaceDecomposition
+-- CANDIDATE component–state bridge (dependent product; docs/reference/component-state-bridge-memo.md)
+import Systems.Core.JointState
 
 -- Mesarovic 1964: decomposition theorem cores (peel lemma + dyadic floor)
 import Systems.Mesarovic.Decomposition
