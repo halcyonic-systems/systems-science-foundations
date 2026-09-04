@@ -3,8 +3,11 @@
   The component–state bridge: run state as a dependent product indexed by
   the CES triple.
 
-  CANDIDATE, not adopted: existing `State.lean`/`AggregateBridge.lean` untouched.
-  Not wired into `Systems.lean`. Build alone with:
+  ADOPTED 2026-09-04 (Shingai): `IsProductAggregate` is the live aggregate
+  criterion; the union reading in `State.lean`/`AggregateBridge.lean` is
+  retired (renamed `*Union`, kept as deprecated aliases). The bridge to the
+  bond criterion is rebuilt on this file in `Systems/Bunge/AggregateBridge.lean`.
+  Wired into `Systems.lean`. Build alone with:
     lake build Systems.Core.JointState
 
   Source: docs/reference/component-state-bridge-memo.md §C (encoding) and
@@ -41,9 +44,10 @@
 
   WHAT THE UNION READING GETS WRONG. Bunge 1979:650 says the state space of
   a non-interacting association is "the union of the partial state spaces";
-  SSF encodes that at State.lean:114-116 (`isAggregate`, a `List.foldl`
-  union) and AggregateBridge.lean:93-94 (`stateAggregate`, an indexed
-  union). `union_misses_neuron_aggregate` below shows the union of three
+  SSF encoded that as `State.isAggregateUnion` (a `List.foldl` union; was
+  `isAggregate`) and `StatefulComposite.stateAggregateUnion` in
+  AggregateBridge.lean (an indexed union; was `stateAggregate`), both
+  retired 2026-09-04. `union_misses_neuron_aggregate` below shows the union of three
   embedded {0,1}'s has at most 6 points while the three-neuron product has
   8, so the union encoding classifies Bunge's paradigm AGGREGATE as a
   system. The product encoding restates the aggregate criterion as
@@ -154,8 +158,8 @@ def IsProductAggregate {c : StateCarrier.{u, v, w} α} (d : LawfulDynamics c) : 
 /-- Bunge's own three-neuron aggregate (1977:6795-6796) has state space
     {0,1}^3, eight points. Whatever three embeddings of the single-neuron
     space {0,1} one picks, their union has at most six points. So the union
-    reading of "aggregate" (State.lean:114-116 `isAggregate`,
-    AggregateBridge.lean:93-94 `stateAggregate`) can never equal the
+    reading of "aggregate" (`State.isAggregateUnion`,
+    `StatefulComposite.stateAggregateUnion`, both retired) can never equal the
     aggregate's state space, and therefore classifies Bunge's paradigm
     aggregate as a system.
 
