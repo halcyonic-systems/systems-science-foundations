@@ -1,5 +1,7 @@
 # Mobus's 12 Principles of Systems Science — 8 Axioms + 4 Theorems
 
+> **Recount 2026-09-04** (independence matrix + environment build, `docs/paper/p3-reading-edition.md` §9): the eight are not eight independents. Four ontological primitives (#1, #4, #6 as `EvolutionE`, #8 as `HomeostatD`), two structural refinements of #1 (#3, #2), two agential stances (#11, #12). #8's independence from #6 holds provided evolution's criterion is external, which is Mobus's own clause. The list below is kept as the pre-recount reference.
+
 *One line each, grouped by verdict. Every entry is machine-checked in Lean 4 (`systems-science-foundations`, zero `sorry`). This is the clean reference list / paper Fig. 2. Full discussion: `../reference/principles-formalization-companion.md`; dependency graph: `dependency-dag.mmd`.*
 
 ## Axioms (8 — independent)
