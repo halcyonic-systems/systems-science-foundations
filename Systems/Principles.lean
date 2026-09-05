@@ -7,11 +7,27 @@
   (`scripts/axiom-profile.sh` targets the originals; the names here are aliases
   that reduce to them definitionally, so the profiles agree).
 
-  Verdicts (docs/paper/axiom-table.md): eight axioms encoded as structures
-  (#1 #2 #3 #4 #6 #8 #11 #12) and four theorems (#5 #7 #9 #10). The witnesses
-  section carries the machine-checked non-derivability results that exist.
-  What is NOT here: a proof that the eight are pairwise independent. Only the
-  listed witnesses are checked; see docs/paper/p3-reading-edition.md §9.
+  Verdicts (docs/paper/axiom-table.md, computed 2026-09-04): the twelve
+  principles are four ontological primitives (#1 Systemness, #4 Dynamics,
+  #6 Evolution as `EvolutionE`, #8 Governance as `HomeostatD`), two structural
+  refinements of Systemness (#3 Networks = the bond graph read as a flow graph;
+  #2 Hierarchy = decomposition + within>between strength, presupposing #1 by
+  construction), two agential stances (#11 Understandability, #12 Improvability
+  in `DirectedAgent` / `DirectedUnderModel` form; bare `Improvement` is vacuous,
+  `improved_iff_moving`), and four theorems (#5 #7 #9 #10). Condition: #8 is
+  independent of #6 provided evolution's criterion is external, Mobus's own
+  clause; with the fitness family free every governing law is also
+  environment-evolving (`evolvesByEnv_settle`). "Eight axioms" (2026-06-09 to
+  2026-09-03) names the eight structures below, which remain pairwise distinct.
+
+  Where the count is computed: Systems/Principles/Witnesses.lean (separating
+  instances), Matrix.lean (within-block independence matrix, 76 declarations),
+  Hierarchy.lean (`principle2_hierarchical`), NonDegenerate.lean (the sharpened
+  predicates), EnvRelative.lean (`EvolutionE` / `HomeostatD` and their
+  separations), over Systems/Core/JointState.lean and EnvState.lean.
+  What is NOT here: the within-block matrix is decided; the cross-block cells
+  are now statable through `EnvState` / `JointState` but have not been run.
+  Only the listed witnesses are checked; see docs/paper/p3-reading-edition.md §9.
 
   Reading edition (prose + math + pointers): docs/paper/p3-reading-edition.md.
   Full findings: docs/reference/principles-formalization-companion.md.
@@ -127,9 +143,11 @@ theorem principle10_self_models {S : Type*} (fsm : FastSelfModel S) {s : S} {n :
 
   A separating instance is a concrete value that satisfies one principle's
   structure and provably cannot satisfy another's; it shows the second is not a
-  consequence of the first. These are the only independence statements that exist
-  as theorems. For every other pair, "independent" is the absence of a derivation
-  in the library, which no theorem here asserts. -/
+  consequence of the first. The witnesses below are the original four; the full
+  within-block matrix (every ordered pair separated by a witness or realized by a
+  derivation) is Systems/Principles/Matrix.lean, and the environment-relative
+  separations of #6 from #8 are Systems/Principles/EnvRelative.lean. Cross-block
+  pairs remain unrun; no theorem here asserts them. -/
 
 /-- **#9 ⇏ #11, minimal.** A one-state system has a model and no understanding. -/
 theorem witness_modeling_not_understanding :

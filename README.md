@@ -2,7 +2,7 @@
 
 Machine-verified formalization of seven systems science traditions in Lean 4, discovering their shared categorical structure. They build the future of systems theory. This audits its past.
 
-**~14,400 lines | 74 files (counted 2026-09-03) | zero `sorry`s | zero custom axioms | 7 traditions | K ≅ 2 | all 12 principles formalized (12 → ≤11)**
+**~14,400 lines | 74 files (counted 2026-09-03) | zero `sorry`s | zero custom axioms | 7 traditions | K ≅ 2 | all 12 principles formalized: 4 primitives + 2 refinements + 2 stances + 4 theorems (computed 2026-09-04)**
 
 ## The Result
 
@@ -55,7 +55,7 @@ To build the Verso document locally: `cd docs/verso && lake build proposal && la
 | 6 | **Bridge factorization**: `toBunge = toRichBunge ⋙ flatten` | Functor composition |
 | 7 | **Joslyn incomparability**: cyclic shape generates infinite hom-sets; no faithful functor to any acyclic tradition | Open problem (traces, operads, double categories as candidates) |
 | 8 | **Unconditional composition**: system composition is valid at both CES and 8-tuple levels without interaction hypotheses | Coherence proofs don't reference cross-system data |
-| 9 | **Complexity is not an axiom**: structural measures derive from Systemness + Hierarchy + Networks | Complexity.lean compiles with only Core imports |
+| 9 | **Complexity is not an axiom**: structural measures derive from Systemness + Hierarchy (Networks' relational data is Systemness's `structure'` field; import audit 2026-09-03) | Complexity.lean compiles with only Core imports |
 | 10 | **Simon's named gap**: near-decomposability → time-scale separation requires an unstated StrictAnti assumption | Conditional theorem isolates the bridge |
 | 11 | **Timescale decomposition**: coupled dynamics decomposes into fast (within-module) and slow (between-module) around equilibria | Fast equilibria = product equilibria (by rfl) |
 | 12 | **View generation**: the kernel alone generates the Klir/Bunge/Mobus presentations as faithful views; round trips are identities; the preconditions (Bunge: bond, Mobus: irreflexivity) are the costs of each view | Sections with `rfl` round trips + view coherence triangle |
@@ -65,32 +65,34 @@ To build the Verso document locally: `cd docs/verso && lake build proposal && la
 
 Mobus lists 12 principles of systems science. We tested which are independent axioms and which are theorems — the first systematic axiomatization attempt.
 
-**Status**: all 12 resolved (zero `sorry`). **8 axioms** (#1, #2, #3, #4, #8, #6, #11, #12) + **4 theorems** (#5 from #1+#2+#3; #7 information, Shannon as a bounded special case; #9 internal models lift to all horizons; #10 self-models as the diagonal of #9). The 12 reduce to ≤11.
+**Status**: all 12 resolved (zero `sorry`). **Computed count (2026-09-04, independence matrix + environment build):** the twelve principles are **four ontological primitives** (#1 Systemness, #4 Dynamics, #6 Evolution as `EvolutionE` with environment-relative fitness, #8 Governance as `HomeostatD` with a disturbance input) + **two structural refinements of Systemness** (#3 Networks = the bond graph read as a flow graph; #2 Hierarchy = decomposition + within>between strength, presupposes #1 by construction) + **two agential stances** (#11 Understandability, #12 Improvability in `DirectedAgent`/`DirectedUnderModel` form; bare `Improvement` retired as vacuous) + **four theorems** (#5 from #1+#2, #3's data being #1's field; #7 information, Shannon as a bounded special case; #9 internal models lift to all horizons; #10 self-models as the diagonal of #9). One stated condition: #8's independence from #6 holds provided evolution's criterion is external (Mobus's "not resident in some mind"); with the fitness family free, every governing law is also environment-evolving (`evolvesByEnv_settle`).
+
+*History.* "Eight axioms + four theorems" was the headline from 2026-06-09 to 2026-09-03. The eight structures still exist and are pairwise distinct, but the within-block independence matrix (`Systems/Principles/Matrix.lean`, 2026-09-03) showed that as encoded #3 is #1 read twice, #2 presupposed nothing as a bare relation, bare #12 coincided with non-degenerate #4, and #8 derived #6. The re-headlined #2, the environment coordinate, and the tracking form of #12 (2026-09-04) give the count above; "twelve → ≤11" is superseded.
 
 | # | Principle | Verdict | Key result |
 |---|-----------|---------|------------|
-| 1 | Systemness | **Axiom** | Composition closure unconditional at CES and 8-tuple levels |
-| 2 | Hierarchy | **Axiom** | Simon's implicit assumption named (StrictAnti bridge to Dynamics) |
-| 3 | Networks | **Axiom** | Directed flow network with capacities |
-| 4 | Dynamics | **Axiom** | DynamicSystem, coupled dynamics, equilibrium, Flow, timescale decomposition |
-| 5 | Complexity | **Theorem** | Structural measures derive from #1+#2+#3. First reduction (12 → ≤11). |
-| 6 | Evolution | **Axiom** | Blind variation+selection over a fitness preorder; `evolvable_but_not_improvable` (#6 ⇏ #12) |
+| 1 | Systemness | **Primitive** | Composition closure unconditional at CES and 8-tuple levels; the field #3 and #2 refine |
+| 2 | Hierarchy | **Refinement of #1** | `Hierarchical` (Mobus Eq. 4.3 decomposition + Simon within>between strength, `Principles/Hierarchy.lean`); presupposes #1 by construction, can fail (`not_hierarchical_of_uniform`); Simon's StrictAnti bridge named |
+| 3 | Networks | **Refinement of #1** | The bond graph read as a directed flow graph (`ConcreteSystem.toFlowNetwork`, derivable both ways); adds only the capacity type |
+| 4 | Dynamics | **Primitive** | DynamicSystem, coupled dynamics, equilibrium, Flow, timescale decomposition; `sep_dynamics_evolution` |
+| 5 | Complexity | **Theorem** | Structural measures derive from #1+#2 (#3's data is #1's `structure'` field). The first reduction found (2026-05). |
+| 6 | Evolution | **Primitive** | `EvolutionE`: fitness indexed by a stepping environment (frozen case = old `Evolution`); Red Queen 4-cycle evolves under no fixed order (`redQueen_evolutionE_not_evolution`); `evolvable_but_not_improvable` (#6 ⇏ #12) |
 | 7 | Information | **Theorem** | Difference-that-makes-a-difference; Hartley nonspecificity; Shannon bounded (`entropy ≤ hartley`) |
-| 8 | Governance | **Axiom** | Homeostat, GovernanceSubsystem, HCGS; set point is new structure; Conant-Ashby → K ≅ 2 |
+| 8 | Governance | **Primitive** (conditional) | `HomeostatD` with disturbance input (`Robust`); separated from #6 both ways (`sep_governanceD_evolutionE`, `sep_evolutionE_governanceD`) provided fitness is external; Conant-Ashby → K ≅ 2 |
 | 9 | Internal Models | **Theorem** | Simulation lifts to all horizons; model map = good-regulator homomorphism, so #9 supplies #8 |
 | 10 | Self-Models | **Theorem** | Diagonal case of #9; existence trivial (identity), content is faithfulness |
-| 11 | Understandability | **Axiom** | Strictly-simpler model (onto, lossy, non-degenerate); independent of #9 (two witnesses) |
-| 12 | Improvability | **Axiom** | External agent rewrites dynamics so an external goal becomes a rest state; #12 ⇏ #6 (prime-cycle) |
+| 11 | Understandability | **Agential stance** | Strictly-simpler model (onto, lossy, non-degenerate); independent of #9 (two witnesses); non-constant form `UnderstoodNC` restores the #6/#8 ⇏ #11 separations |
+| 12 | Improvability | **Agential stance** | `DirectedAgent`/`DirectedUnderModel`: an agent with an understanding rewrites dynamics toward an external goal; bare `Improvement` retired (`improved_iff_moving`); #12 ⇏ #6 (prime-cycle) |
 
 **Foundational profile** (`scripts/axiom-profile.sh`): `#print axioms` on each headline theorem classifies it `constructive` / `choice-free` / `classical`. The ontological core is constructive; only Evolution (#6) and Information (#7) reach `Classical.choice`. The kernel-computed analogue of a "proof vector" (cf. arXiv:2504.00063), but dependencies are computed, not asserted.
 
-**Front door: `Systems/Principles.lean`** — one re-export per principle in Mobus's order, each with its full signature, plus the checked non-derivability witnesses; `#print axioms` on any line reproduces the profile below. See `docs/paper/axiom-table.md` (clean reference + profile), `docs/paper/dependency-dag.mmd` (the systems-level dependency graph), `docs/reference/principles-formalization-companion.md` (full findings), and `docs/paper/p3-reading-edition.md` (the integrated reading edition).
+**Front door: `Systems/Principles.lean`** — one re-export per principle in Mobus's order, each with its full signature, plus the checked non-derivability witnesses; `#print axioms` on any line reproduces the profile below. The count itself is computed in `Systems/Principles/{Witnesses,Matrix,Hierarchy,NonDegenerate,EnvRelative}.lean` (separating instances, the within-block independence matrix, the re-headlined #2, the non-degeneracy check, the environment-relative #6 and #8) over `Systems/Core/{JointState,EnvState}.lean` (the adopted component–state bridge and the environment coordinate). See `docs/paper/axiom-table.md` (clean reference + profile), `docs/paper/independence-matrix.md` (the matrix, cell by cell), `docs/reference/component-state-bridge-memo.md` (the bridge decision), `docs/paper/dependency-dag.mmd` (the systems-level dependency graph), `docs/reference/principles-formalization-companion.md` (full findings), and `docs/paper/p3-reading-edition.md` (the integrated reading edition).
 
 ## Known Limits
 
 - **Quantitative dynamics**: multi-timescale convergence needs metric space infrastructure (structural skeleton is complete).
 - **Rule/law distinction**: `ActsOn` is opaque — can't distinguish contingent from necessary relations.
-- **Control**: Governance (#8) is formalized as an axiom. Connecting to ShapeJoslyn categorically (the cycle IS the feedback loop) is future work.
+- **Control**: Governance (#8) is formalized as a primitive (`HomeostatD`), separated from Evolution only under an external fitness criterion. Connecting to ShapeJoslyn categorically (the cycle IS the feedback loop) is future work.
 - **Variety measures**: Joslyn's dimensional/cardinal variety has no formalization yet.
 
 ## Project Structure
