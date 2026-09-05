@@ -84,7 +84,10 @@ namespace Systems
     (`[Preorder S]`, with `a ≤ b` meaning "b is at least as fit as a"): a generational
     `step : S → S` that is fitness-non-decreasing (`selects`). The net variation+selection
     operator of M&K's algorithm. There is no model/goal/understanding — selection is blind,
-    its criterion environmental. -/
+    its criterion environmental.
+
+    **This is the frozen-environment case of `EvolutionE`** (below): one fitness order,
+    an environment that never moves. `Evolution.freeze` is the embedding. -/
 structure Evolution (S : Type*) [Preorder S] where
   /-- One generation: the net effect of variation followed by environmental selection. -/
   step : S → S
@@ -146,5 +149,132 @@ theorem evolvable_but_not_improvable :
       (∀ (M : Type) (a : DirectedAgent (Fin 3) M),
         (∀ x : Fin 3, a.understanding.systemDyn x = x + 1) → False) :=
   ⟨⟨fin3evolution, 0, by decide⟩, fun _ a h => cyclic3_no_directed_improvement a h⟩
+
+/-! ## Environment-relative evolution (decision B, 2026-09-04)
+
+  `Evolution` fixes one preorder on `S`; its docstring's `Not encoded:` line is
+  "long-term changes in their environments" (Mobus 2022, principle #6 verbatim). M&K
+  §10.2.1.4 say fitness "has no meaning without considering a system's environment", so
+  the fitness order is indexed BY the environment, and #6 says the environment moves.
+  `EvolutionE` carries both: a family `fit : E → Preorder S` (the rendering
+  `EvolvesByEnv` in Principles/NonDegenerate.lean already uses on the tied law), a step on
+  the product `S × E`, and selection relative to the CURRENT environment. The carrier
+  `S × E` is `JointStateE` (Core/EnvState.lean) when the CES index is in play. -/
+
+/-- Mobus (2022, 2-principles-of-systems-science.md:234): "Systems evolve to accommodate
+    long-term changes in their environments."
+    Mobus & Kalton (2015, 10-auto-organization-and-emergence.md, §10.2.1.4): fitness "is
+    inherently relational ... has no meaning without considering a system's environment."
+    Encoding: "their environments"→the coordinate `E`; "fit ... considering a system's
+    environment"→`fit : E → Preorder S`, one order per environment; "evolve"→`step` on
+    `S × E`; selection→`selects`, relative to the environment the generation was selected
+    IN; "long-term changes in their environments"→`EnvMoves` (the environment coordinate
+    changes somewhere) — the line `Evolution` could not encode.
+    Not encoded: which of the two coordinates drives the other (the step is one joint map);
+    "long-term" as a timescale separation; decay; populations and variation operators.
+
+    An environment-relative evolution: a fitness order for each environment, and a joint
+    step that never lowers fitness relative to the current environment. -/
+structure EvolutionE (S E : Type*) where
+  /-- The fitness order in environment `e`: `a ≤ b` means "b is at least as fit as a" in `e`. -/
+  fit : E → Preorder S
+  /-- One generation of the system AND its environment. -/
+  step : S × E → S × E
+  /-- Selection relative to the current environment: the next system state is at least as
+      fit, in the order of the environment it was selected in. -/
+  selects : ∀ s e, @LE.le S (fit e).toLE s (step (s, e)).1
+
+/-- The environment moves somewhere: the joint step changes the environment coordinate at
+    some point. This is the "long-term changes in their environments" clause. -/
+def EvolutionE.EnvMoves {S E : Type*} (ev : EvolutionE S E) : Prop :=
+  ∃ s e, (ev.step (s, e)).2 ≠ e
+
+/-- The system strictly climbs somewhere, relative to the current environment. -/
+def EvolutionE.Climbs {S E : Type*} (ev : EvolutionE S E) : Prop :=
+  ∃ s e, @LT.lt S (ev.fit e).toLT s (ev.step (s, e)).1
+
+/-- **Environment-relative evolvability**: some environment-relative evolution on the
+    carrier both climbs somewhere and moves its environment somewhere. `Evolvable` asked
+    only for the climb; #6's "changes in their environments" is the second clause.
+    A frozen environment (`E := Unit`) is never `EvolvableE` — see `not_evolvableE_unit`. -/
+def EvolvableE (S E : Type*) : Prop :=
+  ∃ ev : EvolutionE S E, ev.Climbs ∧ ev.EnvMoves
+
+/-! ### The frozen case: `Evolution` embeds as `EvolutionE` over `Unit` -/
+
+/-- Freeze the environment: an `Evolution S` over the ambient order is an `EvolutionE S Unit`
+    with the constant fitness family and an environment coordinate that never moves. -/
+def Evolution.freeze {S : Type*} [inst : Preorder S] (e : Evolution S) : EvolutionE S Unit where
+  fit := fun _ => inst
+  step := fun p => (e.step p.1, ())
+  selects := fun s _ => e.selects s
+
+/-- Thaw: an `EvolutionE S Unit` whose fitness family is the ambient order is an
+    `Evolution S` (drop the environment coordinate). -/
+def EvolutionE.thaw {S : Type*} [inst : Preorder S] (ev : EvolutionE S Unit)
+    (hfit : ev.fit = fun _ => inst) : Evolution S where
+  step := fun s => (ev.step (s, ())).1
+  selects := fun s => by
+    have h := ev.selects s ()
+    rw [hfit] at h
+    exact h
+
+/-- The frozen environment never moves. `#print axioms`: none. -/
+theorem Evolution.freeze_not_envMoves {S : Type*} [Preorder S] (e : Evolution S) :
+    ¬ e.freeze.EnvMoves :=
+  fun ⟨_, _, h⟩ => h rfl
+
+/-- Over `Unit` nothing is `EvolvableE`: there is no second environment to move to. The
+    old `Evolvable` therefore does NOT embed into `EvolvableE` verbatim — it embeds into
+    the climb clause alone (`evolvable_iff_frozen_climbs`). `#print axioms`: none. -/
+theorem not_evolvableE_unit (S : Type*) : ¬ EvolvableE S Unit :=
+  fun ⟨_, _, _, _, h⟩ => h rfl
+
+/-- **`Evolution` is the frozen case, on the climb clause.** Under the ambient order,
+    `Evolvable S` holds iff some `EvolutionE S Unit` with the constant fitness family
+    climbs. The environment-moves clause is exactly what the frozen case lacks.
+    `#print axioms`: none. -/
+theorem evolvable_iff_frozen_climbs (S : Type*) [inst : Preorder S] :
+    Evolvable S ↔ ∃ ev : EvolutionE S Unit, ev.fit = (fun _ => inst) ∧ ev.Climbs := by
+  constructor
+  · rintro ⟨e, s, hs⟩
+    exact ⟨e.freeze, rfl, s, (), hs⟩
+  · rintro ⟨ev, hfit, s, _, hs⟩
+    refine ⟨ev.thaw hfit, s, ?_⟩
+    change @LT.lt S inst.toLT s (ev.step (s, ())).1
+    rw [hfit] at hs
+    exact hs
+
+/-- Non-vacuity of the frozen embedding: the three-state climb, frozen. -/
+def fin3evolutionE : EvolutionE (Fin 3) Unit := fin3evolution.freeze
+
+/-! ### `EvolvableE` at the carrier level is still a cardinality fact
+
+  `evolvable_iff_exists_lt'` (Principles/Matrix.lean) showed `Evolvable S` is a property of
+  the order alone. With the fitness family free, `EvolvableE S E` is a property of the two
+  carriers alone: two distinct system states and two distinct environments suffice. The
+  content of environment-relative evolution lives in the TIED predicate `EvolvesByEnv g`
+  (Principles/NonDegenerate.lean), which fixes the law; `Principles/EnvRelative.lean` ties
+  `EvolutionE` to it and runs the separations there. -/
+
+/-- Two system states and two environments make any carrier `EvolvableE`: order `s < t` in
+    every environment, and step every point to `(t, e')` for the other environment. Recorded
+    so that nobody reads `EvolvableE S E` as a property of a law. `#print axioms`: propext,
+    Classical.choice, Quot.sound. -/
+theorem evolvableE_of_pairs {S E : Type*} (hS : ∃ s t : S, s ≠ t) (hE : ∃ e e' : E, e ≠ e') :
+    EvolvableE S E := by
+  classical
+  obtain ⟨s, t, hst⟩ := hS
+  obtain ⟨e, e', hee⟩ := hE
+  -- "t is fittest": `a ≤ b` iff `a = t → b = t`.
+  let top : Preorder S :=
+    { le := fun a b => a = t → b = t
+      lt := fun a b => (a = t → b = t) ∧ ¬ (b = t → a = t)
+      le_refl := fun _ h => h
+      le_trans := fun _ _ _ h₁ h₂ h => h₂ (h₁ h)
+      lt_iff_le_not_ge := fun _ _ => Iff.rfl }
+  refine ⟨⟨fun _ => top, fun p => (t, if p.2 = e then e' else e), fun _ _ _ => rfl⟩,
+    ⟨s, e, ⟨fun h => absurd h hst, fun h => hst (h rfl)⟩⟩, ⟨s, e, ?_⟩⟩
+  simpa using Ne.symm hee
 
 end Systems
