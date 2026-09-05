@@ -20,6 +20,8 @@ import Systems.Principles.Witnesses
 import Systems.Principles.Matrix
 import Systems.Principles.Hierarchy
 import Systems.Principles.NonDegenerate
+-- Environment-relative #6/#8 (EvolutionE, HomeostatD) and their separations (2026-09-04)
+import Systems.Principles.EnvRelative
 
 -- Phase 2: Mobus 8-tuple
 import Systems.Mobus.FlowNetwork
@@ -36,6 +38,8 @@ import Systems.Core.Decomposition
 import Systems.Core.InterfaceDecomposition
 -- CANDIDATE component–state bridge (dependent product; docs/reference/component-state-bridge-memo.md)
 import Systems.Core.JointState
+-- Joint state WITH an environment coordinate (decision A, 2026-09-04)
+import Systems.Core.EnvState
 
 -- Mesarovic 1964: decomposition theorem cores (peel lemma + dyadic floor)
 import Systems.Mesarovic.Decomposition

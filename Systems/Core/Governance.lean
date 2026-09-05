@@ -61,9 +61,11 @@ namespace Systems
     "feedback"→`feedbackLaw` (sense → compare → correct); "goal-maintaining" / "stability"→
     `atTarget`, `target_is_equilibrium`.
     Not encoded: "in opposition to the error" (`correct` carries no sign or direction
-    constraint — negative feedback is not enforced); disturbances (no input); "value range"
-    (a single point, not a band); stability as attraction (only a fixed point is shown, not
-    convergence to it); "subsystem" (no `ConcreteSystem` here — `GovernanceSubsystem` adds it).
+    constraint — negative feedback is not enforced; `GovernsNeg` in
+    Principles/NonDegenerate.lean adds it); disturbances (no input — `HomeostatD` below adds
+    one; this structure is its `D := Unit` case); "value range" (a single point, not a band);
+    stability as attraction (only a fixed point is shown, not convergence to it);
+    "subsystem" (no `ConcreteSystem` here — `GovernanceSubsystem` adds it).
 
     A homeostat: the basic cybernetic control unit.
 
@@ -146,6 +148,79 @@ theorem Homeostat.target_is_equilibrium {S O : Type*}
     IsEquilibrium h.feedbackLaw s := by
   unfold IsEquilibrium Homeostat.feedbackLaw Homeostat.atTarget at *
   rw [h_at, h_correct_neutral]
+
+/-! ## Homeostat with a disturbance input (decision C, 2026-09-04)
+
+  `Homeostat` has no input: the `Not encoded:` line reads "disturbances (no input)". Mobus
+  12-governance-model.md:307 makes the disturbance the whole point — feedback exists "to
+  maintain an output function in a viable or nominal value range in the face of
+  disturbances that might otherwise cause the output to deviate from a desired value."
+  `HomeostatD` adds `disturb : D → S → S`, the environment's action on the state, applied
+  BEFORE sensing (:309: "If a disturbance to the process causes the value to vary from an
+  ideal ... an error signal is generated and fed back"). The disturbed feedback law is
+  disturb → sense → compare → correct. The robustness predicate ("in the face of
+  disturbances", with :309's "in opposition to the error") needs the ordered-output
+  geometry `Toward` of Principles/NonDegenerate.lean and lives beside it in
+  Principles/EnvRelative.lean as `HomeostatD.Robust`. -/
+
+/-- Mobus (2022, 12-governance-model.md:307): "the use of feedback information to cause a
+    system to modify its activities in order to maintain an output function in a viable or
+    nominal value range in the face of disturbances that might otherwise cause the output
+    to deviate from a desired value."
+    Mobus (2022, 12-governance-model.md:309): "If a disturbance to the process causes the
+    value to vary from an ideal, as represented by the "set point" constant, either higher
+    or lower, an error signal is generated and fed back ..."
+    Encoding: "disturbances that might otherwise cause the output to deviate"→`disturb`,
+    the environment's action on the state, applied before the sensor reads; everything
+    else as in `Homeostat`. "Maintain ... in the face of disturbances" is the predicate
+    `HomeostatD.Robust` (Principles/EnvRelative.lean), not a field, so that every
+    `Homeostat` embeds (`Homeostat.toD`) without a robustness proof.
+    Not encoded: the disturbance's own dynamics (`D` is an input, not a coordinate that
+    moves — `EvolutionE` moves it); "value range" as a band.
+
+    A homeostat with a disturbance input: `Homeostat` data plus the environment's action
+    on the state. -/
+structure HomeostatD (S O D : Type*) extends Homeostat S O where
+  /-- The disturbance `d` acting on the state, before the sensor reads it. -/
+  disturb : D → S → S
+
+/-- The disturbed feedback law: the disturbance acts, then one tick of the feedback loop
+    (sense → compare → correct) on the disturbed state. -/
+def HomeostatD.feedbackLawD {S O D : Type*} (h : HomeostatD S O D) : D → S → S :=
+  fun d s => h.correct (h.error (h.sensor (h.disturb d s)) h.setPoint) (h.disturb d s)
+
+/-- The disturbed law is the plain feedback law applied to the disturbed state:
+    `feedbackLawD d = feedbackLaw ∘ disturb d`. `#print axioms`: none. -/
+theorem HomeostatD.feedbackLawD_eq {S O D : Type*} (h : HomeostatD S O D) (d : D) (s : S) :
+    h.feedbackLawD d s = h.toHomeostat.feedbackLaw (h.disturb d s) :=
+  rfl
+
+/-- Every homeostat is a `HomeostatD` over `Unit` with the trivial disturbance. -/
+def Homeostat.toD {S O : Type*} (h : Homeostat S O) : HomeostatD S O Unit where
+  toHomeostat := h
+  disturb := fun _ s => s
+
+/-- **`Homeostat` is the `D := Unit` case of `HomeostatD`.** The round trip is the identity
+    and the trivially disturbed law is the feedback law. `#print axioms`: none. -/
+theorem Homeostat.toD_toHomeostat {S O : Type*} (h : Homeostat S O) :
+    h.toD.toHomeostat = h :=
+  rfl
+
+/-- `#print axioms`: none. -/
+theorem Homeostat.toD_feedbackLawD {S O : Type*} (h : Homeostat S O) :
+    h.toD.feedbackLawD () = h.feedbackLaw :=
+  rfl
+
+/-- Conversely a `HomeostatD` over `Unit` with the trivial disturbance is its own
+    `toHomeostat`, made `toD` again. `#print axioms`: propext, Quot.sound. -/
+theorem HomeostatD.toHomeostat_toD {S O : Type*} (h : HomeostatD S O Unit)
+    (hd : ∀ s, h.disturb () s = s) : h.toHomeostat.toD = h := by
+  cases h with
+  | mk base disturb =>
+    simp only [Homeostat.toD, HomeostatD.mk.injEq, true_and]
+    funext u s
+    cases u
+    exact (hd s).symm
 
 /-! ## Governance Subsystem
 
