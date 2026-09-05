@@ -15,6 +15,8 @@
 
 **Status line (counted 2026-09-03).** The `Systems/` tree holds 74 `.lean` files and 14,365 lines. `grep` finds no `sorry` and no `axiom` declaration anywhere in `Systems/`. The README's banner ("~10,800 lines, 64 files", last touched 2026-08-11) is stale on both counts and should be re-counted at submission. All twelve principles have a machine-checked core; the last (#6 Evolution) landed 2026-06-09.
 
+**Narrative window.** A one-page visual of the current state (the count, the pipeline, the regrouped DAG, the two carriers and the bridge, the twelve with their separating theorems, what is open) is published at https://claude.ai/code/artifact/e562fed0-60c5-4b59-8481-0640e40961f1 and is regenerated from this document's ledger; where the two disagree, this file wins.
+
 **How to read this document.** §1 states the result. §2 transcribes what Mobus actually says, with vault line numbers, because the corrections in §6 only land if the transcription is trusted. §3 says what the formalization can and cannot settle, and in particular what "axiom" means here (a Lean `structure`, not a Lean `axiom`). §4 walks the eight axiom structures (grouped as four primitives, two refinements, two stances) and §5 the four theorems, in the same block shape: statement, Lean home, headline signature, separating instance, what was found. §6 gives the three corrections. §7 gives the structure behind the list and embeds the DAG. §8 gives the foundational profile. §9 is the claim-hygiene ledger: every claim the paper wants to make against what the kernel has actually seen. §10 lists open stretches and stale document lines. §11 is the pointer map. A reader with thirty minutes should read §1, §4 to §6, and §9; the rest is reference.
 
 ---
