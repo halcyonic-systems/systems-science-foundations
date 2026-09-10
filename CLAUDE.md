@@ -59,6 +59,8 @@ Systems/
     Diagram.lean            BungeDiagram: system-as-functor I_Bunge → Type
     CommonCore.lean         K ≅ 𝟐: Klir embeds into all 7 shapes (common core theorem)
 Systems.lean             Root import
+(Floridi–Jia–Tohmé 2025 Figure 1 in Lean lives in its OWN repo, halcyonic-systems/floridi-lean,
+ Mathlib pinned to this repo's revision; moved out 2026-09-10 so it stays a small citable unit.)
 docs/
   verso/                 Verso interactive documents (6-chapter flagship + Building Story)
   publications/          Conference abstracts (AITP, ISSS)
