@@ -1,0 +1,139 @@
+\documentclass[10pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{tikz-cd}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{1.1ex plus .3ex}{0.5ex}
+\titleformat*{\section}{\normalsize\bfseries}
+\usepackage[margin=0.72in]{geometry}
+\setlength{\parskip}{2pt}
+\setlength{\parindent}{0pt}
+
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\J}{\textsf{J95}}
+\newcommand{\cat}[1]{\mathcal{#1}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Paths}{\mathbf{Paths}}
+\newcommand{\ctrl}[1]{control\textsubscript{#1}}
+\newcommand{\lean}[1]{\texttt{#1}}
+
+\title{\vspace{-2.2em}Definition 28 as a quiver: one drawing decision and what it proves}
+\author{Shingai Thornton\thanks{Drafted with Claude (Fable 5.1) from the Lean sources and from \J{} pp.~101--114; the encoding decision, the readings of \J, and the question in \S4 are mine. Sources: \J{} = C.~Joslyn, ``Semantic Control Systems,'' \emph{World Futures} 45 (1995) 87--123. Lean: \texttt{systems-science-foundations}, \texttt{Systems/Category/\{ShapeJoslyn, CyclicObstruction, JoslynIncomparability\}.lean}, checkout \texttt{4288793}.}}
+\date{\vspace{-1em}September 2026}
+
+\begin{document}
+\maketitle
+\vspace{-2.4em}
+
+\begin{quote}\small
+``One could argue that control is always so circular.''\\
+\hfill --- C.~J., margin comment on the Summer 2025 paper, p.~4
+\end{quote}
+
+The encoding below takes that sentence literally: it draws \ctrl{2} as a cycle. Everything in \S2 follows from that one decision, and \S4 asks whether the decision is faithful to what you meant. \S1 is the only part that is a reading of your text; \S2 is machine-checked; \S3 lists what \S2 does not claim.
+
+\section{The encoding}
+
+\begin{definition}[the quiver $Q_J$]\label{def:quiver}
+Vertices $\{C,\ O_E,\ O_I\}$. Generating arrows
+\[
+h\colon C \to O_E, \qquad g\colon O_E \to O_I, \qquad f\colon O_I \to O_E .
+\]
+\emph{Convention.} Arrows point in the functional direction of \J{} Figure~1 (p.~107): an arrow $x \to y$ means ``$x$ acts on $y$.'' Read aloud: $C$ disturbs $O_E$; $O_E$ constrains $O_I$; $O_I$ feeds back to $O_E$.
+\end{definition}
+
+\begin{center}\vspace{-6pt}
+\begin{tikzcd}[column sep=large, row sep=tiny]
+C \arrow[r, "h"] & O_E \arrow[r, "g", bend left=25] & O_I \arrow[l, "f", bend left=25]
+\end{tikzcd}\vspace{-10pt}
+\end{center}
+
+\begin{table}[h]\vspace{-8pt}\centering\footnotesize
+\begin{tabular}{@{}llp{0.78\textwidth}@{}}
+\toprule
+symbol & role in $Q_J$ & \J{} (page) \\
+\midrule
+$C$ & vertex & ``the global environment'' (107); ``a source of variation to the system $O$'' (107) \\
+$O_E$ & vertex & ``some efferent component of $O$, the mechanism whose actions assert compensating variation on $O_I$'' (107) \\
+$O_I$ & vertex & ``the controlled variables'' (107); ``an internal reflection or representation of any external controlled variable'' (107) \\
+$h$ & arrow & ``The variation of $C$ affects $O$ through the relation $h$'' (106) \\
+$g$ & arrow & ``the final constraint$_1$ of $O_E$ on $O_I$'' (106) \\
+$f$ & arrow & ``whatever relation there might be back from $O_I$ to $O_E$'' (106) \\
+\bottomrule
+\end{tabular}\vspace{-10pt}
+\end{table}
+
+\begin{definition}[the shape]\label{def:shape}
+$\cat{I}_J := \Paths(Q_J)$, the free category on $Q_J$: objects are the vertices, morphisms are finite directed paths, composition is concatenation, identities are empty paths. No relations are imposed.\footnote{\lean{JoslynShape := Paths JoslynPosition}, \lean{ShapeJoslyn.lean}. \lean{Paths} and \lean{Path.length\_comp} are Mathlib's.}
+\end{definition}
+
+\begin{remark}[what a quiver forgets]\label{rem:forgets}
+$Q_J$ records only that a named dependency exists. It does not carry:
+(a) that $f,g,h$ are functions rather than relations (\J{} \S4.3, p.~114: ``usually considered to be functions'');
+(b) the asymmetry of the loop (\S4.3, p.~114: $f$ and $g$ ``are not thereby symmetric or complementary'');
+(c) the hierarchy of $C$ over $O$ and the ``large loop gain'' (p.~108);
+(d) the second loop. \S3.7.2 (p.~110) says ``there is also a kind of loop between $C$ and $O_E$'' by reciprocal variation, and \S3.7.1 (p.~109) rules it one-way at the level of action (``$O_E$ mirror the actions of $C$, but not vice versa''). $Q_J$ follows \S3.7.1: $h$ is a single arrow.
+(e) Turchin's alternative, in which the effector relation $g$ ``flows only through the environment'' (\S3.5, p.~108). Not drawn.
+Items (d) and (e) are encoding forks, not omissions by oversight; each yields a different $Q$.
+\end{remark}
+
+\section{The theorem}
+
+Write $\ell := f\circ g \in \Hom_{\cat{I}_J}(O_E,O_E)$ for the feedback loop, a path of length~2.\footnote{\lean{joslynLoop}, \lean{joslynLoop\_length : joslynLoop.length = 2 := rfl}.}
+
+\begin{lemma}\label{lem:powers}
+For $n\in\mathbb{N}$, $\ell^{\,n}$ has length $2n$; hence $n\mapsto \ell^{\,n}$ is injective and $\Hom_{\cat{I}_J}(O_E,O_E)$ is infinite.\footnote{\lean{cyclePow\_length}, \lean{cyclePow\_injective}, \lean{infinite\_path\_of\_cycle}, all proved for an arbitrary quiver and an arbitrary positive-length loop.}
+\end{lemma}
+\begin{proof}
+Length is additive under concatenation, so $|\ell^{\,n}| = n|\ell| = 2n$. Distinct $n$ give distinct lengths, hence distinct paths.
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+Let $\cat{C}$ be any category in which every hom-set is finite. No functor $F\colon \cat{I}_J \to \cat{C}$ is faithful.\footnote{\lean{joslyn\_no\_faithful\_functor}, instance of the general \lean{paths\_no\_faithful\_functor\_of\_cycle}. Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}. No \lean{sorry}.}
+\end{theorem}
+\begin{proof}
+A faithful functor is injective on each hom-set. By Lemma~\ref{lem:powers} it would inject the infinite set $\Hom(O_E,O_E)$ into the finite set $\Hom(FO_E,FO_E)$.
+\end{proof}
+
+\begin{corollary}\label{cor:klir}
+Let $\cat{I}_K := \Paths(R \to T)$ be the shape of Klir's $S=(T,R)$: two objects, one generating arrow. Every hom-set of $\cat{I}_K$ is a subsingleton, hence finite. There is no faithful functor $\cat{I}_J \to \cat{I}_K$.\footnote{\lean{no\_faithful\_joslyn\_to\_klir}; the finiteness hypothesis is discharged by an instance built from \lean{klirHomSubsingleton}, not by inspection in prose.}
+\end{corollary}
+
+\begin{remark}[why this is the boundary and not a curiosity]
+Every other tradition encoded in the same program (Klir, Bunge, Mobus, Myers, Wymore, Mesarovi\'c) has an acyclic $Q$, hence finite hom-sets, and is placed relative to the others by faithful comparison functors. $Q_J$ is the first cyclic shape in the landscape; the only other is Spivak's value loop, which instantiates the same lemma. Feedback is where the finite-shape method stops; Theorem~\ref{thm:main} makes that folklore a theorem whose sole premise is the cycle.
+\end{remark}
+
+\section{What the theorem does not say}
+
+\begin{enumerate}[leftmargin=1.4em,itemsep=1pt]
+\item \textbf{It is presentation-relative.} From the theorem's own docstring, written before anyone asked you: ``both shapes are encodings of primary texts as dependency quivers, and a different defensible encoding of Joslyn 1995 --- one that does not make the control loop a cycle at quiver level --- could dissolve the obstruction. Not a maximality result.''
+\item \textbf{It is about $\Paths$, which imposes no relations.} Impose one and it can die. If feedback is taken to be idempotent, $\ell\circ\ell = \ell$, then $\Hom(O_E,O_E)$ collapses to $\{\mathrm{id},\ell\}$ and Theorem~\ref{thm:main} fails. Whether \ctrl{2} licenses that identification is a claim about your text, not about category theory.
+\item \textbf{Re-bracketing does not dissolve it.} Your (31) $\langle O_E,\langle C,O_I\rangle\rangle$ and (32) $\langle O_I,\langle C,O_E\rangle\rangle$ regroup the vertices; neither removes an arrow, so the loop and the theorem survive both. (32) adds a second loop if the ``kind of loop'' of \S3.7.2 is drawn, which only strengthens the obstruction.
+\item \textbf{Unrolling does dissolve it.} Index the loop by level: vertices $C$, $O_E^{(k)}$, $O_I^{(k)}$ for $k\in\mathbb{N}$; arrows $h\colon C\to O_E^{(0)}$, $g_k\colon O_E^{(k)}\to O_I^{(k)}$, $f_k\colon O_I^{(k)}\to O_E^{(k+1)}$. This $Q$ is acyclic, every hom-set is finite (at most one path between any two vertices), and faithful functors into $\cat{I}_K$ are no longer excluded on cardinality grounds. \emph{Stated, not machine-checked.}
+\item \textbf{It does not say \ctrl{2} is incomparable in principle.} It says the comparison method that places the six acyclic traditions cannot reach a cyclic one. A different method (a quotient, an enrichment, a 2-categorical treatment of the loop) is not ruled out and is not attempted here.
+\end{enumerate}
+
+\section{The question, which only you can answer}
+
+Items 2 through 4 of \S3 are one question: \emph{where does the closure of \ctrl{2} live?} In the vocabulary of your 2026 abstract: is the semantic closure level-flat, so that each $\ell^{\,n}$ is a genuinely distinct control trajectory, or does it unroll across a metasystem transition, so that the cycle is an artefact of drawing every level on one page? Three outcomes, each a result:
+\begin{enumerate}[leftmargin=1.4em,itemsep=1pt]
+\item \textbf{You defend the cycle.} Theorem~\ref{thm:main} becomes author-endorsed, the strongest provenance a formalization can carry.
+\item \textbf{You propose an acyclic encoding} (the unrolling of \S3 item~4, or another). The obstruction dissolves for that encoding; presentation-relativity is exhibited rather than asserted.
+\item \textbf{You rule both encodings defensible.} One text, two shapes, different comparison behaviour: the sharpest exhibit yet for the layer of validation no proof checker sees.
+\end{enumerate}
+
+\section{One provenance item, separately}
+
+Definition~28 is entry 009 of the definition atlas at \texttt{math.systems}, transcribed from the page images and hand-checked, with five of your case rulings (thermostat and the decoupled-envelope pair admitted; damped spring, boiling liquid, spinning top refused). One grading is offered for correction: the catalogue records a definition as a \emph{restatement} when its author presents it as another's, and Definition~25 (\ctrl{1}) is introduced on p.~101 as Turchin's 1992 definition, ``we offer it again here.'' It is therefore graded a restatement of Turchin, and Definition~28 is recorded as the first control definition that is yours alone. If that reading is wrong, the catalogue exists to receive exactly that correction.
+
+\end{document}
