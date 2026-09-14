@@ -33,6 +33,7 @@
 \date{\vspace{-1em}September 2026}
 
 \begin{document}
+\fontsize{9.6pt}{11.2pt}\selectfont
 \maketitle
 \vspace{-2.4em}
 
@@ -111,7 +112,7 @@ Let $\cat{I}_K := \Paths(R \to T)$ be the shape of Klir's $S=(T,R)$: two objects
 \end{corollary}
 
 \begin{remark}[why this is the boundary and not a curiosity]
-Every other tradition encoded in the same program (Klir, Bunge, Mobus, Myers, Wymore, Mesarovi\'c) has an acyclic $Q$, hence finite hom-sets, and is placed by faithful comparison functors. $Q_J$ is the first cyclic shape in the landscape (Spivak's value loop is the other; it instantiates the same lemma). Feedback is where the finite-shape method stops; Theorem~\ref{thm:main} makes that folklore a theorem whose sole premise is the cycle.
+Every other tradition encoded in the same program (Klir, Bunge, Mobus, Myers, Wymore, Mesarovi\'c) has an acyclic $Q$, hence finite hom-sets, and is placed by faithful comparison functors; $Q_J$ is the first cyclic shape (Spivak's value loop is the other). Feedback is where the finite-shape method stops, and Theorem~\ref{thm:main}'s sole premise is the cycle.
 \end{remark}
 
 \section{What the theorem does not say}
@@ -121,20 +122,21 @@ Every other tradition encoded in the same program (Klir, Bunge, Mobus, Myers, Wy
 \item \textbf{It is about $\Paths$, which imposes no relations.} Impose one and it can die. If feedback is taken to be idempotent, $\ell\circ\ell = \ell$, then $\Hom(O_E,O_E)$ collapses to $\{\mathrm{id},\ell\}$ and Theorem~\ref{thm:main} fails. Whether \ctrl{2} licenses that identification is a claim about your text, not about category theory.
 \item \textbf{Re-bracketing does not dissolve it.} Your (31) $\langle O_E,\langle C,O_I\rangle\rangle$ and (32) $\langle O_I,\langle C,O_E\rangle\rangle$ regroup the vertices; neither removes an arrow, so the loop and the theorem survive both. (32) adds a second loop if the ``kind of loop'' of \S3.7.2 is drawn, which only strengthens the obstruction.
 \item \textbf{Unrolling does dissolve it.} Index the loop by level: vertices $C$, $O_E^{(k)}$, $O_I^{(k)}$ for $k\in\mathbb{N}$; arrows $h\colon C\to O_E^{(0)}$, $g_k\colon O_E^{(k)}\to O_I^{(k)}$, $f_k\colon O_I^{(k)}\to O_E^{(k+1)}$. This $Q$ is acyclic, every hom-set is finite (at most one path between any two vertices), and faithful functors into $\cat{I}_K$ are no longer excluded on cardinality grounds. \emph{Stated, not machine-checked.}
-\item \textbf{It does not say \ctrl{2} is incomparable in principle.} It says the method that places the six acyclic traditions cannot reach a cyclic one. A quotient, an enrichment, or a 2-categorical treatment of the loop is neither ruled out nor attempted here.
+\item \textbf{It does not say \ctrl{2} is incomparable in principle.} Only that the method placing the six acyclic traditions cannot reach a cyclic one; a quotient, enrichment, or 2-categorical treatment of the loop is neither ruled out nor attempted.
 \end{enumerate}
 
 \section{The question, which only you can answer}
 
-In the margin of \emph{Computational Systems Ontology: Towards Practical Integration of the Systems Sciences with BERT} (Thornton, August 2025, p.~4) you wrote: ``One could argue that control is always so circular.'' The encoding took that literally: one system, quiver level, no relations on the loop's powers. Items 2 through 4 of \S3 are then one question: \emph{where does the closure of \ctrl{2} live?} In the vocabulary of your 2026 abstract: is the semantic closure level-flat, so that each $\ell^{\,n}$ is a genuinely distinct control trajectory, or does it unroll across a metasystem transition, so that the cycle is an artefact of drawing every level on one page? Three outcomes, each a result:
+In the margin of \emph{Computational Systems Ontology: Towards Practical Integration of the Systems Sciences with BERT} (Thornton, August 2025, p.~4) you wrote: ``One could argue that control is always so circular.'' The encoding took that literally: one system, quiver level, no relations on the loop's powers. Items 2 through 4 of \S3 are then one question: \emph{where does the closure of \ctrl{2} live?} Your text already places one hierarchy: the second-order variation of Definition~28 ``is at a hierarchically distinct level from the variation in $O$ itself,'' manifested ``over a slower time scale or larger spatial scale'' (p.~104), and $O_E$, $O_I$ are ``more tightly coupled to each other than either is to $C$'' (p.~107). $Q_J$ reads that as: the hierarchy is $C$ over $O$ and is carried by $h$ alone; the $f,g$ loop is level-flat, so each $\ell^{\,n}$ is a distinct trajectory within one level. The metasystem transition of \S5.1 is a different event, a new level of control ``emerging where one previously did not exist,'' and you leave open whether it is \ctrl{1} or \ctrl{2}. The question is therefore: is that reading right, or does the ``hierarchically distinct level'' of p.~104 also index the loop, so that its passes unroll across levels and the cycle is an artefact of drawing every level on one page? Four outcomes, each a result:
 \begin{enumerate}[leftmargin=1.4em,itemsep=1pt]
-\item \textbf{You defend the cycle.} Theorem~\ref{thm:main} becomes author-endorsed, the strongest provenance a formalization can carry.
-\item \textbf{You propose an acyclic encoding} (the unrolling of \S3 item~4, or another). The obstruction dissolves for that encoding; presentation-relativity is exhibited rather than asserted.
+\item \textbf{You defend the cycle.} Theorem~\ref{thm:main} becomes author-endorsed.
+\item \textbf{You propose an acyclic encoding} (the unrolling of \S3 item~4, or another): the obstruction dissolves for it, and presentation-relativity is exhibited rather than asserted.
 \item \textbf{You rule both encodings defensible.} One text, two shapes, different comparison behaviour: the sharpest exhibit yet for the validation layer no proof checker sees.
+\item \textbf{None of these.} The quiver is the wrong instrument for the question, or the loop should be quotiented rather than drawn or unrolled (\S3 item~2), or something not anticipated here. This is also a result, and likely the most informative one.
 \end{enumerate}
 
 \section{One provenance item, separately}
 
-Definition~28 is entry 009 of the definition atlas at \texttt{math.systems}, page-image transcribed and hand-checked, with five of your case rulings (thermostat and the decoupled-envelope pair admitted; damped spring, boiling liquid, spinning top refused). One grading is offered for correction. Definition~25 (\ctrl{1}) is introduced on p.~101 as Turchin's 1992 definition, ``we offer it again here,'' so the catalogue grades it a restatement of Turchin and records Definition~28 as the first control definition that is yours alone. If that reading is wrong, the correction is exactly what the catalogue exists to receive.
+Definition~28 is entry 009 of the definition atlas at \texttt{math.systems}, page-image transcribed and hand-checked, with five of your case rulings (thermostat and the decoupled-envelope pair admitted; damped spring, boiling liquid, spinning top refused). One grading is offered for correction: Definition~25 (\ctrl{1}) is introduced on p.~101 as Turchin's 1992 definition, ``we offer it again here,'' so it is graded a restatement of Turchin and Definition~28 is recorded as the first control definition that is yours alone.
 
 \end{document}
