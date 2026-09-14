@@ -27,20 +27,21 @@
 \newcommand{\ctrl}[1]{control\textsubscript{#1}}
 \newcommand{\lean}[1]{\texttt{#1}}
 
-\title{\vspace{-2.2em}Definition 28 as a quiver: one drawing decision and what it proves}
-\author{Shingai Thornton\thanks{Drafted with Claude (Fable 5.1) from the Lean sources and from \J{} pp.~101--114; the encoding decision, the readings of \J, and the question in \S4 are mine. Sources: \J{} = C.~Joslyn, ``Semantic Control Systems,'' \emph{World Futures} 45 (1995) 87--123. Lean: \texttt{systems-science-foundations}, \texttt{Systems/Category/\{ShapeJoslyn, CyclicObstruction, JoslynIncomparability\}.lean}, checkout \texttt{4288793}.}}
+\title{\vspace{-2.2em}On the cyclic encoding of control\textsubscript{2}\\{\large Semantic Control Systems (1995), Definition 28}}
+\author{Shingai Thornton\thanks{\J{} = C.~Joslyn, \emph{World Futures} 45 (1995) 87--123. Lean: \texttt{systems-science-foundations/Systems/Category/\{ShapeJoslyn, CyclicObstruction, JoslynIncomparability\}.lean}, checkout \texttt{4288793}. Drafted with Claude (Fable 5.1); the encoding decision, the readings of \J, and \S4 are mine.}}
 \date{\vspace{-1em}September 2026}
 
 \begin{document}
 \maketitle
 \vspace{-2.4em}
 
-\begin{quote}\small
-``One could argue that control is always so circular.''\\
-\hfill --- C.~J., margin comment on the Summer 2025 paper, p.~4
-\end{quote}
+\textbf{From the paper.} Definition~28 (p.~103): ``A control\textsubscript{1} system $CS=\langle C,O\rangle$ is also a control\textsubscript{2} system if the variation in the constraint\textsubscript{1} on $O$, induced by $C$'s variation, is itself constrained\textsubscript{2}.'' Proposition~29 (p.~106) splits the object of control, $O=\langle O_E,O_I\rangle$, giving
+\[
+CS=\langle C,\ O=\langle O_E,O_I\rangle\rangle \tag{30}
+\]
+and \S3.5 (p.~107) names the relations among the three components (Figure~1): ``Thus together $O_E$ and $O_I$ form an afferent-efferent loop.''
 
-The encoding below takes that sentence literally: it draws \ctrl{2} as a cycle. Everything in \S2 follows from that one decision, and \S4 asks whether the decision is faithful to what you meant. \S1 is the only part that is a reading of your text; \S2 is machine-checked; \S3 lists what \S2 does not claim.
+This note does one thing to (30): it records the three named relations of Figure~1 as the arrows of a quiver and takes the free category on it (\S1). A theorem follows from the loop alone (\S2). \S3 says what the theorem does not claim. \S4 asks whether the drawing is faithful to what you meant. \S5 is a separate provenance item.
 
 \section{The encoding}
 
@@ -65,7 +66,7 @@ symbol & role in $Q_J$ & \J{} (page) \\
 \midrule
 $C$ & vertex & ``the global environment'' (107); ``a source of variation to the system $O$'' (107) \\
 $O_E$ & vertex & ``some efferent component of $O$, the mechanism whose actions assert compensating variation on $O_I$'' (107) \\
-$O_I$ & vertex & ``the controlled variables'' (107); ``an internal reflection or representation of any external controlled variable'' (107) \\
+$O_I$ & vertex & ``the controlled variables'' (107) \\
 $h$ & arrow & ``The variation of $C$ affects $O$ through the relation $h$'' (106) \\
 $g$ & arrow & ``the final constraint$_1$ of $O_E$ on $O_I$'' (106) \\
 $f$ & arrow & ``whatever relation there might be back from $O_I$ to $O_E$'' (106) \\
@@ -83,8 +84,7 @@ $Q_J$ records only that a named dependency exists. It does not carry:
 (b) the asymmetry of the loop (\S4.3, p.~114: $f$ and $g$ ``are not thereby symmetric or complementary'');
 (c) the hierarchy of $C$ over $O$ and the ``large loop gain'' (p.~108);
 (d) the second loop. \S3.7.2 (p.~110) says ``there is also a kind of loop between $C$ and $O_E$'' by reciprocal variation, and \S3.7.1 (p.~109) rules it one-way at the level of action (``$O_E$ mirror the actions of $C$, but not vice versa''). $Q_J$ follows \S3.7.1: $h$ is a single arrow.
-(e) Turchin's alternative, in which the effector relation $g$ ``flows only through the environment'' (\S3.5, p.~108). Not drawn.
-Items (d) and (e) are encoding forks, not omissions by oversight; each yields a different $Q$.
+(e) Turchin's alternative, in which $g$ ``flows only through the environment'' (p.~108). Items (d) and (e) are encoding forks, not oversights; each yields a different $Q$.
 \end{remark}
 
 \section{The theorem}
@@ -120,12 +120,12 @@ Every other tradition encoded in the same program (Klir, Bunge, Mobus, Myers, Wy
 \item \textbf{It is about $\Paths$, which imposes no relations.} Impose one and it can die. If feedback is taken to be idempotent, $\ell\circ\ell = \ell$, then $\Hom(O_E,O_E)$ collapses to $\{\mathrm{id},\ell\}$ and Theorem~\ref{thm:main} fails. Whether \ctrl{2} licenses that identification is a claim about your text, not about category theory.
 \item \textbf{Re-bracketing does not dissolve it.} Your (31) $\langle O_E,\langle C,O_I\rangle\rangle$ and (32) $\langle O_I,\langle C,O_E\rangle\rangle$ regroup the vertices; neither removes an arrow, so the loop and the theorem survive both. (32) adds a second loop if the ``kind of loop'' of \S3.7.2 is drawn, which only strengthens the obstruction.
 \item \textbf{Unrolling does dissolve it.} Index the loop by level: vertices $C$, $O_E^{(k)}$, $O_I^{(k)}$ for $k\in\mathbb{N}$; arrows $h\colon C\to O_E^{(0)}$, $g_k\colon O_E^{(k)}\to O_I^{(k)}$, $f_k\colon O_I^{(k)}\to O_E^{(k+1)}$. This $Q$ is acyclic, every hom-set is finite (at most one path between any two vertices), and faithful functors into $\cat{I}_K$ are no longer excluded on cardinality grounds. \emph{Stated, not machine-checked.}
-\item \textbf{It does not say \ctrl{2} is incomparable in principle.} It says the comparison method that places the six acyclic traditions cannot reach a cyclic one. A different method (a quotient, an enrichment, a 2-categorical treatment of the loop) is not ruled out and is not attempted here.
+\item \textbf{It does not say \ctrl{2} is incomparable in principle.} It says the method that places the six acyclic traditions cannot reach a cyclic one. A quotient, an enrichment, or a 2-categorical treatment of the loop is neither ruled out nor attempted here.
 \end{enumerate}
 
 \section{The question, which only you can answer}
 
-Items 2 through 4 of \S3 are one question: \emph{where does the closure of \ctrl{2} live?} In the vocabulary of your 2026 abstract: is the semantic closure level-flat, so that each $\ell^{\,n}$ is a genuinely distinct control trajectory, or does it unroll across a metasystem transition, so that the cycle is an artefact of drawing every level on one page? Three outcomes, each a result:
+In the margin of the Summer 2025 paper (p.~4) you wrote: ``One could argue that control is always so circular.'' The encoding took that literally, at quiver level, in one system, with no relations on the loop's powers. Items 2 through 4 of \S3 are then one question: \emph{where does the closure of \ctrl{2} live?} In the vocabulary of your 2026 abstract: is the semantic closure level-flat, so that each $\ell^{\,n}$ is a genuinely distinct control trajectory, or does it unroll across a metasystem transition, so that the cycle is an artefact of drawing every level on one page? Three outcomes, each a result:
 \begin{enumerate}[leftmargin=1.4em,itemsep=1pt]
 \item \textbf{You defend the cycle.} Theorem~\ref{thm:main} becomes author-endorsed, the strongest provenance a formalization can carry.
 \item \textbf{You propose an acyclic encoding} (the unrolling of \S3 item~4, or another). The obstruction dissolves for that encoding; presentation-relativity is exhibited rather than asserted.
@@ -134,6 +134,6 @@ Items 2 through 4 of \S3 are one question: \emph{where does the closure of \ctrl
 
 \section{One provenance item, separately}
 
-Definition~28 is entry 009 of the definition atlas at \texttt{math.systems}, transcribed from the page images and hand-checked, with five of your case rulings (thermostat and the decoupled-envelope pair admitted; damped spring, boiling liquid, spinning top refused). One grading is offered for correction: the catalogue records a definition as a \emph{restatement} when its author presents it as another's, and Definition~25 (\ctrl{1}) is introduced on p.~101 as Turchin's 1992 definition, ``we offer it again here.'' It is therefore graded a restatement of Turchin, and Definition~28 is recorded as the first control definition that is yours alone. If that reading is wrong, the catalogue exists to receive exactly that correction.
+Definition~28 is entry 009 of the definition atlas at \texttt{math.systems}, page-image transcribed and hand-checked, with five of your case rulings (thermostat and the decoupled-envelope pair admitted; damped spring, boiling liquid, spinning top refused). One grading is offered for correction. Definition~25 (\ctrl{1}) is introduced on p.~101 as Turchin's 1992 definition, ``we offer it again here,'' so the catalogue grades it a restatement of Turchin and records Definition~28 as the first control definition that is yours alone. If that reading is wrong, the correction is exactly what the catalogue exists to receive.
 
 \end{document}
