@@ -8,8 +8,9 @@
 \usepackage{titlesec}
 \titlespacing*{\section}{0pt}{1.1ex plus .3ex}{0.5ex}
 \titleformat*{\section}{\normalsize\bfseries}
-\usepackage[margin=0.72in]{geometry}
+\usepackage[margin=0.65in]{geometry}
 \setlength{\parskip}{2pt}
+\linespread{0.96}
 \setlength{\parindent}{0pt}
 
 \newtheorem{definition}{Definition}
@@ -28,20 +29,20 @@
 \newcommand{\lean}[1]{\texttt{#1}}
 
 \title{\vspace{-2.2em}On the cyclic encoding of control\textsubscript{2}\\{\large Semantic Control Systems (1995), Definition 28}}
-\author{Claude (Fable 5.1), as prompted by Shingai Thornton\thanks{Byline per the Multivar repository's convention. The encoding decision, the readings of \J, and \S4 are Shingai Thornton's; \S2 is machine-checked in \texttt{systems-science-foundations/Systems/Category/\{ShapeJoslyn, CyclicObstruction, JoslynIncomparability\}.lean}, checkout \texttt{4288793}. \J{} = C.~Joslyn, ``Semantic Control Systems,'' \emph{World Futures} 45 (1995) 87--123.}}
+\author{Claude (Fable 5.1), as prompted by Shingai Thornton\thanks{Byline per the Multivar repository's convention. The encoding decision, the readings of \J, and \S4 are Shingai Thornton's; \S2 is machine-checked in \texttt{github.com/halcyonic-systems/systems-science-foundations}, files \texttt{Systems/Category/\{ShapeJoslyn, CyclicObstruction, JoslynIncomparability\}.lean}, commit \texttt{4288793}.}}
 \date{\vspace{-1em}September 2026}
 
 \begin{document}
 \maketitle
 \vspace{-2.4em}
 
-\textbf{From the paper.} Definition~28 (p.~103): ``A control\textsubscript{1} system $CS=\langle C,O\rangle$ is also a control\textsubscript{2} system if the variation in the constraint\textsubscript{1} on $O$, induced by $C$'s variation, is itself constrained\textsubscript{2}.'' Proposition~29 (p.~106) splits the object of control, $O=\langle O_E,O_I\rangle$, giving
+\textbf{Source.} C.~Joslyn, ``Semantic Control Systems,'' \emph{World Futures} 45 (1995) 87--123, doi:10.1080/02604027.1995.9972556; cited below as \J{} with the journal's page numbers. Definition~28 (p.~103): ``A control\textsubscript{1} system $CS=\langle C,O\rangle$ is also a control\textsubscript{2} system if the variation in the constraint\textsubscript{1} on $O$, induced by $C$'s variation, is itself constrained\textsubscript{2}.'' Proposition~29 (p.~106) splits the object of control, $O=\langle O_E,O_I\rangle$, giving
 \[
 CS=\langle C,\ O=\langle O_E,O_I\rangle\rangle \tag{30}
 \]
 and \S3.5 (p.~107) names the relations among the three components (Figure~1): ``Thus together $O_E$ and $O_I$ form an afferent-efferent loop.''
 
-This note does one thing to (30): it records the three named relations of Figure~1 as the arrows of a quiver and takes the free category on it (\S1). A theorem follows from the loop alone (\S2). \S3 says what the theorem does not claim. \S4 asks whether the drawing is faithful to what you meant. \S5 is a separate provenance item.
+This note records the three named relations of Figure~1 as the arrows of a quiver and takes the free category on it (\S1); a theorem follows from the loop alone (\S2); \S3 says what it does not claim; \S4 asks whether the drawing is faithful to what you meant; \S5 is a separate provenance item.
 
 \section{The encoding}
 
@@ -50,7 +51,7 @@ Vertices $\{C,\ O_E,\ O_I\}$. Generating arrows
 \[
 h\colon C \to O_E, \qquad g\colon O_E \to O_I, \qquad f\colon O_I \to O_E .
 \]
-\emph{Convention.} Arrows point in the functional direction of \J{} Figure~1 (p.~107): an arrow $x \to y$ means ``$x$ acts on $y$.'' Read aloud: $C$ disturbs $O_E$; $O_E$ constrains $O_I$; $O_I$ feeds back to $O_E$.
+\emph{Convention.} Arrows point in the functional direction of Figure~1 (p.~107), $x\to y$ meaning ``$x$ acts on $y$'': $C$ disturbs $O_E$; $O_E$ constrains $O_I$; $O_I$ feeds back to $O_E$.
 \end{definition}
 
 \begin{center}\vspace{-6pt}
@@ -80,7 +81,7 @@ $\cat{I}_J := \Paths(Q_J)$, the free category on $Q_J$: objects are the vertices
 
 \begin{remark}[what a quiver forgets]\label{rem:forgets}
 $Q_J$ records only that a named dependency exists. It does not carry:
-(a) that $f,g,h$ are functions rather than relations (\J{} \S4.3, p.~114: ``usually considered to be functions'');
+(a) that $f,g,h$ are functions rather than relations (\S4.3, p.~114);
 (b) the asymmetry of the loop (\S4.3, p.~114: $f$ and $g$ ``are not thereby symmetric or complementary'');
 (c) the hierarchy of $C$ over $O$ and the ``large loop gain'' (p.~108);
 (d) the second loop. \S3.7.2 (p.~110) says ``there is also a kind of loop between $C$ and $O_E$'' by reciprocal variation, and \S3.7.1 (p.~109) rules it one-way at the level of action (``$O_E$ mirror the actions of $C$, but not vice versa''). $Q_J$ follows \S3.7.1: $h$ is a single arrow.
@@ -110,7 +111,7 @@ Let $\cat{I}_K := \Paths(R \to T)$ be the shape of Klir's $S=(T,R)$: two objects
 \end{corollary}
 
 \begin{remark}[why this is the boundary and not a curiosity]
-Every other tradition encoded in the same program (Klir, Bunge, Mobus, Myers, Wymore, Mesarovi\'c) has an acyclic $Q$, hence finite hom-sets, and is placed by faithful comparison functors. $Q_J$ is the first cyclic shape in the landscape; the only other is Spivak's value loop, which instantiates the same lemma. Feedback is where the finite-shape method stops; Theorem~\ref{thm:main} makes that folklore a theorem whose sole premise is the cycle.
+Every other tradition encoded in the same program (Klir, Bunge, Mobus, Myers, Wymore, Mesarovi\'c) has an acyclic $Q$, hence finite hom-sets, and is placed by faithful comparison functors. $Q_J$ is the first cyclic shape in the landscape (Spivak's value loop is the other; it instantiates the same lemma). Feedback is where the finite-shape method stops; Theorem~\ref{thm:main} makes that folklore a theorem whose sole premise is the cycle.
 \end{remark}
 
 \section{What the theorem does not say}
@@ -129,7 +130,7 @@ In the margin of \emph{Computational Systems Ontology: Towards Practical Integra
 \begin{enumerate}[leftmargin=1.4em,itemsep=1pt]
 \item \textbf{You defend the cycle.} Theorem~\ref{thm:main} becomes author-endorsed, the strongest provenance a formalization can carry.
 \item \textbf{You propose an acyclic encoding} (the unrolling of \S3 item~4, or another). The obstruction dissolves for that encoding; presentation-relativity is exhibited rather than asserted.
-\item \textbf{You rule both encodings defensible.} One text, two shapes, different comparison behaviour: the sharpest exhibit yet for the layer of validation no proof checker sees.
+\item \textbf{You rule both encodings defensible.} One text, two shapes, different comparison behaviour: the sharpest exhibit yet for the validation layer no proof checker sees.
 \end{enumerate}
 
 \section{One provenance item, separately}
