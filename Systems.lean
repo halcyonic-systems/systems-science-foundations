@@ -82,6 +82,8 @@ import Systems.Category.SpivakIncomparability
 import Systems.Category.ShapeWillems
 import Systems.Category.ShapeRosen
 import Systems.Category.RosenKlirIso
+import Systems.Category.RosenConjugacy
+import Systems.Klir.RosenWitness
 import Systems.Category.ShapeComparison
 import Systems.Category.ShapeComparison_Myers
 import Systems.Category.ShapeComparison_Wymore

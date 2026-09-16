@@ -29,6 +29,13 @@
   - The Mobus view costs irreflexivity: FlowNetwork.no_self_loops
     (Mobus §4.3, k ≠ o) forbids self-dependency. Klir and Bunge accept
     reflexive relations; the engineering view does not.
+  - The Rosen view (1978, Def 2.9.1, added 2026-09-16) costs the most:
+    Kernel.IsIndist — the dependency must be an EQUIVALENCE on things.
+    "States stand in for things": Rosen's pair (S, F) carries no
+    relation among its states except the one the observables induce,
+    s₁ R_F s₂ iff every observable agrees on them (p. 54, S/R_F), and
+    that relation is always symmetric. A kernel with a one-way
+    dependency has no Rosen view at all (rosen_no_view_of_asymmetric).
 
   Each view fills its elaboration slots with the MINIMAL canonical
   witness (empty environment, no external flows, no interfaces, PUnit
@@ -38,6 +45,7 @@
 -/
 
 import Systems.Klir.KlirSystem
+import Mathlib.Data.Real.Basic
 
 namespace Systems
 
@@ -288,5 +296,143 @@ theorem Kernel.toMobus_toBunge {α : Type*} [ActsOn α]
     (k.toMobus hi).toBunge (k.toFlowNetwork_inducesAction hi ha)
       (k.toFlowNetwork_edges_nonempty hi hb) = k.toBunge hb :=
   ConcreteSystem.ext' rfl rfl (k.toMobus_totalRelation hi)
+
+/-! ## The Rosen View
+
+  Rosen 1978, Definition 2.9.1 (book p. 54): "A system (or formal
+  system) shall consist of a pair (S, F), where S is a set and F is a
+  family of real-valued mappings defined on S." The gloss: "To each
+  formal system defined as above, we can uniquely associate a set of
+  reduced states S/R_F" — two states are identified when no observable
+  separates them (§2.2–2.3).
+
+  DATA-LEVEL ENCODING. `states` is S; `observables` is F, a set of
+  functions α → ℝ (Proposition 2, p. 26, fixes the codomain); "defined
+  on S" is carried as `defined_on`: an observable vanishes off S — the
+  walking arrow (F depends on S) materialised as a Prop, exactly as
+  `Kernel.dep_on` materialises "R depends on T". `RosenSystem.indist`
+  is Rosen's R_F, the ONLY relation on states the pair determines, and
+  `RosenSystem.toKlir` projects (S, R_F) — Rosen's own construction, not
+  ours. Real numbers enter only as the canonical witness {0, 1} ⊆ ℝ, as
+  PUnit fills the Mobus parametric slots.
+
+  COST: `Kernel.IsIndist`. R_F is an equivalence relation, so a kernel
+  round-trips through its Rosen view only if its dependency already is
+  one. Generation: the observables are the indicator functions of the
+  dependency classes. Round trip: indist recovers dep exactly. What is
+  lost is stated as a theorem, not a remark: every Rosen view projects
+  to a SYMMETRIC relation (`RosenSystem.indist_symm`), so a kernel with
+  a one-way dependency has no Rosen view whose projection matches
+  (`rosen_no_view_of_asymmetric`). That is the precise content of
+  "states stand in for things": a thing that depends on another without
+  the converse is a relation Rosen's pair cannot carry. -/
+
+/-- Rosen's formal system (S, F) at the data level. -/
+structure RosenSystem (α : Type*) where
+  /-- S: the set of states. -/
+  states : Set α
+  /-- F: the family of real-valued observables. -/
+  observables : Set (α → ℝ)
+  /-- "defined on S": an observable carries no value off S. The walking
+      arrow, F depends on S, as a Prop. -/
+  defined_on : ∀ f ∈ observables, ∀ x, x ∉ states → f x = 0
+
+/-- Rosen's R_F: two states are indistinguishable when every observable
+    agrees on them (the relation whose quotient is S/R_F, p. 54). -/
+def RosenSystem.indist {α : Type*} (V : RosenSystem α) : Set (α × α) :=
+  {p | p.1 ∈ V.states ∧ p.2 ∈ V.states ∧ ∀ f ∈ V.observables, f p.1 = f p.2}
+
+/-- Rosen's own projection to (T, R): states, and the relation R_F. -/
+def RosenSystem.toKlir {α : Type*} (V : RosenSystem α) : KlirSystem α where
+  things := V.states
+  relation := V.indist
+
+/-- R_F is symmetric — the fact that bounds what a Rosen view can carry. -/
+theorem RosenSystem.indist_symm {α : Type*} (V : RosenSystem α)
+    {p : α × α} (hp : p ∈ V.indist) : (p.2, p.1) ∈ V.indist :=
+  ⟨hp.2.1, hp.1, fun f hf => (hp.2.2 f hf).symm⟩
+
+/-- The price of the Rosen view: the dependency is an equivalence
+    relation on the things. -/
+structure Kernel.IsIndist {α : Type*} (k : Kernel α) : Prop where
+  refl : ∀ a ∈ k.things, (a, a) ∈ k.dep
+  symm : ∀ p ∈ k.dep, (p.2, p.1) ∈ k.dep
+  trans : ∀ a b c, (a, b) ∈ k.dep → (b, c) ∈ k.dep → (a, c) ∈ k.dep
+
+open Classical in
+/-- The indicator of a thing's dependency class: 1 on the things related
+    to `a`, 0 elsewhere. The canonical real-valued witness. -/
+noncomputable def Kernel.classIndicator {α : Type*} (k : Kernel α) (a : α) : α → ℝ :=
+  fun x => if (x, a) ∈ k.dep then 1 else 0
+
+theorem Kernel.classIndicator_eq_one {α : Type*} (k : Kernel α) {a x : α}
+    (h : (x, a) ∈ k.dep) : k.classIndicator a x = 1 := by
+  simp [Kernel.classIndicator, h]
+
+theorem Kernel.classIndicator_eq_zero {α : Type*} (k : Kernel α) {a x : α}
+    (h : (x, a) ∉ k.dep) : k.classIndicator a x = 0 := by
+  simp [Kernel.classIndicator, h]
+
+/-- Generate the Rosen view: the things as states, one observable per
+    dependency class. -/
+noncomputable def Kernel.toRosen {α : Type*} (k : Kernel α) (_h : k.IsIndist) :
+    RosenSystem α where
+  states := k.things
+  observables := {f | ∃ a ∈ k.things, f = k.classIndicator a}
+  defined_on := by
+    rintro f ⟨a, -, rfl⟩ x hx
+    apply k.classIndicator_eq_zero
+    intro hxa
+    exact hx (k.dep_on _ hxa).1
+
+/-- R_F of the generated view is exactly the kernel's dependency. -/
+theorem Kernel.toRosen_indist {α : Type*} (k : Kernel α) (h : k.IsIndist) :
+    (k.toRosen h).indist = k.dep := by
+  ext ⟨s, t⟩
+  constructor
+  · rintro ⟨hs, ht, hf⟩
+    have h1 := hf (k.classIndicator s) ⟨s, hs, rfl⟩
+    rw [k.classIndicator_eq_one (h.refl s hs)] at h1
+    by_contra hst
+    have := k.classIndicator_eq_zero (a := s) (x := t)
+      (fun hts => hst (h.symm _ hts))
+    simp only at h1 this
+    rw [this] at h1
+    exact one_ne_zero h1
+  · intro hst
+    refine ⟨(k.dep_on _ hst).1, (k.dep_on _ hst).2, ?_⟩
+    rintro f ⟨a, -, rfl⟩
+    by_cases hsa : (s, a) ∈ k.dep
+    · have hta : (t, a) ∈ k.dep := h.trans t s a (h.symm _ hst) hsa
+      rw [k.classIndicator_eq_one hsa, k.classIndicator_eq_one hta]
+    · have hta : (t, a) ∉ k.dep := fun hta => hsa (h.trans s t a hst hta)
+      rw [k.classIndicator_eq_zero hsa, k.classIndicator_eq_zero hta]
+
+/-- Round trip (Rosen): the generated pair projects back, through Rosen's
+    own S/R_F construction, to the kernel's (T, R). -/
+theorem Kernel.toRosen_toKlir {α : Type*} (k : Kernel α) (h : k.IsIndist) :
+    (k.toRosen h).toKlir = k.toKlir :=
+  KlirSystem.ext rfl (k.toRosen_indist h)
+
+/-- Faithfulness (Rosen): distinct kernels generate distinct Rosen views. -/
+theorem Kernel.toRosen_injective {α : Type*}
+    {k₁ k₂ : Kernel α} {h₁ : k₁.IsIndist} {h₂ : k₂.IsIndist}
+    (h : k₁.toRosen h₁ = k₂.toRosen h₂) : k₁ = k₂ :=
+  Kernel.toKlir_injective <| by
+    rw [← Kernel.toRosen_toKlir k₁ h₁, ← Kernel.toRosen_toKlir k₂ h₂, h]
+
+/-- WHAT THE ROSEN VIEW CANNOT CARRY. A kernel in which some thing depends
+    on another without the converse has NO Rosen view at all: no pair
+    (S, F) projects, through R_F, to its (T, R). The cost of the view is
+    not a slot left empty but a relation with no home. -/
+theorem rosen_no_view_of_asymmetric {α : Type*} (k : Kernel α)
+    (hasym : ∃ p ∈ k.dep, (p.2, p.1) ∉ k.dep) :
+    ∀ V : RosenSystem α, V.toKlir ≠ k.toKlir := by
+  intro V hV
+  obtain ⟨p, hp, hnp⟩ := hasym
+  have hrel : V.indist = k.dep := congrArg KlirSystem.relation hV
+  apply hnp
+  rw [← hrel] at hp ⊢
+  exact V.indist_symm hp
 
 end Systems
