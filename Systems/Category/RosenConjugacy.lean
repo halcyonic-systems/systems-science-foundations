@@ -13,6 +13,14 @@ Mapping 008, claim 4. Rosen 1978 §7.10 (*Fundamentals of Measurement and
 Representation of Natural Systems*, book pp. 184–186; read from the page images
 2026-09-16, scan pages 202–204).
 
+HUMAN CHECK (2026-09-16, Shingai Thornton, reading the PDF). p. 185: confirmed in
+full — "conjugate" in italics, the four numbered conditions with "identity functor"
+in item 4, the μ(A)/μ(B) square, and "they possess inverses". p. 186: confirmed the
+placement after the THEOREM, diagram (7.10.2) with α, β downward, and "where α, β
+are *equivalences*"; the theorem's displayed equation 𝒟_e(𝒞_f, 𝒮) = 𝒟_e(𝒞_f′, 𝒮)
+was hard to read in print and was confirmed from a cropped enlargement, not the
+page as set. Nothing below depends on that equation.
+
 ## What the pages say
 
 p. 184: a covariant functor T from the one-arrow category 𝒞_f into 𝒮 "consists
