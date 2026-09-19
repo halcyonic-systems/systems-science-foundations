@@ -30,12 +30,13 @@ Seven systems traditions encoded as shape categories, compared via functors, uni
 | [recursive-component-architecture.md](reference/recursive-component-architecture.md) | Design decisions for RecursiveSystem vs RecursiveComponent |
 | [spivak-adaptive-arrangements.md](reference/spivak-adaptive-arrangements.md) | Spivak 2026 as candidate entry #8: "system = 0-ary morphism," Def 5.3.2 unpacked, formalization targets |
 
-### Program 2: Principles Axiomatization (12 → ≤11)
+### Program 2: Principles Axiomatization (4 primitives + 2 refinements + 2 stances + 4 theorems)
 
 Formalizing Mobus's 12 principles to test which are independent axioms and which are theorems.
 
 | Document | What it covers |
 |----------|---------------|
+| [twelve-principles-state.html](paper/twelve-principles-state.html) · [.md](paper/twelve-principles-state.md) | **Start here: the state of the result on one page** (4 September 2026): the count, the regrouped dependency graph, the two carriers and the bridge, every principle's Lean home, what checking found, what is open |
 | [principles-formalization-companion.md](reference/principles-formalization-companion.md) | **The primary deliverable**: axiom table, findings, practical implications |
 | [principles-formalization-roadmap.md](reference/principles-formalization-roadmap.md) | Technical assessment of all 12 principles, sequencing, proof scaffolds |
 | [simon-argument-formalized.md](reference/simon-argument-formalized.md) | Simon's "Architecture of Complexity" decomposed under proof — the full chain |

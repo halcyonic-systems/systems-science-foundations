@@ -1,6 +1,6 @@
 %% halcyonic-canvas v1
-%% title: Mobus's 12 Principles — Dependency DAG (8 axioms / 4 theorems)
-%% legend: solid = derives-from (theorem); dashed = presupposes/refined-by (a Lean def or field); fine-dotted grey = conjecture, no Lean home (5→11, ruled 2026-09-03)
+%% title: Mobus's 12 Principles — Dependency DAG (4 primitives / 2 refinements / 2 stances / 4 theorems, 2026-09-04)
+%% legend: solid = derives-from or refines (a theorem or a construction); dashed = presupposes (a Lean def or field); fine-dotted grey = conjecture, no Lean home (5→11, ruled 2026-09-03); amber dashed = separated both ways given an external criterion (6–8)
 %% layout: layered
 %% role: p1=systems
 %% role: p2=systems
@@ -14,21 +14,23 @@
 %% role: p7=knowledge
 %% role: p9=knowledge
 %% role: p10=knowledge
-%% desc: p5=Theorem: every structural complexity measure is a function of 1+2+3 (12 to 11)
+%% desc: p3=Refinement of 1: the bond graph read as a flow graph; adds only the capacity type
+%% desc: p2=Refinement of 1: Eq. 4.3 decomposition + within>between strength; presupposes 1, can fail (not_hierarchical_of_uniform)
+%% desc: p5=Theorem: sameKind_equivalence from 1 and 2 by import; 3's data is 1's field
 %% desc: p9=Theorem: a one-step-correct internal model is correct at every horizon
-%% desc: p10=Theorem: a self-model is the diagonal case of 9; existence trivial
-%% desc: p7=Theorem: information genus; Shannon entropy a bounded special case
-%% desc: p6=Axiom (blind): change under environmental fitness selection; no model or goal
-%% desc: p8=Axiom: set-point not in the dynamics; a good regulator contains a model (K=2)
-%% desc: p11=Axiom (agential, observe/GET): a model strictly simpler than the system
-%% desc: p12=Axiom (agential, intervene/PUT): a goal from outside the boundary
+%% desc: p10=Theorem: a self-model is the diagonal case of 9; accurate fast self-model forces periodicity
+%% desc: p7=Theorem: information genus; Shannon entropy bounded by Hartley
+%% desc: p6=Primitive: EvolutionE, fitness relative to a stepping environment (Red Queen)
+%% desc: p8=Primitive (conditional): HomeostatD, set-point + disturbance; independent of 6 only given an external criterion (evolvesByEnv_settle)
+%% desc: p11=Stance (observe): UnderstoodNC, non-constant model dynamics
+%% desc: p12=Stance (intervene): DirectedAgent / DirectedUnderModel; bare Improvement retired
 flowchart TD
     p1["1 Systemness"]
-    p2["2 Hierarchy"]
-    p3["3 Networks"]
+    p3["3 Networks · = 1 read as a graph"]
+    p2["2 Hierarchy · 1 + decomposition + strength"]
     p4["4 Dynamics"]
-    p8["8 Governance"]
-    p6["6 Evolution"]
+    p6["6 Evolution · fitness relative to a stepping environment"]
+    p8["8 Governance · set-point + disturbance"]
     p9["9 Internal Models"]
     p10["10 Self-Models"]
     p7["7 Information"]
@@ -36,19 +38,29 @@ flowchart TD
     p11["11 Understandability"]
     p12["12 Improvability"]
 
+    p1 ==> p3
+    p1 ==> p2
     p1 ==> p5
     p2 ==> p5
-    p3 ==> p5
     p4 ==> p9
     p9 ==> p10
     p9 ==> p7
-    p1 -.->|"system's state"| p4
+    p1 -.->|"system field"| p4
     p1 -.->|"system field"| p8
     p4 -.->|"+ set-point"| p8
     p9 -.->|"K=2"| p8
-    p5 -. "compression (conjecture: needs the component–state bridge)" .-> p11
-    linkStyle 10 stroke-dasharray: 2 6, stroke: #999
+    p6 -.-|"separated both ways, given an external criterion"| p8
+    p5 -. "compression (conjecture)" .-> p11
     p9 -.->|"refined by"| p11
     p11 -.->|"directed by"| p12
     p8 -.->|"engine for"| p12
-    p6 -.->|"blind / directed"| p12
+    linkStyle 11 stroke-dasharray: 6 4, stroke: #9a6b12
+    linkStyle 12 stroke-dasharray: 2 6, stroke: #9aa6b2
+    classDef pr fill:#e4f1f3,stroke:#1c7c8a,color:#1e2a38
+    classDef rf fill:#f3ecd9,stroke:#9a6b12,color:#1e2a38
+    classDef st fill:#eef2e4,stroke:#4f6b1f,color:#1e2a38
+    classDef th fill:#e9e9f6,stroke:#4b4f9e,color:#1e2a38
+    class p1,p4,p6,p8 pr
+    class p2,p3 rf
+    class p11,p12 st
+    class p5,p7,p9,p10 th

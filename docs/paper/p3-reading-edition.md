@@ -576,7 +576,8 @@ From any claim to its proof. Paths are relative to the SSF repository root.
 | Clean list (4 primitives + 2 refinements + 2 stances + 4 theorems), foundational profile, changelog | `docs/paper/axiom-table.md` |
 | The computed count: witnesses, within-block matrix, re-headlined #2, non-degeneracy, environment-relative #6/#8 | `Systems/Principles/{Witnesses,Matrix,Hierarchy,NonDegenerate,EnvRelative}.lean`; `docs/paper/independence-matrix.md` |
 | Component–state bridge (adopted, product form) and environment coordinate | `Systems/Core/JointState.lean`, `Systems/Core/EnvState.lean`; `docs/reference/component-state-bridge-memo.md` |
-| Dependency DAG source | `docs/paper/dependency-dag.mmd` (static draft `dependency-dag-draft.svg`) |
+| Dependency DAG source | `docs/paper/dependency-dag.mmd` (regrouped 2026-09-04; static draft `dependency-dag-draft.svg` is the 2026-09-03 form) |
+| One-page state of the result | `docs/paper/twelve-principles-state.html` (text twin `.md`): count, both figures, Lean homes, findings, open items |
 | Full findings log (32 numbered findings), Simon's argument, program status | `docs/reference/principles-formalization-companion.md` |
 | Technical roadmap | `docs/reference/principles-formalization-roadmap.md` |
 | Simon chain in detail | `docs/reference/simon-argument-formalized.md` |

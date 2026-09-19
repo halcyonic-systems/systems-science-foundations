@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Twelve Principles DAG</title>
+<!--
+  Mobus's twelve principles, as the kernel counts them: the state of the result on 4 September 2026.
+  Self-contained page: the two figures are Mermaid sources (docs/paper/dependency-dag.mmd and
+  docs/paper/two-carriers.mmd, copied verbatim below) rendered by Mermaid from jsDelivr.
+  Companion text and provenance: docs/paper/twelve-principles-state.md.
+  Also published as a private Claude artifact: https://claude.ai/code/artifact/e562fed0-60c5-4b59-8481-0640e40961f1
+-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light dark;
+    --ground: #f4f7f9; --panel: #ffffff; --ink: #1e2a38; --ink-2: #5b6b7d; --rule: #d6dee6;
+    --teal: #1c7c8a; --indigo: #4b4f9e; --amber: #9a6b12; --conj: #9aa6b2;
+    --prim-bg: #e4f1f3; --ref-bg: #f3ecd9; --thm-bg: #e9e9f6; --stance-bg: #eef2e4; --stance: #4f6b1f;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: "IBM Plex Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #101820; --panel: #17212b; --ink: #e6ecf1; --ink-2: #9fb0c0; --rule: #2a3742;
+      --teal: #5cc3cf; --indigo: #9b9ee6; --amber: #d9a441; --conj: #6b7986;
+      --prim-bg: #163238; --ref-bg: #3a3020; --thm-bg: #24264a; --stance-bg: #2a3520; --stance: #b7d27a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #101820; --panel: #17212b; --ink: #e6ecf1; --ink-2: #9fb0c0; --rule: #2a3742;
+    --teal: #5cc3cf; --indigo: #9b9ee6; --amber: #d9a441; --conj: #6b7986;
+    --prim-bg: #163238; --ref-bg: #3a3020; --thm-bg: #24264a; --stance-bg: #2a3520; --stance: #b7d27a;
+  }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.55; }
+  main { max-width: 1000px; margin: 0 auto; padding: 40px 24px 64px; display: grid; gap: 40px; }
+  header h1 { font-family: var(--serif); font-weight: 600; font-size: 42px; line-height: 1.05; margin: 0 0 10px; text-wrap: balance; }
+  header p, section > p { max-width: 66ch; margin: 0; color: var(--ink-2); }
+  .eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); font-weight: 600; margin: 0 0 6px; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: 28px; margin: 0 0 8px; text-wrap: balance; }
+  figure { margin: 0; background: var(--panel); border: 1px solid var(--rule); padding: 20px 20px 14px; }
+  figure .diagram { overflow-x: auto; }
+  figcaption { margin-top: 10px; font-size: 13px; color: var(--ink-2); max-width: 72ch; }
+  .legend { display: flex; flex-wrap: wrap; gap: 18px; font-size: 13px; color: var(--ink-2); margin-top: 8px; }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .sw { width: 34px; height: 0; border-top: 3px solid var(--ink); }
+  .sw.dash { border-top: 2px dashed var(--ink); }
+  .sw.conj { border-top: 2px dotted var(--conj); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; background: var(--panel); border: 1px solid var(--rule); }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; }
+  td.n { font-variant-numeric: tabular-nums; color: var(--ink-2); width: 2.5em; }
+  code { font-family: var(--mono); font-size: 12.5px; }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 3px; font-size: 12px; font-weight: 500; white-space: nowrap; }
+  .pill.pr { background: var(--prim-bg); color: var(--teal); }
+  .pill.rf { background: var(--ref-bg); color: var(--amber); }
+  .pill.st { background: var(--stance-bg); color: var(--stance); }
+  .pill.th { background: var(--thm-bg); color: var(--indigo); }
+  .tablewrap { overflow-x: auto; }
+  .count { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .count div { background: var(--panel); border: 1px solid var(--rule); padding: 14px 16px; }
+  .count b { display: block; font-family: var(--serif); font-size: 34px; line-height: 1; font-weight: 600; }
+  .count small { color: var(--ink-2); font-size: 13px; }
+  .count .pr b { color: var(--teal); } .count .rf b { color: var(--amber); } .count .st b { color: var(--stance); } .count .th b { color: var(--indigo); }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; counter-reset: s; }
+  .steps div { background: var(--panel); border: 1px solid var(--rule); padding: 12px 14px; font-size: 13.5px; }
+  .steps div::before { counter-increment: s; content: counter(s); font-family: var(--serif); font-size: 22px; color: var(--teal); display: block; }
+  .steps b { display: block; margin-bottom: 4px; }
+  .cond { border-left: 3px solid var(--amber); padding: 10px 14px; background: var(--panel); max-width: 72ch; }
+  .open li { margin-bottom: 6px; }
+  .open { max-width: 72ch; padding-left: 20px; margin: 0; }
+  .mermaid-diagram svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+  @media (max-width: 720px) { .count, .steps { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">systems-science-foundations · state of the result, 4 September 2026</p>
+    <h1>Mobus's twelve principles, as the kernel actually counts them</h1>
+    <p>Twelve prose principles were given tractable Lean cores, then forced to separate. What survived is not "eight independent axioms." It is four primitives, two refinements of the first, two stances an agent takes, and four theorems. Every claim on this page has a theorem name in the repo.</p>
+  </header>
+
+  <section>
+    <p class="eyebrow">The count</p>
+    <div class="count">
+      <div class="pr"><b>4</b><small>ontological primitives<br>Systemness · Dynamics · Evolution · Governance</small></div>
+      <div class="rf"><b>2</b><small>refinements of Systemness<br>Networks · Hierarchy</small></div>
+      <div class="st"><b>2</b><small>agential stances<br>Understandability · Improvability</small></div>
+      <div class="th"><b>4</b><small>theorems<br>Complexity · Information · Internal Models · Self-Models</small></div>
+    </div>
+    <p style="margin-top:12px" class="cond"><b>One condition.</b> Governance is independent of Evolution provided evolution's criterion is external, Mobus's "not resident in some mind." Let the fitness order float and every governing law is also evolving, by choosing "the set point is fittest." A homeostat is selection with the criterion internalized and frozen; that is Ashby's claim, now <code>sep_governanceD_evolutionE</code> and <code>evolvesByEnv_settle</code> side by side.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">How prose became checkable</p>
+    <h2>Four steps, four owners</h2>
+    <div class="steps">
+      <div><b>The sentence</b>Mobus's one-liner, verbatim, now in each structure's docstring with its source line. Owned by the author.</div>
+      <div><b>The tractable core</b>A Lean structure whose fields are the sentence's nouns and whose constraints are its verbs, with named deferrals. Model-drafted, human-read.</div>
+      <div><b>Consequences and cases</b>Derivations, separating instances, inhabitation witnesses. The only step the kernel guarantees.</div>
+      <div><b>The author's audit</b>Co-authorship, or a faithfulness ask. The only check on whether the trail leads to what was meant.</div>
+    </div>
+  </section>
+
+  <figure>
+    <p class="eyebrow">Figure 1 · dependency graph, regrouped</p>
+    <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+    p1["1 Systemness"]
+    p3["3 Networks · = 1 read as a graph"]
+    p2["2 Hierarchy · 1 + decomposition + strength"]
+    p4["4 Dynamics"]
+    p6["6 Evolution · fitness relative to a stepping environment"]
+    p8["8 Governance · set-point + disturbance"]
+    p9["9 Internal Models"]
+    p10["10 Self-Models"]
+    p7["7 Information"]
+    p5["5 Complexity"]
+    p11["11 Understandability"]
+    p12["12 Improvability"]
+
+    p1 ==> p3
+    p1 ==> p2
+    p1 ==> p5
+    p2 ==> p5
+    p4 ==> p9
+    p9 ==> p10
+    p9 ==> p7
+    p1 -.->|"system field"| p4
+    p1 -.->|"system field"| p8
+    p4 -.->|"+ set-point"| p8
+    p9 -.->|"K=2"| p8
+    p6 -.-|"separated both ways, given an external criterion"| p8
+    p5 -. "compression (conjecture)" .-> p11
+    p9 -.->|"refined by"| p11
+    p11 -.->|"directed by"| p12
+    p8 -.->|"engine for"| p12
+    linkStyle 11 stroke-dasharray: 6 4, stroke: #9a6b12
+    linkStyle 12 stroke-dasharray: 2 6, stroke: #9aa6b2
+    classDef pr fill:#e4f1f3,stroke:#1c7c8a,color:#1e2a38
+    classDef rf fill:#f3ecd9,stroke:#9a6b12,color:#1e2a38
+    classDef st fill:#eef2e4,stroke:#4f6b1f,color:#1e2a38
+    classDef th fill:#e9e9f6,stroke:#4b4f9e,color:#1e2a38
+    class p1,p4,p6,p8 pr
+    class p2,p3 rf
+    class p11,p12 st
+    class p5,p7,p9,p10 th
+</pre>
+    </div>
+    <div class="legend">
+      <span><i class="sw"></i>derives from, or refines (a theorem or a construction)</span>
+      <span><i class="sw dash"></i>presupposes (a Lean field or def)</span>
+      <span><i class="sw conj"></i>conjecture, no Lean home (5 → 11)</span>
+      <span><b class="pill pr">primitive</b> <b class="pill rf">refinement</b> <b class="pill st">stance</b> <b class="pill th">theorem</b></span>
+    </div>
+    <figcaption>What changed since the first draft of this graph: Networks and Hierarchy now hang under Systemness as refinements (the bond graph read twice; a decomposition whose complex components are themselves systems). The Networks-to-Governance arrow was found to have no Lean home and is redrawn from Systemness. Evolution and Governance are joined by a two-way separation rather than an arrow, with the external-criterion condition on it.</figcaption>
+  </figure>
+
+  <figure>
+    <p class="eyebrow">Figure 2 · the two carriers, and the bridge between them</p>
+    <div class="diagram">
+<pre class="mermaid">
+flowchart LR
+    subgraph C["Component carrier: a type α with a relation"]
+        c1["1 Systemness · ConcreteSystem α"]
+        c3["3 Networks · FlowNetwork (refinement)"]
+        c2["2 Hierarchy · Hierarchical σ T (refinement)"]
+        c5["5 Complexity · SameKind (theorem)"]
+    end
+    subgraph S["State carrier: a joint state with a law"]
+        s4["4 Dynamics · law"]
+        s6["6 EvolutionE · fit : E → order on S"]
+        s8["8 HomeostatD · set-point + disturb"]
+        s11["11 Understandability · coarse-graining"]
+        s12["12 Improvability · DirectedAgent"]
+        s9["9 Internal Models (theorem)"]
+        s10["10 Self-Models (theorem)"]
+        s7["7 Information (theorem)"]
+    end
+    C ==>|"JointStateE: one coordinate per component, per flow, per environment thing; lawful subset; aggregate = law factors"| S
+    classDef pr fill:#e4f1f3,stroke:#1c7c8a,color:#1e2a38
+    classDef rf fill:#f3ecd9,stroke:#9a6b12,color:#1e2a38
+    classDef st fill:#eef2e4,stroke:#4f6b1f,color:#1e2a38
+    classDef th fill:#e9e9f6,stroke:#4b4f9e,color:#1e2a38
+    class c1,s4,s6,s8 pr
+    class c2,c3 rf
+    class s11,s12 st
+    class c5,s9,s10,s7 th
+</pre>
+    </div>
+    <figcaption>The bridge is adopted. A state is one reading per component, per flow, and per environment thing, which is Bunge's state function indexed by Mobus's tuple and what George's H notes call the state image. Bunge's "union" sentence on page 640 was the one reading that disagreed with the rest of the tradition and with his own three-neuron example (eight states, at most six by union): <code>union_misses_neuron_aggregate</code>. The union definitions survive under retired names with tombstones.</figcaption>
+  </figure>
+
+  <section>
+    <p class="eyebrow">The twelve, with their Lean homes</p>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>#</th><th>Principle</th><th>Verdict</th><th>Structure or theorem</th><th>Where it separates, or why it doesn't</th></tr></thead>
+      <tbody>
+        <tr><td class="n">1</td><td>Systemness</td><td><span class="pill pr">primitive</span></td><td><code>ConcreteSystem</code></td><td>Composition organized: <code>composition_organized</code></td></tr>
+        <tr><td class="n">3</td><td>Networks</td><td><span class="pill rf">refinement</span></td><td><code>FlowNetwork</code> · <code>ConcreteSystem.toFlowNetwork</code></td><td>Derivable both ways from 1; adds only the capacity type</td></tr>
+        <tr><td class="n">2</td><td>Hierarchy</td><td><span class="pill rf">refinement</span></td><td><code>Hierarchical</code> (Eq. 4.3 <code>RecursiveComponent</code> + <code>NearDecomposable</code>)</td><td>Presupposes 1 by construction; can fail: <code>not_hierarchical_of_uniform</code></td></tr>
+        <tr><td class="n">4</td><td>Dynamics</td><td><span class="pill pr">primitive</span></td><td><code>DynamicSystem</code> · <code>coupled_equilibrium_iff_fixed</code></td><td><code>sep_dynamics_evolution</code>, <code>sep_dynamics_governanceNeg</code></td></tr>
+        <tr><td class="n">6</td><td>Evolution</td><td><span class="pill pr">primitive</span></td><td><code>EvolutionE</code> · <code>redQueen_evolutionE_not_evolution</code></td><td>Red Queen climbs relative to each environment, evolves under no fixed order; the frozen case is the old structure</td></tr>
+        <tr><td class="n">8</td><td>Governance</td><td><span class="pill pr">primitive</span> <small>(conditional)</small></td><td><code>HomeostatD</code> · <code>Robust</code></td><td><code>sep_governanceD_evolutionE</code>, <code>sep_evolutionE_governanceD</code>; condition: <code>evolvesByEnv_settle</code></td></tr>
+        <tr><td class="n">11</td><td>Understandability</td><td><span class="pill st">stance</span></td><td><code>Understanding</code> · <code>UnderstoodNC</code></td><td>Non-constant model dynamics turns four cardinality separations into dynamical ones</td></tr>
+        <tr><td class="n">12</td><td>Improvability</td><td><span class="pill st">stance</span></td><td><code>DirectedAgent</code> · <code>DirectedUnderModel</code></td><td>Bare <code>Improvement</code> retired: <code>improved_iff_moving</code>; the tracking form separates on the 4-cycle</td></tr>
+        <tr><td class="n">5</td><td>Complexity</td><td><span class="pill th">theorem</span></td><td><code>sameKind_equivalence</code></td><td>From 1 and 2 by import; 3's data is 1's field</td></tr>
+        <tr><td class="n">7</td><td>Information</td><td><span class="pill th">theorem</span></td><td><code>entropy_le_log_card</code></td><td>Shannon bounded by Hartley, equality at uniform</td></tr>
+        <tr><td class="n">9</td><td>Internal Models</td><td><span class="pill th">theorem</span></td><td><code>AnticipatoryModel.tracks</code></td><td>One-step correct is correct at every horizon</td></tr>
+        <tr><td class="n">10</td><td>Self-Models</td><td><span class="pill th">theorem</span></td><td><code>FastSelfModel.accurate_forces_periodic</code></td><td>Diagonal of 9; accurate fast self-model forces periodicity</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">What the checking found that the prose never contained</p>
+    <ul class="open">
+      <li><b>Evolvability was a property of the environment's order alone</b> as first encoded (<code>evolvable_iff_exists_lt</code>). The repair, fitness indexed by a stepping environment, made dynamics matter and produced the Red Queen.</li>
+      <li><b>Understanding was satisfied by a model that predicts nothing</b> on any finite system with three or more states. Non-constant model dynamics is the minimal repair.</li>
+      <li><b>Hierarchy on Bunge's ancestor relation asserts nothing</b>; on Mobus's own Equation 4.3 it can fail, and it presupposes systemness because a complex component is a system.</li>
+      <li><b>The state-space "union" reading of Bunge</b> misclassifies his own paradigm aggregate. The product reading is what Klir, Mesarovic, Wymore, Willems, Myers, and the bert-compose simulator all use.</li>
+      <li><b>Whether flows carry state is a Δt question.</b> A flow with transport time is a stock in transit; if the tick is shorter than the crossing, the flow needs its own coordinate. The tuple's eighth slot decides the shape of the state space.</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="eyebrow">Still open</p>
+    <ul class="open">
+      <li><b>Cross-block independence</b> (component principles against state principles) is now statable through the bridge and has not been run.</li>
+      <li><b>The compression arrow</b> from Complexity to Understandability stays a conjecture until someone states it over the joint state.</li>
+      <li><b>For George:</b> cite Bunge's page 640 "union" as a slip corrected by his own examples, or derive the product from his definition on histories; and adopt the two-sense vocabulary his own H notes use, structural state (the tuple) and dynamical state (the image).</li>
+      <li><b>For Facets:</b> name bert-compose's per-tick row as the state image contract (facets#373).</li>
+    </ul>
+    <p class="src" style="margin-top:12px;font-size:13px">Sources: <code>docs/paper/p3-reading-edition.md</code> (the ledger), <code>docs/paper/independence-matrix.md</code>, <code>docs/reference/component-state-bridge-memo.md</code>, <code>Systems/Principles/*.lean</code>, <code>Systems/Core/{JointState,EnvState}.lean</code>. Repo <code>halcyonic-systems/systems-science-foundations</code>, main at the 4 September push.</p>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+(function () {
+  if (typeof mermaid === "undefined") return;
+  var pres = Array.prototype.slice.call(document.querySelectorAll("pre.mermaid"));
+  var mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  var root = document.documentElement;
+  var items = pres.map(function (pre) {
+    var mount = document.createElement("div");
+    mount.className = "mermaid-diagram";
+    return { pre: pre, mount: mount, src: pre.textContent || "" };
+  });
+  var seq = 0, gen = 0, lastKey = "";
+  function render() {
+    var theme = root.getAttribute("data-theme");
+    var dark = theme === "dark" || (!!(mq && mq.matches) && theme !== "light");
+    var key = dark ? "d" : "l";
+    if (key === lastKey) return;
+    lastKey = key;
+    var mine = ++gen;
+    var bg = getComputedStyle(document.body).backgroundColor;
+    mermaid.initialize({
+      startOnLoad: false, securityLevel: "strict", theme: "base",
+      flowchart: { useMaxWidth: false },
+      themeVariables: {
+        background: bg, mainBkg: dark ? "#262b34" : "#f4efe4", primaryColor: dark ? "#262b34" : "#f4efe4",
+        primaryTextColor: dark ? "#f2f3f5" : "#42392e", lineColor: dark ? "#a8adb8" : "#8a7f6d",
+        primaryBorderColor: dark ? "#9aa4b8" : "#7a6c52", nodeBorder: dark ? "#9aa4b8" : "#7a6c52",
+        clusterBorder: dark ? "#9aa4b8" : "#7a6c52", edgeLabelBackground: bg,
+        clusterBkg: "rgba(127,127,127,0.07)", titleColor: dark ? "#f2f3f5" : "#42392e", darkMode: dark,
+        fontSize: "16px", fontFamily: getComputedStyle(document.body).fontFamily || "sans-serif"
+      },
+      themeCSS: ".node rect, .node circle, .node polygon, .node path, .cluster rect { stroke-width: 2px; }"
+    });
+    items.forEach(function (it) {
+      var id = "mermaid-" + seq++;
+      mermaid.render(id, it.src).then(function (r) {
+        if (mine !== gen) return;
+        it.mount.innerHTML = r.svg;
+        if (!it.mount.parentNode) it.pre.parentNode.insertBefore(it.mount, it.pre);
+        it.pre.style.display = "none";
+      }, function () {
+        if (it.mount.parentNode) it.mount.parentNode.removeChild(it.mount);
+        it.pre.style.display = "";
+      });
+    });
+  }
+  render();
+  if (mq && mq.addEventListener) mq.addEventListener("change", render);
+})();
+</script>
+</body>
+</html>
