@@ -9,7 +9,7 @@
   - Category/ Shape categories (8 traditions), comparison functors, K ≅ 2
 
   See docs/INDEX.md for documentation reading order.
-  See CLAUDE.md for dependency graph and conventions.
+  See AGENTS.md for dependency graph and conventions.
 -/
 
 -- Phase 1: Bunge foundations + Principles formalization
