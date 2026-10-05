@@ -7,7 +7,7 @@
 | Document | What it tells you |
 |----------|------------------|
 | [README.md](../README.md) | Project overview, headline findings, how to build |
-| [CLAUDE.md](../CLAUDE.md) | Technical structure, conventions, dependency graph |
+| [AGENTS.md](../AGENTS.md) | Technical structure, conventions, dependency graph |
 
 ## The Two Programs
 
@@ -61,7 +61,7 @@ Formalizing Mobus's 12 principles to test which are independent axioms and which
 
 ## The Lean Code
 
-See [CLAUDE.md](../CLAUDE.md) for the full dependency graph. Quick orientation:
+See [AGENTS.md](../AGENTS.md) for the full dependency graph. Quick orientation:
 
 ```
 Systems/
