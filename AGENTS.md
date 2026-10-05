@@ -2,11 +2,11 @@
 
 Agent instructions for this repo, for any coding agent. Claude Code reads this file through `CLAUDE.md`, which imports it.
 
-Machine-verified systems ontology in Lean 4 with Mathlib. Seven traditions (Klir, Bunge, Mobus, Myers, Wymore, Mesarović, Joslyn) encoded as shape categories with comparison functors and a common core theorem. **All 12 Mobus principles formalized** (#6 Evolution completed the set, 6/09). ~10,800 lines across 64 files, zero `sorry`s, zero custom axioms.
+Machine-verified systems ontology in Lean 4 with Mathlib. Shape categories for Klir, Bunge, Mobus, Myers, Wymore, Mesarović, Joslyn, Spivak, Willems, Rosen and Bertalanffy, with comparison functors and the common-core result (existence proven; maximality repaired at the quiver level, see Claim hygiene). **All 12 Mobus principles formalized** (#6 Evolution completed the set, 6/09). 86 Lean files, ~18,700 lines (counted 2026-10-05), zero `sorry`s, zero custom axioms.
 
-**Claim hygiene**: faithfulness of the eight `klirTo*` embeddings is now a theorem (`klirTo*_faithful`), and the proof is cheap — it follows from `I_Klir` being thin, so it says nothing about the target traditions. The old maximality claim was false; the counterexample is machine-checked in `SharedPrimitive.lean`. The repaired claim lives on quivers, not free categories, and is relative to the documented presentations. Never state maximality at the free-category level. `docs/reference/common-core-theorem.md` still carries the retired prose version and needs rewriting.
+**Claim hygiene**: faithfulness of the eight `klirTo*` embeddings is now a theorem (`klirTo*_faithful`), and the proof is cheap — it follows from `I_Klir` being thin, so it says nothing about the target traditions. The old maximality claim was false; the counterexample is machine-checked in `SharedPrimitive.lean`. The repaired claim lives on quivers, not free categories, and is relative to the documented presentations: `SharedPrimitive.connected_is_single_arrow` ("the only dependency all the encoded traditions directly assert is one", `CommonCore.lean`), forced by Joslyn (no vertex of out-degree two) and Willems (no vertex of in-degree two, no composable pair). Never state maximality at the free-category level. The prose account is `docs/reference/common-core-theorem.md` (revised to the repaired claim 2026-07-25); since 2026-08-11 its headline claims are restated with full types in `Systems/Challenge.lean`, checked by `scripts/check-challenge.sh`.
 
-**Key insight**: The common core of all seven independently developed systems definitions is Klir's S = (T, R) --- the walking arrow category **2**. A system, in the sense shared by every tradition from Mesarović (1964) through Myers (2023), is a morphism: relations depend on things. Everything else --- environment, boundary, state, input, output, time, mechanism, feedback --- is tradition-specific elaboration. This was *discovered* through formalization, not claimed by any author.
+**Key insight**: Klir's S = (T, R) --- the walking arrow category **2** --- embeds into the shape categories of Bunge, Mobus, Myers, Wymore, Mesarović, Joslyn, Spivak and Willems, injective on objects and faithful (`klirTo*_obj_injective`, `klirTo*_faithful`). Compared on generating quivers, and relative to the documented presentations, nothing larger is shared: a connected quiver with an edge that embeds into both the Joslyn and the Willems quiver has exactly two vertices, with every edge running between them (`connected_is_single_arrow`). The shared commitment, from Mesarović (1964) through Spivak (2026): a system has things and relations among them, and the relations depend on the things. Everything else --- environment, boundary, state, input, output, time, mechanism, feedback --- is tradition-specific elaboration. This was *discovered* through formalization, not claimed by any author.
 
 ## Project Structure
 
@@ -32,6 +32,10 @@ Systems/
     Understanding.lean   Compression core: onto+lossy+non-degenerate abstraction (Principle 11), tracks/predict, card/Hartley drop, #9⇏#11 via one-state + Fin 3 prime-cycle witnesses — axiom-tier, dual to #9
     Improvability.lean   Agency framing (Principle 12): Improvement/DirectedAgent — external goal + intervention on dynamics; #12⟹#11 (carries Understanding), Homeostat the engine, #12⇏#6 (prime-cycle no directed agent); #11 GET + #12 PUT = agential layer — axiom-tier
     Evolution.lean       Blind pillar (Principle 6): Evolution over an environmental fitness preorder — generational step fitness-non-decreasing; adapts (all-horizon), Evolvable (CAES capacity); evolvable_but_not_improvable (#6⇏#12, prime-cycle); no model/goal — blind dual of #12 — axiom-tier. Completes all 12.
+    Decomposition.lean   Hierarchical decomposition by reference: the seam contract (bert-lenses#89)
+    InterfaceDecomposition.lean  Decomposing a BOUNDARY component: the membrane-crossing seam (SSF #43)
+    JointState.lean      The component–state bridge: run state as a dependent product indexed by the CES triple
+    EnvState.lean        The joint state with an ENVIRONMENT coordinate (decision A, 2026-09-04)
   Core.lean              Imports all Core modules
   Mobus/                 Phase 2: Mobus 8-tuple + composition
     FlowNetwork.lean     Directed graphs with parametric capacity κ (Eq. 4.4)
@@ -41,9 +45,19 @@ Systems/
     Tuple.lean           Full 8-tuple, 5 coherence constraints (Eq. 1)
     Bridge.lean          toBunge projection, subsystem preservation, info loss
     Composition.lean     8-tuple composition, bipartite transfer theorem
-  Klir/                  Phase 3: Klir common root (146 lines)
+    Lifecycle.lean       Closure of the 8-tuple under lawful change (the life-cycle paper's centre)
+  Bunge/
+    StructureFamily.lean Richer Bunge structure: a family of named relations (imported by the Phase 1 functors)
+    AggregateBridge.lean SSF #48: the two aggregate criteria, bridge or separating instance
+  Klir/                  Phase 3: Klir common root, views, lens-entry gates
     KlirSystem.lean      S = (T, R), projection maps, commuting triangle (rfl)
-  Category/              Categorification Phases 1-2 (~2,350 lines)
+    ViewGeneration.lean  The K ≅ 2 kernel generates each tradition's presentation as a faithful view
+    SpivakSystem.lean    The data-level Spivak view: energy-driven systems and the cost of the eighth entry
+    RosenWitness.lean    Mapping 008, claim 3: a Bunge concrete system whose Rosen view loses the bond
+    Gates.lean           The lens-entry gate booleans, shared by every binding rung (bert-lenses#24)
+    GatesTruthTable.lean Rung 1 of the lens-entry binding: fixture the Rust gates are tested against
+    GatesOracle.lean     Rung 1.5: the `lake exe` oracle over the same gate declarations
+  Category/              Categorification
     SubsystemCategory.lean  Subsystem orderings as thin categories (Preorder instances)
     FlattenFunctor.lean     Flatten as functor, Finding 3 as naturality
     OrderingTriangle.lean   Three orderings as functor triangle, non-fullness witnesses
@@ -55,11 +69,44 @@ Systems/
     ShapeWymore.lean        I_Wymore: 4 obj, 3 arrows (FSD quintuple + time)
     ShapeMesarovic.lean     I_Mesarovic: 2-3 obj (I/O base + global state extension)
     ShapeJoslyn.lean        I_Joslyn: 3 obj, 3 arrows (cyclic — feedback loop)
+    ShapeSpivak.lean        Shape category for Spivak's adaptive arrangements
+    ShapeWillems.lean       Shape category for Willems' behavioral triple Σ = (T, W, B)
+    ShapeRosen.lean         Shape category for Rosen's formal system (S, F)
+    ShapeBertalanffy.lean   Shape categories for Bertalanffy's GST: the 1968 shape, the 1972 restatement, and the revision functor
     ShapeComparison.lean    I_Mobus → I_Bunge: faithful, not full, divergence catalogue
     ShapeComparison_Myers.lean   I_Mobus → I_Myers: expose only, update unreachable
     ShapeComparison_Wymore.lean  I_Wymore → I_Mobus: object-injective, time mediated
     Diagram.lean            BungeDiagram: system-as-functor I_Bunge → Type
-    CommonCore.lean         K ≅ 𝟐: Klir embeds into all 7 shapes (common core theorem)
+    CommonCore.lean         Existence: I_Klir embeds into 8 shapes, injective on objects + faithful
+    SharedPrimitive.lean    Maximality repaired on quivers: connected_is_single_arrow; free_category_maximality_fails
+    MyersSpivakFaithful.lean     The commitments-ladder inclusion is faithful
+    RosenKlirIso.lean       Rosen's (S, F) and the walking arrow are the same shape (mapping 008, claim 1)
+    RosenConjugacy.lean     Rosen's conjugacy is the isomorphism relation of the arrow category
+    CyclicObstruction.lean  Cyclicity is a boundary of the finite-shape method (shared obstruction)
+    JoslynIncomparability.lean   Joslyn's feedback shape is a boundary of the finite-shape method
+    SpivakIncomparability.lean   Spivak's value-feedback shape is a boundary of the finite-shape method
+  Joslyn/                Joslyn, "Semantic Control Systems" (1995)
+    JoslynSystem.lean    Joslyn's System₁: the fourth vertex, set-theoretic tier
+    Control.lean         Control₁/Control₂ hierarchy + Prop 29 tractable core
+    BungeMap.lean        Phase 4.4: the Joslyn→Bunge partial map, the non-functorial edge
+    HCGS.lean            Phase 4.5: Control₂ ≅ HCGS, the independent convergence
+  Mesarovic/
+    Decomposition.lean   Mesarovic 1964: the decomposition theorem's two cores
+  Dynamics/
+    Record.lean          The declared Dynamics descriptor: dynamics as checkable data
+    Transition.lean      The typed transition (#112 Half A, step 1)
+    Mechanism.lean       MechanismSpec: the Increment-1 surrogate for Bunge's mechanism M(σ)
+    CircuitHistory.lean  RESEARCH (bert-lenses#112): the H-instantiation question
+  Principles/
+    Matrix.lean          The within-block independence matrix
+    Witnesses.lean       Separating instances for the dependency DAG
+    Hierarchy.lean       #2 Hierarchy re-headlined on Mobus Eq. 4.3
+    NonDegenerate.lean   The proposed non-degeneracy conditions, as new predicates
+    EnvRelative.lean     Environment-relative readings of #6 and #8 on a product carrier S × E
+  Examples/
+    Thermostat.lean      Joslyn's thermostat formalized under Klir, Bunge, and Mobus
+  Principles.lean        Mobus's twelve principles, the front door
+  Challenge.lean         The K ≅ 2 headline claims, restated for cold verification
 Systems.lean             Root import
 (Floridi–Jia–Tohmé 2025 Figure 1 in Lean lives in its OWN repo, halcyonic-systems/floridi-lean,
  Mathlib pinned to this repo's revision; moved out 2026-09-10 so it stays a small citable unit.)
@@ -166,12 +213,17 @@ Categorification Phase 1 (thin categories):
 
 Categorification Phase 2 (shape categories — free categories on quivers):
   ShapeKlir, ShapeBunge, ShapeMobus, ShapeMyers, ShapeWymore,
-  ShapeMesarovic, ShapeJoslyn — all independent (Mathlib only)
+  ShapeMesarovic, ShapeJoslyn, ShapeRosen — all independent (Mathlib only)
+  ShapeSpivak imports ShapeMyers
+  ShapeWillems imports ShapeKlir + ShapeMesarovic
+  ShapeBertalanffy imports ShapeKlir
   ShapeComparison imports ShapeBunge + ShapeMobus
   ShapeComparison_Myers imports ShapeMobus + ShapeMyers
   ShapeComparison_Wymore imports ShapeWymore + ShapeMobus
   Diagram imports ShapeBunge + Core/System
-  CommonCore imports all 7 shape categories
+  CommonCore imports ShapeKlir + the 8 target shapes
+    (Bunge, Mobus, Myers, Wymore, Mesarovic, Joslyn, Spivak, Willems)
+  SharedPrimitive imports CommonCore
 ```
 
 ## Headline Results
@@ -184,12 +236,12 @@ Categorification Phase 2 (shape categories — free categories on quivers):
 6. **Error detection** (System.lean) --- Bunge's "asymmetric" corrected to antisymmetric
 7. **Bridge factorization** (BridgeFunctor.lean) --- toBunge = toRichBunge ⋙ flatten (Finding 6)
 8. **Ordering triangle** (OrderingTriangle.lean) --- family ⟹ refinement ⟹ flat, strict (Finding 8)
-9. **Common core theorem** (CommonCore.lean) --- K ≅ **2**: Klir's walking arrow embeds faithfully into all 7 shape categories. The irreducible categorical content of "system" across 60 years of independent traditions is a single morphism: relations depend on things.
-10. **Shape category landscape** (Shape*.lean) --- 7 traditions encoded as free categories on dependency quivers; structural/operational/cybernetic divide diagnosed by arrow direction
+9. **Common core** (CommonCore.lean, SharedPrimitive.lean) --- Existence: Klir's walking arrow embeds into 8 shape categories, injective on objects and faithful. Repaired maximality, on generating quivers and relative to the documented presentations: the only dependency all the encoded traditions directly assert is one (`connected_is_single_arrow`), forced by Joslyn and Willems. The free-category version is false (`free_category_maximality_fails`).
+10. **Shape category landscape** (Shape*.lean) --- 11 traditions encoded as free categories on dependency quivers (13 shapes, counting Mesarović's I/O and global-state forms and Bertalanffy 1968/1972); structural/operational/cybernetic divide diagnosed by arrow direction
 11. **Statics vs dynamics** (ShapeComparison_Myers.lean) --- Mobus→Myers: all structural constraints map to `expose`; `update` has no preimage. Mobus captures what systems ARE, Myers captures how they BEHAVE.
 12. **Temporal mediation** (ShapeComparison_Wymore.lean) --- Wymore→Mobus: object-injective, but `stateOnTime` requires length-2 path through boundary. Mobus mediates time through interface structure.
 
-## Venue Milestones
+## Venue Milestones (as planned, early 2026)
 
 - **AITP 2026** (May): Extended abstract on LLM-assisted formalization + commuting triangle
 - **ISSS 2026** (July): Presentation --- "What happens when you type-check Bunge"
@@ -208,5 +260,5 @@ Abstract drafts: `docs/publications/aitp-2026-abstract.md`, `docs/publications/i
 
 ## Related Projects
 
-- [bitcoin-bra](../bitcoin-bra/) --- BRA formalization (~1080 lines, 11 files, Lean 4, targeting CPP 2027). Shares `categorification-roadmap.md` — Phase 2 adds categorical functor infrastructure to bitcoin-bra.
+- [bitcoin-bra](https://github.com/rsthornton/bitcoin-bra) --- BRA formalization in Lean 4 (archived locally). Shares `categorification-roadmap.md`.
 - [BERT](https://github.com/halcyonic-systems/bert) --- systems analysis tool implementing Mobus's framework
