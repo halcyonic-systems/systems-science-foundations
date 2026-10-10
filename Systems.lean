@@ -90,12 +90,17 @@ import Systems.Category.ShapeComparison_Wymore
 import Systems.Category.Diagram
 import Systems.Category.CommonCore
 import Systems.Category.SharedPrimitive
+import Systems.Category.ShapeCDL
 
 -- The declared Dynamics record: τ refined from opaque to a checkable 5-field
 -- vocabulary (bert-lenses#112 / dynamics-position Q5; declaration only)
 import Systems.Dynamics.Record
 import Systems.Dynamics.Transition
 import Systems.Dynamics.Mechanism
+-- The agent layer's first obligation (facets#269, ADR 0008 D6): a run with
+-- deterministic agents is one deterministic transition on a product carrier;
+-- a sampling agent is the separating instance.
+import Systems.Dynamics.AgentStep
 -- H at BERT's abstracted carrier (bert-lenses#112 §4): the recorded run
 -- history is the finite prefix of the final-coalgebra observable behaviour
 -- under the identity observer. Research-tier; not a Challenge.lean headline.
