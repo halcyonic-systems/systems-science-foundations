@@ -1,12 +1,17 @@
 import Lean
+import Systems.Tools.Atlas
 
 /-!
 # `dump`: the development as data
 
 Walks the compiled environment and writes one JSON file describing every
 declaration this project owns: name, kind, module, line range, docstring,
-signature, the project-internal declarations it uses, and the axioms its
-proof rests on. This is the data a site reads; nothing here proves anything.
+signature, its source text, the atlas entries it formalises (`@[atlas]`,
+`Systems/Tools/Atlas.lean`), the project-internal declarations it uses, and
+the axioms its proof rests on. The source text is there so a page can show
+the Lean block itself: the site's governing constraint is that every block is
+inspectable by a mathematician or a systems researcher without opening the
+repository (Shingai, 2026-11-05). This is the data a site reads; nothing here proves anything.
 
 Modelled on Mathlib's `scripts/export_crossrefs.lean` (walking an environment
 to JSON) and AxiomMath's `lean-metrics` (a dependency graph from
@@ -36,6 +41,10 @@ structure Decl where
   /-- Project declarations this one uses, contracted through auxiliaries. -/
   uses : Array String
   axioms : Array String
+  /-- Atlas entry ids this declaration formalises. -/
+  atlas : Array String
+  /-- The declaration's source text, `line` to `endLine` of its file. -/
+  source : String
 
 structure Flags where
   axioms : Bool := true
@@ -113,7 +122,7 @@ def quote (s : String) : String := Id.run do
   for c in s.toList do
     out := out ++ (match c with
       | '"' => "\\\"" | '\\' => "\\\\" | '\n' => "\\n" | '\r' => "\\r" | '\t' => "\\t"
-      | c => if c.val < 0x20 then s!"\\u{String.mk (Nat.toDigits 16 c.val.toNat |>.map id)}" else c.toString)
+      | c => if c.val < 0x20 then s!"\\u{String.ofList (Nat.toDigits 16 c.val.toNat)}" else c.toString)
   return out ++ "\""
 
 def quoteArr (xs : Array String) : String :=
@@ -129,7 +138,9 @@ def Decl.render (d : Decl) : String :=
     "\"doc\":" ++ (match d.doc with | some s => quote s | none => "null"),
     "\"signature\":" ++ quote d.signature,
     "\"uses\":" ++ quoteArr d.uses,
-    "\"axioms\":" ++ quoteArr d.axioms ] ++ "}"
+    "\"axioms\":" ++ quoteArr d.axioms,
+    "\"atlas\":" ++ quoteArr d.atlas,
+    "\"source\":" ++ quote d.source ] ++ "}"
 
 def run (env : Environment) (flags : Flags) (h : IO.FS.Handle)
     (commit date toolchain : String) : MetaM Unit := do
@@ -160,8 +171,19 @@ def run (env : Environment) (flags : Flags) (h : IO.FS.Handle)
   -- The node set is exactly what gets written, so no edge can dangle.
   let mut nodes : NameSet := {}
   for (n, _, _, _, _) in sorted do nodes := nodes.insert n
+  -- Atlas tags by declaration; source files read once each.
+  let mut tagsOf : Std.HashMap Name (Array String) := {}
+  for t in Systems.Atlas.tags env do tagsOf := tagsOf.insert t.declName ((tagsOf.getD t.declName #[]).push t.id)
+  let mut files : Std.HashMap Name (Array String) := {}
   let mut first := true
   for (n, ci, m, line, endLine) in sorted do
+    let lines ← match files[m]? with
+      | some ls => pure ls
+      | none =>
+        let ls := (← IO.FS.lines ((m.toString.replace "." "/") ++ ".lean"))
+        files := files.insert m ls
+        pure ls
+    let source := "\n".intercalate ((lines.extract (line - 1) endLine).toList)
     let doc ← if flags.doc then findDocString? env n else pure none
     let sig ← if flags.signature then
         tryCatchRuntimeEx
@@ -173,7 +195,9 @@ def run (env : Environment) (flags : Flags) (h : IO.FS.Handle)
       name := n.toString, kind := ← kindOf env n ci, module := m.toString
       line, endLine, doc, signature := sig
       uses := (usesOf env nodes n).map (·.toString)
-      axioms := axioms.map (·.toString) |>.qsort (· < ·) }
+      axioms := axioms.map (·.toString) |>.qsort (· < ·)
+      atlas := tagsOf.getD n #[]
+      source }
     h.putStr ((if first then "" else ",\n") ++ d.render)
     first := false
   h.putStr "\n]}\n"
