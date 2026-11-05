@@ -10,6 +10,8 @@
   Def 21 (synthetic): "A system is a cardinal distinction on a variety of
   dimensional distinctions" — the system is equivalently given by its
   CONSTRAINT C = X − S, what it excludes.
+  Def 22 (contingent metasystem): S′ := ⟨S, E⟩, the system and its
+  environment E = C as the two parts of a new system.
 
   The Joslyn→Klir projection (§4.3) is clean: flatten the carrier to T,
   the constrained states to R. THE SEAM: Joslyn's Def 5 excludes exactly
@@ -87,6 +89,43 @@ theorem JoslynSystem.compl_constraint {ι : Type*} {X : ι → Type*}
 theorem JoslynSystem₂.compl_constraint {α : Type*} (J : JoslynSystem₂ α) :
     J.constraintᶜ = J.states :=
   compl_compl J.states
+
+/-! ## The contingent metasystem (Def 22)
+
+  Joslyn §2.7.1, Def 22 (p. 99): "Given a system₁ S with environment E
+  (where E is understood to be similar to the constraint₁ C), then let
+  S′ := ⟨S, E⟩ be the metasystem, with parts S and E, generated
+  contingently on S." Atlas entry joslyn-1995-contingent-metasystem. -/
+
+/-- Joslyn's contingent metasystem (1995, Def 22): the pair `⟨S, E⟩` of a
+    system₁ and its environment, "generated contingently on S". The author
+    says E is "understood to be similar to the constraint₁ C"; this
+    encoding commits to the identity, `env_eq : env = system.constraint`
+    (Def 21's `C = X − S`), which is the one reading under which the
+    metasystem is generated from S alone. The parts S and E are then
+    complementary (`env_compl`), so the metasystem adds no data to S: it is
+    a re-individuation, which is what "contingently" records. -/
+@[atlas "joslyn-1995-contingent-metasystem"]
+structure JoslynSystem.Metasystem (ι : Type*) (X : ι → Type*) where
+  /-- S: the system₁ the metasystem is generated from. -/
+  system : JoslynSystem ι X
+  /-- E: the environment, the second part. -/
+  env : Set (∀ i, X i)
+  /-- E is the constraint `C = X − S` (Def 21), read as identity. -/
+  env_eq : env = system.constraint
+
+/-- The two parts of a metasystem are complementary: `Eᶜ = S`, by `env_eq`
+    and Def 21's `compl_constraint`. Classical, as `compl_constraint` is. -/
+theorem JoslynSystem.Metasystem.env_compl {ι : Type*} {X : ι → Type*}
+    (M : JoslynSystem.Metasystem ι X) : M.envᶜ = M.system.states := by
+  rw [M.env_eq, M.system.compl_constraint]
+
+/-- Every system₁ generates its metasystem: the Def 22 construction `S ↦ ⟨S, E⟩`. -/
+def JoslynSystem.metasystem {ι : Type*} {X : ι → Type*}
+    (J : JoslynSystem ι X) : JoslynSystem.Metasystem ι X where
+  system := J
+  env := J.constraint
+  env_eq := rfl
 
 /-! ## Projection to Klir (§4.3) — and the seam
 

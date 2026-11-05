@@ -54,6 +54,7 @@ Systems/
     ViewGeneration.lean  The K ≅ 2 kernel generates each tradition's presentation as a faithful view
     SpivakSystem.lean    The data-level Spivak view: energy-driven systems and the cost of the eighth entry
     RosenWitness.lean    Mapping 008, claim 3: a Bunge concrete system whose Rosen view loses the bond
+    RosenTriple.lean     Rosen 1978 §5.8: the triple (S, O, 𝒟) beside the pair, forgetful map to RosenSystem
     Gates.lean           The lens-entry gate booleans, shared by every binding rung (bert-lenses#24)
     GatesTruthTable.lean Rung 1 of the lens-entry binding: fixture the Rust gates are tested against
     GatesOracle.lean     Rung 1.5: the `lake exe` oracle over the same gate declarations
@@ -65,6 +66,7 @@ Systems/
     ShapeKlir.lean          I_Klir: 2 obj, 1 arrow (walking arrow)
     ShapeBunge.lean         I_Bunge: 3 obj, 3 arrows (CES dependency quiver)
     ShapeMobus.lean         I_Mobus: 8 obj, 5 arrows + 3 isolated
+    ShapeMobus2022.lean     I_Mobus2022: the published 7-tuple (no E), 3 arrows; inclusion functor mobus2022ToMobus into I_Mobus (mapping 005's debt)
     ShapeMyers.lean         I_Myers: 3 obj, 2 arrows (lens/deterministic system)
     ShapeWymore.lean        I_Wymore: 4 obj, 3 arrows (FSD quintuple + time)
     ShapeMesarovic.lean     I_Mesarovic: 2-3 obj (I/O base + global state extension)
@@ -86,12 +88,13 @@ Systems/
     JoslynIncomparability.lean   Joslyn's feedback shape is a boundary of the finite-shape method
     SpivakIncomparability.lean   Spivak's value-feedback shape is a boundary of the finite-shape method
   Joslyn/                Joslyn, "Semantic Control Systems" (1995)
-    JoslynSystem.lean    Joslyn's System₁: the fourth vertex, set-theoretic tier
+    JoslynSystem.lean    Joslyn's System₁: the fourth vertex, set-theoretic tier; the constraint (Def 21) and the contingent metasystem (Def 22)
     Control.lean         Control₁/Control₂ hierarchy + Prop 29 tractable core
     BungeMap.lean        Phase 4.4: the Joslyn→Bunge partial map, the non-functorial edge
     HCGS.lean            Phase 4.5: Control₂ ≅ HCGS, the independent convergence
   Mesarovic/
     Decomposition.lean   Mesarovic 1964: the decomposition theorem's two cores
+    GeneralSystem.lean   Mesarović & Takahara 1975 Def 1.1: the general system as a relation on nonempty sets; Joslyn Def 5 forgets to it
   Dynamics/
     Record.lean          The declared Dynamics descriptor: dynamics as checkable data
     Transition.lean      The typed transition (#112 Half A, step 1)
