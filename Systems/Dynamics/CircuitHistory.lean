@@ -28,6 +28,8 @@
 -/
 
 import Systems.Dynamics.Transition
+import Mathlib.Data.Matrix.Mul
+import Mathlib.LinearAlgebra.Matrix.Notation
 
 namespace Systems
 namespace CircuitHistory
@@ -237,6 +239,71 @@ theorem recordedHistory_is_coalgebra_prefix (f : Carrier ι V → Carrier ι V)
             (cbeh (fun (_ : Unit) (t : Carrier ι V) => (t, f t)) x0)) := by
   rw [recordedHistory_eq_orbit_prefix, history_is_final_coalgebra_behaviour]
 
+/-! ## 5. Stoichiometric conservation, for any rates (facets #573)
+
+    A work process with a mass-action law moves its stocks by a fixed
+    pattern times a rate: one reaction `j` changes stock `i` by
+    `N i j * r j`, where `N` is the stoichiometric matrix (species by
+    reactions) and `r` the tick's rates. Facets #573 needs this: if a row
+    vector `ℓ` has `ℓ ᵥ* N = 0`, then `ℓ ⬝ᵥ x` is conserved by every step,
+    whatever the rates are, so a rate law (mass action, or any other) can
+    never break a conservation that the pattern already has (SIR's
+    `S + I + R`, predator-prey's matter if the prey are booked).
+
+    The rates may depend on the tick and on the state (`rates n x`), which
+    covers mass action `k * ∏ x_i` read from the opening state, and covers
+    a non-negativity cap **only if the cap scales a whole reaction's rate**
+    `r j`. A cap that clips one stock's change and not its partners' is a
+    step outside this form, and the lemma says nothing about it.
+
+    What this is not: a statement about the Rust stepper. `R` is any
+    commutative ring (read `ℚ` or `ℝ`); the engine computes in `f64` and
+    rounds, which this file does not model. The two theorems use Mathlib's
+    finite sums, so their audit lists `Classical.choice` (with `propext` and
+    `Quot.sound`); the sections above keep their own, smaller audits. -/
+
+section Stoichiometry
+
+open Matrix
+
+variable {σ ρ R : Type} [Fintype σ] [Fintype ρ] [CommRing R]
+
+/-- One step of a stoichiometric system: the state moves by `N *ᵥ r`. -/
+def stoichStep (N : Matrix σ ρ R) (x : σ → R) (r : ρ → R) : σ → R :=
+  x + N *ᵥ r
+
+/-- A run: at tick `n` the rates are `rates n x`, read from the opening
+    state `x` of that tick. -/
+def stoichRun (N : Matrix σ ρ R) (rates : ℕ → (σ → R) → (ρ → R))
+    (x0 : σ → R) : ℕ → σ → R
+  | 0 => x0
+  | n + 1 => stoichStep N (stoichRun N rates x0 n) (rates n (stoichRun N rates x0 n))
+
+/-- A left null vector of `N` gives a quantity one step conserves, for any
+    rates. -/
+theorem stoichStep_conserves (N : Matrix σ ρ R) (ℓ : σ → R) (h : ℓ ᵥ* N = 0)
+    (x : σ → R) (r : ρ → R) :
+    ℓ ⬝ᵥ stoichStep N x r = ℓ ⬝ᵥ x := by
+  rw [stoichStep, dotProduct_add, Matrix.dotProduct_mulVec, h, zero_dotProduct,
+    add_zero]
+
+/-- And so every tick of a run conserves it, whatever the rate law. -/
+theorem stoichRun_conserves (N : Matrix σ ρ R) (ℓ : σ → R) (h : ℓ ᵥ* N = 0)
+    (rates : ℕ → (σ → R) → (ρ → R)) (x0 : σ → R) (n : ℕ) :
+    ℓ ⬝ᵥ stoichRun N rates x0 n = ℓ ⬝ᵥ x0 := by
+  induction n with
+  | zero => rfl
+  | succ m ih => rw [stoichRun, stoichStep_conserves N ℓ h, ih]
+
+/-- The SIR pattern, checked: infection moves one from S to I, recovery one
+    from I to R, so `(1, 1, 1)` is a left null vector and the town's total
+    is conserved by any infection and recovery rates. -/
+example : (fun _ => (1 : ℚ)) ᵥ* (!![-1, 0; 1, -1; 0, 1] : Matrix (Fin 3) (Fin 2) ℚ)
+    = 0 := by
+  ext j; fin_cases j <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_three]
+
+end Stoichiometry
+
 section Audit
 #print axioms recordedHistory_eq_orbit_prefix
 #print axioms cbeh_morphism
@@ -245,6 +312,8 @@ section Audit
 #print axioms causalOutputOnly
 #print axioms history_is_final_coalgebra_behaviour
 #print axioms recordedHistory_is_coalgebra_prefix
+#print axioms stoichStep_conserves
+#print axioms stoichRun_conserves
 end Audit
 
 end CircuitHistory
