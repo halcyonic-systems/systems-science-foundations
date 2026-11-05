@@ -4,6 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Shingai Thornton
 -/
 import Mathlib.CategoryTheory.PathCategory.Basic
+import Systems.Tools.Atlas
 
 /-!
 # Shape Category for Mobus's 8-Tuple Framework
@@ -77,4 +78,5 @@ open CategoryTheory in
 
 The 3 isolated vertices (transforms, history, timeScale) have only identity morphisms.
 The 5 connected vertices form a dependency DAG rooted at `components`. -/
+@[atlas "mobus-revisions-oct-tuple"]
 abbrev MobusShape := Paths MobusPosition

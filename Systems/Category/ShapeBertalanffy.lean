@@ -4,6 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Shingai Thornton
 -/
 import Mathlib.CategoryTheory.PathCategory.Basic
+import Systems.Tools.Atlas
 import Systems.Category.ShapeKlir
 
 /-!
@@ -83,6 +84,7 @@ instance : Quiver BertalanffyPosition where
 open CategoryTheory in
 /-- The shape category for Bertalanffy's 1968 definition: the free category on the
 dependency quiver. Two objects, one generating arrow — the walking arrow. -/
+@[atlas "bertalanffy-1968-eq-3-1"]
 abbrev BertalanffyShape := Paths BertalanffyPosition
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -251,6 +253,7 @@ Structurally this is the same span as `MesarovicShape` (Def 1.4, `globalState �
 readings are unrelated: Mesarović's arrows are projections of a response function, and these
 are two clauses of one English sentence about what a relation holds between. Shape identity is
 not semantic identity; see the predicate-gap caveat at the head of this file. -/
+@[atlas "bertalanffy-1972-set-in-interrelation"]
 abbrev Bertalanffy72Shape := Paths Bertalanffy72Position
 
 /-- The revision as a functor: everything the 1968 definition committed to is still committed

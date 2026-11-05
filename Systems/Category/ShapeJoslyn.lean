@@ -4,6 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Shingai Thornton
 -/
 import Mathlib.CategoryTheory.PathCategory.Basic
+import Systems.Tools.Atlas
 
 /-!
 # Shape Category for Joslyn's Semantic Control Systems
@@ -84,4 +85,5 @@ has a cycle between `effector` and `controlled`. The free category on a cyclic q
 has infinitely many morphisms between the cyclic vertices — each distinct path of
 alternating efferent/afferent arrows is a genuinely different control trajectory.
 This infinite morphism structure formally encodes the open-ended nature of feedback. -/
+@[atlas "joslyn-1995-control2"]
 abbrev JoslynShape := Paths JoslynPosition

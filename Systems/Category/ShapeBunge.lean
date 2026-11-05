@@ -4,6 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Shingai Thornton
 -/
 import Mathlib.CategoryTheory.PathCategory.Basic
+import Systems.Tools.Atlas
 
 /-!
 # Shape Category for Bunge's CES Framework
@@ -59,4 +60,5 @@ open CategoryTheory in
 Morphisms are composable paths of generating arrows. In particular, `S → C` has two
 distinct morphisms: the direct `struct_on_comp` and the composite `struct_on_env ≫ env_acts_on_comp`.
 These correspond to two genuinely different structural dependencies in Bunge's theory. -/
+@[atlas "bunge-1979-ces-triple"]
 abbrev BungeShape := Paths BungePosition

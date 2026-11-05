@@ -4,6 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Shingai Thornton
 -/
 import Mathlib.CategoryTheory.PathCategory.Basic
+import Systems.Tools.Atlas
 
 /-!
 # Shape Category for Rosen's formal system (S, F)
@@ -73,6 +74,7 @@ instance : Quiver RosenPosition where
 open CategoryTheory in
 /-- The shape category for Rosen's (S, F): the free category on the one-arrow
 dependency quiver. Two objects, one arrow — the walking arrow. -/
+@[atlas "rosen-1978-formal-system"]
 abbrev RosenShape := Paths RosenPosition
 
 /-! ## Thinness

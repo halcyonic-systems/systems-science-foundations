@@ -4,6 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Shingai Thornton
 -/
 import Mathlib.CategoryTheory.PathCategory.Basic
+import Systems.Tools.Atlas
 
 /-!
 # Shape Category for Klir's S = (T, R)
@@ -55,4 +56,5 @@ the simplest non-discrete shape in the landscape.
 
 Every other shape category in the landscape admits a comparison functor FROM this
 shape (Klir embeds into all of them), making I_Klir a candidate for the common core. -/
+@[atlas "klir-2001-eq-1-1"]
 abbrev KlirShape := Paths KlirPosition
