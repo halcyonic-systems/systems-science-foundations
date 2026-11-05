@@ -1,0 +1,55 @@
+# Publishes the development as data: `lake exe dump` writes decls.json
+# (schema: Systems/Tools/SCHEMA.md) and this workflow attaches it to a GitHub
+# Release tagged with the commit, so the file has one URL per commit:
+#
+#   https://github.com/halcyonic-systems/systems-science-foundations/releases/download/dump-<sha>/decls.json
+#
+# Consumer: the atlas reader at math.systems (repo mathematical-systems),
+# which pins one SSF commit in `atlas/lean-pin` and fetches that URL.
+# The build itself is checked by lean_action_ci.yml on every push; this
+# workflow repeats the build on main only, because the dump needs the oleans.
+name: Publish dump
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # Installs elan from lean-toolchain, fetches Mathlib's oleans with
+      # `lake exe cache get`, then runs `lake build` (the default targets:
+      # the Systems library and gates-oracle).
+      - uses: leanprover/lean-action@v1
+
+      - name: Cold-verify the headline claims
+        run: scripts/check-challenge.sh
+
+      - name: Build and run the dump
+        run: |
+          lake build dump
+          lake exe dump decls.json
+          head -c 200 decls.json; echo
+
+      - name: Publish decls.json as a release asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="dump-${GITHUB_SHA}"
+          short="${GITHUB_SHA::7}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" decls.json --clobber
+          else
+            gh release create "$tag" decls.json \
+              --target "$GITHUB_SHA" \
+              --title "dump $short" \
+              --notes "decls.json for ${GITHUB_SHA}, written by lake exe dump. Schema: Systems/Tools/SCHEMA.md."
+          fi
+          echo "https://github.com/${GITHUB_REPOSITORY}/releases/download/${tag}/decls.json"
