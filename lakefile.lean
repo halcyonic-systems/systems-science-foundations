@@ -19,3 +19,10 @@ lean_lib «Systems» where
 @[default_target]
 lean_exe «gates-oracle» where
   root := `Systems.Klir.GatesOracle
+
+-- The development as data: every owned declaration with its module, range,
+-- docstring, signature, project-internal uses and axioms, for a site to read
+-- (quest math-systems-graph). Not a default target; `lake exe dump`.
+lean_exe «dump» where
+  root := `Systems.Tools.Dump
+  supportInterpreter := true
