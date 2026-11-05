@@ -25,6 +25,10 @@ with untagged helper paths. Mathlib is a leaf: its constants are never nodes.
 Run: `lake exe dump [out.json] [--no-axioms] [--no-signature] [--no-doc]`
 (default `site/data/decls.json`). The JSON is written by hand, one declaration
 per line, so a fault in one declaration leaves everything before it on disk.
+
+Every field, the node rule and the stability promise are documented in
+`Systems/Tools/SCHEMA.md`; the top-level `schema` field carries that document's
+version. A reader pins the SSF commit and checks `schema` before anything else.
 -/
 
 open Lean Meta
@@ -171,7 +175,7 @@ def run (env : Environment) (flags : Flags) (h : IO.FS.Handle)
     let mdoc := (getModuleDoc? env m).getD #[] |>.map (·.doc) |>.toList
     "{\"name\":" ++ quote m.toString ++ ",\"file\":" ++ quote ((m.toString.replace "." "/") ++ ".lean")
       ++ s!",\"declarations\":{k}" ++ ",\"doc\":" ++ quote ("\n\n".intercalate mdoc) ++ "}") ++ "]"
-  h.putStr ("{\"project\":\"systems-science-foundations\",\"commit\":" ++ quote commit
+  h.putStr ("{\"schema\":\"1.0\",\"project\":\"systems-science-foundations\",\"commit\":" ++ quote commit
     ++ ",\"generatedAt\":" ++ quote date ++ ",\"toolchain\":" ++ quote toolchain
     ++ ",\"modules\":" ++ moduleJson ++ ",\"declarations\":[\n")
   h.flush
