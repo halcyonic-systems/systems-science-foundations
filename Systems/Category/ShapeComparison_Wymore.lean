@@ -100,7 +100,7 @@ than the other two arrows. -/
 theorem wymore_time_mediated :
     (wymoreToMobusPre.map WymoreArrow.stateOnTime).length >
     (wymoreToMobusPre.map WymoreArrow.readout).length := by
-  native_decide
+  decide
 
 -- § Object-injectivity: all four Wymore positions land on distinct Mobus positions
 
