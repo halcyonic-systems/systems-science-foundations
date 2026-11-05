@@ -106,10 +106,13 @@ Systems/
   Examples/
     Thermostat.lean      Joslyn's thermostat formalized under Klir, Bunge, and Mobus
   Principles.lean        Mobus's twelve principles, the front door
+  Tools/Dump.lean        `lake exe dump`: the development as JSON (declarations, uses, axioms) for the site; see the file's header
   Challenge.lean         The K ≅ 2 headline claims, restated for cold verification
 Systems.lean             Root import
 (Floridi–Jia–Tohmé 2025 Figure 1 in Lean lives in its OWN repo, halcyonic-systems/floridi-lean,
  Mathlib pinned to this repo's revision; moved out 2026-09-10 so it stays a small citable unit.)
+site/
+  graph/index.html       Prototype dependency treemap over `site/data/decls.json` (ignored, from `lake exe dump`); vault quest math-systems-graph
 docs/
   verso/                 Verso interactive documents (6-chapter flagship + Building Story)
   publications/          Conference abstracts (AITP, ISSS)

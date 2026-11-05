@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dependency graph</title>
+<meta name="description" content="Prototype: the Lean development as a treemap, one cell per declaration, grouped by module; select a cell to see what it uses and what uses it.">
+<!--
+  PROTOTYPE, step 2 of the vault quest math-systems-graph (2026-11-05).
+
+  Reads ../data/decls.json, written by `lake exe dump` (Systems/Tools/Dump.lean).
+  Serve the `site/` folder over HTTP (fetch needs it):
+      cd site && python3 -m http.server 8765   →  http://localhost:8765/graph/
+
+  What it tests: whether the module hierarchy reads as a treemap at ~1,600
+  nodes, on the Stacks pattern (stacks.axiommath.ai/graph): tiles are modules
+  sized by declaration count, grouped by top-level folder; each declaration is
+  one square cell coloured by kind; selecting a cell draws its edges (what it
+  uses, what uses it); search by name. Canvas 2D, d3-hierarchy for the
+  squarified layout, nothing else.
+
+  Not decided here: the kind palette is provisional (the reader's reserved
+  channels, evidence and proof status, are not used); tradition grouping
+  waits for the @[atlas] attribute (step 3). The register follows the reader's
+  visual language: Frost indigo, radius ≤ 8px, no shadows, no gradients.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #eef0f5; --bg-card: #f9fafc; --bg-surface: #e2e5ec;
+    --ink: #1a1e2b; --ink-2: #414a60; --ink-3: #565f75;
+    --accent: #545c93; --accent-strong: #3b4270; --accent-soft: #dcdfec;
+    --line: #d3d7e8;
+    /* provisional kind channel */
+    --k-theorem: #4a5a9c; --k-def: #8a6a2e; --k-type: #3e7a6a; --k-instance: #8f6f96; --k-field: #b4b8c6;
+    --edge-out: #3b4270; --edge-in: #8a6a2e;
+    --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'Inter', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--ink); font: 14px/1.5 var(--sans); display: flex; flex-direction: column; }
+  header { padding: 14px 16px 10px; border-bottom: 1px solid var(--line); background: var(--bg-card); display: grid; grid-template-columns: 1fr auto; gap: 8px 24px; align-items: end; }
+  header h1 { font: 600 28px/1.1 var(--serif); letter-spacing: -0.01em; }
+  header .eyebrow { font: 500 10px/1 var(--mono); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
+  .stats { display: flex; gap: 20px; font-variant-numeric: tabular-nums; }
+  .stats b { display: block; font: 600 22px/1 var(--serif); }
+  .stats span { font-size: 11px; color: var(--ink-3); }
+  .bar { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+  input[type=search] { font: 13px var(--sans); padding: 6px 10px; border: 1px solid var(--line); border-radius: 4px; background: #fff; color: var(--ink); width: 260px; }
+  button { font: 12px var(--sans); padding: 5px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--bg-card); color: var(--ink-2); cursor: pointer; }
+  button:hover { border-color: var(--accent); color: var(--accent-strong); }
+  .legend { display: flex; gap: 12px; font-size: 11px; color: var(--ink-2); }
+  .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+  main { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 360px; }
+  canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
+  #stage { position: relative; min-width: 0; }
+  aside { border-left: 1px solid var(--line); background: var(--bg-card); padding: 14px 16px; overflow: auto; font-size: 13px; }
+  aside h2 { font: 600 18px/1.2 var(--serif); word-break: break-word; }
+  aside .meta { font: 11px var(--mono); color: var(--ink-3); margin: 4px 0 10px; }
+  aside pre { font: 12px/1.45 var(--mono); white-space: pre-wrap; word-break: break-word; background: var(--bg); border-left: 3px solid var(--accent-soft); padding: 8px 10px; margin: 8px 0 12px; }
+  aside .doc { color: var(--ink-2); white-space: pre-wrap; margin-bottom: 12px; }
+  aside h3 { font: 500 10px/1 var(--mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin: 14px 0 6px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+  aside ul { list-style: none; }
+  aside li { font: 12px var(--mono); padding: 2px 0; cursor: pointer; color: var(--accent-strong); word-break: break-all; }
+  aside li:hover { text-decoration: underline; }
+  aside .empty { color: var(--ink-3); font-style: italic; }
+  .hint { color: var(--ink-3); }
+  @media (max-width: 800px) { main { grid-template-columns: 1fr; grid-template-rows: 1fr 40%; } aside { border-left: 0; border-top: 1px solid var(--line); } }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="eyebrow">Foundations for Mathematical Systems Science · prototype</div>
+    <h1>Dependency graph</h1>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="bar">
+    <input id="q" type="search" placeholder="Find a declaration" autocomplete="off">
+    <button id="fit">Fit</button>
+    <span class="legend" id="legend"></span>
+    <span class="hint" id="hint">Loading…</span>
+  </div>
+</header>
+<main>
+  <div id="stage"><canvas id="c"></canvas></div>
+  <aside id="panel"><p class="empty">Select a cell.</p></aside>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(async () => {
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const KIND = { theorem: 'theorem', def: 'def', structure: 'type', class: 'type', inductive: 'type', instance: 'instance', field: 'field' };
+  const KCOL = { theorem: css('--k-theorem'), def: css('--k-def'), type: css('--k-type'), instance: css('--k-instance'), field: css('--k-field') };
+  document.getElementById('legend').innerHTML = Object.entries(KCOL).map(([k, c]) => `<span><i style="background:${c}"></i>${k}</span>`).join('');
+
+  const data = await (await fetch('../data/decls.json')).json();
+  const decls = data.declarations;
+  const byName = new Map(decls.map(d => [d.name, d]));
+  const usedBy = new Map();
+  for (const d of decls) for (const u of d.uses) { if (!usedBy.has(u)) usedBy.set(u, []); usedBy.get(u).push(d.name); }
+  const edges = decls.reduce((n, d) => n + d.uses.length, 0);
+  document.getElementById('stats').innerHTML =
+    `<div><b>${decls.length.toLocaleString()}</b><span>declarations</span></div><div><b>${edges.toLocaleString()}</b><span>uses</span></div><div><b>${data.modules.length}</b><span>modules</span></div>`;
+
+  // Hierarchy: group (second name component) → module → declarations.
+  const groups = new Map();
+  for (const m of data.modules) {
+    const parts = m.name.split('.');
+    const g = parts.length >= 3 ? parts[1] : 'Root';
+    if (!groups.has(g)) groups.set(g, []);
+    groups.get(g).push({ name: m.name, short: parts.slice(2).join('.') || parts.at(-1), value: m.declarations, decls: [] });
+  }
+  const modIndex = new Map();
+  for (const [, ms] of groups) for (const m of ms) modIndex.set(m.name, m);
+  for (const d of decls) modIndex.get(d.module).decls.push(d);
+  const root = d3.hierarchy({ name: 'root', children: [...groups].map(([g, ms]) => ({ name: g, children: ms })) })
+    .sum(d => d.value || 0).sort((a, b) => b.value - a.value);
+
+  // World layout: fixed aspect; the canvas pans and zooms over it.
+  const W = 1600, H = 1000;
+  d3.treemap().size([W, H]).paddingOuter(6).paddingTop(22).paddingInner(3).tile(d3.treemapSquarify.ratio(1.2)).round(true)(root);
+  // Cells: a grid inside each module leaf.
+  const cells = new Map();
+  for (const leaf of root.leaves()) {
+    // A label band at the top of each module, when the tile is tall enough.
+    leaf.band = (leaf.y1 - leaf.y0) > 40 ? 14 : 0;
+    const w = leaf.x1 - leaf.x0 - 4, h = leaf.y1 - leaf.y0 - 4 - leaf.band, n = leaf.data.decls.length;
+    if (n === 0 || w <= 0 || h <= 0) continue;
+    let cols = Math.max(1, Math.ceil(Math.sqrt(n * w / h))), rows = Math.ceil(n / cols);
+    let s = Math.min(w / cols, h / rows);
+    if (rows * s > h) { rows = Math.floor(h / s); cols = Math.ceil(n / rows); s = Math.min(w / cols, h / rows); }
+    const ds = leaf.data.decls.slice().sort((a, b) => a.line - b.line);
+    ds.forEach((d, i) => cells.set(d.name, { d, x: leaf.x0 + 2 + (i % cols) * s, y: leaf.y0 + 2 + leaf.band + Math.floor(i / cols) * s, s }));
+  }
+
+  const canvas = document.getElementById('c'), ctx = canvas.getContext('2d');
+  let tx = 0, ty = 0, k = 1, selected = null, hover = null;
+  const resize = () => { const r = canvas.parentElement.getBoundingClientRect(); canvas.width = r.width * devicePixelRatio; canvas.height = r.height * devicePixelRatio; canvas.style.width = r.width + 'px'; canvas.style.height = r.height + 'px'; fit(false); };
+  const fit = (redraw = true) => { const cw = canvas.width / devicePixelRatio, ch = canvas.height / devicePixelRatio; k = Math.min(cw / W, ch / H) * 0.98; tx = (cw - W * k) / 2; ty = (ch - H * k) / 2; if (redraw) draw(); };
+
+  function draw() {
+    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    ctx.fillStyle = css('--bg'); ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.translate(tx, ty); ctx.scale(k, k);
+    // groups and modules
+    for (const g of root.children) {
+      ctx.fillStyle = css('--bg-surface'); ctx.fillRect(g.x0, g.y0, g.x1 - g.x0, g.y1 - g.y0);
+      ctx.fillStyle = css('--ink-2'); ctx.font = `600 ${13 / Math.max(k, 0.6)}px Inter`; ctx.textBaseline = 'top';
+      ctx.fillText(g.data.name, g.x0 + 6, g.y0 + 5);
+      for (const m of g.children) {
+        ctx.fillStyle = css('--bg-card'); ctx.fillRect(m.x0, m.y0, m.x1 - m.x0, m.y1 - m.y0);
+        const mw = m.x1 - m.x0;
+        if (m.band && mw * k > 60) { ctx.fillStyle = css('--ink-3'); ctx.font = `500 ${10 / Math.max(k, 0.6)}px Inter`; ctx.fillText(m.data.short, m.x0 + 4, m.y0 + 3, mw - 8); }
+      }
+    }
+    // cells
+    const related = new Set();
+    if (selected) { related.add(selected); for (const u of byName.get(selected).uses) related.add(u); for (const u of usedBy.get(selected) || []) related.add(u); }
+    for (const [name, c] of cells) {
+      const kind = KIND[c.d.kind] || 'field';
+      ctx.globalAlpha = selected && !related.has(name) ? 0.22 : 1;
+      ctx.fillStyle = KCOL[kind]; ctx.fillRect(c.x + 0.5, c.y + 0.5, c.s - 1, c.s - 1);
+    }
+    ctx.globalAlpha = 1;
+    // edges of the selected cell
+    if (selected && cells.has(selected)) {
+      const a = cells.get(selected), ac = [a.x + a.s / 2, a.y + a.s / 2];
+      ctx.lineWidth = 1.2 / k;
+      const line = (from, to, col) => { ctx.strokeStyle = col; ctx.beginPath(); ctx.moveTo(...from); ctx.lineTo(...to); ctx.stroke(); };
+      for (const u of byName.get(selected).uses) { const b = cells.get(u); if (b) line(ac, [b.x + b.s / 2, b.y + b.s / 2], css('--edge-out')); }
+      for (const u of usedBy.get(selected) || []) { const b = cells.get(u); if (b) line([b.x + b.s / 2, b.y + b.s / 2], ac, css('--edge-in')); }
+      ctx.strokeStyle = css('--ink'); ctx.lineWidth = 2 / k; ctx.strokeRect(a.x - 1, a.y - 1, a.s + 2, a.s + 2);
+    }
+    if (hover && cells.has(hover) && hover !== selected) { const c = cells.get(hover); ctx.strokeStyle = css('--accent-strong'); ctx.lineWidth = 1.5 / k; ctx.strokeRect(c.x - 0.5, c.y - 0.5, c.s + 1, c.s + 1); }
+  }
+
+  const toWorld = e => { const r = canvas.getBoundingClientRect(); return [(e.clientX - r.left - tx) / k, (e.clientY - r.top - ty) / k]; };
+  const hit = ([x, y]) => { for (const [name, c] of cells) if (x >= c.x && x < c.x + c.s && y >= c.y && y < c.y + c.s) return name; return null; };
+  let drag = null;
+  canvas.addEventListener('mousedown', e => { drag = { x: e.clientX, y: e.clientY, tx, ty, moved: false }; });
+  window.addEventListener('mousemove', e => {
+    if (drag) { const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.hypot(dx, dy) > 3) drag.moved = true; tx = drag.tx + dx; ty = drag.ty + dy; draw(); return; }
+    const h = hit(toWorld(e)); if (h !== hover) { hover = h; document.getElementById('hint').textContent = h ? `${h} · ${byName.get(h).kind}` : ''; draw(); }
+  });
+  window.addEventListener('mouseup', e => { if (drag && !drag.moved) select(hit(toWorld(e))); drag = null; });
+  canvas.addEventListener('wheel', e => { e.preventDefault(); const [wx, wy] = toWorld(e); const f = Math.exp(-e.deltaY * 0.0015); k = Math.max(0.2, Math.min(40, k * f)); const r = canvas.getBoundingClientRect(); tx = e.clientX - r.left - wx * k; ty = e.clientY - r.top - wy * k; draw(); }, { passive: false });
+  document.getElementById('fit').onclick = () => fit();
+
+  function select(name) {
+    selected = name; location.hash = name ? encodeURIComponent(name) : '';
+    const p = document.getElementById('panel');
+    if (!name) { p.innerHTML = '<p class="empty">Select a cell.</p>'; draw(); return; }
+    const d = byName.get(name);
+    const list = (xs) => xs.length ? `<ul>${xs.map(x => `<li data-n="${x}">${x}</li>`).join('')}</ul>` : '<p class="empty">none in the project</p>';
+    const file = d.module.replace(/\./g, '/') + '.lean';
+    p.innerHTML = `<h2>${d.name}</h2><div class="meta">${d.kind} · <a href="https://github.com/halcyonic-systems/systems-science-foundations/blob/${data.commit}/${file}#L${d.line}-L${d.endLine}" target="_blank" rel="noopener">${file}:${d.line}</a></div>
+      <pre>${d.signature.replace(/</g, '&lt;')}</pre>${d.doc ? `<div class="doc">${d.doc.replace(/</g, '&lt;')}</div>` : ''}
+      <h3>Uses (${d.uses.length})</h3>${list(d.uses)}<h3>Used by (${(usedBy.get(name) || []).length})</h3>${list(usedBy.get(name) || [])}
+      <h3>Axioms</h3><p class="meta">${d.axioms.join(', ') || 'none'}</p>`;
+    p.querySelectorAll('li').forEach(li => li.onclick = () => select(li.dataset.n));
+    draw();
+  }
+  const q = document.getElementById('q');
+  q.addEventListener('change', () => { const v = q.value.trim(); if (!v) return; const exact = byName.has(v) ? v : decls.find(d => d.name.toLowerCase().includes(v.toLowerCase()))?.name; if (exact) select(exact); });
+
+  window.addEventListener('resize', () => { resize(); draw(); });
+  resize(); draw();
+  if (location.hash.length > 1) select(decodeURIComponent(location.hash.slice(1)));
+  document.getElementById('hint').textContent = 'Click a cell · drag to pan · wheel to zoom';
+})();
+</script>
+</body>
+</html>
