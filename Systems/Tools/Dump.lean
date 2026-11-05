@@ -7,8 +7,9 @@ import Systems.Tools.Atlas
 Walks the compiled environment and writes one JSON file describing every
 declaration this project owns: name, kind, module, line range, docstring,
 signature, its source text, the atlas entries it formalises (`@[atlas]`,
-`Systems/Tools/Atlas.lean`), the project-internal declarations it uses, and
-the axioms its proof rests on. The source text is there so a page can show
+`Systems/Tools/Atlas.lean`), its constructors when it is an inductive, the
+project-internal declarations it uses, and the axioms its proof rests on;
+and each module with its module docstring. The source text is there so a page can show
 the Lean block itself: the site's governing constraint is that every block is
 inspectable by a mathematician or a systems researcher without opening the
 repository (Shingai, 2026-11-05). This is the data a site reads; nothing here proves anything.
@@ -30,6 +31,12 @@ open Lean Meta
 
 namespace Systems.Tools.Dump
 
+structure Ctor where
+  name : String
+  doc : Option String
+  type : String
+  args : Array String
+
 structure Decl where
   name : String
   kind : String
@@ -45,6 +52,10 @@ structure Decl where
   atlas : Array String
   /-- The declaration's source text, `line` to `endLine` of its file. -/
   source : String
+  /-- For an inductive: its constructors, each with the constant arguments of
+  its result type (`KlirArrow .relation .things` gives `["KlirPosition.relation",
+  "KlirPosition.things"]`), so a quiver can be read without parsing text. -/
+  constructors : Array Ctor
 
 structure Flags where
   axioms : Bool := true
@@ -140,7 +151,10 @@ def Decl.render (d : Decl) : String :=
     "\"uses\":" ++ quoteArr d.uses,
     "\"axioms\":" ++ quoteArr d.axioms,
     "\"atlas\":" ++ quoteArr d.atlas,
-    "\"source\":" ++ quote d.source ] ++ "}"
+    "\"source\":" ++ quote d.source,
+    "\"constructors\":[" ++ ",".intercalate (d.constructors.toList.map fun c =>
+      "{\"name\":" ++ quote c.name ++ ",\"doc\":" ++ (match c.doc with | some x => quote x | none => "null")
+        ++ ",\"type\":" ++ quote c.type ++ ",\"args\":" ++ quoteArr c.args ++ "}") ++ "]" ] ++ "}"
 
 def run (env : Environment) (flags : Flags) (h : IO.FS.Handle)
     (commit date toolchain : String) : MetaM Unit := do
@@ -154,8 +168,9 @@ def run (env : Environment) (flags : Flags) (h : IO.FS.Handle)
   for (_, _, m) in candidates do perModule := perModule.insert m (perModule.getD m 0 + 1)
   let modules := perModule.toArray.qsort (·.1.toString < ·.1.toString)
   let moduleJson := "[" ++ ",".intercalate (modules.toList.map fun (m, k) =>
+    let mdoc := (getModuleDoc? env m).getD #[] |>.map (·.doc) |>.toList
     "{\"name\":" ++ quote m.toString ++ ",\"file\":" ++ quote ((m.toString.replace "." "/") ++ ".lean")
-      ++ s!",\"declarations\":{k}" ++ "}") ++ "]"
+      ++ s!",\"declarations\":{k}" ++ ",\"doc\":" ++ quote ("\n\n".intercalate mdoc) ++ "}") ++ "]"
   h.putStr ("{\"project\":\"systems-science-foundations\",\"commit\":" ++ quote commit
     ++ ",\"generatedAt\":" ++ quote date ++ ",\"toolchain\":" ++ quote toolchain
     ++ ",\"modules\":" ++ moduleJson ++ ",\"declarations\":[\n")
@@ -191,13 +206,28 @@ def run (env : Environment) (flags : Flags) (h : IO.FS.Handle)
           (fun _ => pure n.toString)
       else pure n.toString
     let axioms ← if flags.axioms then collectAxioms n else pure #[]
+    let constructors ← match ci with
+      | .inductInfo iv => iv.ctors.toArray.mapM fun c => do
+          let cdoc ← findDocString? env c
+          let ctype ← match env.find? c with
+            | some cci => tryCatchRuntimeEx (do pure ((← ppExpr cci.type).pretty (width := 100))) (fun _ => pure "")
+            | none => pure ""
+          -- Constant arguments of the result type, after the binders.
+          let args := match env.find? c with
+            | some cci => Id.run do
+                let mut t := cci.type
+                while t.isForall do t := t.bindingBody!
+                t.getAppArgs.filterMap fun a => if a.isConst then some a.constName!.toString else none
+            | none => #[]
+          pure { name := c.toString, doc := cdoc, type := ctype, args : Ctor }
+      | _ => pure #[]
     let d : Decl := {
       name := n.toString, kind := ← kindOf env n ci, module := m.toString
       line, endLine, doc, signature := sig
       uses := (usesOf env nodes n).map (·.toString)
       axioms := axioms.map (·.toString) |>.qsort (· < ·)
       atlas := tagsOf.getD n #[]
-      source }
+      source, constructors }
     h.putStr ((if first then "" else ",\n") ++ d.render)
     first := false
   h.putStr "\n]}\n"
