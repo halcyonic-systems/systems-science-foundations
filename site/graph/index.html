@@ -60,7 +60,7 @@
   aside h2 { font: 600 18px/1.2 var(--serif); word-break: break-word; }
   aside .meta { font: 11px var(--mono); color: var(--ink-3); margin: 4px 0 10px; }
   aside pre { font: 12px/1.45 var(--mono); white-space: pre-wrap; word-break: break-word; background: var(--bg); border-left: 3px solid var(--accent-soft); padding: 8px 10px; margin: 8px 0 12px; }
-  aside .doc { color: var(--ink-2); white-space: pre-wrap; margin-bottom: 12px; }
+  aside pre.src { border-left-color: var(--accent); max-height: 40vh; overflow: auto; }
   aside h3 { font: 500 10px/1 var(--mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin: 14px 0 6px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
   aside ul { list-style: none; }
   aside li { font: 12px var(--mono); padding: 2px 0; cursor: pointer; color: var(--accent-strong); word-break: break-all; }
@@ -197,7 +197,9 @@
     const list = (xs) => xs.length ? `<ul>${xs.map(x => `<li data-n="${x}">${x}</li>`).join('')}</ul>` : '<p class="empty">none in the project</p>';
     const file = d.module.replace(/\./g, '/') + '.lean';
     p.innerHTML = `<h2>${d.name}</h2><div class="meta">${d.kind} · <a href="https://github.com/halcyonic-systems/systems-science-foundations/blob/${data.commit}/${file}#L${d.line}-L${d.endLine}" target="_blank" rel="noopener">${file}:${d.line}</a></div>
-      <pre>${d.signature.replace(/</g, '&lt;')}</pre>${d.doc ? `<div class="doc">${d.doc.replace(/</g, '&lt;')}</div>` : ''}
+      ${d.atlas.length ? `<div class="meta">atlas: ${d.atlas.map(a => `<a href="https://math.systems/entry/${a}" target="_blank" rel="noopener">${a}</a>`).join(', ')}</div>` : ''}
+      <pre>${d.signature.replace(/</g, '&lt;')}</pre>
+      <h3>Source</h3><pre class="src">${d.source.replace(/</g, '&lt;')}</pre>
       <h3>Uses (${d.uses.length})</h3>${list(d.uses)}<h3>Used by (${(usedBy.get(name) || []).length})</h3>${list(usedBy.get(name) || [])}
       <h3>Axioms</h3><p class="meta">${d.axioms.join(', ') || 'none'}</p>`;
     p.querySelectorAll('li').forEach(li => li.onclick = () => select(li.dataset.n));
