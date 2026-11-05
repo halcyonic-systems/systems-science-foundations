@@ -70,6 +70,7 @@ import Systems.Category.ShapeBertalanffy
 import Systems.Category.ShapeKlir
 import Systems.Category.ShapeBunge
 import Systems.Category.ShapeMobus
+import Systems.Category.ShapeMobus2022
 import Systems.Category.ShapeMyers
 import Systems.Category.ShapeWymore
 import Systems.Category.ShapeMesarovic
