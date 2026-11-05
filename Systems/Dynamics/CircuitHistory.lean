@@ -97,11 +97,15 @@ def circuitTransition (f : Carrier ι V → Carrier ι V) :
 
 /-! ## 3. The recorded run — a finite prefix of the orbit -/
 
-/-- The internal-trajectory reading of `RecordedRun.history` (issue #97's
+/-- The internal-trajectory reading of a recorded run (issue #97's
     ratified reading, "process = sequence of states"): the state after each
     of the first `n` ticks, starting from `x0`, INCLUDING `x0` itself at
-    index 0 (matching `RecordedRun::record`'s row-per-tick-plus-initial-row
-    shape, `run.rs:71-84`). -/
+    index 0. In the engine that is `RecordedRun.start` followed by the `n`
+    rows of `RecordedRun.history`: `history` holds one row per tick and no
+    starting row, and `start` carries `x0` (facets `run.rs`, `record`;
+    `start` since facets walk row 47, 2026-11-04). An earlier version of
+    this docstring said `history` itself held the starting row; it never
+    did (facets walk row 41). -/
 def recordedHistory (f : Carrier ι V → Carrier ι V) (x0 : Carrier ι V) (n : ℕ) :
     List (Carrier ι V) :=
   (List.range (n + 1)).map (fun i => f^[i] x0)
