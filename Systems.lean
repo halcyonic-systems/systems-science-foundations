@@ -53,6 +53,8 @@ import Systems.Mesarovic.GeneralSystem
 -- Phase 3: Klir common root
 import Systems.Klir.KlirSystem
 import Systems.Klir.ViewGeneration
+-- Rosen 1978 §5.8: the system as a triple (S, O, 𝒟), beside the pair
+import Systems.Klir.RosenTriple
 import Systems.Klir.Gates
 import Systems.Klir.GatesTruthTable
 import Systems.Klir.SpivakSystem
