@@ -47,6 +47,8 @@ import Systems.Core.EnvState
 
 -- Mesarovic 1964: decomposition theorem cores (peel lemma + dyadic floor)
 import Systems.Mesarovic.Decomposition
+-- Mesarovic & Takahara 1975 Def 1.1: the general system as a relation on nonempty sets
+import Systems.Mesarovic.GeneralSystem
 
 -- Phase 3: Klir common root
 import Systems.Klir.KlirSystem
