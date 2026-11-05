@@ -24,6 +24,7 @@
 
 import Mathlib.Data.Set.BooleanAlgebra
 import Systems.Klir.KlirSystem
+import Systems.Tools.Atlas
 
 namespace Systems
 
@@ -58,6 +59,7 @@ structure JoslynSystem₂ (α : Type*) where
     excludes (Def 21). The environment is DERIVED from the distinction,
     not primitive — the ontological seam with Bunge's CES triple, where E
     is a given (Phase 4.4, out of scope here). -/
+@[atlas "joslyn-1995-system"]
 def JoslynSystem.constraint {ι : Type*} {X : ι → Type*}
     (J : JoslynSystem ι X) : Set (∀ i, X i) :=
   J.statesᶜ

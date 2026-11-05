@@ -13,6 +13,7 @@
 -/
 
 import Systems.Core.Bond
+import Systems.Tools.Atlas
 
 namespace Systems
 
@@ -44,6 +45,7 @@ namespace Systems
     DESIGN: Time-parameterization is deferred — each ConcreteSystem represents
     a snapshot at a given time t. This matches Bunge's "at time t" qualifier
     while keeping types simple for Phase 1. -/
+@[atlas "bunge-1979-def-1-1"]
 structure ConcreteSystem (α : Type*) [ActsOn α] where
   /-- Composition: set of components -/
   composition : Set α
